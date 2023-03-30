@@ -1,0 +1,69 @@
+.sessao {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-top: 2px solid #ddd;
+    .cabecalho{
+        height: 15%;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        color: #666;
+        h2{
+
+            font: 20pt arial;
+            font-weight: 600;
+        }
+    }
+    .SessaoLista {
+        background-color: white;
+        height: 85%;
+        overflow-y: auto;
+        .titulosSessao {
+            background-color: rgb(245, 245, 245);
+            width: 100%;
+            div {
+                padding: 5px;
+                width: 12.5%;
+                font: 10pt arial;
+                font-weight: 600;
+            }
+        }
+
+        .dadosSessao {
+            width: 100%;
+            transition: .5s;
+            border-bottom: 1px solid #ddd;
+            div {
+                font: 9pt arial;
+                font-weight: 600;
+                width: 12.5%;
+                padding: 5px;
+                color: #666;
+            }
+            &:nth-child(even){
+                background-color: rgba(250, 250, 250, 0.921);
+            }
+            &:hover{
+                background-color: #ddd;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .Aberto {
+        background-color: #00686e;
+        color: white !important;
+    }
+
+    .Fechado {
+        background-color: #006e51b5;
+        color: white !important;
+    }
+
+    .Abrir {
+        background-color: #00686e92;
+        color: white !important;
+    }
+}
+

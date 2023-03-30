@@ -1,0 +1,181 @@
+
+@media print{
+    #notprint,body,header,footer,aside,form {
+      visibility: hidden;
+    }
+    @page{
+        size: auto;
+        margin: 0mm;
+      }
+    .Form_fatura{
+        background-color: white;
+        font: 11pt arial !important;
+    }
+    .nif{
+        display: flex;
+    }
+    .data_fatura{
+        width: 100%;
+        padding: 2px;
+        border: 1px solid black;
+        text-align: center;
+        font: 10pt arial bold !important;
+        display: flex;
+        padding-left: 5px;
+    }
+    #IdCompra{
+        right: 0;
+    }
+
+}
+.Form_fatura{
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    font: 10pt arial !important;
+    height: 100%;
+    color: black;
+    z-index: 1080;
+    padding: 3px;
+    #EmpresaEnfo{
+        border: 1px solid black;
+        width: 100%;
+        padding: 5px;
+        font: 11pt arial;
+        font-weight: 600;
+        .info-company{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 5px 20px 5px 20px;
+            .content{
+                display: flex;
+                justify-content: space-between;
+                span{
+                    font-weight: bold;
+                }
+            }
+        }
+        // .telefone{
+        //     display: flex;
+        //     text-align: center;
+        //     margin-left: 50px;
+        // }
+        // .telefone div{
+        //     font: 10pt arial !important;
+        //     font-weight: 600;
+        //     .numero{
+        //         margin-left: 30px;
+        //     }
+        // }
+        // h2{
+        //     text-align: center;
+        // }
+    }
+    .Cliente{
+        width: 100%;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        border: 2px solid;
+        .title{
+            width: 100%;
+            margin-left: 45%;
+            text-align: center;
+            font: 10pt arial !important;
+            font-weight: 600;
+        }
+        .InfoCliente {
+            width: 100%;
+            div{
+                font: 11pt arial !important;
+                font-weight: 600;
+                display: flex;
+            }span{
+                font: 11pt arial;
+                font-weight: 600;
+                margin-left: 30px;
+            }
+        }
+    }
+    div{
+        .Titls{
+            display: flex;
+            border: 2px solid #888;
+            padding: 3px;
+            div{
+                width: 50%;
+            }
+            .totalTitl{
+                text-align: right;
+                padding-right: 20px;
+            }
+        }
+        .listaItens{
+            margin-top: 5px;
+            font: 12pt arial;
+            .item{
+                margin-bottom: 2px;
+                .PrecoQuant{
+                    display: flex;
+                    .QuantidadeFatura{
+                        width: 25%;
+                        text-align: center;
+                    }
+                    .PrecoFatura{
+                        width: 35%;
+                        padding-left: 15px;
+                    }
+                    .TotalFatura{
+                        width: 40%;
+                        text-align: right;
+                    }
+
+                }
+            }
+
+        }
+        .InfoPag{
+            border-top: 1px solid;
+            margin-top: 5px;
+            display: flex;
+            width: 100%;
+            div{
+                margin-top: 3px;
+            }
+            .TiposPag{
+                width: 50%;
+            }
+            .totais{
+                text-align: right;
+                width: 50%;
+            }
+        }
+        .data_fatura{
+            width: 100%;
+            padding: 2px;
+            border: 1px solid black;
+            text-align: center;
+            font: 12pt arial;
+            display: flex;
+            padding-left: 5px;
+            &:nth-child(1){
+                width: 75%;
+                background-color: red;
+            }
+            &:nth-child(2){
+                width: 25%;
+                background-color: aqua;
+                display: flex;
+                justify-content: right;
+            }
+        }
+
+        .Obrigado{
+            font: 10pt arial;
+            font-weight: 600;
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+}

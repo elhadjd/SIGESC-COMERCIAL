@@ -1,0 +1,117 @@
+.ArquivoPedidos{
+    height: 100%;
+}
+.FormListaCima{
+    height: 10%;
+    border-bottom: 1px solid #ddd;
+}
+.ListOrdenClick{
+    margin-top: 10px;
+
+}
+.ListOrdenClick:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}
+.FormListaBaixo{
+    height: 100%;
+    background-color: #f9f9f9f9;
+    padding: 0;
+    margin: 0 auto;
+}
+.botoes{
+    width: 100%;
+    padding: 2px;
+    border-bottom: 1px solid #ddd;
+}
+.annular{
+    border: 1px solid white;
+    font: 10pt arial;
+    font-weight: 600;
+    color: #017e84;
+    padding: 2px;
+}
+.annular:hover{
+    cursor: pointer;
+    border: 1px solid #017e84;
+    color: #017e84;
+}
+.FormList{
+    height: 95%;
+    width: 100%;
+    overflow-y: auto;
+    @include scroll;
+}
+.FormListPedidos{
+    background-color: white;
+    width: 75%;
+    margin-left: 12.5%;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    height: 85%;
+}
+.InformacoesEncomenda{
+    font: 10pt arial;
+    font-weight: 600;
+}
+.InformacoesEncomenda div{
+    margin-top: 10px;
+}
+.BorderBottom{
+
+}
+.titloListPedidos{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    div{
+        border-left: 1px solid #ddd;
+        padding-left: 5px;
+        padding: 5px;
+        font: 10pt arial;
+        font-weight: 600;
+    }
+}
+.ListPedidos{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font: 10pt arial;
+    font-weight: 500;
+    padding: 6px;
+    border-bottom: 1px solid #ddd;
+    &:nth-child(even){
+        background-color: #fcfcfcf9;
+    }
+    &:hover{
+        cursor: pointer;
+        background-color: #f9f9f9f9;
+    }
+    >div{
+        padding-left: 5px;
+    }
+}
+
+.Totaless{
+    text-align: right;
+    margin-left: 75%;
+}
+.TitleTotaies div{
+    font: 10pt arial;
+    font-weight: 600;
+    margin-top: 8.5px;
+}
+.Totaies div{
+    font: 10pt arial;
+    font-weight: 800;
+    margin-top: 5px;
+}
+.FormListPedido{
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    font: 10pt arial;
+    font-weight: 600;
+    padding: 5px;
+}

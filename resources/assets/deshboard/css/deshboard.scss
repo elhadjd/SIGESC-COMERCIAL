@@ -1,0 +1,85 @@
+.nav_da_home_compra {
+    z-index: 1080;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    .botao{
+        position: absolute;
+        width: 45px !important;
+        font-size: 30px;
+        height: 100%;
+        color: white;
+        z-index: 1080;
+        left: 0px;
+    }
+    nav{
+        background: var(--appcolor);
+        z-index: 1080;
+        >div{
+            position: relative;
+            padding: 0px;
+            margin-left: 50px;
+            z-index: 1080;
+            li{
+                text-decoration: none;
+                list-style: none;
+                color: white;
+                padding: 8px;
+                font-weight: 500;
+                &:hover{
+                    cursor: pointer;
+                    opacity: 0.8;
+                    background: var(--apphover)
+                }
+            }
+            .ListRelatorios{
+                position: absolute;
+                background-color: white;
+                border: 1px solid #ddd;
+                width: 200px;
+                z-index: 1080;
+
+                >div{
+                    padding: 8px 15px 8px 15px;
+                    font: 10pt arial !important;
+                    font-weight: 600 !important;
+                    &:hover{
+                        cursor: pointer;
+                        background-color: rgba(0, 0, 0, 0.132);
+                    }
+                }
+            }
+        }
+    }
+    .user_conectado{
+        position: absolute;
+        right: 0;
+        .User{
+            display: flex;
+            padding: 5px;
+            color: white;
+            align-items: center;
+            img{
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                margin-right: 15px;
+            }
+            &:hover{
+                cursor: pointer;
+                opacity: 0.8;
+                background: var(--apphover)
+            }
+        }
+        .Usuario{
+            position: absolute;
+            background-color: transparent;
+            color: rgba(0, 0, 0, 0.638);
+            right: 10px;
+            &:hover{
+                cursor: pointer;
+                opacity: 0.8;
+            }
+        }
+    }
+}

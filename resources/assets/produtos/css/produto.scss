@@ -1,0 +1,273 @@
+.Principal {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+
+    .titulo {
+        font: 15pt arial;
+        font-weight: 800;
+        height: 15%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        .Acao {
+            margin-bottom: 10px;
+        }
+        .titulo-left {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 3px;
+            .guardar_descartar {
+                display: flex;
+                background-color: white;
+                button {
+                    @include botao_normal;
+                    margin-right: 3px;
+                }
+                div {
+                    @include botao_descartar;
+                }
+            }
+        }
+    }
+
+    .Formulario {
+        height: 85%;
+        max-height: 91%;
+        padding: 0;
+        border-top: 2px solid #eee;
+        background-color: #f9f9f9f9;
+        .FormNewProd {
+            height: 100%;
+            .guard_descart {
+                background-color: #f9f9f9f9;
+                .FecharForm {
+                    background-color: white;
+                    div {
+                        @include botao_descartar;
+                    }
+                }
+                .guardar_descartar {
+                    display: flex;
+                    background-color: white;
+                    button {
+                        @include botao_normal;
+                    }
+                    div {
+                        border: 1px solid white;
+                        color: #017e84;
+                        padding: 3px 10px 3px 10px;
+                        font: 10pt arial;
+                        font-weight: 600;
+                        &:hover {
+                            border: 1px solid #017e84;
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+            .form_novo_prod {
+                width: 90%;
+                margin: 0 auto;
+                background-color: white;
+                height: 87%;
+                margin-top: 1%;
+                border: 1px solid #ddd;
+                .TopProd {
+                    height: 185px;
+                    width: 100%;
+                    .ProdutoBarraCima {
+                        width: 100%;
+                        height: 35px;
+                        display: flex;
+                        border-bottom: 1px solid #ddd;
+                        box-sizing: border-box;
+
+                        .BotaoMuvementos {
+                            border: none;
+                            outline: none;
+                            width: auto;
+                            border-right: 1px solid #f3f3f3f9;
+                            padding-right: 10px;
+                            box-sizing: border-box;
+
+                            .view_muvementos {
+                                background-color: white;
+                                display: flex;
+                                align-items: center;
+                                justify-content: flex-end;
+                                width: 100%;
+                                height: 100%;
+                                font: 9pt arial;
+                                font-weight: 600;
+                                padding: 1px;
+                                &:hover {
+                                    cursor: pointer;
+                                    opacity: 0.8;
+                                }
+                                i {
+                                    font-size: 22px;
+                                    margin-top: 5px;
+                                    padding-left: 3px;
+                                    color: #65134f;
+                                }
+                                div {
+                                    color: #65134f;
+                                    .TipoMuv{
+                                        word-break: break-word;
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;
+                                        display: -webkit-box;
+                                        line-height: 16px; /* fallback */
+                                        max-height: 32px; /* fallback */
+                                        -webkit-line-clamp: 2; /* number of lines to show */
+                                        -webkit-box-orient: vertical;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .FormContainer {
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+                        .input_nome_tipo {
+                            width: 85%;
+                            padding: 10px 0px 0px 20px;
+                            .nome_artigo_data {
+                                @include InputPrincipal;
+                            }
+                            .ContainerInfo {
+                                display: flex;
+                                margin-top: 5px;
+                                .Titulos {
+                                    width: 25%;
+                                    margin-top: 8px;
+                                    display: flex;
+                                    flex-direction: column;
+                                    justify-content: space-between;
+                                    div {
+                                        padding: 10px;
+                                        display: flex;
+                                    }
+                                }
+                                .InfoContainer {
+                                    width: 100%;
+                                    display: flex;
+                                    flex-direction: column;
+                                    justify-content: space-between;
+                                    .TipoCategoria {
+                                        width: 70%;
+                                        display: flex;
+
+                                        .tipoartigo {
+                                            display: flex;
+                                            width: 40%;
+                                            .tipo_artigo {
+                                                width: 100%;
+                                                margin-right: 8px;
+                                                @include input_normal;
+                                                padding: 0px !important;
+                                            }
+                                        }
+                                        .DivCategoria {
+                                            display: flex;
+                                            width: 70%;
+                                            .Categoria {
+                                                @include input_normal;
+                                                width: 60% !important;
+                                                padding: 0px !important;
+                                            }
+                                            button {
+                                                margin-left: 1%;
+                                                display: flex;
+                                                justify-content: space-between;
+                                                width: 39%;
+                                                i {
+                                                    font-size: 15px;
+                                                }
+                                                @include botao_normal;
+                                            }
+                                        }
+                                    }
+                                    .CodeBar {
+                                        width: 70%;
+                                        left: 0;
+                                        input {
+                                            @include input_normal;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .DivImagem {
+                            width: 13%;
+                            position: relative;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            padding: 0px 10px 0px 10px;
+                            .HeaderImagem {
+                                width: 100%;
+                                display: flex;
+                                justify-content: center;
+                                .Arquivado {
+                                    background-color: #dc3545 !important;
+                                    padding: 10px;
+                                    color: #fff;
+                                    font: 15pt arial;
+                                    font-weight: 600;
+                                    position: absolute;
+                                    margin-top: 48px;
+                                    width: 145px;
+                                    transform: rotate(45deg);
+                                }
+                                .icones {
+                                    position: absolute;
+                                    width: 87%;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    background-color: transparent;
+                                    color: transparent;
+                                    padding: 3px 5px 3px 5px;
+                                    &:hover {
+                                        background-color: #017e844a;
+                                        opacity: 0.8;
+                                        color: #028087;
+                                    }
+                                    i {
+                                        font-size: 22px;
+                                    }
+                                    label {
+                                        #imagem {
+                                            width: 10%;
+                                        }
+                                    }
+                                    .EditarImagen {
+                                        cursor: pointer;
+                                    }
+                                    #icone_delete_img:hover {
+                                        color: red;
+                                        cursor: pointer;
+                                    }
+                                }
+                            }
+                            .imagem_novo_produto {
+                                background-color: #f9f9f9f9;
+                                border-radius: 10px;
+                                display: flex;
+                                img {
+                                    width: 140px;
+                                    height: 135px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

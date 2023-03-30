@@ -1,0 +1,82 @@
+.fornecedore {
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    .suppliers {
+        width: 100%;
+        height: 100%;
+        padding: 5px 10px 5px 10px;
+        overflow-y: auto;
+        @include scroll;
+        > div {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 5px 10px 5px 10px;
+            align-items: center;
+            font: 10pt arial;
+            font-weight: bold;
+            color: #000000b5;
+
+            &:hover {
+                background-color: #017e840c;
+                cursor: pointer;
+            }
+
+            svg {
+                font-size: 18px;
+                &:hover {
+                    color: rgba(255, 0, 0, 0.517);
+                }
+            }
+        }
+    }
+    .addFornecedor {
+        width: 100%;
+        height: 100%;
+        position: relative;
+
+        > button {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 10px 5px 10px;
+            border-radius: 3px;
+            box-shadow: rgb(100, 100, 111, 0.2) 10px 5px 27px 0px;
+            font: 11pt arial;
+            font-weight: bold;
+            color: #000000b2;
+            background-color: #017e840c;
+        }
+
+        .list-items {
+            position: absolute;
+            width: 100%;
+            height: 100px;
+            overflow-y: auto;
+            @include scroll;
+            box-shadow: rgb(100, 100, 111, 0.2) 10px 5px 27px 0px;
+            border-radius: 0px 0px 5px 5px;
+
+            > div {
+                padding: 5px 10px 5px 10px;
+                font: 10pt arial;
+                font-weight: bold;
+                color: #000000b5;
+
+                &:hover {
+                    background-color: #017e840c;
+                    cursor: pointer;
+                }
+            }
+
+            > input {
+                @include input_normal;
+            }
+        }
+    }
+}

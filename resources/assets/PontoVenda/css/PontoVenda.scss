@@ -1,0 +1,27 @@
+#nav_da_home_compra{
+    z-index: 1080;
+    font: 11pt arial;
+    font-weight: 600;
+    .ListRelatorios{
+        width: 15%;
+        background-color: #f9f9f9f9;
+        border-radius: 0;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        div{
+            padding: 5px;
+            padding-left: 10px;
+            width: 100%;
+            background-color: white;
+            font: 10pt arial;
+            font-weight: 600;
+            &:hover{
+                background-color: #f9f9f9f9;
+                cursor: pointer;
+            }
+        }
+    }
+}
+.Container{
+    height: 92%;
+}

@@ -1,0 +1,76 @@
+.p-sidebar-content{
+    padding: 0 !important;
+    height: 100% !important;
+}
+.FaturaCompleta{
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    height: 100%;
+    z-index: 1080;
+    padding: 5px;
+    margin-bottom: 20px;
+}
+.LogoEmpresa{
+    width: 10%;
+}
+
+.LogoEmpresa img{
+    width: 40px;
+}
+.InfoEmpresa{
+    width: 50%;
+}
+.InfoEmpresa .titlsEmpresa{
+    font-size: 15px;
+    font-weight: 600;
+    width: 30%;
+}
+.InfoCliente{
+    width: 50%;
+    padding: 10px;
+    height: 100px;
+    font: 10pt arial;
+    font-weight: 600;
+}
+.TitlsCliente{
+    width: 30%;
+}
+.ConteinerCliente{
+    width: 70%;
+}
+.TitlsLista{
+    width: 100%;
+    padding: 3px;
+    border-bottom: 2px solid;
+}
+.TotalsFatura{
+    width: 60%;
+    margin-left: 40%;
+    margin-top: 30px;
+    border-top: 1px solid;
+    padding: 10px;
+}
+.valores{
+    font: 12pt arial;
+    font-weight: 600;
+    padding: 3px;
+}
+.TitlsLista div{
+    width: 12.5%;
+    font: 12pt arial;
+    font-weight: 600;
+}
+.ListaProdutos:nth-child(even){
+    background-color: rgb(251, 251, 251);
+}
+.ListaProdutos{
+    border-bottom: 1px solid rgb(247, 247, 247);
+}
+.ListaProdutos div{
+    width: 12.5%;
+    padding-right: 10px;
+    font: 11pt arial;
+    font-weight: 500;
+    padding: 5px;
+}

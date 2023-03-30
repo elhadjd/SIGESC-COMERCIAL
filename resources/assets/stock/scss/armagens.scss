@@ -1,0 +1,9 @@
+@include components;
+@import '../../funcionarios/scss/department.scss';
+.principal{
+    @extend .departments;
+    .buttons{
+        display: flex;
+        gap: .5rem;
+    }
+}

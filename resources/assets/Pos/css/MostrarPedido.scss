@@ -1,0 +1,102 @@
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(10px);
+}
+.Principal{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1080;
+    background-color: rgba(0, 0, 0, 0.46);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.77);
+    .forme{
+        height: 550px;
+        width: 350px;
+        background-color: rgb(247, 247, 247);
+        border-radius: 3px !important;
+        border: 1px solid #ddd;
+        .Header{
+            height: 50px;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+        .Container{
+            height: 450px;
+            background-color: rgb(242, 242, 242);
+            .Items{
+                height: 75%;
+                overflow-y: auto;
+                @include scroll;
+                .Lista{
+
+                    width: 100%;
+                    padding: 10px;
+                    &:nth-child(even){
+                        background-color: #ddd;
+                    }
+                    &:hover{
+                        cursor: pointer;
+                        background-color: rgb(16, 102, 102);
+                        color: white;
+                    }
+                    .nomes{
+                        font: 10pt arial;
+                        font-weight: 600;
+                        padding: 3px;
+                    }
+                    .Quantidade{
+                        display: flex;
+                        font: 10pt arial;
+                        font-weight: 500;
+                        div{
+                            width: 33.33%;
+                            display: flex;
+                            justify-content: flex-end;
+                        }
+                    }
+                }
+            }
+
+            .Total{
+                border-top: 2px solid #ddd;
+                height: 25%;
+                padding: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font: 10pt arial;
+                font-weight: 600;
+                div{
+                    padding: 2px;
+                }
+            }
+        }
+        .Footer{
+            height: 50px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .Fechar{
+                @include botao_descartar;
+            }
+            .PedirReembolso{
+                @include botao_normal
+            }
+        }
+    }
+}

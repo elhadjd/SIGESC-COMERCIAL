@@ -1,0 +1,70 @@
+* {
+  padding: 0;
+  margin: 0;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+.Artigos {
+  height: 100%;
+}
+.Artigos .formArtigo {
+  width: 133px;
+  background-color: white;
+  height: 125px;
+  margin-top: 10px;
+  margin-left: 8px;
+  position: relative;
+  border-radius: 2px;
+  padding: 5px;
+  display: inline-flex;
+  color: #777;
+  border: 1px solid #eee;
+}
+.Artigos .formArtigo:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+.Artigos .formArtigo .PrecoProd {
+  width: 100%;
+  display: flex;
+  top: 0;
+}
+.Artigos .formArtigo .PrecoProd .iconesBloco {
+  z-index: 999;
+  top: 0;
+  left: 0;
+}
+.Artigos .formArtigo .PrecoProd #ProdutoPreco {
+  background-color: #055160;
+  color: white;
+  position: absolute;
+  right: 5px;
+  font-size: 12px;
+  z-index: 1060;
+  font-weight: 600;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 2px;
+}
+.Artigos .formArtigo .ProdutoImagem {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  left: 0;
+  height: 85%;
+  top: 5px;
+}
+.Artigos .formArtigo .ProdutoImagem img {
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+  margin-top: 0px;
+}
+.Artigos .formArtigo .ProdutoNome {
+  font-family: "Lato", "Lucida Grande", Helvetica, Verdana, Arial;
+  position: absolute;
+  bottom: 0;
+  font-size: 12px;
+}/*# sourceMappingURL=produtos.css.map */

@@ -1,0 +1,128 @@
+.MenuPrincipal{
+    width: 100%;
+    height: 100%;
+    .Header{
+        height: 15%;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        border-bottom: 2px solid #ddd;
+        .HeaderOne{
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            width: 100%;
+            h2{
+                font: 15pt arial;
+                font-weight: 600;
+                color: rgba(0, 0, 0, 0.678);
+            }
+        }
+    }
+    .Container{
+        width: 100%;
+        height: 85%;
+        background-color: rgba(0, 0, 0, 0.043);
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        padding: 10px;
+        .CardApps{
+            width: 97%;
+            height: 150px;
+            height: auto;
+            min-height: 180px !important;
+            max-height: 300px !important;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-y: auto;
+            background-color: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            .content{
+                width: 95%;
+                height: 75%;
+                margin: 0 auto;
+                .company{
+                    padding: 10px;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: space-between;
+                    cursor: pointer;
+                    img{
+                        width: 150px;
+                        border-radius: 3px;
+                    }
+                    .name{
+                        font-size: 15px;
+                        font-weight: bold;
+                        color: rgba(0, 0, 0, 0.717);
+                    }
+                }
+            }
+            .Apps{
+                display: grid;
+                grid-template-columns: repeat(3,1fr);
+                .App{
+                    width: 95%;
+                    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.044), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+                    height: 97%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    align-items: center;
+                    &:hover{
+                        cursor: pointer;
+                        transition: box-shadow 2s;
+                        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                    }
+                    .Imagem{
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        img{
+                            width: 78px;
+                            height: 80%;
+                        }
+                    }
+                    .AppName{
+                        padding: 5px;
+                        font: 10pt arial;
+                        font-weight: 600;
+                    }
+                }
+            }
+            .Footer{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .TotalApps{
+                    font: 10pt arial;
+                    font-weight: 600;
+                }
+                .AddApp{
+                    @include botao_normal
+                }
+            }
+        }
+        .CardVersion{
+            width: 97%;
+            height: 250px;
+            max-height: 500px;
+            min-height: 250px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    }
+}

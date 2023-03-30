@@ -1,0 +1,137 @@
+@include components;
+.list-workers{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 10% 15% 15% 10% 15% 15% 20%;
+    align-items: center;
+    background-color: #edf0f4;
+    transition: 0.3s;
+    border-bottom: 1px solid #e1e6ed99;
+    &:nth-child(even){
+        background-color: white;
+    }
+    &:hover{
+        cursor: pointer;
+        background-color: #eef2fb;
+    }
+    >span{
+        border-left: 1px solid #e1e6ed99;
+        height: 100%;
+        padding: 5px 15px 5px 15px;
+        img{
+            width: 60px;
+            border-radius: 3px;
+        }
+    }
+    span{
+        width: 100%;
+        height: 100%;
+    }
+    strong{
+        color: #000000a8;
+        font-size: 13px;
+    }
+    svg{
+        color: #0000001d;
+    }
+    .dailyExpense{
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: space-between;
+        div{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            >svg{
+                color: #00686e25;
+                transition: 0.3s;
+                &:hover{
+                    font-size: 20px;
+                    color: #00686ece;
+                }
+            }
+        }
+    }
+    .existExpense{
+        strong{
+            color: #00686ece !important;
+        }
+        >svg{
+            color: #00686ece !important;
+            transition: 0.3s;
+                &:hover{
+                font-size: 20px;
+            }
+        }
+    }
+    .existDiscount{
+        strong{
+            color: rgba(255, 0, 0, 0.567) !important;
+        }
+        svg{
+            color: rgba(255, 0, 0, 0.478) !important;
+        }
+    }
+    .discount{
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: space-between;
+        div:nth-child(2)>svg{
+            color: #00000010;
+            transition: 0.3s;
+            &:hover{
+                font-size: 20px;
+                color: #00686ece;
+            }
+        }
+        div{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            .drop{
+                position: absolute;
+                display: flex;
+                flex-direction: column;
+                background-color: white;
+                z-index: 1;
+                right: 15px;
+                box-shadow: rgb(100, 100, 111,0.2) 5px 9px 25px 1px;
+                border-radius: 3px;
+                span{
+                    padding: 5px;
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #000000a8;
+                    &:hover{
+                        background-color: #00000010;
+                        color: #00686ee0;
+                    }
+                }
+            }
+        }
+    }
+    .to-receive{
+        display: flex;
+        flex-direction: column;
+        div:nth-child(1){
+            >svg{
+                color: #00686e25;
+            }
+        }
+        div:nth-child(2){
+            >svg{
+                color: #00000010;
+            }
+        }
+        div{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+}

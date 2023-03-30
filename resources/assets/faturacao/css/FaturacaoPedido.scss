@@ -1,0 +1,150 @@
+
+
+  .TitlsPedido {
+    font: 11pt arial;
+    font-weight: 600;
+  }
+  .Container{
+    height: 56%;
+    overflow-y: auto;
+    @include scroll;
+  }
+.ListaPedidos,
+.TitlsPedido {
+    display: grid;
+    grid-template-columns: 30% 10% 15% 15% 15% 15%;
+    .nameItem{
+        justify-content: flex-start;
+        word-break: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        line-height: 16px;
+        max-height: 32px;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+    div {
+        width: 100%;
+        text-align: right;
+        padding: 3px;
+        padding-right: 20px;
+        border-left: 1px solid #eee;
+        border-bottom: 1px solid rgb(245, 245, 245);
+    }
+}
+
+.ListaPedidos input{
+    width: 100%;
+    padding: 6px;
+    text-align: end;
+    border: none;
+    border-bottom: 1px solid #eee;
+    margin-right: 1px;
+    font: 10pt arial;
+    box-shadow: 0 0 0 0;
+    padding-left: 5px;
+    padding-right: 10px;
+    background-color: transparent !important;
+}
+.ListaPedidos{
+    height: 100%;
+    display: flex;
+    &:hover{
+        background-color: rgba(238, 238, 238, 0.532);
+        cursor: pointer;
+    }
+}
+.ListaPedidos input:nth-child(1)
+{
+    font-weight: 500;
+}
+.ListaPedidos div
+{
+    width: 100% !important;
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 1px solid #eee;
+    padding-right: 15px;
+    .icone{
+        margin-right: 20px;
+        color: #777;
+        &:hover{
+            opacity: 0.7;
+        }
+    }
+    i{
+        padding: 5px;
+        color: #777;
+        &:hover{
+            color: rgba(255, 0, 0, 0.544);
+        }
+    }
+}
+  /////////////////////////////////////////////////////////////
+.ResultadoTotal{
+    height: 44%;
+    overflow-y: auto;
+}
+#Produto {
+    border: none;
+    outline: none;
+    padding-left: 10px;
+}
+#ListaProdutos {
+    padding: 3px;
+    padding-left: 10px;
+  }
+  #ListaProdutos:hover {
+    cursor: pointer;
+    background-color: rgba(242, 242, 242, 0.933);
+  }
+  .ListaProdutos{
+    height: auto;
+    max-height: 108px;
+    @include scroll;
+    .BotoesCriar{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        button{
+            text-align: start;
+            padding: 5px 10px 5px 10px;
+            font: 10pt arial;
+            font-weight: 600;
+            margin-top: 2px;
+            color: #00686e;
+            &:hover{
+
+            }
+        }
+    }
+  }
+  .StockEsgatado {
+      right: 10px;
+      font-size: 16px;
+  }
+  .TitlTotals{
+      width: 50%;
+      text-align: right;
+      font-weight: 800;
+  }
+  .TitlTotals div{
+      font: 11pt arial;
+      font-weight: 500;
+      margin-top: 15px;
+      color: rgb(53, 53, 53);
+  }
+  .Totals{
+      width: 50%;
+      text-align: right;
+      padding-right: 30px;
+      font-weight: 800;
+  }
+  .Totals div{
+      font: 11pt arial;
+      font-weight: 600;
+      font-weight: 600;
+      margin-top: 15px;
+      color: rgb(53, 53, 53);
+  }

@@ -1,0 +1,221 @@
+.criarClientes {
+    width: 100%;
+    height: 100%;
+
+    .PretedFornecedor{
+        border: 1px solid #ddd;
+        width: 85%;
+        height: 100%;
+        margin: 0 auto;
+        background-color: white;
+    }
+
+    .formulario {
+        border: 1px solid #ddd;
+        width: 85%;
+        height: 100%;
+        margin: 0 auto;
+        background-color: white;
+
+        .formulario-header {
+            width: 100%;
+            height: 9%;
+            border-bottom: 1px solid #ddd;
+            font: 11pt arial;
+            font-weight: 600;
+            display: flex;
+            justify-content: right;
+
+            .card-header{
+                width: 200px;
+                padding: 1px 10px 1px 10px;
+                display: grid;
+                align-items: center;
+                grid-template-columns: repeat(2,1fr);
+                border-left: 1px solid rgba(238, 238, 238, 0.847);
+                color: #017e84;
+                >svg{
+                    font-size: 28px;
+                }
+                span{
+                    display: flex;
+                    flex-direction: column;
+                }
+                &:hover{
+                    background-color: #017e8428;
+                    cursor: pointer;
+                }
+            }
+            .Action{
+                display: flex;
+                justify-content: center;
+            }
+            .dropdown-menu{
+                border-radius: 0px !important;
+                border: none;
+                padding: 0px !important;
+                border: 1px solid rgba(221, 221, 221, 0.518);
+                border-top: none;
+                width: 200px !important;
+                a{
+                    padding: 10px !important;
+                    font: 11pt arial;
+                    font-weight: 600;
+                    color: #017e84;
+                    &:hover{
+                        background-color: #017e8428;
+                    }
+                }
+            }
+        }
+
+        .formulario-content {
+            width: 100%;
+            height: 91%;
+            .nomeCliente {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 100%;
+                .Nome {
+                    @include InputPrincipal;
+                }
+                .Empressa{
+                    @include input_normal;
+                    margin-bottom: 15px;
+                }
+            }
+            .imagem {
+                height: 25%;
+                width: 100%;
+                display: grid;
+                padding: 3px;
+                grid-template-columns: repeat(2,1fr);
+                border-bottom: 1px solid #ddd;
+                .img{
+                    .Arquivado{
+                        background-color: #dc3545 !important;
+                        padding: 10px;
+                        color: #fff;
+                        font: 13pt arial;
+                        font-weight: 600;
+                        position: absolute;
+                        margin-top: 30px;
+                        width: 115px;
+                        transform: rotate(45deg);
+                    }
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    justify-content: flex-end;
+                    .imagem-cliente {
+                        border: 1px solid #ddd;
+                        padding: 2px;
+                        width: 120px;
+                        height: 100px;
+                        img {
+                            width: 100%;
+                            height: 100%;
+
+                        }
+                    }
+                    .icones {
+                        padding: 5px;
+                        width: 120px;
+                        display: flex;
+                        justify-content: space-between;
+                        position: absolute;
+                        background-color: transparent;
+                        color: transparent;
+                        &:hover{
+                            background-color: #017e8421;
+                            color: #017e84;
+                        }
+                        #edit_img{
+                            &:hover{
+                                cursor: pointer;
+                            }
+                        }
+                        #icone_delete_img{
+                            &:hover{
+                                cursor: pointer;
+                                color: red;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            .formulario-insert {
+                height: 75%;
+                .Formulario-one {
+                   display: grid;
+                   grid-template-columns: repeat(2,1fr);
+                   border-bottom: 1px solid #ddd;
+                   .dados {
+                    padding: 4px;
+                    display: flex;
+                    .dados-one {
+                        width: 40%;
+                        font: 11pt Arial;
+                        font-weight: 600;
+                        div {
+                            padding: 10px;
+                        }
+                    }
+                    .dados-two {
+                        width: 60%;
+                        display: flex;
+                        flex-direction: column;
+                        input {
+                            margin-top: 10px;
+                            font: 10pt Arial;
+                            border: none;
+                            outline: none;
+                            padding: 3px;
+                            border-bottom: 1px solid #ddd;
+                            border-bottom: 1px solid #ddd !important;
+                            margin-bottom: 3px;
+                            box-shadow: 0 0 0 0;
+                            }
+                        }
+
+                   }
+
+                   .endereco {
+                    padding: 4px;
+                    display: flex;
+                    .EnderecoTitl {
+                        width: 40%;
+                        font: 11pt Arial;
+                        font-weight: 600;
+                        div {
+                            padding: 10px;
+                        }
+                    }
+                    .EnderecoContent {
+                        position: relative;
+                        width: 60%;
+                        display: flex;
+                        flex-direction: column;
+                        input {
+                            margin-top: 10px;
+                            font: 10pt Arial;
+                            border: none;
+                            outline: none;
+                            padding: 3px;
+                            border-bottom: 1px solid #ddd;
+                            border-bottom: 1px solid #ddd !important;
+                            margin-bottom: 3px;
+                            box-shadow: 0 0 0 0;
+                            }
+                        }
+
+                   }
+
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,100 @@
+.Principal {
+    @include modal;
+    .Modal {
+        width: 750px !important;
+        height: 220px !important;
+
+        .Header {
+            height: 20% !important;
+            h2 {
+                font-size: 20px;
+            }
+        }
+
+        .Container {
+            width: 100% !important;
+            height: 60%;
+            align-items: unset;
+
+            .MethodosPagamento {
+                width: 50%;
+                justify-content: space-between;
+                display: flex;
+
+                .MethodosPagamento-titulos {
+                    display: flex;
+                    flex-direction: column;
+
+                    span {
+                        margin-bottom: 22px;
+                    }
+                }
+
+                .MethodosPagamento-container {
+                    display: flex;
+                    flex-direction: column;
+
+                    input {
+                        width: 100%;
+                        margin-bottom: 5px;
+                        @include input_normal;
+                    }
+                }
+                .pagamento {
+                    display: flex;
+                    flex-direction: column;
+                    width: 217px;
+                    height: auto;
+                    margin-top: 25px;
+                    background-color: white;
+                    box-shadow: 2px 3px 4px #ddd;
+                    position: absolute;
+                    span {
+                        padding: 8px;
+                        &:hover {
+                            cursor: pointer;
+                            background-color: #017e8435;
+                            color: #017e84;
+                        }
+                    }
+                }
+            }
+
+            .ValorPagamento {
+                width: 50%;
+                justify-content: space-between;
+                display: flex;
+
+                .ValorPagamento-titulos {
+                    display: flex;
+                    flex-direction: column;
+                    margin-left: 35px;
+
+                    span {
+                        margin-bottom: 22px;
+                    }
+                }
+
+                .ValorPagamento-container {
+                    display: flex;
+                    flex-direction: column;
+
+                    input {
+                        width: 100%;
+                        margin-bottom: 5px;
+                        @include input_normal;
+                    }
+                }
+            }
+
+        }
+
+        .Footer {
+            height: 20% !important;
+
+            .cancelar {
+                @include botao_descartar;
+            }
+        }
+    }
+}

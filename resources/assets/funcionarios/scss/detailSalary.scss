@@ -1,0 +1,147 @@
+.principal  {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0px !important;
+    z-index: 1080;
+    background-color: rgba(0, 0, 0, 0.46);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 0, 0, 0.77);
+    .Modal{
+        width: 80%;
+        height: 620px;
+        background-color: white;
+        border: 1px solid #eee;
+        border-radius: 5px;
+        .Header{
+            width: 100%;
+            height: 60px;
+            border-bottom: 1.5px solid rgba(0, 0, 0, 0.552);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            span{
+                img{
+                    width: 55px;
+                    height: 55px;
+                }
+            }
+        }
+        .Header-two{
+            height: 140px;
+            border-bottom: 1.5px solid rgba(0, 0, 0, 0.677);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            .Name{
+                height: 25px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+                font-size: 15px;
+            }
+            .salary{
+                font-size: 13px;
+                width: 100%;
+                height: 115px;
+                display: grid;
+                grid-template-columns: 33% 33% 33%;
+                padding: 10px;
+                justify-content: space-between;
+                div{
+                    padding: 1px;
+                    font-weight: bold;
+                    color: rgba(0, 0, 0, 0.692);
+                }
+                .money{
+                    display: flex;
+                    flex-direction: column;
+                    span{
+                        padding: 1px;
+                    }
+                    span:nth-child(1){
+                        color: rgb(59 130 246 / .5);;
+                    }
+                    span:nth-child(2){
+                        color: #00686ece;
+                    }
+                    span:nth-child(3){
+                        color: #eeaa34;
+                    }
+                    span:nth-child(4){
+                        color: rgba(255, 0, 0, 0.476);
+                    }
+                }
+                .ToReceive{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    div {
+                        font-size: 23px;
+                        color: #00686e70;
+                    }
+                    span{
+                        font-size: 20px;
+                        color: #00686ece;
+                    }
+                    >svg{
+                        font-size: 23px;
+                        color: #00686e4b;
+                    }
+                }
+            }
+        }
+        .Container{
+            width: 100%;
+            height: 385px;
+            overflow-y: auto;
+            @include scroll;
+            border-bottom: 1.5px solid rgba(0, 0, 0, 0.552);
+            .Expenses{
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                span{
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    padding: 5px;
+                    font-size: 15px;
+                    font-weight: bold;
+                }
+                .List{
+                    display: grid;
+                    grid-template-columns: repeat(4,1fr);
+                    padding: 5px 15px 5px 15px;
+                    font-size: 14px;
+                }
+            }
+        }
+        .Footer{
+            height: 33px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 2px 15px 2px 15px;
+            gap: 1rem;
+            button{
+                @include botao_normal
+            }
+            .descartar{
+                @include botao_descartar
+            }
+            
+        }
+    }
+}

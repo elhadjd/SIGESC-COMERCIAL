@@ -1,0 +1,103 @@
+.Principal{
+    width: 100%;
+    height: 100%;
+    .Header{
+        position: relative;
+        height: 15%;
+        display: flex;
+        justify-content: space-between;
+        color: rgba(0, 0, 0, 0.557);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.237);
+        padding: 10px;
+        .HeaderLeft{
+            font: 13pt arial;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            span{
+                width: 100% !important;
+                display: flex;
+                justify-content: center;
+                input{
+                    @include input_normal;
+                    width: 100%;
+                }
+            }
+        }
+        .Muvementos{
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            .InputMudarPreco{
+                width: 100%;
+                display: grid;
+                justify-content: space-between;
+                grid-template-columns: 73% 25%;
+                input{
+                    @include input_normal;
+                    width: 100%;
+                }
+                button{
+                    @include botao_normal
+                }
+            }
+        }
+    }
+    .Container{
+        height: 75%;
+        overflow-y: auto;
+        padding: 15px;
+        
+        #bloco_artigo{
+            width: 330px;
+            height: 90px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            background-color: white;
+            &:hover{
+                cursor: pointer;
+                opacity: 0.8;
+            }
+            #div_da_imagem {
+                margin-top: 5px;
+                margin-left: 5px;
+                img{
+                    width: 100px;
+                    height: 78px;
+                }
+            }
+            .div_preco_qtd{
+                width: 100%;
+                margin: 10px;
+                font: 10pt arial;
+                font-weight: 500;
+                div{
+                    padding: 2px;
+                }
+                .NomeProduto{
+                    max-width: 26ch;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+                .preco_qtd{
+                    width: 95%;
+                }
+            }
+        }
+    }
+    .Footer{
+        height: 10%;
+        padding: 15px;
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        button{
+            @include botao_normal;
+        }
+    }
+}

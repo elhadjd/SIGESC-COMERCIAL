@@ -1,0 +1,166 @@
+ @include components;
+ @import '../../PontoVenda//css//relatorio//relatorioCards.scss';
+@mixin product($gbColor,$color,$svgColor){
+    .product{
+        width: 80%;
+        height: 85% !important;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        position: relative;
+        >strong{
+            border-radius: 50%;
+            background-color: $gbColor;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10px !important;
+            top: 0px;
+            right: 0px;
+            width: 60px;
+            height:58px !important;
+            z-index: 1;
+            color: $color !important;
+        }
+        >svg{
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            color: $svgColor;
+        }
+        img{
+            top: 0px;
+            position: absolute;
+            align-items: center;
+            width: 100px;
+            height: 70px;
+        }
+        >span{
+            display: flex;
+            flex-direction: column;
+            align-items: baseline;
+            z-index: 1;
+        }
+    }
+}
+ .principal{
+
+    width: 100%;
+   .Containers{
+        @extend .Principal;
+        .TotalGasto{
+            @include product(rgba(238, 170, 52, 0.419),rgb(238, 170, 52) ,rgba(255, 0, 0, 0.625))
+        }
+        .TotalVenda{
+            @include product(#017e8445,#017e84, #017e84)
+        }
+        .TotalCusto{
+            @include product(#714b678f,white, #714b67)
+        }
+        .TotalLucro{
+            @include product(rgba(5, 108, 212, 0.322),rgb(5, 108, 212), rgb(5, 108, 212))
+        }
+        .modalList{
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0px !important;
+            z-index: 1080;
+            background-color: rgba(0, 0, 0, 0.46);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgba(0, 0, 0, 0.77);
+            .ListOrders{
+                .InputSearch{
+                    height: 10%;
+                }
+                .list{
+                    .Items{
+                        display: grid;
+                        grid-template-columns: 6% 30% 16% 16% 16% 16% !important;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.025);
+                        span{
+                            max-width: 100% !important;
+                        }
+                    }
+                    height: 82% !important;
+                    border-top: 1.5px solid #017e84;
+                    .title{
+                        display: grid;
+                        grid-template-columns: 6% 30% 16% 16% 16% 16% !important;
+                        background-color: rgba(0, 0, 0, 0.069);
+                        span{
+                            padding: 3px 6px 3px 6px;
+                            width: 100%;
+                            font-size: 14px;
+                            font-weight: bold;
+                        }
+                        strong{
+                            text-align: right;
+                        }
+                    }
+                }
+                width: 80%;
+                height: 75% !important;
+                .buttons{
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    padding: 3px 10px 3px 10px;
+                    button{
+                        @include botao_normal
+                    }
+                }
+            }
+        }
+        .ListOrders{
+            transition: 0.2s;
+            .InputSearch{
+                display: grid;
+                grid-template-columns: 70% 20% 10% !important;
+                align-items: center;
+                >div{
+                    display: flex;
+                    gap: 2px;
+                    align-items: center;
+                    button{
+                        margin: 0 auto;
+                        @include botao_descartar;
+                    }
+                    >svg{
+                        color: #00000090;
+                        &:hover{
+                            color: #017e84;
+                            cursor: pointer;
+                        }
+                    }
+                }
+                span{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                >svg{
+                    width: 100%;
+                    display: flex;
+                    color: rgba(0, 0, 0, 0.607) !important;
+                    align-items: center;
+                    justify-content: flex-end;
+                    transition: 0.2s;
+                    &:hover{
+                        color: #017e84 !important;
+                        font-size: 20px;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+}

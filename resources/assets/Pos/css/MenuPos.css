@@ -1,0 +1,212 @@
+.ManuPosGeral {
+  width: 100vw;
+  height: 100vh;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.ManuPosGeral .fatura {
+  z-index: 1080 !important;
+}
+.ManuPosGeral #headerPos {
+  background-color: #875A7B;
+  color: white;
+  width: 100%;
+  height: 7.5%;
+  display: grid;
+  grid-template-columns: 45% 55%;
+}
+.ManuPosGeral #headerPos .header-One {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.ManuPosGeral #headerPos .header-One li {
+  list-style: none;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.ManuPosGeral #headerPos .header-One li strong {
+  font: 23.5pt arial;
+  font-weight: 600;
+}
+.ManuPosGeral #headerPos .header-One #pos {
+  display: flex;
+  align-items: center;
+  font-size: 21px;
+  font-weight: 600;
+  height: 100%;
+  margin-left: 3px;
+  padding: 3px;
+  padding-left: 0px 15px 0px 15px;
+}
+.ManuPosGeral #headerPos .header-One #pos span {
+  margin-left: 23px;
+}
+.ManuPosGeral #headerPos .header-One #pos strong {
+  font-size: 12px;
+  font-weight: 500;
+  position: absolute;
+  margin-left: 10px;
+  background-color: #055160;
+  padding: 0px 10px 0px 10px;
+  border-radius: 30px;
+}
+.ManuPosGeral #headerPos .header-One #pos i {
+  margin-top: 10px;
+}
+.ManuPosGeral #headerPos .header-One #pos:hover {
+  cursor: pointer;
+  opacity: 0.8;
+  background-color: rgba(91, 50, 79, 0.5019607843);
+}
+.ManuPosGeral #headerPos .header-One .EntradaSaida {
+  display: flex;
+  align-items: center;
+  font-family: sans-serif;
+  font-weight: 500;
+  height: 100%;
+  padding: 10px;
+}
+.ManuPosGeral #headerPos .header-One .EntradaSaida:hover {
+  cursor: pointer;
+  background-color: rgba(91, 50, 79, 0.5019607843);
+}
+.ManuPosGeral #headerPos .header-One .EntradaSaida span {
+  margin-left: 10px;
+}
+.ManuPosGeral #headerPos .header-two {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  height: 100%;
+}
+.ManuPosGeral #headerPos .header-two #UsuarioConectado {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.ManuPosGeral #headerPos .header-two #UsuarioConectado .SairPos {
+  height: 100%;
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  font: 18pt arial;
+}
+.ManuPosGeral #headerPos .header-two #UsuarioConectado .SairPos:hover {
+  cursor: pointer;
+  background-color: rgba(91, 50, 79, 0.5019607843);
+}
+.ManuPosGeral #headerPos .header-two #UsuarioConectado .SairPos a {
+  color: white;
+}
+.ManuPosGeral .MenuPos {
+  background-color: white;
+  height: 92.5%;
+  width: 100%;
+  display: flex;
+}
+.ManuPosGeral .MenuPos .cartShop {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32.5%;
+  height: 45%;
+  color: rgba(230, 230, 230, 0.6784313725);
+}
+.ManuPosGeral .MenuPos .Posesquerda {
+  background-color: transparent;
+  width: 33%;
+  border: 2px solid #ddd;
+  height: 100%;
+  z-index: 1060;
+}
+.ManuPosGeral .MenuPos .Posesquerda .esquerdaCima {
+  width: 100%;
+  height: 50%;
+  overflow-y: auto;
+}
+.ManuPosGeral .MenuPos .Posesquerda .esquerdaCima .Carrinho {
+  z-index: 1080;
+  display: block;
+}
+.ManuPosGeral .MenuPos .Posesquerda .esquerdaCima .Carrinho .listaPedido {
+  width: 100%;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  font: 10pt arial;
+  font-weight: bold;
+  padding: 7px;
+  color: #555;
+  z-index: 1080;
+}
+.ManuPosGeral .MenuPos .Posesquerda .esquerdaCima .Carrinho .listaPedido div {
+  width: 25%;
+}
+.ManuPosGeral .MenuPos .Posesquerda .esquerdaCima .Carrinho .listaPedido:nth-child(even) {
+  background-color: rgba(249, 249, 249, 0.9764705882);
+}
+.ManuPosGeral .MenuPos .Posesquerda .esquerdaCima .Carrinho .listaPedido:hover {
+  cursor: pointer;
+  opacity: 0.8;
+  background-color: #875A7B;
+  color: white;
+}
+.ManuPosGeral .MenuPos .Posesquerda .esquerdaCima .Carrinho .listaPedido .totalEncomeda {
+  text-align: right;
+}
+.ManuPosGeral .MenuPos .Posesquerda .esquerdaCima .Carrinho .TotalEncomendase {
+  display: flex;
+  background-color: red;
+}
+.ManuPosGeral .MenuPos .Posesquerda .esquerdaCima .Carrinho .TotalEncomendase .totalEncomenda {
+  width: 50%;
+  color: #777;
+  border-radius: 5px;
+  font-size: 25px;
+  font-weight: 600;
+  border: 1px solid #eee;
+  display: flex;
+  padding: 6px;
+  margin-top: 1%;
+}
+.ManuPosGeral .MenuPos .Posesquerda .esquerdaCima .Carrinho .TotalEncomendase .posAtivo {
+  margin-left: 35%;
+  margin-top: 10px;
+  color: #A3498B;
+  font-size: 19px;
+  font-weight: 600;
+}
+.ManuPosGeral .MenuPos .Posesquerda .esquerdaBaixo {
+  border: 1px solid #eee;
+  background-color: rgba(249, 249, 249, 0.9764705882);
+  width: 100%;
+  height: 50%;
+}
+.ManuPosGeral .MenuPos .Posdireita {
+  width: 67%;
+  background-color: rgba(249, 249, 249, 0.9764705882);
+  height: 100%;
+}
+.ManuPosGeral .MenuPos .Posdireita .direitaCima {
+  background-color: white;
+  border: 1px solid #eee;
+  padding: 10px;
+  width: 100%;
+  display: flex;
+}
+.ManuPosGeral .MenuPos .Posdireita .direitaBaixo {
+  width: 100%;
+  height: 92%;
+  background-color: rgba(249, 249, 249, 0.9764705882);
+  overflow-y: auto;
+}/*# sourceMappingURL=MenuPos.css.map */

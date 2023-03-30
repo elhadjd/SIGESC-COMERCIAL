@@ -1,0 +1,230 @@
+@include components;
+.FormCaixa{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70%;
+    background-color: rgba(239, 239, 239, 0.77);
+}
+.FormCaixaCompleta{
+    height: 92% !important;
+    overflow-y: auto;
+    background-color: white;
+}
+.Botoes{
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    background-color: white;
+    padding: 3px;
+}
+#FormSession{
+    width: 80%;
+    height: 90%;
+    z-index: 1060;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #ddd;
+    overflow-y: auto;
+    @include scroll
+}
+.TotalPorCima{
+    font: 10pt arial;
+    font-weight: 600;
+}
+.TotalPorCima div{
+    margin-top: 3px;
+}
+.FormSessionCima{
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: flex-end;
+}
+.FormSessionCima i{
+    font-size: 20px;
+    font-weight: 100;
+    color: #00686e;
+    display: flex;
+    align-items: center;
+}
+.FormSessionCima .d-flex{
+    width: 17%;
+    border: none;
+    background-color: white;
+    border-left: 1px solid #ddd;
+    color: #00686e;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+}
+.VoltarSession{
+    margin-right: 0;
+    justify-content: center;
+    align-items: center;
+    padding: 7px;
+    font: 11pt arial;
+    font-weight: 500;
+}
+.VoltarSession:hover{
+    opacity: 0.8;
+    cursor: pointer;
+}
+.FormSessionMeio{
+    background-color: white;
+    border: none;
+}
+.BtnColor{
+    color: white;
+    background-color: #0bdbe6;
+    border-color: #0bdbe6;
+}
+#diInputAbertura{
+    margin-left: 200px;
+    width: 300px;
+    position: absolute;
+}
+#diInputAbertura input{
+    width: 100%;
+    border: none;
+    outline: none;
+    padding-left: 10px;
+    border-bottom: 2px solid #f9f9f9f9;
+    margin-top: 10px;
+    font-weight: 600;
+    padding: 5px;
+    color: #777;
+}
+#velorEnformado{
+    border: none;
+    outline: none;
+    padding-left: 15px;
+    width: 100%;
+    border-bottom: 2px solid #eee !important;
+    padding: 2px;
+    font-weight: 600 !important;
+}
+.linha{
+    background-color: #00c2cc;
+    border: 1px solid #eeee;
+}
+#MultTrans{
+    background-color: #f9f9f9f9;
+    width: 50%;
+}
+.multicaixa{
+    height: 49%;
+    text-align: center;
+    border: 1px solid #eee;
+}
+.multicaixa i{
+    width: 100%;
+    height: 100%;
+    font-size: 120px;
+    color: #A3498B;
+}
+.titleMult{
+    position: absolute;
+    width: 15%;
+    text-align: center;
+    color: white;
+}
+.transferencia{
+    height: 49%;
+    text-align: center;
+    border: 1px solid #eee;
+}
+.transferencia i{
+    font-size: 70px;
+    color: #A3498B;
+}
+.titleTransferen{
+    color: #666;
+    font-size: 16pt arial;
+}
+.totalValor{
+    margin-top: 50px;
+    font-size: 25px !important;
+    font-weight: 600;
+    text-align: center;
+}
+
+
+.Botoes button {
+    @include botao_normal;
+}
+
+.content {
+    padding: 20px;
+    height: 75%;
+    .content-two {
+        display: flex;
+        justify-content: space-between;
+        .info{
+            width: 50%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            >div{
+                display: flex;
+                flex-direction: column;
+            }
+        }
+        .abertura {
+            width: 50%;
+            display: grid;
+            grid-template-columns: 1fr;
+
+            .informacoes {
+                display: flex;
+                width: 100%;
+                >span{
+                    padding: 3px;
+                    width: 100%;
+                    display: flex;
+                    justify-content: flex-end;
+
+                }
+
+            }
+        }
+    }
+
+    .title_input {
+        display: flex;
+        justify-content: space-between;
+
+        .DivInput{
+            width: 35%;
+            input {
+                @include input_normal;
+                font-size: 30px;
+                font-weight: bolder !important;
+                padding: 2px 10px 2px 10px !important;
+            }
+        }
+    }
+
+    .titulo {
+        font-size: 30px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .informacoes {
+        width: 50%;
+        height: 95%;
+        display: grid;
+        font: 10pt Arial;
+        font-weight: 600;
+        grid-template-columns: repeat(2, 1fr);
+
+        div h2 {
+            margin-bottom: 12px;
+        }
+
+        div h3 {
+            margin-bottom: 15px;
+            font: 9pt arial;
+            font-weight: 600;
+        }
+    }
+}

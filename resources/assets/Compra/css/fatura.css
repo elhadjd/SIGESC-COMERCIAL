@@ -1,0 +1,282 @@
+.Principal {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0px !important;
+  z-index: 1080;
+  background-color: rgba(0, 0, 0, 0.46);
+  display: flex;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.77);
+  align-items: center;
+  margin-top: 0px !important;
+}
+.Principal .Modal {
+  margin-top: 45px;
+  background-color: white;
+  border: 1px solid black;
+  width: 75% !important;
+  height: 95% !important;
+}
+.Principal .Modal .Header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid black;
+  font: 11pt arial;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.686);
+  height: 8%;
+  justify-content: space-between;
+}
+.Header .Imprimir {
+    background: #017e84;
+    border:none;
+    font: 10pt arial;
+    font-weight: 600;
+    padding: 5px 10px 5px 10px;
+    min-width: 100px;
+    max-width: 200px;
+    color: white;
+    border: 1px solid #017e84;
+}
+.Header .Imprimir:hover{
+    cursor: pointer;
+        background: #00686e26;
+        color: #00686e;
+        border: 1px solid #00686e4a;
+}
+.Principal .Modal .Header .Fechar {
+  margin-left: 5px;
+  padding: 10px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  color: #017e84;
+}
+.Principal .Modal .Header .Fechar:hover {
+  background-color: rgba(1, 126, 132, 0.2078431373);
+}
+.Container {
+  display: flex;
+  padding: 10px;
+  border-bottom: 1px solid black;
+  font: 10pt arial;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.686);
+  justify-content: unset;
+  align-items: unset;
+  flex-direction: column;
+  height: 92%;
+  overflow-y: auto;
+}
+.ContainerOne {
+  height: 10%;
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.LogoEmpresa {
+  width: 60px;
+  height: 50px;
+}
+.LogoEmpresa img {
+  width: 100%;
+  height: 100%;
+}
+.NomeEmpresa {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 20px;
+}
+.NomeEmpresa span {
+  font-size: 20px;
+}
+.ContainerTwo {
+  height: 90%;
+}
+.InfoClienteEmpresa {
+  height: 20%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border: 1px solid black;
+  padding-bottom: 10px;
+}
+.TankYour{
+    display: flex;
+    justify-content: center;
+}
+.termCondition{
+    height: 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border: 1px solid !important;
+}
+.vendedore,
+.documentNumber{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px;
+    border-left: 1px solid black;
+}
+.term{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 7px;
+    border-left: 1px solid black;
+}
+.term div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.InfoEmpresa {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 30% 70%;
+  padding: 5px;
+}
+.Titulo {
+  display: flex;
+  flex-direction: column;
+}
+.Titulo span {
+  padding: 4px;
+  font: 11pt arial;
+  font-weight: 600;
+}
+.Content {
+  display: flex;
+  flex-direction: column;
+}
+.Content span {
+  padding: 5px;
+  font: 10pt arial;
+  font-weight: 600;
+}
+.NomeCliente {
+  height: 35%;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 15px !important;
+}
+.InfoCliente {
+  width: 100%;
+  height: 65%;
+  display: grid;
+  grid-template-columns: 30% 70%;
+  padding: 5px;
+}
+.Titulo {
+  display: flex;
+  flex-direction: column;
+}
+.span {
+  padding: 4px;
+  font: 10pt arial;
+  font-weight: 600;
+}
+.Content {
+  display: flex;
+  flex-direction: column;
+}
+.ContainerFatura {
+  height: auto;
+  border: 1px solid black;
+}
+.HeaderInvoice {
+  width: 100%;
+  display: flex;
+  border-bottom: 1px solid black;
+}
+.ContainerInvoice {
+  height: 90%;
+  display: flex;
+  color: black;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.Items {
+  width: 100%;
+  display: flex;
+  padding-bottom: 10px;
+}
+.title {
+    width: 11%;
+    padding: 5px 10px 10px 10px;
+}
+.Items >div{
+    width: 30%;
+}
+.HeaderInvoice >span {
+  width: 30%;
+}
+.Items:nth-child(even) {
+  background-color: rgba(1, 126, 132, 0.2078431373);
+}
+.item {
+  width: 11%;
+  padding: 8px 10px 8px 10px;
+}
+.Totals {
+  display: flex;
+  justify-content: flex-end;
+}
+.TotalsContainer {
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+  width: 50%;
+  margin-top: 20px;
+}
+.TotalMercadoria {
+  width: 100%;
+  display: grid;
+  padding-bottom: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: right;
+  border-bottom: 1px solid black;
+}
+.totalMount {
+  display: flex;
+  flex-direction: column;
+}
+.totalMount strong {
+  padding: 3px 10px 3px 10px;
+  font-size: 12px;
+}
+.totalMount span {
+  padding: 4px 10px 4px 10px;
+  font: 10pt arial;
+  font-weight: 600;
+  text-align: right;
+}
+.Pagamentos {
+  width: 100%;
+  padding: 5px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid black;
+}
+.payment {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  text-align: right;
+}
+.payment span {
+  font-style: italic;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.519);
+  padding: 2px 5px 2px 5px;
+}/*# sourceMappingURL=fatura.css.map */

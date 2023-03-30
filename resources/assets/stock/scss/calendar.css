@@ -1,0 +1,122 @@
+.Principal {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background-color: rgba(230, 228, 228, 0.041) !important;
+  justify-content: center;
+  align-items: center;
+}
+.Principal .Form-calendar, .Principal .Principal {
+  width: 90%;
+  height: 80%;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 2px 5px 5px 5px rgba(0, 0, 0, 0.04);
+}
+.Principal .Form-calendar .Header-calendar, .Principal .Principal .Header-calendar {
+  width: 100%;
+  padding: 5px;
+  height: 13%;
+  border-bottom: 1px solid rgba(221, 221, 221, 0.424);
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+  color: rgba(0, 0, 0, 0.71);
+  font-weight: 600;
+}
+.Principal .Form-calendar .Header-calendar span, .Principal .Principal .Header-calendar span {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Principal .Form-calendar .Header-calendar span i:hover, .Principal .Principal .Header-calendar span i:hover {
+  cursor: pointer;
+}
+.Principal .Form-calendar .Container-calendar, .Principal .Principal .Container-calendar {
+  width: 100%;
+  height: 87%;
+}
+.Principal .Form-calendar .Container-calendar .month, .Principal .Principal .Container-calendar .month {
+  width: 100%;
+  height: 10%;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+.Principal .Form-calendar .Container-calendar .month .MonthActive, .Principal .Principal .Container-calendar .month .MonthActive {
+  background-color: #017e84;
+  color: white;
+}
+.Principal .Form-calendar .Container-calendar .month .MonthActive:hover, .Principal .Principal .Container-calendar .month .MonthActive:hover {
+  color: unset;
+}
+.Principal .Form-calendar .Container-calendar .month span, .Principal .Principal .Container-calendar .month span {
+  width: 100%;
+  font: 9pt arial;
+  font-weight: 600;
+  max-width: 20ch;
+  text-align: center;
+  justify-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 7px 2px 7px 2px;
+}
+.Principal .Form-calendar .Container-calendar .month span:hover, .Principal .Principal .Container-calendar .month span:hover {
+  background-color: rgba(221, 221, 221, 0.51);
+  transition: 1s;
+  cursor: pointer;
+}
+.Principal .Form-calendar .Container-calendar .days, .Principal .Principal .Container-calendar .days {
+  width: 100%;
+  height: 90%;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-gap: 5px;
+}
+.Principal .Form-calendar .Container-calendar .days .day, .Principal .Principal .Container-calendar .days .day {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 3px;
+  font: 11pt arial;
+  font-weight: 600;
+  border: 1px solid transparent;
+  color: #714B67;
+}
+.Principal .Form-calendar .Container-calendar .days .day:hover, .Principal .Principal .Container-calendar .days .day:hover {
+  cursor: pointer;
+  background-color: rgba(5, 108, 212, 0.039);
+  border: 1px solid rgba(5, 108, 212, 0.341);
+  color: rgba(5, 108, 212, 0.403);
+}
+.Principal .Form-calendar .Container-calendar .days .day:hover strong, .Principal .Principal .Container-calendar .days .day:hover strong {
+  transition: 1s;
+  border-bottom: 1px solid rgba(5, 108, 212, 0.403);
+  width: 100%;
+  left: 0;
+}
+.Principal .Form-calendar .Container-calendar .days .day strong, .Principal .Principal .Container-calendar .days .day strong {
+  bottom: 5px;
+  position: absolute;
+  width: 100%;
+  left: 0;
+}
+.Principal .Form-calendar .Container-calendar .days .DayActive, .Principal .Principal .Container-calendar .days .DayActive {
+  background-color: rgba(5, 108, 212, 0.039);
+  border: 1px solid rgba(5, 108, 212, 0.341);
+  color: rgba(5, 108, 212, 0.403);
+}
+
+.Principal {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background-color: rgba(230, 228, 228, 0.041) !important;
+  justify-content: center;
+  align-items: center;
+}/*# sourceMappingURL=calendar.css.map */

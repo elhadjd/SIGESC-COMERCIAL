@@ -1,0 +1,35 @@
+.Principal{
+    height: 100%;
+    width: 100%;
+    .Header{
+        height: 15%;
+        width: 100%;
+        border-bottom: 1px solid #ddd;
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        .Header-left{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 10px;
+            h1{
+                font-size: 25px;
+            }
+            button{
+                @include botao_normal
+            }
+        }
+        .Header-right{
+            display: flex;
+            align-items: center;
+            input{
+               @include input_normal;
+            }
+        }
+    }
+    .Container{
+        height: 85%;
+    }
+}

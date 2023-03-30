@@ -1,0 +1,140 @@
+.DivOrdensVendas{
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    .Container{
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .OrdenCima{
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            height: 15%;
+            width: 100%;
+            .GastosCimaEsquerda{
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                h4{
+                    font: 15pt arial;
+                    font-weight: 600;
+                    color: #000000a2;
+                }
+                .AdicionarGastos{
+                    width: 15px;
+                    @include botao_normal
+                }
+            }
+            .GastosCimaDireita{
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                input{
+                    @include input_normal
+                }
+            }
+        }
+        .list-content{
+            height: 85%;
+            width: 100%;
+            .titleGastos{
+                width: 100%;
+                background-color: #f9f9f9f9;
+                border-top: 2px solid #f1f1f1f9;
+                display: grid;
+                grid-template-columns: repeat(5,1fr);
+                color: #000000a2;
+                .TotalOrden{
+                    display: flex;
+                    justify-content: flex-end;
+                    font-weight: bold;
+                }
+                div{
+                    width: 100%;
+                    border-left: 1px solid #eee;
+                    display: flex;
+                    align-items: center;
+                    padding: 5px 10px 5px 10px;
+                    font-size: 14px;
+                    font-weight: bold;
+                }
+            }
+            .ListaOrden{
+                height: 93%;
+                display: grid;
+                grid-template-rows: 90% 10%;
+                >div{
+                    width: 100%;
+                    height: 100%;
+                    overflow-y: auto;
+                    @include scroll;
+                }
+                .listOperations{
+                    -webkit-user-select: none;
+                    width: 100%;
+                    border-bottom: 1.5px solid #00000010;
+                    >span{
+                        display: flex;
+                        align-items: center;
+                        width: 100% !important;
+                        &:hover{
+                            cursor: pointer;
+                            background-color: #0000001c;
+                        }
+                    }
+
+                    .operations{
+                        border-bottom: 1px solid #00000010;
+                        >span{
+                            width: 100%;
+                            display: flex;
+                            align-items: center;
+                            transition: 0.5s;
+                            justify-content: space-between;
+                            padding: 0px 20px 0px 20px;
+                            &:hover{
+                                background-color: #00000007;
+                                cursor: pointer;
+                            }
+                        }
+                        .items{
+                            width: 100%;
+                            >div{
+                                display: grid;
+                                grid-template-columns: repeat(5,1fr);
+                                width: 100%;
+                                padding: 3px 40px 3px 40px;
+                                font-size: 14px;
+                                font-weight: 600;
+                                color: #000000b1;
+                                &:hover{
+                                    cursor: pointer;
+                                    background-color: #017e8412;
+                                }
+                            }
+                            .TotalOrden{
+                                display: flex;
+                                justify-content: flex-end;
+                            }
+                        }
+                    }
+                    
+                }
+                .TotalGastos{
+                    width: 100%;
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 2rem;
+                    right: 0;
+                    font: 18pt arial;
+                    font-weight: 600;
+                    color: #017e84;
+                }
+            }
+        }
+    }
+}

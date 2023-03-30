@@ -1,0 +1,177 @@
+.modalList{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0px !important;
+    z-index: 1080;
+    padding: 2px;
+    background-color: rgba(0, 0, 0, 0.46);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.77);
+}
+.ListOrders {
+    width: 80%;
+    height: 50%;
+}
+.InputSearch {
+    height: 10%;
+}
+.list {
+    height: 82% !important;
+    border-top: 1.5px solid #017e84;
+}
+.item {
+    display: grid;
+    grid-template-columns: 5% 35% 15% 15% 15% 15% !important;
+    border-bottom: 1.5px solid rgb(0, 0, 0);
+    max-width: 100% !important;
+    font: 11pt arial;
+    font-weight: bold;
+}
+
+.item span{
+    padding: 2px;
+    padding-bottom: 5.6px;
+    border-left: 1.5px solid;
+}
+.title {
+    display: grid;
+    grid-template-columns: 5% 35% 15% 15% 15% 15% !important;
+    background-color: rgba(0, 0, 0, 0.069);
+}
+.title span {
+    padding: 3px 6px 3px 6px;
+    width: 100%;
+    font-size: 14px;
+    font-weight: bold;
+}
+.title strong {
+    text-align: right;
+}
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 3px 10px 3px 10px;
+}
+.buttons button{
+    background: #017e84;
+    border:none;
+    font: 10pt arial;
+    font-weight: 600;
+    padding: 5px 10px 5px 10px;
+    min-width: 100px;
+    max-width: 200px;
+    color: white;
+    border: 1px solid #017e84;
+}
+.buttons button:hover {
+    cursor: pointer;
+    background: #00686e26;
+    color: #00686e;
+    border: 1px solid #00686e4a;
+}
+.ListOrders {
+    transition: 0.2s;
+}
+.InputSearch {
+    display: grid;
+    grid-template-columns: 90% 10% !important;
+}
+.InputSearch span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.InputSearch > svg {
+    width: 100%;
+    display: flex;
+    color: rgba(0, 0, 0, 0.607) !important;
+    align-items: center;
+    justify-content: flex-end;
+    transition: 0.2s;
+}
+.InputSearch > svg:hover {
+    color: #017e84 !important;
+    font-size: 20px;
+    cursor: pointer;
+}
+.ListOrders {
+    height: 210px;
+    background-color: white;
+    border-radius: 5px;
+}
+.InputSearch {
+    width: 100%;
+    padding: 5px 10px 0px 10px;
+    width: 100%;
+    box-shadow: 0 0 0 0 !important;
+    border: 0 none !important;
+    border-bottom: 1px solid #017e84 !important;
+    outline: 0 !important;
+    padding: 0px 2px 0px 2px !important;
+    font-style: arial;
+    font-weight: 600 !important;
+    border-radius: 0px !important;
+}
+.list {
+    height: 85%;
+    width: 100%;
+    overflow-y: auto;
+}
+.Itemse {
+    display: grid;
+    grid-template-columns: 10% 35% 30% 23%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.025);
+    color: rgba(0, 0, 0, 0.689);
+    font: 10pt arial;
+    font-weight: 600;
+}
+.item:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.015);
+}
+.item:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.02);
+}
+.Items {
+    max-width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 3px;
+}
+.item strong {
+    padding: 2px;
+    padding-bottom: 5.6px;
+    border-left: 1.5px solid;
+    display: flex;
+    justify-content: flex-end;
+}
+.footer{
+    height: 60px;
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20%;
+    justify-content: flex-end;
+    border: 1.5px solid;
+}
+.footer div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-left: 1.5px solid;
+}
+.footer span{
+    font: 11pt arial;
+    font-weight: bold;
+}
+.footer div strong{
+    font: 12pt arial;
+    font-weight: bold;
+}

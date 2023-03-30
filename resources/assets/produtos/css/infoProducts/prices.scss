@@ -1,0 +1,36 @@
+.Titulo {
+    color: #777;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.FormPreco {
+    display: flex;
+    color: #777;
+
+    .informacoa_prod {
+        width: 25%;
+        font-size: 16px;
+        font-weight: 600;
+        border-right: 1px solid #ddd;
+
+        div {
+            margin-top: 20px;
+        }
+    }
+
+    #inputs_informacao {
+        margin-top: 10px;
+        margin-left: 10px;
+        width: 75%;
+
+        div {
+            margin-top: 13px;
+
+            input {
+                @include input_normal;
+            }
+        }
+    }
+}

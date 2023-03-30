@@ -1,0 +1,204 @@
+.Principal{
+    width: 100%;
+    height: 100%;
+    .Header{
+        height: 15%;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        border-bottom: 2px solid #ddd;
+        .HeaderOne{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 10px;
+            width: 100%;
+            h2{
+                font: 15pt arial;
+                font-weight: 600;
+                color: rgba(0, 0, 0, 0.678);
+                cursor: pointer;
+            }
+            button{
+                @include botao_normal
+            }
+            .AtualizarSenha{
+                margin-left: 10px;
+                @include botao_descartar;
+            }
+            .Descartar{
+                margin-left: 10px;
+                @include botao_descartar
+            }
+        }
+        .HeaderTwo{
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            width: 100%;
+            .Pesquisar{
+                @include input_normal
+            }
+        }
+    }
+    .Container{
+        height: 85%;
+        background-color: rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .Formulario{
+            width: 80%;
+            height: 90%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 2px ;
+            .HeaderForm{
+                width: 100%;
+                height: 45%;
+                display: grid;
+                grid-template-columns: 70% 30%;
+                padding: 20px;
+                .HeaderFormInputs{
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center !important;
+                    .Nome{
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        margin-bottom: 20px;
+                        label{
+                            font: 12pt arial;
+                            font-weight: 600;
+                        }
+                        input{
+                            @include InputPrincipal;
+                        }
+                    }
+                    .FormInputsFooter{
+                        display: grid;
+                        grid-template-columns: repeat(2,1fr);
+                        grid-gap: 5px;
+                        width: 100%;
+                        .Email{
+                            width: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            label{
+                                font: 12pt arial;
+                                font-weight: 600;
+                            }
+                            input{
+                                @include input_normal;
+                            }
+                        }
+                    }
+                    .Nivel{
+                        width: 100%;
+                        margin-top: 10px;
+                        @include input_normal;
+                    }
+                }
+            }
+            .Imagem{
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                position: relative;
+                .EditarImage{
+                    position: absolute;
+                    top: 15px;
+                    width: 130px;
+                    padding: 5px;
+                    display: flex;
+                    border-radius: 5px;
+                    justify-content: space-between;
+                    background-color: transparent;
+                    color: transparent;
+                    div{
+                        input{
+                        }
+                    }
+                    &:hover{
+                        background-color: rgba(1, 126, 132, 0.2901960784);
+                        color: #00686e;
+                    }
+                    i{
+                        &:hover{
+                            cursor: pointer;
+                        }
+                    }
+                }
+                img{
+                    width: 130px;
+                    height: 130px;
+                }
+            }
+            .ContainerFooter{
+                width: 100%;
+                height: 55%;
+
+                .TituloFooter{
+                    display: flex;
+                    width: 100%;
+                    border-bottom: 1px solid #00686e;
+                    span{
+                        padding: 8px;
+                        border: 1px solid #00686e;
+                        border-bottom: none;
+                        background-color: #00686e;
+                        color: white;
+                        &:hover{
+                            cursor: pointer;
+                            background-color: #00686e25;
+                            color: #00686e;
+                        }
+                    }
+                }
+                .DivSenha{
+                    width: 100%;
+                    height: 82.5%;
+                    display: grid;
+                    grid-template-columns: repeat(2,1fr);
+                    padding: 15px;
+                    div{
+                        width: 95%;
+                        display: flex;
+                        flex-direction: column;
+                        label{
+                            font: 14pt arial;
+                            font-weight: 600;
+                            padding: 5px;
+                            color: rgba(0, 0, 0, 0.581)
+                        }
+                        input{
+                            @include input_normal;
+                        }
+                    }
+                }
+
+                .regras-senha {
+                    width: 80%;
+                    border: 1px solid #ddd;
+                    border-left: 4px solid red;
+                    padding: 4px;
+                    ul {
+                       height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        list-style-type: decimal;
+                        margin-left:20px;
+                        li {
+                            padding: 4px;
+                            font:10pt Arial;
+                            color: rgba(0, 0, 0, 0.692);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

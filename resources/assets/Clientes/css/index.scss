@@ -1,0 +1,95 @@
+/*=====================================================
+
+Estilização
+
+======================================================*/
+.principal {
+    width: 100%;
+    height: 100%;
+    .header {
+        @include HeaderFaturacao;
+        height: 15%;
+        justify-content: space-between;
+        border-bottom: 2px solid #ddd;
+        
+        .buttons {
+            display: flex;
+            button {
+                margin: 2px;
+            }
+        }
+        div:nth-child(1) {
+            h1 {
+                margin-bottom: 4px
+            }
+
+            button {
+                @include botao_normal;
+                margin-bottom: 5px;
+            }
+        }
+        div:nth-child(2) {
+            width: 50%;
+            input{
+                @include input_normal
+            }
+        }
+
+    }
+
+    .Container {
+        background-color: rgba(237, 237, 237, 0.461);
+        height: 85%;
+        padding: 8px;
+        width: 100%;
+        overflow-y: auto;
+        @include scroll;
+        .separator {
+            width: 100% !important;
+            background-color: red;
+        }
+        .Clientes {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            .clientes {
+                background-color: white;
+                cursor: pointer;
+                width: 320px;
+                height: 90px;
+                border: 1px solid #ddd;
+                margin: 5px;
+                .FormClient{
+                    width: 100%;
+                    height: 100%;
+                    background-color: white;
+                    display: flex;
+                    div:nth-child(1) {
+                        display: flex;
+                        align-items: center;
+                        margin: 2px;
+
+                        img {
+                            width: 100px;
+                            height: 100%;
+                        }
+                    }
+
+                    div:nth-child(2) {
+                        display: flex;
+                        flex-direction: column;
+                        padding: 5px;
+
+                        strong {
+                            max-width: 17ch;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+}

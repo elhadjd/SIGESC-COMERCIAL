@@ -1,0 +1,108 @@
+.Principal{
+    width: 100%;
+    height: 100%;
+    .Header{
+        height: 15%;
+        width: 100%;
+        background-color: white;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
+        div:nth-child(1){
+            width: 50%;
+            display: flex;
+            align-items: center;
+        }
+        div:nth-child(2){
+            width: 50%;
+        }
+        div{
+            input{
+                @include input_normal;
+                padding: 0px !important;
+            }
+            .NovoPedido{
+                @include botao_normal
+            }
+            .Voltar{
+                @include botao_descartar
+            }
+            button {
+                margin: 5px
+            };
+        }
+    }
+    .Container{
+        width: 100%;
+        height: 85%;
+        overflow-y: auto;
+        @include scroll;
+        .Titles{
+            display: grid;
+            grid-template-columns: repeat(6,1fr);
+            background-color: rgb(169, 169, 169);
+            div{
+                width: 100%;
+                padding: 10px;
+                border-left: 1px solid rgb(177, 177, 177);
+                font: 11pt arial;
+                font-weight: 600;
+                color: #666;
+            }
+        }
+        .List{
+            width: 100%;
+            height: auto;
+            min-height: 92%;
+            max-height: 93%;
+            .Items{
+                display: grid;
+                grid-template-columns: repeat(6, 1fr);
+                color: #666;
+                width: 100%;
+                padding: 5px;
+                font: 10pt arial;
+                font-weight: 600;
+                &:nth-child(even){
+                    background-color: rgb(238, 238, 238);
+                }
+                &:hover{
+                    background-color: #055160;
+                    color: white;
+                    span{
+                        cursor: pointer;
+                        background-color: #6EC89B !important;
+                        color: white !important;
+                    }
+                }
+                .ViewPedido{
+                    display: flex;
+                    justify-content: space-between;
+                    span{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-style: italic;
+                        font: 9pt arial;
+                        padding: 1px 5px 1px 5px;
+                        border-radius: 5px;
+                        background-color: #055160;
+                        color: white;
+                    }
+                    .v-enter-active,
+                    .v-leave-active {
+                      transition: opacity 0.5s ease;
+                    }
+                    
+                    .v-enter-from,
+                    .v-leave-to {
+                      opacity: 0;
+                    }
+                }
+            }
+        }
+    }
+}

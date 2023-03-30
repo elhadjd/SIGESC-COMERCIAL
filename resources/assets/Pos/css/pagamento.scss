@@ -1,0 +1,221 @@
+.formulario-pagamento {
+    width: 100%;
+    height: 93.4%;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    background-color: rgba(146, 146, 146, 0.226);
+    z-index: 1060;
+
+    .formulario-content {
+        width: 100%;
+        display: flex;
+
+        .sessao-one {
+            width: 33%;
+            height: 93.4vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(80, 80, 80, 0.16);
+
+            i {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                text-align: center;
+                color: white;
+            }
+        }
+
+        .sessao-two {
+            padding: 20px;
+            width: 67%;
+            height: 93.4vh;
+            background-color: rgb(235, 235, 235);
+
+            .Container {
+                padding: 0;
+                border: 2px dotted #ddd;
+                width: 100%;
+                height: 100%;
+
+                .buttons {
+                    height: 14%;
+                    border-bottom: 2px dotted #ddd;
+
+                    div {
+                        padding: 8px;
+                        display: grid;
+                        grid-template-columns: repeat(3, 1fr);
+
+                        h2 {
+                            font-size: 18px;
+                            font-weight: 600;
+                        }
+
+                        button {
+                            background-color: #ddd;
+                            padding: 4px;
+                            border: 1px solid rgb(207, 207, 207);
+                            width: 150px;
+
+                            &:hover {
+                                background-color: rgb(207, 207, 207);
+                            }
+                        }
+
+                        .Validar {
+                            &:hover {
+                                background-color: #6EC89B;
+                                color: white;
+                            }
+                        }
+
+                        &:nth-child(2) {
+                            display: flex;
+                            justify-content: center;
+                        }
+
+                        &:nth-child(3) {
+                            display: flex;
+                            justify-content: flex-end;
+                        }
+                    }
+                }
+
+                .container-two {
+                    height: 86%;
+                    display: grid;
+                    grid-template-columns: 33% 67%;
+
+                    .one {
+                        border-right: 2px dotted #ddd;
+
+                        .opcao {
+                            display: flex;
+                            flex-direction: column;
+                            padding: 8px;
+                            .methodo {
+                                background-color: #ddd;
+                                width: 100%;
+                                padding: 18px;
+                                margin-bottom: 1px;
+                                color: rgb(101, 101, 101);
+                                font-family: Arial, sans-serif;
+
+                                &:hover {
+                                    background-color: rgb(235, 235, 235);
+                                    cursor: pointer;
+                                }
+                            }
+                        }
+                    }
+
+                    .two {
+                        .container-thee {
+                            width: 100%;
+                            height: 100%;
+                            display: flex;
+                            flex-direction: column;
+
+                            #totalEncomendaPagamento {
+                                width: 100%;
+                                height: 35%;
+                                border-bottom: 2px dotted #ddd;
+
+                                .TotalEncomendas {
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    font: 25pt arial;
+                                    font-weight: 600;
+                                    color: #6EC89B;
+
+                                }
+
+                                .CalculoTotal {
+                                    width: 100%;
+                                    height: 100%;
+                                    display: flex;
+                                    justify-content: space-between;
+                                    padding: 20px;
+
+                                    .troco {
+                                        color: #6EC89B;
+                                    }
+
+                                    .TotalCompra {
+                                        .Restante {
+                                            font-size: 20px;
+                                            margin-bottom: 5px;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .numeros {
+                                width: 100%;
+                                height: 65%;
+                                padding: 10px;
+                                display: grid;
+                                grid-template-columns: repeat(2, 1fr);
+
+                                .Numero {
+                                    display: grid;
+                                    grid-template-columns: repeat(3, 1fr);
+                                    border: 1px solid rgb(220, 220, 220);
+
+                                    div {
+                                        width: 100%;
+                                        height: 100%;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        background-color: #ddd;
+                                        border: 1px solid rgb(237, 237, 237);
+                                        color: rgb(101, 101, 101);
+                                        font: 25px arial;
+                                        font-weight: 600;
+
+                                        &:hover {
+                                            background-color: rgb(236, 236, 236);
+                                            cursor: pointer;
+                                        }
+                                    }
+                                }
+
+                                .Valores {
+                                    padding: 10px;
+                                    display: grid;
+                                    grid-template-columns: repeat(3, 1fr);
+                                    height: 60%;
+
+                                    div {
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        border: 1px solid;
+                                        font: 10.5pt arial;
+                                        font-weight: 600;
+                                        width: 100%;
+                                        background-color: #ddd;
+                                        border: 1px solid rgb(236, 236, 236);
+                                        color: rgb(101, 101, 101);
+
+                                        &:hover {
+                                            background-color: rgb(236, 236, 236);
+                                            cursor: pointer;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

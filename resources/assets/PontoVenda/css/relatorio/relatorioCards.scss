@@ -1,0 +1,163 @@
+@mixin card($bgColor,$color){
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 2% 98%;
+    >span{
+        width: 100% !important;
+        border-radius: 10px;
+        padding: 2px;
+        background-color: $bgColor;
+    }
+    >div{
+        height: 100%;
+        font: 11pt arial;
+        font-weight: 500;
+        padding: 5px;
+    }
+    >strong{
+        position: absolute;
+        display: flex;
+        bottom: 0;
+        margin: 0 auto;
+        width: 100%;
+        height: 60%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font: 14pt arial;
+        font-weight: 600;
+        color: $color;
+    }
+}
+.Principal{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.042);
+    .Header-Cards{
+        height: 10%;
+        background-color: white;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 5px;
+        .carde{
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3px;
+            font: 10pt arial;
+            font-weight: 600;
+            p{
+                background-color: rgb(238, 170, 52);
+                color: white;
+                position: absolute;
+                padding: 1px;
+                min-width: 30px;
+                height: 30px;
+                width: auto;
+                font-size: 10px;
+                margin-left: 50px;
+                top: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+            }
+            .shop{
+                font-size: 30px;
+                color: rgba(5, 108, 212, 0.403);
+            }
+            .concluida{
+                font-size: 30px;
+                color: #017e84bf;
+            }
+        }
+    }
+    .Container-cards{
+        height: 90%;
+        display: grid;
+        grid-template-columns: 35% 65%;
+        .Container-right{
+            width: 100%;
+            height: 100%;
+        }
+        .Container-left{
+            width: 100%;
+            .cards{
+                width: 100%;
+                height: 50%;
+                display: grid;
+                grid-template-columns: repeat(2,1fr);
+                grid-gap: 4px;
+                padding: 5px;
+                .card{
+                    background-color: white;
+                    padding: 5px;
+                    border: 1px solid rgba(0, 0, 0, 0.055);
+                    width: 100%;
+                    height: 100%;
+                    .TotalVenda{
+                        @include card(#017e84,#017e84);
+                    }
+                    .TotalGasto{
+                        @include card(rgb(238, 170, 52),rgb(238, 170, 52));
+                    }
+                    .TotalCusto{
+                        @include card(#714B67,#714B67);
+                    }
+                    .TotalLucro{
+                        @include card(rgba(5, 108, 212, 0.403),rgba(5, 108, 212, 0.403));
+                    }
+
+                }
+            }
+            .ListOrders{
+                height: 210px;
+                background-color: white;
+                border-radius: 5px;
+                .InputSearch{
+                    width: 100%;
+                    padding: 5px 10px 0px 10px;
+                    input{
+                        @include input_normal
+                    }
+                }
+                .list{
+                    height: 85%;
+                    width: 100%;
+                    overflow-y: auto;
+                    @include scroll;
+                    .Items{
+                        display: grid;
+                        grid-template-columns: 10% 35% 30% 23%;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.025);
+                        color: rgba(0, 0, 0, 0.689);
+                        font: 10pt arial;
+                        font-weight: 600;
+                        &:nth-child(even){
+                            background-color: rgba(0, 0, 0, 0.015);
+                        }
+                        &:hover{
+                            cursor: pointer;
+                            background-color: rgba(0, 0, 0, 0.020);
+                        }
+                        span{
+                            max-width: 20ch;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            padding: 3px;
+                        }
+                        strong{
+                            display: flex;
+                            justify-content: flex-end;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

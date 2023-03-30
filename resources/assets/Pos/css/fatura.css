@@ -1,0 +1,159 @@
+@media print {
+  #notprint, body, header, footer, aside, form {
+    visibility: hidden;
+  }
+  @page {
+    size: auto;
+    margin: 0mm;
+  }
+  .Form_fatura {
+    background-color: white;
+    font: 11pt arial !important;
+  }
+  .nif {
+    display: flex;
+  }
+  .data_fatura {
+    width: 100%;
+    padding: 2px;
+    border: 1px solid black;
+    text-align: center;
+    font: 10pt arial bold !important;
+    display: flex;
+    padding-left: 5px;
+  }
+  #IdCompra {
+    right: 0;
+  }
+}
+.Form_fatura {
+  position: absolute;
+  background-color: white;
+  width: 100%;
+  font: 10pt arial !important;
+  height: 100%;
+  color: black;
+  z-index: 1080;
+  padding: 3px;
+}
+.Form_fatura #EmpresaEnfo {
+  border: 1px solid black;
+  width: 100%;
+  padding: 5px;
+  font: 11pt arial;
+  font-weight: 600;
+}
+.Form_fatura #EmpresaEnfo .info-company {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px 20px 5px 20px;
+}
+.Form_fatura #EmpresaEnfo .info-company .content {
+  display: flex;
+  justify-content: space-between;
+}
+.Form_fatura #EmpresaEnfo .info-company .content span {
+  font-weight: bold;
+}
+.Form_fatura .Cliente {
+  width: 100%;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  border: 2px solid;
+}
+.Form_fatura .Cliente .title {
+  width: 100%;
+  margin-left: 45%;
+  text-align: center;
+  font: 10pt arial !important;
+  font-weight: 600;
+}
+.Form_fatura .Cliente .InfoCliente {
+  width: 100%;
+}
+.Form_fatura .Cliente .InfoCliente div {
+  font: 11pt arial !important;
+  font-weight: 600;
+  display: flex;
+}
+.Form_fatura .Cliente .InfoCliente span {
+  font: 11pt arial;
+  font-weight: 600;
+  margin-left: 30px;
+}
+.Form_fatura div .Titls {
+  display: flex;
+  border: 2px solid #888;
+  padding: 3px;
+}
+.Form_fatura div .Titls div {
+  width: 50%;
+}
+.Form_fatura div .Titls .totalTitl {
+  text-align: right;
+  padding-right: 20px;
+}
+.Form_fatura div .listaItens {
+  margin-top: 5px;
+  font: 12pt arial;
+}
+.Form_fatura div .listaItens .item {
+  margin-bottom: 2px;
+}
+.Form_fatura div .listaItens .item .PrecoQuant {
+  display: flex;
+}
+.Form_fatura div .listaItens .item .PrecoQuant .QuantidadeFatura {
+  width: 25%;
+  text-align: center;
+}
+.Form_fatura div .listaItens .item .PrecoQuant .PrecoFatura {
+  width: 35%;
+  padding-left: 15px;
+}
+.Form_fatura div .listaItens .item .PrecoQuant .TotalFatura {
+  width: 40%;
+  text-align: right;
+}
+.Form_fatura div .InfoPag {
+  border-top: 1px solid;
+  margin-top: 5px;
+  display: flex;
+  width: 100%;
+}
+.Form_fatura div .InfoPag div {
+  margin-top: 3px;
+}
+.Form_fatura div .InfoPag .TiposPag {
+  width: 50%;
+}
+.Form_fatura div .InfoPag .totais {
+  text-align: right;
+  width: 50%;
+}
+.Form_fatura div .data_fatura {
+  width: 100%;
+  padding: 2px;
+  border: 1px solid black;
+  text-align: center;
+  font: 12pt arial;
+  display: flex;
+  padding-left: 5px;
+}
+.Form_fatura div .data_fatura:nth-child(1) {
+  width: 75%;
+  background-color: red;
+}
+.Form_fatura div .data_fatura:nth-child(2) {
+  width: 25%;
+  background-color: aqua;
+  display: flex;
+  justify-content: right;
+}
+.Form_fatura div .Obrigado {
+  font: 10pt arial;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+}/*# sourceMappingURL=fatura.css.map */

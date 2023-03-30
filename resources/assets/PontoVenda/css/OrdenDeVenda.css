@@ -1,0 +1,82 @@
+.DivOrdensVendas{
+    background-color: white;
+    height: 100%;
+}
+.OrdenCima{
+    height: 15%;
+    background-color: white;
+    padding-top: 10px;
+}
+.ListAgrupar{
+    width: 15%;
+}
+.cursor:hover{
+    background-color: #f9f9f9f9;
+}
+.OrdenCimaDireita{
+    z-index: 1080;
+}
+.encostar{
+    margin-left: 93%;
+    margin-top: -30px;
+}
+.titleOrdens div{
+    width: 14%;
+    border-left: 1px solid #eee;
+    padding: 5px;
+    padding-left: 5px;
+}
+.titleOrdens{
+    width: 100%;
+    background-color: #f9f9f9f9;
+    border-top: 2px solid #f1f1f1f9;
+    font: 10pt arial;
+}
+
+.TotalOrden{
+    text-align: right;
+}
+.ListaOrdens{
+    width: 100%;
+    color: #777;
+}
+.ListaOrdens div{
+    width: 14.5%;
+    font: 10pt arial;
+    padding: 2px;
+    border-bottom: 1px solid rgba(245, 245, 245, 0.933);
+    font-weight: 600;
+}
+
+.ListaOrdens:nth-child(even){
+    background-color: #fcfcfcf9;
+}
+.ListaOrdens:hover{
+    background-color: #A3498B;
+    color: white;
+    cursor: pointer;
+}
+.FormListe{
+    background-color: white;
+    height: 85%;
+}
+.ListaOrden{
+    height: 94%;
+}
+
+.Grupos{
+    background-color: #fafafaf9;
+    border-bottom: 1px solid #f5f5f5f9;
+    font: 10pt arial;
+    font-weight: 600;
+    padding: 5px;
+    color: rgb(47, 47, 47);
+}
+.Grupos:hover{
+    cursor: pointer;
+    background-color: #017e84;
+    color: white;
+}
+.encomenda{
+    height: 90%;
+}
