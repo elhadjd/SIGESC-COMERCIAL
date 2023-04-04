@@ -1,23 +1,29 @@
 <template>
    <div class="Principal">
-      <Fatura v-if="StateInvoice" @FecharModal="StateInvoice = false" :encomenda="Invoice"/>
-         <Pagamento @message="message" v-if="StatePayment" @encomenda="UpdateInvoice" @fechar="StatePayment = false" :FormularioPagamentoCompra="FormularioPagamentoCompra"/>
+      <Fatura v-if="StateInvoice" @FecharModal="StateInvoice = false" :order="Invoice.id"/>
+         <Pagamento
+            @message="message"
+            v-if="StatePayment"
+            @invoice="UpdateInvoice"
+            @close="StatePayment = false"
+            :invoice_id="Invoice.id"
+         />
       <div class="Header">
          <h1>Fatura</h1>
       </div>
       <div class="Container">
          <div class="Botoes">
             <button @click="ConfirmOrder" v-if="Invoice.state.trim() == 'Cotação'" class="botoes">Confirmar</button>
-            <button @click="$emit('CancelarFatura'),CancelarFatura" v-if="Invoice.state.trim() == 'Cotação'" class="botoes">Fechar</button>
             <button @click="PayInvoice" v-if="Invoice.state.trim() == 'Publicado'" class="botoes">Adicionar pagamento</button>
-            <button @click="PrintInvoice" v-if="Invoice.state.trim() != 'Cotação'" class="botoes">Imprimir fatura</button>
+            <button @click="PrintInvoice" class="botoes">Imprimir fatura</button>
             <button @click="AnnularInvoice(Invoice.id)" v-if="Invoice.state.trim() == 'Publicado'" class="discartar">Annular fatura</button>
+            <button @click="$emit('CancelarFatura'),CancelarFatura" class="botoes">Fechar</button>
          </div>
          <div class="Formulario">
             <div class="Form">
                <div class="HeaderFatura">
                   <div class="NumeroOrdem">
-                     <strong>Orden /{{Invoice.id}} </strong>
+                     <strong>Orden /{{Invoice.orderNumber+Invoice.id}} </strong>
                   </div>
                   <div class="Informacao">
                      <div>
@@ -26,13 +32,13 @@
                               <input type="text" placeholder="Selecionar Cliente"
                                  @click="SelectCliente" @keyup="PesquisarCliente"
                                  :disabled="Invoice.state.trim() != 'Cotação'"
-                                 v-model="Invoice.client.surname"/>
+                                 :value="Invoice.client?.surname"/>
                               <!-- <i class="fa fa-plus"></i> -->
                            </div>
                            <div v-if="MostrarClientes" class="shadow ListCliente">
-                              <div class="clienteRows" 
-                                @click="AddCliente(cliente)" 
-                                v-for="cliente, index in Clients.list" 
+                              <div class="clienteRows"
+                                @click="AddClient(cliente)"
+                                v-for="cliente, index in Clients.list"
                                 :key="index"
                               >
                                  <div>
@@ -42,7 +48,7 @@
                            </div>
                         </div>
                         <div class="telefone">
-                           <input type="text" disabled :value="Invoice.client.phone != '' ? Invoice.client.phone : Invoice.client.whatssap" class="form-control" placeholder="Telefone"/>
+                           <input type="text" disabled :value="Invoice.client?.phone != '' ? Invoice.client?.phone : Invoice.client?.whatssap" class="form-control" placeholder="Telefone"/>
                         </div>
                      </div>
                      <div>
@@ -64,7 +70,7 @@ import Dropdown from "primevue/dropdown";
 import { ref, onMounted,reactive} from "vue";
 import { mapState,useStore } from "vuex"
 import InvoiceItem from "./InvoiceItem.vue";
-import Pagamento from '../Payments/index.vue'
+import Pagamento from './Payments/FormPagamento.vue'
 import Termo from './termo.vue';
 import Fatura from './fatura/index.vue';
 import useEventsBus from "@/Eventbus";
@@ -139,12 +145,14 @@ onMounted(()=> {
 })
 
 const ConfirmOrder = ()=>{
-    axios.post(`/ConfirmOrder/${Invoice.value.id}`)
+    if (Invoice.value.client == null) return emits('message','Cliente Obligatorio','info')
+    if (Invoice.value.items?.length <= 0) return emits('message','Adiciona produto para poder Confirmar a encomenda','info')
+    axios.post(`ConfirmOrder/${Invoice.value.id}`)
     .then((response)=>{
-        if (!Response.data.menssagen) {
-            Invoice.value = response.data.Invoice
+        if (!response.data.message) {
+            Invoice.value = response.data
         } else {
-            return message(response.data.menssagen,response.data.tipo)
+            return message(response.data.message, response.data.type)
         }
     })
 }
@@ -170,10 +178,8 @@ const SelectCliente = (()=>{
     MostrarClientes.value = true
 })
 
-const AddCliente = ((event)=>{
-    Invoice.value.IdCliente = event.id
-    Invoice.value.apelido = event.apelido
-    emit('Invoice',Invoice.value)
+const AddClient = ((event)=>{
+    Invoice.value.client = event
     MostrarClientes.value = false
 });
 

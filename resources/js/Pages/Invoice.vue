@@ -1,7 +1,6 @@
 <template>
 	<div class="MenuFaturacao bg-white">
 		<Home />
-        
 	</div>
 </template>
 <script setup>

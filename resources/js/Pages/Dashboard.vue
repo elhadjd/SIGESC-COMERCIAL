@@ -48,7 +48,6 @@ const Sair = () => {
 };
 
 onMounted(() => {
-  console.log(props.data);
   store.commit("ArmazenarDados", props);
 });
 </script>

@@ -3,11 +3,11 @@
         <form @submit="handleSubmitForm">
             <div class="Form-control">
                 <label for="DataEncomenda">Data de Encomenda : </label>
-                <input type="date" id="DataEncomenda" @change="changeDate" v-model="props.invoice.DataEncomenda">
+                <input type="date" id="DataEncomenda" @change="changeDate" v-model="props.invoice.DateOrder">
             </div>
             <div class="Form-control">
                 <label for="vencimento"> Data de Vencimento: </label>
-                <input @change="changeDate" v-model="props.invoice.DataVencimento" id="vencimento" type="date">
+                <input @change="changeDate" v-model="props.invoice.DateDue" id="vencimento" type="date">
             </div>
         </form>
     </div>
@@ -24,9 +24,9 @@ const props = defineProps({
     invoice: Number
 })
 
+
  const changeDate = (() =>{
-    console.log(props);
-    axios.post(`ChangeDateInvoice/${props.invoice.id}`,{data: props.invoice})
+    axios.post(`ChangeDateInvoice/${props.invoice.id}`,{...props.invoice})
     .catch((err) => {
         console.log(err);
     });

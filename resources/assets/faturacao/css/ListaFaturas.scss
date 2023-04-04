@@ -18,6 +18,12 @@ body{
     background-color: rgb(249, 249, 249);
     font: 10pt arial;
     border-bottom: 1px solid rgb(243, 242, 242);
+    display: flex;
+    >div{
+        width: 100%;
+        border-left: 1px solid #eee;
+        padding: 5px;
+    }
 }
 .Footer{
     height: 90%;
@@ -76,11 +82,6 @@ body{
         }
     }
 }
-.TitlsListas div{
-    width: 12.5%;
-    border-left: 1px solid #eee;
-    padding: 5px;
-}
 .text-right{
     text-align: right;
 }
@@ -88,7 +89,7 @@ body{
     border-bottom: 1px solid #eee;
 }
 .FormLista{
-    height: 83%;
+    height: 82%;
     overflow-y: auto;
 }
 .FormLista{
@@ -135,6 +136,10 @@ body{
     display: flex;
     align-items: center;
     border-bottom: 4px solid #ddd;
+    padding: 5px;
+    h2{
+        font-size: 15px;
+    }
   }
 .Cotação{
     @include invoiceState(rgb(1, 48, 12),rgba(40, 167, 69, 0.5))

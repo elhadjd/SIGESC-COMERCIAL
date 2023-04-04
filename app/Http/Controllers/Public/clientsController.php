@@ -12,4 +12,9 @@ class clientsController extends Controller
     {
         return cliente::all();
     }
+
+    public function getClientsCredit(cliente $clients)
+    {
+        return $clients->with('invoices')->withSum('invoices','TotalInvoice')->withSum('invoices','RestPayable')->get();
+    }
 }

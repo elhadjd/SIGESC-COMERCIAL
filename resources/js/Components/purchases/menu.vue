@@ -17,13 +17,13 @@
         </div>
     </div>
     <div class="Container">
-        <Pedidos @message="message"/>
+        <orders @message="message"/>
     </div>
   </div>
 </template>
 
 <script setup>
-import Pedidos from './Pedidos.vue'
+import orders from './Orders.vue'
 import { onMounted } from "@vue/runtime-core";
 import axios from "axios";
 import useEventsBus from '@/Eventbus';

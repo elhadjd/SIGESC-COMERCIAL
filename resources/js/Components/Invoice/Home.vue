@@ -9,9 +9,10 @@
         <div class="TabelaBaixo">
             <Pagamento @message="message" v-if="form_faturacao === 'Pagamentos'" />
             <Produtos @message="message" v-if="form_faturacao === 'Produtos'" />
+            <credits v-if="form_faturacao === 'Notas de credito'" @fatura="ShowInvoice"/>
             <NewOrder :Invoice="Invoice" @message="message" v-if="form_faturacao === 'NovaFatura'" @CancelarFatura="titulo('Ordens')" @Pagamento="Pagament"/>
             <ListInvoices @message="message" @fatura="ShowInvoice" v-if="form_faturacao === 'Ordens'" />
-            <Clientes @message="message" v-if="form_faturacao === 'Clientes'"/>
+            <client @message="message" v-if="form_faturacao === 'Clientes'"/>
             <Fornecedores @message="message" v-if="form_faturacao === 'Fornecedores'"/>
         </div>
     </div>
@@ -20,11 +21,12 @@
 
 <script setup>
 import Toast from 'primevue/toast'
-import Clientes from '../Clients/index.vue'
+import client from '../clients/index.vue'
 import Header from "./header.vue";
 import { ref, defineProps, onMounted } from "vue";
 import NewOrder from "./NewOrder.vue";
 import ListInvoices from "./listInvoices.vue";
+import credits from '@/Components/Invoice/credits.vue'
 import Produtos from "@/components/products/Products.vue";
 import Pagamento from "./Payments/index.vue";
 import FormPagamento from "./Payments/FormPagamento.vue";

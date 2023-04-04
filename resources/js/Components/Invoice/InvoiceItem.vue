@@ -1,5 +1,5 @@
 <template>
-   <!-- <Addbox :artigo="AddBox.artigo" @Close="AddBox.state = false" @Confirmou="BoxConfirm" v-if="AddBox.state"/> -->
+   <Addbox :product="AddBox.product" @Close="AddBox.state = false" @Confirmou="BoxConfirm" v-if="AddBox.state"/>
    <div class="h-100 w-100">
       <div class="Container">
          <div class="d-flex TitlsPedido">
@@ -11,8 +11,8 @@
             <div>Ação</div>
          </div>
          <div class="w-100">
-            <div class="ListaPedidos" 
-                v-for="item in Invoice.items" 
+            <div class="ListaPedidos"
+                v-for="item in Invoice.items"
                 :key="item.id"
             >
                <input type="text" class="text-start nameItem" readonly :value="item.product.nome">
@@ -25,26 +25,26 @@
                <input
                   placeholder="Preço"
                   type="text"
-                  :disabled="Invoice.state !='Cotação'"
+                  :disabled="Invoice.state !='Cotação' || !user.config.price"
                   v-model="item.PriceSold"
                   @keyup.enter="UpdateItem(item)"
                   @click="Alteracao(item.id, 'PrecoVenda')"
                   :class="'PrecoVenda'+item.id"/>
-               <input 
-                  @keyup.enter="UpdateItem(item)" 
+               <input
+                  @keyup.enter="UpdateItem(item)"
                   @click="Alteracao(item.id, 'Desconto')"
-                  v-model="item.discount"
+                  v-model="item.Discount"
                   :class="'Desconto'+item.id"
-                  :disabled="Invoice.state !='Cotação'"
+                  :disabled="Invoice.state !='Cotação' || !user.config.price"
                   placeholder="Desconto" type="text" />
                <input
                   placeholder="Total"
                   :value="formatMoney(item.TotalSold)"
                   type="text" required disabled />
                <div>
-                  <Caixa  
-                  v-if="Invoice.state =='Cotação'" 
-                  class="icone" 
+                  <Caixa
+                  v-if="Invoice.state =='Cotação'"
+                  class="icone"
                   @click="Addcaixa(item)
                   "/>
                   <i @click="DeleteProduct(item.id)"  v-if="Invoice.state =='Cotação'" class="fa fa-trash"></i>
@@ -89,14 +89,15 @@
 </template>
 
 <script setup>
-// import Addbox from '../Compras/AddBox.vue'
-import { onMounted ,reactive,ref, watch} from "@vue/runtime-core"
+import Addbox from '../purchases/AddBox.vue'
+import { computed, onMounted ,reactive,ref, watch} from "@vue/runtime-core"
 import axios from "axios"
 import Caixa from 'vue-material-design-icons/PackageVariantClosedPlus.vue'
 import useEventsBus from '@/Eventbus'
+import store from '@/store'
 
 const {bus} = useEventsBus()
-
+const user = computed(()=>store.state.user)
 const FrmatDinheiro = Intl.NumberFormat('PT-AO',{
     style: 'currency', currency: 'AOA'
 })
@@ -104,7 +105,7 @@ const FrmatDinheiro = Intl.NumberFormat('PT-AO',{
 const AddBox = ref({
     state: false,
     gasto: false,
-    artigo: []
+    product: []
 })
 const props = defineProps({
     Invoice:{
@@ -162,7 +163,7 @@ const AddProduct = ((product)=>{
             axios.post(`AddItem/${product.id}/${Invoice.value.id}`)
             .then((Response) => {
                 if (Response.data.message) {
-                    emits('message',Response.data.message,'info')
+                    emits('message',Response.data.message,Response.data.type)
                 } else {
                     Invoice.value = Response.data
                 }
@@ -187,9 +188,10 @@ const DeleteProduct = ((item)=>{
 const UpdateItem = ((Rows)=>{
     if (Invoice.value.state == 'Cotação') {
         if (Number(Rows.quantidade) > Number(Rows.stock_sum_quantity)) return emits('message',`Atenção a quantidade fornecida não é suficiente`,'info')
-        if (Rows.PrecoCusto >= Number(Rows.PrecoVenda)) emits('message',`Atenção o preço fornecido não e valido`,'info')
-        axios.post(`/UpdateRows/${Invoice.value.id}`,{dados:Rows})
+        if (Rows.TotalCost >= Number(Rows.PriceSold)) emits('message',`Atenção o preço fornecido não e valido`,'info')
+        axios.put(`UpdateRows/${Invoice.value.id}`,{dados:Rows})
         .then((Response) => {
+            if (Response.data.message) return emits('message',Response.data.message,Response.data.type)
             Invoice.value = Response.data
         }).catch((err) => {
             console.log(err);
@@ -197,15 +199,15 @@ const UpdateItem = ((Rows)=>{
     }
 })
 
-const Addcaixa = ((artigo)=>{
-    AddBox.value.artigo = artigo
+const Addcaixa = ((product)=>{
+    AddBox.value.product = product
     AddBox.value.state = true
 })
 
 const BoxConfirm = ((dados)=>{
-    const Rows = Invoice.value.ItemInvoice.filter(item=> item.id === dados.id)
-    Rows[0].quantidade = dados.QuatidadeFinal
-    Rows[0].PrecoVenda = dados.PrecoUnidade
+    const Rows = Invoice.value.items.filter(item=> item.id === dados.id)
+    Rows[0].quantity = dados.QuatidadeFinal
+    Rows[0].PriceSold = dados.PrecoUnidade
     AddBox.value.state = false
     return UpdateItem(Rows[0])
 })

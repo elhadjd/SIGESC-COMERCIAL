@@ -2,8 +2,8 @@
    <div class="Principal">
       <div class="Header">
          <div class="titulo">
-            <h1>{{ $store.state.titulo }}</h1>
-            <button class="BotaoCrear" @click="Abrir_form_faturacao">Criar Fatura</button>
+            <h2>{{ $store.state.titulo }}</h2>
+            <button class="BotaoCrear" @click="newInvoice">Criar Fatura</button>
          </div>
          <div class="filtros">
             <span class="p-input-icon-right w-100">
@@ -13,7 +13,7 @@
          </div>
       </div>
       <div class="Footer">
-         <div class="TitlsListas d-flex w-100 text-secondary">
+         <div class="TitlsListas text-secondary">
             <div>Orden</div>
             <div>Usuario</div>
             <div>Cliente</div>
@@ -27,12 +27,12 @@
          <div class="FormLista">
             <div class="d-flex ListaFaturas"
                 @click="onRowSelect(item)"
-                v-for="item in Invoices.ListaFaturas" 
+                v-for="item in Invoices.ListaFaturas"
                 :key="item.id
             ">
-               <div>{{'FT'+item.created_at.substring(3, item.created_at.length - 11)+'/00'+item.id}}</div>
+               <div>{{item.orderNumber+item.id}}</div>
                <div>{{item.user.surname}}</div>
-               <div>{{item.client.surname}} </div>
+               <div>{{item.client?.surname}} </div>
                <div>{{ item.DateOrder != null ? formateDate(item.DateOrder) : formateDate(item.created_at) }} </div>
                <div>{{item.DateDue != null ? formateDate(item.DateDue) : 'Não definido'}} </div>
                <div class="text-end">{{FrmatDinheiro.format(item.TotalMerchandise)}} </div>
@@ -109,9 +109,9 @@ const onRowSelect = (event) => {
    emits('fatura', event);
 };
 
-const Abrir_form_faturacao = () => {
-   axios.get('/NovaFatura').then((result) => {
-      emits('fatura', result.data);
+const newInvoice = () => {
+   axios.post('NewOrder').then((response) => {
+      emits('fatura', response.data);
    }).catch((err) => {
       console.log(err);
    });
@@ -119,10 +119,11 @@ const Abrir_form_faturacao = () => {
 
 const SearchInvoice = ((event) => {
    const FilterSearch = Invoices.value.StoreInvoice.filter(object => {
-      return String(object.apelido).toLowerCase().includes(event.target.value.toLowerCase()) ||
-         String(object.created_at).toLowerCase().includes(event.target.value.toLowerCase()) ||
-         String(object.TotalFatura).includes(event.target.value) ||
-         String(object.estado).toLowerCase().includes(event.target.value.toLowerCase())
+      return String(object.client?.surname).toLowerCase().includes(event.target.value.toLowerCase()) ||
+         String(object.DateOrder).toLowerCase().includes(event.target.value.toLowerCase()) ||
+         String(object.TotalInvoice).includes(event.target.value) ||
+         String(object.state).toLowerCase().includes(event.target.value.toLowerCase()) ||
+         String(object.orderNumber+object.id).toLowerCase().includes(event.target.value.toLowerCase())
    })
    if (FilterSearch.length <= 0) {
       emits('message', 'Nenhuma fatura foi encontrada', 'info')

@@ -4,6 +4,10 @@
   position: relative;
   box-sizing: border-box;
 }
+a{
+    list-style: none;
+    text-decoration: none;
+}
 .nav_da_home_compra .botao {
   position: absolute;
   width: 45px !important;

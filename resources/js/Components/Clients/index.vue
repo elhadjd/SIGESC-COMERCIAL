@@ -29,19 +29,19 @@
       <div v-else class="Clientes">
         <label
           class="clientes"
-          v-for="item in listaClientes"
+          v-for="item in clients.list"
           @click="mostrarDetalhesCompleto(item)"
           :key="item.id"
         >
           <div class="FormClient">
             <div>
-              <img :src="'Clientes/image/' + item.imagem" />
+              <img :src="'/Clientes/image/' + item.image" />
             </div>
 
             <div>
-              <strong>{{ item.apelido }}</strong>
+              <strong>{{ item.surname }}</strong>
               <p>{{ item.email }}</p>
-              <p>{{ item.telefone }}</p>
+              <p>{{ item.phone }}</p>
             </div>
           </div>
         </label>
@@ -53,19 +53,17 @@
 <script setup>
 import axios from "axios";
 import { onMounted, ref, reactive, watch, computed } from "vue";
-// import Pais from "../services/ListaPaises";
 import NovoClientes from "@/components/Clients/NovoCliente.vue";
 import { useStore } from "vuex";
 
 const store = useStore();
-
 const Dados = ref(null);
-
-const ListaPais = ref(false);
-
 const estadoFormulario = ref(false);
 
-const listaClientes = ref([]);
+const clients = ref({
+    list: [],
+    store: []
+});
 
 const lista = ref([]);
 
@@ -81,9 +79,10 @@ const NovoCliente = () => {
 
 const onMountede = onMounted(async () => {
   await axios
-    .post("/cliente")
+    .get("/clients")
     .then((response) => {
-      listaClientes.value = response.data;
+      clients.value.list = response.data;
+      clients.value.store = response.data;
     })
     .catch((erro) => {
       console.log(erro);
@@ -105,8 +104,8 @@ const PesquisarCliente = (event) => {
     axios
       .post("/cliente", { faturacao: event.target.value })
       .then((Response) => {
-        listaClientes.value = Response.data;
-        lista.value = Response.data;
+        client.value.list = Response.data;
+        client.value.store = Response.data
       })
       .catch((err) => {
         console.log(err);
@@ -116,7 +115,7 @@ const PesquisarCliente = (event) => {
     const NovaLista = liste.filter((clientes) => {
       return clientes.apelido.includes(event.target.value);
     });
-    listaClientes.value = NovaLista;
+    client.value.list = NovaLista;
   } else  {
     return onMountede();
   }

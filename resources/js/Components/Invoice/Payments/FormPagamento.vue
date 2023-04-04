@@ -1,217 +1,158 @@
 <template>
-  <div>
-    <Dialog header="Header" class="p-0 border rounded-0" :position="position" v-model:visible="displayModal" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '70vw'}" :modal="true">
-        <div class="h-100 text-secondary mt-0">
-            <div class="header p-2 border-bottom">
-                <span>Fazer Pagamento</span>
+   <div class="Principal">
+      <div class="Modal">
+         <div class="Header">
+            <h2>Pagamento</h2>
+         </div>
+         <form @submit.prevent="ConfirmPayment">
+            <div class="Container">
+               <div class="MethodosPagamento">
+                  <div class="MethodosPagamento-titulos">
+                     <span>Metódos</span>
+                     <span>Fornecedor</span>
+                  </div>
+                  <div class="MethodosPagamento-container">
+                     <input @click="methodPayment.state = !methodPayment.state" type="text" v-model="methodPayment.title"/>
+                     <div v-if="methodPayment.state" class="pagamento">
+                        <span @click="Methods(method)" v-for="method in methods" :key="method.id">
+                        {{method.name}}
+                        </span>
+                     </div>
+                     <input disabled type="text" placeholder="digita o cliente" :value="invoice.client?.surname">
+                  </div>
+               </div>
+               <div class="ValorPagamento">
+                  <div class="ValorPagamento-titulos">
+                     <span>Montante</span>
+                     <span>Data de Pagamento</span>
+                  </div>
+                  <div class="ValorPagamento-container">
+                     <input placeholder="digita o metódo"
+                     :type="type"
+                     :value="numberStr"
+                     @input="onInput"
+                     @blur="onBlur"
+                     @focus="onFocus">
+                     <input type="text" :value="FormatDate()">
+                  </div>
+               </div>
             </div>
-            <div class="h-50 d-flex p-3">
-                <div class="InfoPagamento d-flex w-50" >
-
-
-                    <div class="w-50 p-2 ClienteMethod">
-                        <div>Methodos</div>
-                        <div>Cliente</div>
-                    </div>
-
-
-                    <div class="w-50 p-2">
-                        <div class="dropdown">
-                            <button class="btn p-0 w-100 btn-sm button" @click="methods" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{Methodo}}
-                            </button>
-                            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton1">
-                                <li v-for="(metodo, index) in $store.state.MethodosPagamento" :key="index">
-                                    <a class="dropdown-item" @click="Method(metodo.nome)" href="#">{{metodo.nome}} </a>
-                                </li>
-                            </ul>
-                        </div>
-
-
-                        <div class="border-bottom">
-                            {{fatura.nome}}
-                        </div>
-
-
-                    </div>
-                </div>
-                <div class="w-50 d-flex p-3">
-                    <div class="w-50 TitlsMethod">
-                        <div>Valor Total</div>
-                        <div>Data de pagamento</div>
-                        <div>Numero da fatura</div>
-                    </div>
-                    <div class="w-50 conteinerinfo">
-                        <input type="text" name="valor" class="border-bottom"  v-model="RestoApagar">
-                        <div class="border-bottom"> {{currentDateTime()}} </div>
-                        <div class="border-bottom">{{'FT'+fatura.created_at.substring(0,fatura.created_at.length - 11)+'/'+fatura.id}} </div>
-                    </div>
-                </div>
+            <div class="Footer">
+               <button @click="$emit('close')" type="button" class="cancelar">Fechar</button>
+               <button type="submit">Salvar</button>
             </div>
-            <div >
-                <div class="BotoesBaixo">
-                    <button class="ConfirmPag" @click="ConfirmarPag">Confirmar Pagamento</button>
-                    <button class="CancelPag" @click="$emit('FecharModalPag')">Cancelar</button>
-                </div>
-            </div>
-        </div>
-    </Dialog>
-  </div>
+         </form>
+      </div>
+   </div>
 </template>
 
 <script setup>
 import  Dialog  from "primevue/dialog";
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import {useStore, mapState} from 'vuex'
 import moment from 'moment'
 import axios from 'axios';
-    const displayModal = ref(true)
-    const position = ref('top');
-    const store = useStore();
-    let Methodo = ref('metodos de pagamentos')
-    let RestoApagar = ref()
-    let fatura = store.state.FaturaFaturacao
-    const FrmatDinheiro = ref(new Intl.NumberFormat('pt-AO', { style: 'currency', currency: 'AOA'}))
 
-    const emits = defineEmits(['FecharModalPag'])
+const props = defineProps({
+    invoice_id:Number
+})
 
+const methodPayment = reactive({
+    title: 'metodos de pagamentos',
+    state: false
+})
 
-    const ConfirmarPag = (()=>{
-        axios.post('/FazerPagamento',{
-            dados: ({
-                method: Methodo.value,
-                ValorPago: RestoApagar.value,
-                data: currentDateTime(),
-                id: fatura.id
-            })
-        })
-        .then((Response) => {
-                if (!Response.data.message) {
-                    emits('FecharModalPag')
-                    store.state.FaturaFaturacao = Response.data.fatura
-                    store.state.PodeEditar = store.state.FaturaFaturacao.estado
-                } else {
-                    store.state.messagen = Response.data.message
-                }
-            }).catch((err) => {
-                console.log(err);
-            })
+const emit = defineEmits(['close','message','invoice'])
+
+const invoice = ref([]);
+
+const methods = ref([]);
+
+const form = {
+    payment_method_id:null,
+    Amount:0,
+    TotalPayments: 0
+}
+
+const number = ref(0);
+
+const type = ref('text');
+
+const format = (n)=>{
+    return new Intl.NumberFormat('PT-AO', {
+    style: 'currency',
+    currency: 'AOA',
+  }).format(n);
+}
+
+const numberStr = ref(format(number.value));
+
+const onInput = ({ target }) => {
+    if (target.value != '' ) {
+    number.value = parseInt(target.value);
+    }
+};
+
+const onFocus = () => {
+    if (number.value != '' ) {
+    numberStr.value = number.value;
+    type.value = 'number';
+    }
+};
+const onBlur = () => {
+    if (number.value != '' ) {
+        type.value = 'text';
+        numberStr.value = format(number.value);
+    }
+};
+
+ const FormatDate = (() =>{
+    return moment().format('DD-MM-YYYY H:mm:ss')
+ })
+
+onMounted(async ()=>{
+    await getInvoice();
+    await getMethods();
+})
+
+const getInvoice = async () => {
+    axios.get(`getItems/${props.invoice_id}`)
+    .then((response) => {
+        invoice.value = response.data
+        numberStr.value = invoice.value.RestPayable
+        number.value = invoice.value.RestPayable
+    }).catch((err) => {
+        console.log(err);
     })
-
-    const Method = ((even)=>{
-        Methodo.value = even
+}
+const getMethods = async () => {
+     axios.get(`/getMethods`)
+    .then((response) => {
+        methods.value = response.data
+    }).catch((err) => {
+        console.log(err);
     })
+}
 
-
-    onMounted(()=>{
-        if (fatura.MethodPagamento !=null) {
-            Methodo.value = fatura.MethodPagamento
-        }
-        axios.get('/BuscarPagamento?IdPagamento='+fatura.id)
-        .then((Response) => {
-            RestoApagar.value = Response.data.resto
-
-        })
+const ConfirmPayment = (() => {
+form.Amount = number.value
+axios.post(`InvoicePayment/${props.invoice_id}`, {...form})
+    .then((response) => {
+        emit('message',response.data.message,response.data.type)
+        emit('invoice',response.data.data)
+        emit('close')
+    }).catch((err) => {
+        console.log(err);
     })
-    const currentDateTime = ((date) =>{
-        return moment().format('DD MM YYYY')
-    })
+})
+
+const Methods = (event) => {
+    methodPayment.state = false
+    methodPayment.title = event.name
+    form.payment_method_id = event.id
+}
 </script>
 
-<style scoped>
-    .header{
-        font: 12pt arial;
-        font-weight: bold;
-    }
-    .p-button {
-    margin: 0.3rem .5rem;
-    min-width: 10rem;
-}
-
-p {
-    margin: 0;
-}
-.TitlsMethod div{
-    font: 10pt arial;
-    font-weight: 600;
-    padding: 6px;
-}
-
-.conteinerinfo div{
-    font: 9pt arial;
-    font-weight: 600;
-    padding: 5px;
-}
-
-.conteinerinfo input{
-    padding: 2px;
-    width: 100%;
-    border: none;
-    outline: none;
-    font: 10pt arial;
-    font-weight: 600;
-    color: #666;
-    border-bottom: 1px solid #eee;
-}
-.BotoesBaixo{
-    padding: 20px 10px 10px 10px;
-    border-top: 1px solid #eee;
-}
-.BotoesBaixo button{
-    border: none;
-     outline: none;
-     margin: 3px;
-     padding: 1px 10px 1px 10px;
-}
-.ConfirmPag{
-    background-color: #a3498b;
-    border: 1px solid #6e1c58;
-    border-radius: 1px;
-    color: white;
-}
-.CancelPag{
-    background-color: white;
-    border-radius: 1px;
-    color: #888;
-}
-.CancelPag:hover{
-    color: rgb(52, 51, 51);
-    border: 1px solid #eee;
-}
-.ConfirmPag:hover{
-    color: white;
-    background-color: #6e1c58ca;
-}
-.confirmation-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.ClienteMethod div{
-    font: 10pt arial;
-    font-weight: 600;
-    padding: 6px;
-}
-.p-dialog .p-button {
-    min-width: 6rem;
-}
-.dropdown button{
-    border: none;
-    outline: none;
-    border-bottom: 1px solid #eee;
-    box-shadow: 0;
-    box-shadow: 0 0 0 0;
-    border-radius: 0px;
-    text-align: left;
-    font: 10pt arial;
-    font-weight: 600;
-}
-.dropdown-menu{
-    border-top: none;
-    border-top-right-radius: 0;
-    border-top-left-radius: 0;
-    margin-left: -10px;
-    font: 10pt arial;
-    font-weight: 600;
-}
+<style scoped lang="scss">
+@import "../../../../assets/Pagamento/scss/index";
 </style>

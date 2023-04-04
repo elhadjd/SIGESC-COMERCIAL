@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -14,6 +15,7 @@ return [
     | any other location as required by the application or its packages.
     |
     */
+    'log' => 'errorlog',
 
     'name' => env('APP_NAME', 'Laravel'),
 
@@ -140,7 +142,7 @@ return [
 
     'maintenance' => [
         'driver' => 'file',
-        // 'store'  => 'redis',
+        'store'  => 'redis',
     ],
 
     /*

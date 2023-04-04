@@ -33,7 +33,7 @@ export default {
         },
         /* Method para Formatar Date */
         formatDate(date){
-            return moment(date).format("DD-MM-YYYY H:m")
+            return moment(date).format("DD-MM-YYY")
         }
     },
 };

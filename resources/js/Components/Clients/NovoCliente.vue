@@ -8,7 +8,7 @@
                 Ação
             </div>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li v-if="DadosCliente.estado == 0" @click="Desarquivar"><a class="dropdown-item" href="#">Desarquivar</a></li>
+                <li v-if="DadosCliente.state == 0" @click="Desarquivar"><a class="dropdown-item" href="#">Desarquivar</a></li>
                 <li v-else @click="Arquivar"><a class="dropdown-item" href="#">Arquivar</a></li>
                 <li @click="Apagar"><a class="dropdown-item" href="#">Apagar</a></li>
             </ul>
@@ -32,11 +32,11 @@
         <div class="formulario-content">
             <div class="imagem">
                 <div class="nomeCliente">
-                    <input :disabled="DadosCliente.estado == 0" type="text" v-model="DadosCliente.apelido" placeholder="digita o nome do cliente"/>
+                    <input :disabled="DadosCliente.state == 0" type="text" v-model="DadosCliente.surname" placeholder="digita o nome do cliente"/>
                 </div>
 
                 <div class="img">
-                       <div class="Arquivado" v-if="DadosCliente.estado == 0">
+                       <div class="Arquivado" v-if="DadosCliente.state == 0">
                             <h2>ARQUIVADO</h2>
                         </div>
                         <div v-else class="icones">
@@ -49,7 +49,7 @@
                             </span>
                         </div>
                     <div class="imagem-cliente">
-                        <img :src="element.imagen"/>
+                        <img :src="element.image"/>
                     </div>
                 </div>
 
@@ -66,9 +66,9 @@
                         </div>
 
                         <div class="dados-two">
-                            <input :disabled="DadosCliente.estado == 0" type="text" v-model="DadosCliente.whatssap" placeholder="Whatssap"/>
-                            <input :disabled="DadosCliente.estado == 0" type="text" v-model="DadosCliente.telefone" placeholder="Telefone"/>
-                            <input :disabled="DadosCliente.estado == 0" type="text" v-model="DadosCliente.email" placeholder="Email"/>
+                            <input :disabled="DadosCliente.state == 0" type="text" v-model="DadosCliente.whatssap" placeholder="Whatssap"/>
+                            <input :disabled="DadosCliente.state == 0" type="text" v-model="DadosCliente.phone" placeholder="Telefone"/>
+                            <input :disabled="DadosCliente.state == 0" type="text" v-model="DadosCliente.email" placeholder="Email"/>
                         </div>
                     </div>
 
@@ -80,9 +80,9 @@
                         </div>
 
                         <div class="EnderecoContent">
-                            <input :disabled="DadosCliente.estado == 0" type="text" @click="SelectPais" v-model="DadosCliente.pais" placeholder="Pais"/>
-                            <input :disabled="DadosCliente.estado == 0" type="text" v-model="DadosCliente.cidade" placeholder="Cidade"/>
-                            <input :disabled="DadosCliente.estado == 0" type="text" v-model="DadosCliente.rua" placeholder="Rua"/>
+                            <input :disabled="DadosCliente.state == 0" type="text" @click="SelectPais" v-model="DadosCliente.pais" placeholder="Pais"/>
+                            <input :disabled="DadosCliente.state == 0" type="text" v-model="DadosCliente.cidade" placeholder="Cidade"/>
+                            <input :disabled="DadosCliente.state == 0" type="text" v-model="DadosCliente.rua" placeholder="Rua"/>
                         </div>
                     </div>
                 </div>
@@ -120,11 +120,11 @@ const pretendClient = ref({
 })
 
 const element = reactive({
-  imagen: "clientes/image/registro-sem-imagen.png",
+  image: "clientes/image/registro-sem-imagen.png",
 });
 
 const Arquivar = (()=>{
-    DadosCliente.value.estado = 0;
+    DadosCliente.value.state = 0;
 })
 
 const Apagar = (()=>{
@@ -137,14 +137,14 @@ const store = useStore()
 const DadosCliente = ref({
   apelido: null,
   whatssap: null,
-  imagem: null,
+  image: null,
   telefone: null,
   email: null,
   pais: null,
   cidade: null,
   rua: null,
   id: null,
-  estado: 1,
+  state: 1,
 });
 
 onMounted(()=>{
@@ -157,12 +157,12 @@ onMounted(()=>{
             console.log(err);
         });
         DadosCliente.value = props.Dados
-        element.imagen = 'clientes/image/'+props.Dados.imagem
+        element.imagen = '/Clientes/image/'+props.Dados.image
     }
 })
 
 const Desarquivar = (()=>{
-    DadosCliente.value.estado = 1;
+    DadosCliente.value.state = 1;
 })
 
 const GuardarCliente = (()=>{
@@ -207,7 +207,7 @@ const Confirme = ((event , outro)=>{
 
 const DeletarImagem = (()=>{
     element.imagen = 'clientes/image/registro-sem-imagen.png'
-    DadosCliente.value.imagem = 'registro-sem-imagen.png'
+    DadosCliente.value.image = 'registro-sem-imagen.png'
 })
 
 const guardar = computed(()=>{
@@ -268,8 +268,8 @@ const createImg = (file) => {
   var reader = new FileReader();
 
   reader.onload = (e) => {
-    element.imagen = e.target.result;
-    DadosCliente.value.imagem = element.imagen
+    element.image = e.target.result;
+    DadosCliente.value.image = element.image
   };
   reader.readAsDataURL(file);
 };

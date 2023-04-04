@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
+            $table->string('orderNumber');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('cliente_id')->nullable();
@@ -22,8 +23,8 @@ return new class extends Migration
             $table->float('TotalMerchandise')->default(0);
             $table->float('tax')->default(0);
             $table->enum('state',['Cotação','Pago','Publicado','Anulado'])->default('Cotação');
-            $table->date('DateOrder');
-            $table->date('DateDue');
+            $table->date('DateOrder')->default(now());
+            $table->date('DateDue')->nullable();
             $table->float('RestPayable')->default(0);
             $table->timestamps();
         });

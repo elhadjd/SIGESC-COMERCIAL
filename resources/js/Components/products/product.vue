@@ -247,6 +247,8 @@ import InfoProd from "./InfoProduct.vue";
 import Progress from "@/components/confirmation/progress.vue";
 import Confirm from "../confirmation/confirm.vue";
 import NewCategory from "./CategoryProduct.vue";
+import {useUploadImage} from '@/composable/public/UploadImage'
+
 const emits = defineEmits(["descartar", "Guardar"]);
 const store = useStore();
 const StateEditProd = ref(false);
@@ -288,6 +290,9 @@ const Entradasaida = ref({
   product: produto.produtos,
   store: []
 });
+
+const {createImg,onFileChange} = useUploadImage(produto, element);
+
 const EntradaSaidaProd = (event) => {
   Entradasaida.value.store = event;
   Entradasaida.value.product = produto.produtos;
@@ -365,59 +370,6 @@ const sumQuantity = (()=>{
 
 const Precos = (tipo, valor) => {
   produto.produtos[tipo] = valor;
-};
-
-const onFileChange = (e) => {
-  var files = e.target.files || e.dataTransfer.files;
-  // Verificar o formato da imagem
-  let arquivo = files[0].name;
-  let extension = arquivo.indexOf(".") < 1 ? "" : arquivo.split(".").pop();
-  if (extension == "") {
-    return false;
-  } else {
-    // verificar se este formato existe no Array
-    let formatos_permitidos = [
-      "jpg",
-      "png",
-      "gif",
-      "jpeg",
-      "JPG",
-      "PNG",
-      "GIF",
-      "JPEG",
-    ];
-    let resultado = formatos_permitidos.includes(extension);
-    if (resultado == false) {
-      return false;
-    } else {
-      // Tamanho da foto em MB
-      var tamanho_maximo = 2242880;
-      var fsizet = 0;
-      for (var i = 0; i <= e.target.files.length - 1; i++) {
-        // tamanho do arquivo
-        var fsize = e.target.files.item(i).size;
-        // total calculado
-        fsizet = fsizet + fsize;
-      }
-      if (fsizet > tamanho_maximo) {
-        console.log("tamanho de imagem muito grande");
-      } else {
-        createImg(files[0]);
-      }
-    }
-  }
-};
-
-const createImg = (file) => {
-  var imagem = new Image();
-  var reader = new FileReader();
-
-  reader.onload = (e) => {
-    element.img = e.target.result;
-    produto.imagem = element.img;
-  };
-
-  reader.readAsDataURL(file);
 };
 
 const RemoveImage = () => {

@@ -14,6 +14,7 @@ use App\Http\Controllers\PDV\OrdersController;
 use App\Http\Controllers\PDV\PointSaleController;
 use App\Http\Controllers\PDV\pontoVendaController;
 use App\Http\Controllers\public\clientsController;
+use App\Http\Controllers\Public\MethodsPaymentController;
 use App\Http\Controllers\public\movementsController;
 use App\Http\Controllers\Public\productsController;
 use App\Http\Controllers\public\stockController;
@@ -33,14 +34,6 @@ use Illuminate\Support\Facades\URL;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-if (App::environment('local')) {
-    URL::forceRootUrl(config('app.url'));
-    URL::forceScheme('https');
-    header('Cache-Control: no-cache, no-store, must-revalidate');
-    header('Pragma: no-cache');
-    header('Expires: 0');
-}
 
 
 // Route::middleware('license')->group(function () {
@@ -108,6 +101,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('compra')->group(function () {
         Route::controller(compraController::class)->group(function () {
             Route::get('Home', 'Index')->name('compra');
+            Route::get('getPurchases','getPurchases');
+            Route::get('getPurchases/{order}','Order');
+            Route::post('AddItemPuchase/{order}','AddItemPuchase');
+            Route::post('UpdateItems/{item}','UpdateItems');
         });
     });
 
@@ -126,6 +123,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/getItems/{invoice?}','getInvoices');
             Route::post('AddItem/{product}/{invoice}','AddItem');
             Route::delete('deleteItem/{invoice}/{item}','deleteItem');
+            Route::put('/UpdateRows/{invoice}','UpdateRows');
+            Route::post('/ChangeDateInvoice/{invoice}','ChangeDateInvoice');
+            Route::post('/ConfirmOrder/{invoice}','ConfirmOrder');
+            Route::post('InvoicePayment/{invoice}','InvoicePayment');
         });
     });
 
@@ -160,6 +161,7 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(clientsController::class)->group(function () {
         Route::get('clients','get');
+        Route::get('clients/credit','getClientsCredit');
     });
 
     Route::controller(movementsController::class)->group(function(){
@@ -169,6 +171,12 @@ Route::middleware('auth')->group(function () {
     Route::controller(stockController::class)->group(function(){
         Route::get('getArmagens','get');
         Route::post('updateQuantity/{product}','update');
+    });
+
+    Route::controller(MethodsPaymentController::class)->group(function(){
+        Route::get('getMethods','getMethods');
+        Route::get('getPayments/{invoice}','getPayments');
+        Route::get('getPayments','getPaymentOrders');
     });
 
 

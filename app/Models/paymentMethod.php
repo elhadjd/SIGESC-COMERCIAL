@@ -14,4 +14,9 @@ class paymentMethod extends Model
     {
         return $this->hasMany(paymentPDV::class);
     }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(PaymentInvoice::class);
+    }
 }

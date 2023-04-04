@@ -15,6 +15,8 @@ class InvoiceItem extends Model
         'quantity' ,
         'PriceCost' ,
         'PriceSold',
+        'TotalDiscount',
+        'Discount',
         'TotalCost',
         'TotalSold'
     ];
