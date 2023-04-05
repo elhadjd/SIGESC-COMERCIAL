@@ -103,8 +103,12 @@ Route::middleware('auth')->group(function () {
             Route::get('Home', 'Index')->name('compra');
             Route::get('getPurchases','getPurchases');
             Route::get('getPurchases/{order}','Order');
+            Route::post('NewPurchase','NewPurchase');
             Route::post('AddItemPuchase/{order}','AddItemPuchase');
             Route::post('UpdateItems/{item}','UpdateItems');
+            Route::delete('/deleteItem/{order}/{item}','deleteItem');
+            Route::post('confirmOrder/{order}/{armagen}','confirmOrder');
+            Route::post('savePayment/{order}','savePayment');
         });
     });
 

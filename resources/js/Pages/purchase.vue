@@ -24,7 +24,6 @@ import Toast from 'primevue/toast'
 import { useToast } from 'primevue/usetoast';
 import { useStore } from 'vuex';
 import { Inertia } from '@inertiajs/inertia';
-import Payments from '../components/purchases/Payments.vue'
 import suppliers from '@/Components/suppliers/index.vue'
 import Headers from '../layouts/header.vue'
 
@@ -85,9 +84,10 @@ watch(()=>bus.value.get('CompraPedidoFormulario'), (payload) => {
     modulo.value = 'compra'
 });
 
-const showModule = ((module)=>{
+const showModule = ((module,compra)=>{
     modulo.value = module
     Mostrar.value = null
+    Purchase.value = compra
 })
 
 const message = ((message,tipo)=>{

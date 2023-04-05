@@ -6,7 +6,7 @@
                 <h1>Lista das compras</h1>
             </div>
             <div>
-               <button @click="CrearCompra">Crear compra</button>
+               <button @click="NewPurchase">Criar Compra</button>
             </div>
         </div>
         <div class="Header-right">
@@ -27,15 +27,14 @@ import orders from './Orders.vue'
 import { onMounted } from "@vue/runtime-core";
 import axios from "axios";
 import useEventsBus from '@/Eventbus';
-// import Recordin from './recordin.vue'
 const {emit} = useEventsBus();
 
-const emits = defineEmits(['modulo','message'])
+const emits = defineEmits(['modulos','message'])
 
-const CrearCompra = (()=>{
-    axios.post('/CriarNovaCompra')
+const NewPurchase = (()=>{
+    axios.post('NewPurchase')
     .then((Response) => {
-        emits('modulo','compra',Response.data)
+        emits('modulos','compra', Response.data)
     }).catch((err) => {
         console.log(err);
     });

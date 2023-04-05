@@ -1,25 +1,26 @@
 <template>
-  <div class="principal">
-
-    <div class="titulos">
-
-        <label for="DataEncomenda">Data de Encomenda : </label>
-
-        <label for="DataEncomenda">Data de Recepção : </label>
-
+    <div class="principal">
+        <form @submit="handleSubmitForm">
+            <div class="Form-control">
+                <label for="DataEncomenda">Data de Encomenda : </label>
+                <input type="date" id="DataEncomenda" @change="changeDate" v-model="props.Order.created_at">
+            </div>
+            <div class="Form-control">
+                <label for="vencimento"> Data de recepção: </label>
+                <input @change="changeDate" v-model="props.Order.updated_at" id="vencimento" type="date">
+            </div>
+        </form>
     </div>
-
-     <div class="campos">
-         <input type="text" :value="FormatDate(encomenda.created_at)" :disabled="encomenda.estado != 'Cotação'">
-         <input type="text" :value="FormatDate(encomenda.updated_at)" :disabled="encomenda.estado != 'Cotação'">
-    </div>
-  </div>
 </template>
 
 <script setup>
 import { computed, onMounted } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import moment from 'moment'
+
+const props = defineProps({
+    Order: Object
+})
 
     const encomenda = computed(()=>{
         return useStore().state.EncomendaCompra
@@ -30,29 +31,10 @@ import moment from 'moment'
 </script>
 
 <style lang="scss" scoped>
-.principal {
-    display:flex;
-    flex-direction: row;
-    .titulos {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-        label {
-            margin-bottom:22px;
-        }
-    }
-
-    .campos {
-        input {
-            width:100%;
-            margin-bottom:15px;
-            padding: 0;
-            border:none;
-            outline: 0;
-            box-shadow: 0 0 0 0;
-            border-bottom:1px solid #ddd;
-        }
+.principal{
+    .Form-control{
+        @include form-control;
     }
 }
+
 </style>

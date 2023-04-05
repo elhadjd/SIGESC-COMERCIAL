@@ -8,13 +8,12 @@
             <div>Preço</div>
             <div>Desconto</div>
             <div>Total</div>
-            <div>Ação</div>
+            <div v-if="Invoice.state =='Cotação'">Ação</div>
          </div>
          <div class="w-100">
             <div class="ListaPedidos"
                 v-for="item in Invoice.items"
-                :key="item.id"
-            >
+                :key="item.id">
                <input type="text" class="text-start nameItem" readonly :value="item.product.nome">
                <input @keyup.enter="UpdateItem(item)" @click="Alteracao(item.id, 'quantidade')"
                   v-model="item.quantity"
@@ -41,13 +40,13 @@
                   placeholder="Total"
                   :value="formatMoney(item.TotalSold)"
                   type="text" required disabled />
-               <div>
+               <div v-if="Invoice.state =='Cotação'">
                   <Caixa
-                  v-if="Invoice.state =='Cotação'"
+
                   class="icone"
                   @click="Addcaixa(item)
                   "/>
-                  <i @click="DeleteProduct(item.id)"  v-if="Invoice.state =='Cotação'" class="fa fa-trash"></i>
+                  <i @click="DeleteProduct(item.id)" class="fa fa-trash"></i>
                </div>
             </div>
          </div>

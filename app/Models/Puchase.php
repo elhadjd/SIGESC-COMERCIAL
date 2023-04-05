@@ -11,9 +11,10 @@ class Puchase extends Model
 {
     use HasFactory;
 
-    protected $with = ['supplier','user'];
+    protected $with = ['supplier','user','armagen'];
 
     protected $fillable = [
+        'user_id',
         'totalDiscount',
         'totalTax',
         'TotalSpending',
@@ -31,8 +32,18 @@ class Puchase extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function armagen(): BelongsTo
+    {
+        return $this->belongsTo(armagen::class);
+    }
+
     public function items():HasMany
     {
         return $this->hasMany(PuchaseItem::class);
+    }
+
+    public function payments():HasMany
+    {
+        return $this->hasMany(paymentPurchase::class);
     }
 }

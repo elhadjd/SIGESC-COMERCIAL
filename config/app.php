@@ -15,7 +15,7 @@ return [
     | any other location as required by the application or its packages.
     |
     */
-    'log' => 'errorlog',
+    // 'log' => 'errorlog',
 
     'name' => env('APP_NAME', 'Laravel'),
 
@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+    'env' => env('APP_ENV', 'local'),
 
     /*
     |--------------------------------------------------------------------------
@@ -43,7 +43,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool) env('APP_DEBUG', true),
 
     /*
     |--------------------------------------------------------------------------

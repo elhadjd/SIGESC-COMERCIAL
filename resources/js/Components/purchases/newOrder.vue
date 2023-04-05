@@ -1,21 +1,23 @@
 <template>
    <Progress v-if="process"/>
-   <Pagamento 
-        :FormularioPagamentoCompra="FormularioPagamentoCompra"
-        @fechar="payment.state = false"
-        @encomenda="order" @message="message"
-        v-if="payment.state"
+   <payments
+    :paymentOrder="payment"
+    @fechar="payment.state = false"
+    @encomenda="order" @message="message"
+    v-if="payment.state"
+   />
+   <invoice v-if="StateFatura" 
+     @FecharModal="StateFatura = false"
+     :Order="order"
     />
-   <FaturaCompra v-if="StateFatura" @FecharModal="StateFatura = false"
-      :encomenda="order"/>
    <div class="Principal">
       <div class="Header">
          <h1>Compras</h1>
       </div>
       <div class="Container">
          <div class="Botoes">
-            <button v-if="order.state == 'Cotação'" @click="Confirmar" class="botoes">Confirmar</button>
-            <button v-if="order.state == 'Cotação'" @click="$emit('fechar')" class="botoes">Fechar</button>
+            <button v-if="order.state == 'Cotação'" @click="ConfirmOrder" class="botoes">Confirmar</button>
+            <button @click="$emit('fechar')" class="botoes">Fechar</button>
             <button @click="payment.state = true" v-if="order.state != 'Pago'" class="botoes">Adicionar pagamento</button>
             <button @click="Imprimir" v-if="order.state != 'Cotação'" class="botoes">Imprimir fatura</button>
          </div>
@@ -23,7 +25,7 @@
             <div class="Form">
                <div class="HeaderFatura">
                   <div class="NumeroOrdem">
-                     <h1 class="h1">Compra/00{{order.id}}</h1>
+                     <strong>Compra/00{{order.id}}</strong>
                   </div>
                   <div class="Informacao">
                      <div>
@@ -42,16 +44,28 @@
                                  <div></div>
                               </div>
                            </div>
+                           <div class="form-Control">
+                              <label for="armagen"> seleciona armagen: </label>
+                              <button type="button" id="armagen" @click="armagens.state = !armagens.state">{{order.armagen?.name}}</button>
+                              <div v-if="armagens.state" class="drop">
+                                 <span 
+                                    v-for="armagen in armagens.list" :key="armagen.id"
+                                    @click="armagenAdd(armagen)"
+                                    >
+                                 {{armagen.name}}
+                                 </span>
+                              </div>
+                           </div>
                         </div>
                      </div>
                      <div>
-                        <!-- <DataEncomenda/> -->
+                        <DataEncomenda :Order="order"/>
                      </div>
                   </div>
                </div>
                <div class="FooterFatura">
-                  <items 
-                     :id_order="Purchase.id" 
+                  <items
+                     :id_order="Purchase.id"
                      @message="message"
                      @progress="process = !process"
                      />
@@ -68,8 +82,8 @@ import DataEncomenda from './DataEncomenda.vue'
 import { computed, onMounted,reactive,ref, watch } from '@vue/runtime-core'
 import Progress from '../confirmation/progress.vue'
 import axios from 'axios'
-import Pagamento from '@/components/Payments/index.vue'
-import FaturaCompra from '@/components/purchases/FaturaCompra.vue'
+import payments from '@/Components/Payments/index.vue'
+import invoice from '@/Components/purchases/Invoice.vue'
 import { useStore } from 'vuex'
 import useEventsBus from '@/Eventbus'
 const {bus} = useEventsBus();
@@ -89,24 +103,22 @@ const suppliers = reactive({
     store: []
 });
 
-const FormularioPagamentoCompra = reactive({
-    encomenda: order.value,
-    valor:order.value.total,
-    metodo:[],
-    data:null,
-    placeholder:order.value.name,
-    caminho: 'AdicionarPagamentoCompra',
-    CalcularTotalAPagar: 'PagamentosCompra'
-
-});
+const armagens = ref({
+    state: false,
+    list: [],
+    store: [],
+})
 
 const payment = reactive({
+    order: order.value,
     state:false
 });
 
+
 onMounted(async ()=>{
     await getPurchase();
-    getSuppliers()
+    getSuppliers();
+    await getArmagens()
 })
 
 const getPurchase = async () => {
@@ -116,6 +128,22 @@ const getPurchase = async () => {
     }).catch((err) => {
         console.log(err);
     });
+}
+
+const getArmagens = (async ()=>{
+    await axios.get(`/getArmagens`)
+    .then((Response) => {
+        armagens.value.list = Response.data.armagens
+        armagens.value.store = Response.data.armagens
+    }).catch((err) => {
+        console.log(err);
+    });
+})
+
+const armagenAdd = (event) => {
+  order.value.armagen_id = event.id
+  order.value.armagen = event
+  armagens.value.state = false
 }
 
 const getSuppliers = (()=>{
@@ -128,10 +156,11 @@ const getSuppliers = (()=>{
     });
 })
 
-const Confirmar = (()=>{
-    if (order.value.supplier != null || order.value.supplier != '') {
+const ConfirmOrder = (()=>{
+    if (!order.value.armagen_id) return emits('message','Seleciona um armagem para continuar','info')
+    if (order.value.supplier != []) {
         process.value = true
-        axios.post(`ConfirmarEncomenda/${order.value.id}`)
+        axios.post(`confirmOrder/${order.value.id}/${order.value.armagen_id}`,{...order.value})
         .then((Response) => {
             if (!Response.data.message) {
                 order.value = Response.data
@@ -177,13 +206,18 @@ const AddSupplierOrder = (event) => {
 
 <style scoped lang="scss">
 @import "../../../assets/faturacao/css/CriarFaturas.scss";
-.NumeroOrdem {
-  height: 40% !important;
-}
 .Informacao {
   height: 60% !important;
   .cliente {
     margin-bottom: 10px;
   }
+}
+.form-Control{
+    @include form-control;
+    @include dopDown;
+    .drop {
+        margin-left: 160px;
+        width: 54%;
+    }
 }
 </style>

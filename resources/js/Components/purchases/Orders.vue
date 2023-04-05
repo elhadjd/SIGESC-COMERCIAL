@@ -15,13 +15,13 @@
         <div @click="showOrder(order)" class="d-flex ListaFaturas" v-for="order in Orders.list"
         :key="order.id">
           <div>{{'Compra/00'+order.id}}</div>
-          <div>{{order.supplier.name}}</div>
-          <div>{{order.user.surname}}</div>
+          <div>{{order.supplier?.name}}</div>
+          <div>{{order.user?.surname}}</div>
           <div>{{formatDate(order.created_at)}}</div>
-          <div class="text-right">{{Dinheiro.format(Number(order.total) + Number(order.totalDiscount) - Number(order.totalTax) - Number(order.TotalSpending))}}</div>
-          <div class="text-right">{{Dinheiro.format(order.total)}}</div>
-          <div :class="order.state">
-            <span>{{order.state}}</span>
+          <div class="text-right">{{formatMoney(Number(order.total) + Number(order.totalDiscount) - Number(order.totalTax) - Number(order.TotalSpending))}}</div>
+          <div class="text-right">{{formatMoney(order.total)}}</div>
+          <div class="Pagar">
+            <span>{{formatMoney(order.restPayable)}}</span>
           </div>
           <div :class="order.state">
             <span class="">{{order.state}}</span>
@@ -92,8 +92,8 @@ const sumOrders = ((Orders)=>{
     Totals.value.restPayable = 0,
     Totals.value.totalOrders = 0
     Orders.forEach(order => {
-        Totals.value.restPayable += order.restPayable
-        Totals.value.totalOrders += order.total
+        Totals.value.restPayable += Number(order.restPayable)
+        Totals.value.totalOrders += Number(order.total)
     });
 })
 

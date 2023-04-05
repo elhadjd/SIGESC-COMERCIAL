@@ -2,7 +2,7 @@
    <div class="h-100 w-100">
       <Transition name="bounce">
          <div>
-            <Addbox @message="message" @Close="caixa.state = false" @Confirmou="BoxConfirm" v-if="caixa.state" :artigo="caixa.artigo"/>
+            <Addbox @message="message" @Close="caixa.state = false" @Confirmou="BoxConfirm" v-if="caixa.state" :product="caixa.artigo"/>
             <div class="NewProduct" v-if="ModalProduct.state">
                <div class="Modal">
                   <Product :produto="ModalProduct.produto" @Guardar="SelecionarProduto"/>
@@ -10,6 +10,7 @@
             </div>
          </div>
       </Transition>
+
       <div class="Container">
          <div class="d-flex TitlsPedido">
             <div class="text-start">Produto</div>
@@ -77,20 +78,20 @@
       <div class="ResultadoTotal border-top bg-white d-flex">
          <div class="w-50">
             <div v-if="order.state === 'Cotação'">
-               <input 
-                  @click="getProducts('')" 
+               <input
+                  @click="getProducts('')"
                   id="Produto"
                   v-model="produto.nome"
-                  placeholder="Selectionar produto" 
+                  placeholder="Selectionar produto"
                   @keyup="Pesquisar"
-                  class="w-75 p-1 border-bottom" 
+                  class="w-75 p-1 border-bottom"
                 />
                <div v-if="produto.state" class=" text-secondary rounded-bottom bg-white ListaProdutos overflow-auto w-75 border border-top-0">
-                  <div 
+                  <div
                     v-for="produto in produto.lista.slice(0,30)"
-                    @click="SelectProduct(produto)"  
-                    :key="produto.id" 
-                    id="ListaProdutos" 
+                    @click="SelectProduct(produto)"
+                    :key="produto.id"
+                    id="ListaProdutos"
                     class="d-flex"
                 >
                     {{produto.nome}}
@@ -141,61 +142,48 @@ import Caixa from 'vue-material-design-icons/PackageVariantClosedPlus.vue'
 import { useCurrencyInput } from 'vue-currency-input';
 import useEventsBus from '@/Eventbus';
 const {bus} = useEventsBus();
-
 const formatDinheiro = Intl.NumberFormat('PT-AO', {
    style: 'currency',
    currency: 'AOA'
 });
-
 const props = defineProps({
    id_order:{
       type: Number,
       required:true
    }
 })
-
 const {inputRef} = useCurrencyInput({
    currency: 'AOA'
 })
-
 const store = useStore()
-
 const emits = defineEmits(['message', 'progress', 'encomenda'])
-
 const order = ref([])
-
 const ModalProduct = ref({
    state: false,
    produto: Object
 })
-
 const SelectText = ((id, tipo) => {
    var classe = tipo + id
    document.querySelector('.' + classe).select();
 })
-
 const caixa = reactive({
    artigo: null,
    gasto: true,
    state: false
 })
-
 const Addcaixa = ((artigo) => {
    caixa.artigo = artigo
    caixa.state = true
 })
-
 const produto = ref({
    nome: null,
    state: false,
    lista: [],
    store: []
 });
-
 const message = ((message, tipo) => {
    emits('message', message, tipo)
 })
-
 const OnMounted = onMounted(() => {
     requestGet(`getPurchases/${props.id_order}`)
 })
@@ -265,7 +253,8 @@ const UpdateItem = ((Item) => {
 })
 
 const DeleteItem = ((id) => {
-   axios.put(`DeleteItem/${id}/${order.value.id}`).then((response)=>{
+   axios.delete(`deleteItem/${order.value.id}/${id}`).then((response)=>{
+    if (response.data.message) return emits('message',response.data.message,response.data.type)
       order.value = response.data
    })
 })
@@ -281,11 +270,13 @@ const Pesquisar = ((event) => {
    }
 })
 
-const BoxConfirm = ((order) => {
-   const Rows = order.value.lista.filter(item => item.id === order.id)
-   Rows[0].quantidade = order.QuatidadeFinal
-   Rows[0].custo = order.PrecoUnidade
-   Rows[0].gasto = order.gasto
+const BoxConfirm = ((item) => {
+    console.log(order.value);
+   const Rows = order.value.items.filter(item => item.id === item.id)
+
+   Rows[0].quantity = item.QuatidadeFinal
+   Rows[0].custo = item.PrecoUnidade
+   Rows[0].spent = item.gasto
    caixa.state = false
    return UpdateItem(Rows[0])
 })
