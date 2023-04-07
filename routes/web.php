@@ -115,6 +115,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('config')->group(function () {
         Route::controller(configController::class)->group(function () {
             Route::get('Home', 'Index')->name('configuracoes');
+            Route::get('getConfig','getConfig');
+            Route::get('users','users');
         });
     });
 

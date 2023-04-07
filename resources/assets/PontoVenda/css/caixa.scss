@@ -9,7 +9,7 @@
 .FormCaixaCompleta{
     height: 92% !important;
     overflow-y: auto;
-    background-color: white;
+    background-color: var(--appBg);
 }
 .Botoes{
     border-bottom: 1px solid #ddd;

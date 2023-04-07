@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('licenses', function (Blueprint $table) {
+        Schema::create('app_licenses', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies');
-            $table->unsignedBigInteger('type_license_id');
-            $table->foreign('type_license_id')->references('id')->on('type_licenses');
-            $table->timestamp('from');
-            $table->timestamp('to');
+            $table->unsignedBigInteger('app_id');
+            $table->foreign('app_id')->references('id')->on('apps');
+            $table->unsignedBigInteger('license_id');
+            $table->foreign('license_id')->references('id')->on('licenses');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('licenses');
+        Schema::dropIfExists('app_licenses');
     }
 };

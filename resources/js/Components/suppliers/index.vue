@@ -4,7 +4,7 @@
 
             <div>
                 <h1>Fornecedores</h1>
-                <div class="buttons" v-if="estadoFormulario">
+                <div class="buttons" v-if="suppliers.state">
                     <button @click="GuardarFornecedor">Guardar</button>
                     <button @click="Descartar">Descartar</button>
                 </div>
@@ -17,22 +17,22 @@
         </div>
 
         <div class="Container">
-            <NovoFornecedore v-if="estadoFormulario" @voltar="Descartar" :Dados="Dados"/>
+            <new-supplier v-if="suppliers.state" @voltar="Descartar" :supplier="supplier"/>
 
             <div v-else class="Clientes">
-                <label @click="mostrarDetalhesCompleto(listaFornecedor)"
+                <label @click="showSupplier(supplier)"
                     class="clientes"
-                    v-for="listaFornecedor in listaFornecedores"
-                    :key="listaFornecedor.id">
+                    v-for="supplier in suppliers.list"
+                    :key="supplier.id">
                     <div class="FormClient">
                         <div>
-                            <img :src="'Clientes/image/'+listaFornecedor.imagem" />
+                            <img :src="'Clientes/image/'+supplier.image" />
                         </div>
 
                         <div>
-                            <strong>{{ listaFornecedor.nome }}</strong>
-                            <p>{{ listaFornecedor.email }}</p>
-                            <p>{{ listaFornecedor.telefone }}</p>
+                            <strong>{{ supplier.name }}</strong>
+                            <p>{{ supplier.email }}</p>
+                            <p>{{ supplier.phone }}</p>
                         </div>
                     </div>
 
@@ -45,48 +45,46 @@
 <script setup>
 import axios from "axios";
 import { onMounted, ref, reactive, watch, computed } from "vue";
-import NovoFornecedore from '@/components/suppliers/NovoFornecedor.vue'
+import newSupplier from '@/components/suppliers/NovoFornecedor.vue'
 import { useStore } from "vuex";
 
 const store = useStore()
 
-const Dados = ref(null)
-
-
-
-const ListaPais = ref(false);
-
-const estadoFormulario = ref(false);
-
-const listaFornecedores = ref([]);
+const supplier = ref([])
+const suppliers = ref({
+    list:[],
+    store:[],
+    state:false
+});
 
 const lista = ref([]);
 
 const Descartar = (()=>{
-    estadoFormulario.value = false
+    suppliers.value.state = false
     onMountede()
 })
 
 const NovoFornecedor = (()=>{
-    Dados.value = null
-    estadoFormulario.value = true
+    supplier.value = []
+    suppliers.value.state = true
 })
 
 
 const onMountede = onMounted(async () => {
   await axios
-    .get("/fornecedores")
+    .get("/supplier")
     .then((response) => {
-        listaFornecedores.value = response.data;
+        suppliers.value.list = response.data;
+        suppliers.value.store = response.data;
     })
     .catch((erro) => {
       console.log(erro);
     });
 });
 
-const mostrarDetalhesCompleto = (event) => {
-    Dados.value = event
-    estadoFormulario.value = true
+const showSupplier = (event) => {
+    supplier.value = event
+    suppliers.value.state = true
     store.state.GuardarCliente = false
 };
 
@@ -122,7 +120,7 @@ const GuardarFornecedor = (()=>{
 watch(Guardar, (novo)=>{
     if (novo == false) {
         onMountede()
-        estadoFormulario.value = false
+        suppliers.value.state = false
     }
 })
 </script>

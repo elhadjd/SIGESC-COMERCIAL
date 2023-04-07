@@ -1,9 +1,9 @@
 <template>
-  <div class="Principal">
+  <div class="principal">
     <div class="Header">
         <div class="Header-left">
             <div>
-                <h1>Lista das compras</h1>
+                <h2>Lista das compras</h2>
             </div>
             <div>
                <button @click="NewPurchase">Criar Compra</button>

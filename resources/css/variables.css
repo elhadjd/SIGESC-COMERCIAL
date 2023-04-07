@@ -1,8 +1,0 @@
-@charset "UTF-8";
-/* Padronização de Cores */
-:root {
-  --botao:linear-gradient(#00c2cc, #00686e, #017e84);
-  --Titulo: #666;
-  --apphover:#5b324f80;
-  --appcolor: linear-gradient(30deg, #714B67, #5e4a59);
-}/*# sourceMappingURL=variables.css.map */

@@ -29,7 +29,7 @@ class compraController extends Controller
 
     public function Order(Puchase $order)
     {
-       
+
         $data = $order->with(['items' => function ($items) {
             $items->orderBy('id', 'ASC');
         }])->whereId($order->id)->first();

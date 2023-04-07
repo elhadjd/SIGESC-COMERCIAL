@@ -1,8 +1,8 @@
 <template>
   <div class="principal">
-    <div class="header">
-      <div>
-        <h1>Clientes</h1>
+    <div class="Header">
+      <div class="Header-left">
+        <h2>Clientes</h2>
         <div class="buttons" v-if="estadoFormulario">
           <button @click="GuardarCliente">Guardar</button>
           <button @click="Descartar">Descartar</button>
@@ -10,12 +10,16 @@
         <button @click="NovoCliente" v-else>Criar Cliente</button>
       </div>
 
-      <div>
-        <input
-          type="text"
-          @keyup="PesquisarCliente"
-          placeholder="pesquisa aqui..."
-        />
+      <div class="Header-right">
+        <span class="p-input-icon-right w-100">
+            <i class="pi pi-search" />
+            <input
+                type="text"
+                @keyup="PesquisarCliente"
+                placeholder="pesquisa aqui..."
+            />
+        </span>
+
       </div>
     </div>
 

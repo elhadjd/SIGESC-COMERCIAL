@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         (new \Database\Seeders\caixaSeeder())->run();
         (new \Database\Seeders\productType())->run();
         (new \Database\Seeders\TypeOperationSeeder())->run();
+        (new \Database\Seeders\typeLicense)->run();
     }
 }

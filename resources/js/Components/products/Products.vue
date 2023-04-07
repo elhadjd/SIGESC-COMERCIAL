@@ -5,26 +5,26 @@
         <Produto :product="FormSingleProduct.product" @descartar="OnMounted"/>
     </div>
 
-    <div v-else class="w-100 h-100 lista_dos_produtos">
-        <div class="MenuCimaProdutos">
-            <div>
-                <span class="mx-3 h-25 text-secondary"><strong>Lista de artigos</strong></span><br>
-                <button @click="CriarProduto" class="btncriar_artigo mt-2 ms-2">Novo produto</button>
+    <div v-else class="principal">
+        <div class="Header">
+            <div class="Header-left">
+                <span><h2>Lista de artigos</h2></span>
+                <button @click="CriarProduto">Novo produto</button>
             </div>
-            <div class="div_da_pesquisa_prod">
+            <div class="Header-right">
                 <span class="p-input-icon-right w-100">
                     <i class="pi pi-search" />
-                    <input type="search" v-model="form.nome" name="pesqusar_prod" id="pesqusar_prod"
+                    <input type="search" v-model="form.nome"
                     placeholder="Digite nome ou preço do artigo" @keyup="Pesquisar">
                 </span>
             </div>
         </div>
-        <div class="border-0 border-top w-100 lista_dos_artigose overflow-auto">
-            <label @click="MostrarProd(produto)" v-for="produto in Products.Products" :key="produto.id" class="mx-1 mb-2 bloco_artigo" id="bloco_artigo">
+        <div class="Container">
+            <label @click="MostrarProd(produto)" v-for="produto in Products.Products" :key="produto.id" class="formProduct">
                 <div class="d-flex">
-                    <div id="div_da_imagem"><img :src="'/produtos/image/'+produto.image" alt="" class="rounded float-right"></div>
-                    <div class="div_preco_qtd text-secondary">
-                        <div class="NomeProduto"><strong>{{produto.nome}}</strong></div>
+                    <div class="image"><img :src="'/produtos/image/'+produto.image" alt="" class="rounded float-right"></div>
+                    <div class="div_preco_qtd">
+                        <div class="nameProduct"><strong>{{produto.nome}}</strong></div>
                         <div class="d-flex">
                             <div class="preco_qtd">
                                 <div><strong>Preço :</strong> {{FormetDineiro.format(produto.preçovenda)}} </div>
@@ -120,5 +120,5 @@ const sumQuantity = ((product)=>{
 </script>
 
 <style scoped lang="scss">
-@import url('../../../assets/produtos/css/menu.scss');
+@import '../../../assets/produtos/css/menu.scss';
 </style>

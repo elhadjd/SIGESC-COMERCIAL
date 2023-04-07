@@ -1,7 +1,16 @@
-/* Padronização de Cores */
 :root {
-    --botao:linear-gradient(#00c2cc, #00686e, #017e84);
-    --Titulo: #666;
-    --apphover:#5b324f80;
-    --appcolor: linear-gradient(30deg, #714B67, #5e4a59);
+    // cores de button
+    --bgButtons: #00a5cf;
+    --textColor: #333333;
+    --btnColor: #FFFFFF;
+    --buttons-hover:#00a6cf17;
+    // cores do app general
+    --app_hover:#3f4f6c92;
+    --app_color: #4c6696;
+    --appBg: #f2f6fa;
+    --box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    // core de form
+    --formList: #FFFFFF;
+    --borderColor: #e8e8e8;
+    --text-form: #f7f7f7;
 }

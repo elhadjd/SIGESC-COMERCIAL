@@ -150,6 +150,7 @@ class faturacaoController extends Controller
                     ]);
 
                     $invoice->state = 'Publicado';
+                    $invoice->cliente_id = $request->client['id'];
                     $invoice->RestPayable = $invoice->TotalInvoice;
                     $invoice->save();
                 }

@@ -1,230 +1,50 @@
-.lista_dos_produtos{
-    width: 100%;
-    height: 100%;
-}
 .MenuProdutos{
     width: 100%;
-    height: 99%;
-}
-.MenuCimaProdutos{
-    height: 15%;
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-}
-.MenuCimaProdutos span strong{
-    color: #017e84 !important;
-}
-.lista_dos_artigose{
-    height: 85%;
-    padding: 10px;
-}
-.NomeProduto{
-    max-width: 26ch;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-span{
-    font-size: 25px;
-}
-.btncriar_artigo{
-    font: 10pt arial;
-    background-color: #017e84;
-    border: 1px solid white;
-    font-weight: 600;
-    text-align: center;
-    padding: 5px;
-    color: white;
-}
-.btncriar_artigo:hover{
-    cursor: pointer;
-    background-color: white;
-    color: #017e84;
-    border: 1px solid #017e84;
-}
-.div_da_pesquisa_prod{
-    width: 95%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 100%;
 
-}
-.MenuCimaProdutos div:nth-child(1) {
-    display: flexbox;
-    flex-direction: column;
-}
-.div_da_pesquisa_prod input{
-    width: 100%;
-    padding: 3px;
-    font: 11pt arial;
-    font-weight: 600;
-    box-shadow: 0 0 0 0;
-    border: none !important;
-    outline: none !important;
-    border-bottom: 1px solid #777 !important;
-}
-.lista_dos_artigos{
-    height: 70%;
-}
-#bloco_artigo:hover{
-    cursor: pointer;
-    opacity: 0.8;
-}
-.strela i{
-    font-size: 18px;
-}
-#bloco_artigo{
-    width: 324px;
-    height: 90px;
-    border: 1px solid #eee;
-    border-radius: 5px;
-    background-color: white;
-}
-#bloco_artigo #div_da_imagem{
-    margin-top: 5px;
-    margin-left: 5px;
-}
+    @include components;
 
+    .Container{
+        padding: 10px;
+        gap: 10px;
+        .formProduct{
+            width: 324px;
+            height: 90px;
+            margin: 5px;
+            border: 1.5px solid var(--borderColor);
+            background-color: var(--formList);
+            .image{
+                margin-top: 5px;
+                margin-left: 5px;
+                img{
+                    width: 100px;
+                    height: 78px;
+                }
+            }
+            &:hover{
+                cursor: pointer;
+                opacity: 0.8;
+            }
 
-#edit_img{
-    color: rgba(98, 148, 255, 0.945);
-}
-#edit_img:hover{
-    cursor: pointer;
-}
-#search_fornecedor_para_produto{
-    border: none;
-    outline: none;
-    width: 100%;
-    border-bottom: 1px solid #ddd;
-    padding: 3px;
-    padding-left: 5px;
-}
-#fornecedore_de_produto label{
-    font-size: 17px;
-    font-weight: 600;
-    margin-left: 10px;
-    margin-top: 30px;
-}
-#bloco_artigo #div_da_imagem img{
-    width: 100px;
-    height: 78px;
-}
-.div_preco_qtd{
-    width: 100%;
-    margin: 10px;
-    font: 10pt arial;
-    font-weight: 500;
-}
-.div_preco_qtd div{
-    padding: 2px;
-}
-.titleOrden{
-    width: 100%;
-    background-color: #f9f9f9f9;
-    border-top: 2px solid #f1f1f1f9;
-    font: 12pt arial;
-    font-weight: 600;
-}
-.preco_qtd{
-    width: 95%;
-}
-.resultMuv{
-    margin-left: 25%;
-}
-.ListMuvementos{
-    background-color: #f9f9f9f9;
-    z-index: 1070;
-}
-.OrdenCim{
-    height: 18%;
-    padding-top: 10px;
-}
-#PesquisarOrde{
-    border: none;
-    outline: none;
-    border: 1px solid #ddd;
-    padding: 3px;
-    padding-left: 12px;
-    border-radius: 5px;
-}
-.TipoMuve:hover{
-    cursor: pointer;
-    opacity: 0.8;
-}
-.ListMuvementos div{
-    font: 11pt arial;
-    font-weight: 600;
-    color: #777;
-}
-.DivOrdensVenda{
-    background-color: white;
-    height: 86%;
-    z-index: 1080;
-}
-.Direita{
-    text-align: right;
-    margin-right: 5px;
-}
-.ListaDeMuvementos{
-    border-bottom: 1px solid #f1f1f1f9;
-}
-.ListaDeMuvementos:nth-child(even){
-    background-color: #fcfcfcf9;
-}
-.ListaDeMuvementos:hover{
-    background-color: #f9f9f9f9;
-    cursor: pointer;
-}
-.ListaDeMuvementos div{
-    width: 18.75%;
-    padding: 5px;
-    font: 10pt arial;
-    font-weight: bold;
-}
-.titleOrden div{
-    width: 18.75%;
-    border-left: 1px solid #eee;
-    padding: 5px;
-    padding-left: 5px;
-}
-.ListMuvementos:hover{
-    background-color: #e9e7e7f9;
-    cursor: pointer;
-}
-.quantidades div{
-    width: 32%;
-    margin-left: 1%;
-    display: flex;
-}
-.quantidades div strong{
-    margin-top: 5px;
-}
-.quantidades div input{
-    width: 65%;
-    padding-left: 3px;
-    border: none;
-    outline: none;
-    border-bottom: 2px solid #ddd;
-    margin-left: 5px;
-    font-weight: 600;
-}
-h3{
-    background-color: #A3498B;
-    color: white;
-}
-#ResultadoPesqusa{
-    max-height: 50%;
-    width: 25%;
-}
-#ResultadoPesqusa div{
-    width: 100%;
-    border-bottom: 1px solid #eee;
-}
-#ResultadoPesqusa div:nth-child(even){
-    background-color: #f9f9f9f9;
-}
-#ResultadoPesqusa div:hover{
-    cursor: pointer;
-    background-color: #fcfcfcf9;
+            .div_preco_qtd{
+                width: 100%;
+                margin: 10px;
+                font: 10pt arial;
+                font-weight: 500;
+                div{
+                    padding: 2px;
+                }
+                .nameProduct{
+                    max-width: 26ch;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+                .preco_qtd{
+                    width: 95%;
+                }
+            }
+        }
+    }
+
 }

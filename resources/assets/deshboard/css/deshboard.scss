@@ -1,3 +1,4 @@
+
 .nav_da_home_compra {
     z-index: 1080;
     width: 100%;
@@ -13,7 +14,7 @@
         left: 0px;
     }
     nav{
-        background: var(--appcolor);
+        background: var(--app_color);
         z-index: 1080;
         >div{
             position: relative;
@@ -29,16 +30,16 @@
                 &:hover{
                     cursor: pointer;
                     opacity: 0.8;
-                    background: var(--apphover)
+                    background: var(--app_hover)
                 }
             }
             .ListRelatorios{
                 position: absolute;
-                background-color: white;
+                background-color: var(--appBg);
                 border: 1px solid #ddd;
                 width: 200px;
                 z-index: 1080;
-
+                color: var(--textColor);
                 >div{
                     padding: 8px 15px 8px 15px;
                     font: 10pt arial !important;
@@ -68,7 +69,7 @@
             &:hover{
                 cursor: pointer;
                 opacity: 0.8;
-                background: var(--apphover)
+                background: var(--app_hover)
             }
         }
         .Usuario{

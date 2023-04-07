@@ -3,7 +3,7 @@
     <Toast/>
     <Confirmation v-if="confirm" :SmsConfirm="SmsConfirm" @Confirme="Confirme"/>
     <div class="PretedFornecedor" v-if="PretedFornecedor != null">
-        <ProdutosFornecedor @Fechar="OnMounted" :IdFornecedor="DadosFornecedor.id" v-if="PretedFornecedor == 'produtos'"/>
+        <ProdutosFornecedor @Fechar="OnMounted" :IdFornecedor="singleSupplier.id" v-if="PretedFornecedor == 'produtos'"/>
     </div>
     <div v-else class="formulario">
         <div class="formulario-header">
@@ -11,7 +11,7 @@
                 Ação
             </div>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li v-if="DadosFornecedor.estado == 0" @click="Desarquivar"><a class="dropdown-item" href="#">Desarquivar</a></li>
+                <li v-if="singleSupplier.state == 0" @click="Desarquivar"><a class="dropdown-item" href="#">Desarquivar</a></li>
                 <li v-else @click="Arquivar"><a class="dropdown-item" href="#">Arquivar</a></li>
                 <li @click="Apagar"><a class="dropdown-item" href="#">Apagar</a></li>
             </ul>
@@ -41,12 +41,11 @@
         <div class="formulario-content">
             <div class="imagem">
                 <div class="nomeCliente">
-                    <input class="Nome" :disabled="DadosFornecedor.estado == 0" type="text" v-model="DadosFornecedor.nome" placeholder="digita o nome do fornecedor"/>
-                    <input class="Empressa" placeholder="Empresa" type="text" v-model="DadosFornecedor.empresa"/>
+                    <input class="Nome" :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.name" placeholder="digita o nome do fornecedor"/>
                 </div>
 
                 <div class="img">
-                       <div class="Arquivado" v-if="DadosFornecedor.estado == 0">
+                       <div class="Arquivado" v-if="singleSupplier.state == 0">
                             <h2>ARQUIVADO</h2>
                         </div>
                         <div v-else class="icones">
@@ -76,9 +75,9 @@
                         </div>
 
                         <div class="dados-two">
-                            <input :disabled="DadosFornecedor.estado == 0" type="text" v-model="DadosFornecedor.nif" placeholder="NIF"/>
-                            <input :disabled="DadosFornecedor.estado == 0" type="text" v-model="DadosFornecedor.telefone" placeholder="Telefone"/>
-                            <input :disabled="DadosFornecedor.estado == 0" type="text" v-model="DadosFornecedor.email" placeholder="Email"/>
+                            <input :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.nif" placeholder="NIF"/>
+                            <input :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.phone" placeholder="Telefone"/>
+                            <input :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.email" placeholder="Email"/>
                         </div>
                     </div>
 
@@ -90,9 +89,9 @@
                         </div>
 
                         <div class="EnderecoContent">
-                            <input :disabled="DadosFornecedor.estado == 0" type="text" @click="SelectPais" v-model="DadosFornecedor.pais" placeholder="Pais"/>
-                            <input :disabled="DadosFornecedor.estado == 0" type="text" v-model="DadosFornecedor.cidade" placeholder="Cidade"/>
-                            <input :disabled="DadosFornecedor.estado == 0" type="text" v-model="DadosFornecedor.sede" placeholder="sede"/>
+                            <input :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.country" placeholder="Pais"/>
+                            <input :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.city" placeholder="Cidade"/>
+                            <input :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.sede" placeholder="sede"/>
                         </div>
                     </div>
                 </div>
@@ -131,7 +130,7 @@ const confirm = ref(false)
 
 const props = defineProps({
     Guardar: Boolean,
-    Dados: Object
+    supplier: Object
 });
 
 const element = reactive({
@@ -139,7 +138,7 @@ const element = reactive({
 });
 
 const Arquivar = (()=>{
-    DadosFornecedor.value.estado = 0;
+    singleSupplier.value.state = 0;
 })
 
 const Apagar = (()=>{
@@ -148,20 +147,7 @@ const Apagar = (()=>{
 })
 
 const store = useStore()
-
-const DadosFornecedor = ref({
-    nome: null,
-    empresa: null,
-    imagem: null,
-    telefone: null,
-    email: null,
-    pais: null,
-    cidade: null,
-    sede: null,
-    id: null,
-    estado: 1,
-});
-
+const singleSupplier = ref([])
 const produtos = ((event)=>{
     PretedFornecedor.value = event
 })
@@ -173,10 +159,10 @@ const PretendFornecedor = ref({
 })
 
 const OnMounted = onMounted(async ()=>{
-    if (props.Dados != null) {
-        DadosFornecedor.value = props.Dados
-        element.imagen = 'clientes/image/'+props.Dados.imagem
-        await axios.get(`/BuscarPretendFornecedor/${DadosFornecedor.value.id}`)
+    if (props.supplier != null) {
+        singleSupplier.value = props.supplier
+        element.imagen = 'clientes/image/'+props.supplier.image
+        await axios.get(`/BuscarPretendFornecedor/${singleSupplier.value.id}`)
         .then((Response) => {
             PretendFornecedor.value = Response.data
             PretendFornecedor.value.ProdutosLista = Response.data.ProdutosLista.products
@@ -188,11 +174,11 @@ const OnMounted = onMounted(async ()=>{
 })
 
 const Desarquivar = (()=>{
-    DadosFornecedor.value.estado = 1;
+    singleSupplier.value.state = 1;
 })
 
 const GuardarFornecedor = (()=>{
-    axios.post('/InserirCliente',{dados:DadosFornecedor.value})
+    axios.post('/InserirCliente',{...singleSupplier.value})
     .then((Response) => {
         store.state.GuardarCliente = false
         toaste.add({
@@ -207,7 +193,7 @@ const GuardarFornecedor = (()=>{
 })
 
 const GuardarFornecedore = (()=>{
-    axios.post('/InserirFornecedor',{dados:DadosFornecedor.value})
+    axios.post('/InserirFornecedor',{...singleSupplier.value})
     .then((Response) => {
         store.state.GuardarCliente = false
         toaste.add({
@@ -224,7 +210,7 @@ const GuardarFornecedore = (()=>{
 
 const Confirme = ((event , outro)=>{
     if (outro == 'confirmou') {
-        axios.post('/UpdatedCliente',{id: DadosFornecedor.value.id,tipo: event})
+        axios.post('/UpdatedCliente',{...singleSupplier.value.id,tipo: event})
         .then((Response) => {
             confirm.value = false
             toaste.add({
@@ -248,7 +234,7 @@ const Confirme = ((event , outro)=>{
 
 const DeletarImagem = (()=>{
     element.imagen = 'clientes/image/registro-sem-imagen.png'
-    DadosFornecedor.value.imagem = 'registro-sem-imagen.png'
+    singleSupplier.value.image = 'registro-sem-imagen.png'
 })
 
 const guardar = computed(()=>{
@@ -310,7 +296,7 @@ const createImg = (file) => {
 
   reader.onload = (e) => {
     element.imagen = e.target.result;
-    DadosFornecedor.value.imagem = element.imagen
+    singleSupplier.value.image = element.imagen
   };
   reader.readAsDataURL(file);
 };

@@ -39,8 +39,7 @@
                               <div class="clienteRows"
                                 @click="AddClient(cliente)"
                                 v-for="cliente, index in Clients.list"
-                                :key="index"
-                              >
+                                :key="index">
                                  <div>
                                     {{cliente.surname}}
                                  </div>
@@ -146,8 +145,7 @@ onMounted(()=> {
 
 const ConfirmOrder = ()=>{
     if (Invoice.value.client == null) return emits('message','Cliente Obligatorio','info')
-    if (Invoice.value.items?.length <= 0) return emits('message','Adiciona produto para poder Confirmar a encomenda','info')
-    axios.post(`ConfirmOrder/${Invoice.value.id}`)
+    axios.post(`ConfirmOrder/${Invoice.value.id}`,{...Invoice.value})
     .then((response)=>{
         if (!response.data.message) {
             Invoice.value = response.data

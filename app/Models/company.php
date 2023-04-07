@@ -10,7 +10,7 @@ class company extends Model
 {
     use HasFactory;
 
-    protected $with = ['apps','license','armagens'];
+    protected $with = ['armagens'];
 
     public function users()
     {
@@ -36,4 +36,5 @@ class company extends Model
     {
        return $this->hasMany(armagen::class);
     }
+    
 }
