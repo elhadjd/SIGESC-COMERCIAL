@@ -119,17 +119,18 @@
         margin-top: 45px;
         width: 500px;
         height: 170px;
-        background-color: white;
-        border: 1px solid #ddd;
+        background-color: var(--appBg);
+        border: 1px solid var(--borderColor);
         .Header{
             display: flex;
             align-items: center;
+            justify-content: center;
             padding: 10px;
-            border-bottom: 1px solid #ddd;
-            font: 11pt arial;
+            border-bottom: 1px solid var(--borderColor);
+            font: 11pt arial !important;
             font-weight: 600;
             height: 25%;
-            color: rgba(0, 0, 0, 0.686);
+            color: var(--textColor);
         }
         .Container{
             width: 100%;
@@ -137,11 +138,11 @@
             align-items: center;
             justify-content: space-between;
             padding: 10px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid var(--borderColor);
             font: 10pt arial;
             font-weight: 600;
             height: 50%;
-            color: rgba(0, 0, 0, 0.686);
+            color: var(--textColor);
             input[type=password]{
                 width: 100%;
                 padding: 0px !important;
@@ -155,22 +156,30 @@
             input[type=number]::-webkit-inner-spin-button {
                 -webkit-appearance: none;
             }
-
+            select{
+                width: 50%;
+                box-shadow: 0 0 0 0 !important;
+                border: none !important;
+                padding: 10px !important;
+                border-bottom: 1px solid var(--borderColor) !important;
+                border-radius: 3px;
+            }
             input[type=text]{
                 width: 45%;
                 padding: 0px !important;
                 box-shadow: 0 0 0 0 !important;
                 border: none !important;
                 padding: 0px 5px 0px 5px !important;
-                border-bottom: 1px solid #ddd !important;
+                border-bottom: 1px solid var(--borderColor) !important;
             }
+
             input[type=number]{
                 width: 45%;
                 padding: 0px !important;
                 box-shadow: 0 0 0 0 !important;
                 border: none !important;
                 padding: 0px 5px 0px 5px !important;
-                border-bottom: 1px solid #ddd !important;
+                border-bottom: 1px solid var(--borderColor)  !important;
             }
         }
         .Footer{
@@ -179,13 +188,80 @@
             justify-content: right;
             padding: 10px;
             height: 25% !important;
-            color: rgba(0, 0, 0, 0.686);
+            color: var(--textColor);
             button{
                 margin-left: 3px;
                 @include botao_normal
             }
             .Descartar{
                 @include botao_descartar
+            }
+        }
+    }
+}
+
+@mixin dropList{
+    .agrupar{
+        -webkit-user-select: none;
+        > div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            .listGroup {
+                position: absolute;
+                top: 5px;
+                height: auto;
+                overflow-y: auto;
+                width: 150px;
+                left: 0;
+                border: 1px solid var(--borderColor);
+                display: flex;
+                flex-direction: column;
+                background-color: white;
+                border-radius: 5px;
+                box-shadow: 2px 3px 4px 1px #ddd;
+
+                span {
+                    padding: 8px 10px 8px 10px;
+                    background-color: var(--appBg);
+                    cursor: pointer;
+                    font: 10pt arial;
+                    font-weight: bold;
+                    &:hover {
+                        background-color: var(--app_hover);
+                    }
+                }
+            }
+            .listGroups {
+                position: absolute;
+                top: 26px;
+                height: 100px;
+                overflow-y: auto;
+                width: 150px;
+                left: 150%;
+                border: 1px solid #f9f9f9f9;
+                display: flex;
+                flex-direction: column;
+                background-color: white;
+                border-radius: 5px;
+                &::-webkit-scrollbar-thumb {
+                    overflow-y: auto;
+                    border-radius: 5px;
+                    background-color: #dde;
+                }
+            }
+        }
+        > span {
+            border: none;
+            font: 10pt arial;
+            font-weight: 600;
+            padding: 5px 10px 5px 10px;
+            border: 1px solid var(--borderColor);
+            color: var(--textColor);
+            cursor: pointer;
+            &:hover {
+                background-color: var(--appBg);
             }
         }
     }
@@ -228,6 +304,11 @@
                     font-size: 18px;
                     font-weight: bold;
                     color: rgba(0, 0, 0, 0.67);
+                }
+                >div{
+                    display: flex;
+                    flex-direction: row;
+                    gap: .4rem
                 }
                 button{
                     @include botao_normal;

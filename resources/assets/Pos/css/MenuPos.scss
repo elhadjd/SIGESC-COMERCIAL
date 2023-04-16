@@ -7,8 +7,8 @@
         z-index: 1080 !important;
     }
     #headerPos{
-        background-color: #875A7B;
-        color: white;
+        background-color: var(--app_color);
+        color: rgb(255, 255, 255);
         width: 100%;
         height: 7.5%;
         display: grid;
@@ -47,7 +47,7 @@
                 font-weight: 500;
                 position: absolute;
                 margin-left: 10px;
-                background-color: #055160;
+                background-color: var(--bgButtons);
                 padding: 0px 10px 0px 10px;
                 border-radius: 30px;
             }
@@ -57,7 +57,7 @@
             #pos:hover{
                 cursor: pointer;
                 opacity: 0.8;
-                background-color: #5b324f80;
+                background-color: var(--app_hover);
             }
             .EntradaSaida{
                 display: flex;
@@ -68,7 +68,7 @@
                 padding: 10px;
                 &:hover{
                     cursor: pointer;
-                    background-color: #5b324f80;
+                    background-color: var(--app_hover);
                 }
                 span{
                     margin-left: 10px;
@@ -90,17 +90,16 @@
                 align-items: center;
                 .SairPos{
                     height: 100%;
-                    text-decoration: none;
-                    color: white;
                     display: flex;
                     align-items: center;
                     padding: 5px;
                     font: 18pt arial;
                     &:hover{
                         cursor: pointer;
-                        background-color: #5b324f80;
+                        background-color: var(--app_hover);
                     }
                     a{
+                        text-decoration: none;
                         color: white;
                     }
 
@@ -111,7 +110,7 @@
         }
     }
     .MenuPos{
-        background-color: white;
+        background-color: var(--appBg);
         height: 92.5%;
         width: 100%;
         display: flex;
@@ -127,7 +126,7 @@
         .Posesquerda{
             background-color: transparent;
             width: 33%;
-            border: 2px solid #ddd;
+            border: 2px solid var(--borderColor);
             height: 100%;
             z-index: 1060;
             .esquerdaCima{
@@ -139,7 +138,7 @@
                     display:block;
                     .listaPedido {
                         width: 100%;
-                        border-bottom: 1px solid #eee;
+                        border-bottom: 1px solid var(--borderColor);
                         display: flex;
                         font: 10pt arial;
                         font-weight: bold;
@@ -150,13 +149,12 @@
                             width: 25%;
                         }
                         &:nth-child(even){
-                            background-color: #f9f9f9f9;
+                            background-color: var(--buttons-hover);
                         }
                         &:hover{
                             cursor: pointer;
                             opacity: 0.8;
-                            background-color: #875A7B;
-                            color: white;
+                            background-color: var(--appBg);
                         }
                         .totalEncomeda{
                             text-align: right;
@@ -164,42 +162,34 @@
                     }
                     .TotalEncomendase{
                         display: flex;
-                        background-color: red;
                         .totalEncomenda{
                             width: 50%;
                             color: #777;
                             border-radius: 5px;
                             font-size: 25px;
                             font-weight: 600;
-                            border: 1px solid #eee;
+                            border: 1px solid var(--borderColor);
                             display: flex;
                             padding: 6px;
                             margin-top: 1%;
-                        }
-                        .posAtivo{
-                            margin-left: 35%;
-                            margin-top: 10px;
-                            color: #A3498B;
-                            font-size: 19px;
-                            font-weight: 600;
                         }
                     }
                 }
             }
             .esquerdaBaixo{
-                border: 1px solid #eee;
-                background-color: #f9f9f9f9;
+                border: 1px solid var(--borderColor);
+                background-color: var(--appBg);
                 width: 100%;
                 height: 50%;
             }
         }
         .Posdireita{
             width: 67%;
-            background-color: #f9f9f9f9;
+            background-color: var(--appBg);
             height: 100%;
             .direitaCima{
                 background-color: white;
-                border: 1px solid #eee;
+                border: 1px solid var(--borderColor);
                 padding: 10px;
                 width: 100%;
                 display: flex;
@@ -207,7 +197,7 @@
             .direitaBaixo{
                 width: 100%;
                 height: 92%;
-                background-color: #f9f9f9f9;
+                background-color: var(--appBg);
                 overflow-y: auto;
             }
         }

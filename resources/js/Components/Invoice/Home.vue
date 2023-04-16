@@ -13,7 +13,7 @@
             <NewOrder :Invoice="Invoice" @message="message" v-if="form_faturacao === 'NovaFatura'" @CancelarFatura="titulo('Ordens')" @Pagamento="Pagament"/>
             <ListInvoices @message="message" @fatura="ShowInvoice" v-if="form_faturacao === 'Ordens'" />
             <client @message="message" v-if="form_faturacao === 'Clientes'"/>
-            <Fornecedores @message="message" v-if="form_faturacao === 'Fornecedores'"/>
+            <suppliers @message="message" v-if="form_faturacao === 'Fornecedores'"/>
         </div>
     </div>
   </div>
@@ -30,7 +30,7 @@ import credits from '@/Components/Invoice/credits.vue'
 import Produtos from "@/components/products/Products.vue";
 import Pagamento from "./Payments/index.vue";
 import FormPagamento from "./Payments/FormPagamento.vue";
-import Fornecedores from '@/components/suppliers/index.vue'
+import suppliers from '@/components/suppliers/index.vue'
 import { useToast } from 'primevue/usetoast';
 
 const toast = useToast()

@@ -88,6 +88,7 @@ class compraController extends Controller
         return $this->RespondError('Este produto já foi Adicionada nessa encomenda',[]);
 
         PuchaseItem::create([
+            'quantity' => 1,
             'puchase_id' => $order,
             'produtos_id' => $request->id,
             'priceCost' => $request->preçocust,
@@ -110,6 +111,7 @@ class compraController extends Controller
         $item->totalItem = $item->finalPrice * $update['quantity'];
         $item->spent = $update['spent'];
         $item->quantity = $update['quantity'];
+        $item->priceCost = $update['priceCost'];
         $item->tax = $update['tax'];
         $item->discount = $update['discount'];
         $item->save();

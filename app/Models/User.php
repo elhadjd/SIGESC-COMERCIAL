@@ -17,6 +17,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'armagen_id',
+        'company_id',
+        'image',
+        'nivel',
+        'state',
+        'surname',
     ];
 
     protected $with = ['config','armagen'];
@@ -33,7 +39,7 @@ class User extends Authenticatable
 
     public function company()
     {
-        return $this->hasOne(company::class);
+        return $this->belongsTo(company::class);
     }
 
     function armagen()

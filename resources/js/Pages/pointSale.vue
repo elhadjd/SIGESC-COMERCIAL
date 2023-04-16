@@ -20,7 +20,6 @@
         :dados="data.dados"
       />
       <Products v-if="modul == 'Artigos'" />
-      <Fornecedores v-if="modul == 'fornecedor'" />
       <Sections
         v-if="modul == 'sessao'"
         :dados_caixa="dados_caixa"
@@ -39,7 +38,6 @@
 <script setup>
 import Products from "@/Components/products/Products.vue";
 import Cabacalho from "../Layouts/header.vue";
-import supplier from "@/components/suppliers/index.vue";
 import Sections from "@/Components/pointSale/sessions.vue";
 import { onMounted, reactive, ref } from "@vue/runtime-core";
 import MenuPdv from "@/Components/pointSale/MenuPdv.vue";
@@ -71,6 +69,7 @@ const menus = ref([
 
 const props = defineProps({
   data: Object,
+  user: Object
 });
 const toast = useToast();
 const modul = ref("Ponto de venda");
@@ -82,7 +81,7 @@ const data = reactive({
   Apps: null,
   dados: {
     caixas: props.data,
-    user: store.state.user,
+    user: props.user,
   },
 });
 

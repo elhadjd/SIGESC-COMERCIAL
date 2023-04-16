@@ -41,7 +41,7 @@
         </div>
       </div>
       <Confirm
-        :product="props.produto"
+        :product="produto.produtos"
         @Voltar="$emit('descartar')"
         @produto="OnMounted"
         class="Acao"
@@ -50,7 +50,7 @@
     <div class="Formulario">
       <form class="FormNewProd">
         <div class="guard_descart">
-          <div class="p-1 border-bottom">
+          <div  v-if="user.nivel == 'admin'" class="p-1 border-bottom">
             <div class="guardar_descartar" v-if="produto.produtos.estado != 1">
               <div v-for="item in Entradasaida.tipo" :key="item.id" @click="EntradaSaidaProd(item)">{{item.name+" de stock"}}</div>
             </div>
@@ -66,7 +66,7 @@
           <div class="h-100">
             <div class="TopProd">
               <div class="ProdutoBarraCima">
-                <div class="d-flex">
+                <div v-if="user.nivel == 'admin'" class="d-flex">
                   <div
                     v-for="item in produto.type_movements"
                     :key="item.id"
@@ -229,7 +229,7 @@
                 </div>
               </div>
             </div>
-            <InfoProd @prices="Precos" :produto="produto" />
+            <InfoProd v-if="user.nivel == 'admin'" @prices="Precos" :produto="produto" />
           </div>
         </div>
       </form>
@@ -255,6 +255,8 @@ const StateEditProd = ref(false);
 const props = defineProps({
   product: Object,
 });
+
+const user = ref([])
 
 const productType = ref([]);
 
@@ -321,6 +323,7 @@ const OnMounted = onMounted(async () => {
   await axios
     .get(`/products/${props.product.id}`)
     .then((Response) => {
+      user.value = Response.data.user
       produto.produtos = Response.data.product;
       productType.value = Response.data.product_type;
       produto.type_movements = Response.data.type_movements
@@ -361,11 +364,11 @@ const addTypeProduct = (type) => {
 };
 
 const sumQuantity = (()=>{
-    let quantity = 0;
+    produto.produtos.qtd = 0
     produto.produtos.stock.forEach(item => {
-        quantity += item.quantity
+        produto.produtos.qtd += item.quantity
     });
-    return quantity;
+    return produto.produtos.qtd;
 })
 
 const Precos = (tipo, valor) => {

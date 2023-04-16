@@ -30,8 +30,8 @@
                         <div class="cliente">
                            <div>
                               <input type="text" placeholder="Selecionar Cliente"
-                                 @click="SelectCliente" @keyup="PesquisarCliente"
-                                 :disabled="Invoice.state.trim() != 'Cotação'"
+                                 @click="SelectCliente"
+                                 :disabled="Invoice.state != 'Cotação'"
                                  :value="Invoice.client?.surname"/>
                               <!-- <i class="fa fa-plus"></i> -->
                            </div>
@@ -167,8 +167,9 @@ const CancelarFatura = () => {
 
 const PesquisarCliente = ((event)=>{
     const filter = Clients.value.store.filter((filte)=>{
-        return String(filte.apelido).toLowerCase().includes(event.target.value.toLowerCase())
+        return String(filte.surname).toLowerCase().includes(event.target.value.toLowerCase())
     })
+
     Clients.value.list = filter
 })
 

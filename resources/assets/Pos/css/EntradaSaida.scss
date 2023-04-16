@@ -12,7 +12,7 @@
     .Modal{
         width: 500px;
         height: 200px;
-        background-color: #F0EEEE;
+        background-color: var(--appBg);
         .Header{
             height: 60px;
             width: 100%;
@@ -21,18 +21,18 @@
             align-items: center;
             justify-content: space-between;
             button{
-                background-color: #d4d4d4c2;
+                background-color: var(--appBg);
                 padding: 10px 15px 10px 15px;
                 margin-right: 8px;
-                border: 1px solid #bbbbbbc2;
-                color: rgba(0, 0, 0, 0.658);
+                border: 1px solid var(--borderColor);
+                color: var(--textColor);
                 border-radius: 3px;
                 font: 11pt arial;
                 font-weight: 600;
             }
             .style{
                 transition: all 0.5s ease;
-                background-color: #6EC89B;
+                background-color: var(--bgButtons);
                 color: white;
             }
             .Input{
@@ -46,7 +46,7 @@
                     border: none;
                     outline: none;
                     border: 1px solid #bbbbbbc2;
-                    color: rgb(17, 113, 113);
+                    color: var(--app_color);
                     padding: 3px;
                     font: 20pt arial;
                     font-weight: 600;
@@ -63,9 +63,9 @@
                 height: 100%;
                 max-height: 100%;
                 min-height: 100%;
-                box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.092) !important;
+                box-shadow: 0px 10px 40px var(--box-shadow)!important;
                 border: none;
-                border: 1px solid #bbbbbbc2;
+                border: 1px solid var(--borderColor);
                 font-family: sans-serif;
                 font-weight: 600;
             }
@@ -74,7 +74,7 @@
             width: 100%;
             height: 50px;
             padding: 5px 15px 5px 5px;
-            border-top: 2px solid #bbbbbbc2;
+            border-top: 2px solid var(--borderColor);
             display: flex;
             align-items: center;
             justify-content: right;

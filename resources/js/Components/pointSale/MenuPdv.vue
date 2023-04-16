@@ -81,6 +81,15 @@ const props = defineProps({
   dados: Object,
 });
 
+const emits = defineEmits([
+    'definicaoCaixa',
+    'Caixa',
+    'sessao',
+    'CriarCaixa',
+    'AbrirCaixa',
+    'message'
+]);
+
 const modalSingle = ref({
   state: false,
   id: "",
@@ -88,7 +97,6 @@ const modalSingle = ref({
 
 const user = computed(()=> store.state.user);
 
-const emits = defineEmits(["message"]);
 
 const form = useForm({
   id_da_caixa: null,
@@ -124,6 +132,7 @@ const showOrders = (id) => {
 };
 
 const openControl = ((caixa)=>{
+    localStorage.clear()
     Inertia.post(`caixa/opiningControl`,{id:caixa})
 })
 

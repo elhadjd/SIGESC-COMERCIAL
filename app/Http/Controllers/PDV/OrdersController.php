@@ -23,6 +23,7 @@ class OrdersController extends Controller
         $listItems = $request->items;
         $methods = $request->methods;
         $session = session::find($request->session);
+
         if ($session->state != "Aberto") return $this->RespondSuccess('Erro a sessão desta Caixa esta fechar ');
         if ($listItems != null) {
 
@@ -164,7 +165,12 @@ class OrdersController extends Controller
         if ($order->print > 0) return $this->RespondInfo('Atenção esta fatura ja foi imprimida por favor contacte o administrador do sistema !!!');
         $order->print = 1;
         $order->save();
-        return $order;
+        $invoice = $order->with(['items' => function ($query) {
+            $query->with(['product' => function ($product) {
+                $product->withSum('stock', 'quantity');
+            }]);
+        }])->whereId($order->id)->first();
+        return $invoice;
     }
     public function CancelInvoice(orderPos $order)
     {
@@ -229,9 +235,9 @@ class OrdersController extends Controller
     public function getAllOrders($order = null, $colun = null)
     {
         if ($order != '') {
-            return orderPos::where($colun, 'LIKE', '%' . $order . '%')->with('session')->paginate(100);
+            return orderPos::where($colun, 'LIKE', '%' . $order . '%')->orderBy('id', 'DESC')->with('session')->paginate(100);
         } else {
-            return orderPos::with('session')->paginate(500);
+            return orderPos::with('session')->orderBy('id', 'DESC')->paginate(100);
         }
     }
 }

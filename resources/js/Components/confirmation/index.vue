@@ -2,7 +2,7 @@
   <div class="Principal">
     <div class="Modal">
         <div class="Header">
-            <h1>Confirmação</h1>
+            <strong>Confirmação</strong>
         </div>
         <div class="Container">
             {{'Deseja realmente '+message+' ?'}}

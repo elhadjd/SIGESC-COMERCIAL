@@ -15,28 +15,28 @@
     left: 0;
     right: 0;
     z-index: 1080;
-    background-color: rgba(0, 0, 0, 0.46);
+    background-color: var(--bgModal);
     display: flex;
     justify-content: center;
     align-items: center;
-    color: rgba(0, 0, 0, 0.77);
+    color: var(--textColor);
     .forme{
         height: 550px;
         width: 350px;
-        background-color: rgb(247, 247, 247);
+        background-color: var(--appBg);
         border-radius: 3px !important;
-        border: 1px solid #ddd;
+        border: 1px solid var(--borderColor);
         .Header{
             height: 50px;
             padding: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid var(--borderColor);
         }
         .Container{
             height: 450px;
-            background-color: rgb(242, 242, 242);
+            background-color: var(--appBg);
             .Items{
                 height: 75%;
                 overflow-y: auto;
@@ -46,12 +46,12 @@
                     width: 100%;
                     padding: 10px;
                     &:nth-child(even){
-                        background-color: #ddd;
+                        background-color: white;
                     }
                     &:hover{
                         cursor: pointer;
-                        background-color: rgb(16, 102, 102);
-                        color: white;
+                        background-color: var(--buttons-hover);
+                        color: var(--textColor);
                     }
                     .nomes{
                         font: 10pt arial;
@@ -72,7 +72,7 @@
             }
 
             .Total{
-                border-top: 2px solid #ddd;
+                border-top: 2px solid var(--borderColor);
                 height: 25%;
                 padding: 5px;
                 display: flex;

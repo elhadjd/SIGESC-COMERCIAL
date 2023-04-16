@@ -9,7 +9,7 @@
   <div class="Artigos">
     <label
       :class="idProd == product.id ? { shake: disabled } : ''"
-      v-for="product in produtos"
+      v-for="product in produtos.slice(0,100)"
       :key="product.id"
       class="formArtigo"
     >
@@ -20,7 +20,7 @@
               <i
                 class="fa fa-exclamation-circle"
                 style="color: red; margin-right: 5px"
-                v-if="sumQuantity(product) <= 0"
+                v-if="product.stock_sum_quantity <= 0"
                 aria-hidden="true"
               ></i>
               <i class="fa fa-info-circle" @click="ShwInfo(product)"></i>
@@ -74,8 +74,9 @@ const ShwInfo = (event) => {
   OpenInfo.value = true;
 };
 
-const OnMounted = onMounted(async () => {
-  await axios.get("/products").then((Response) => {
+const OnMounted = onMounted(() => {
+  axios.get('/products')
+    .then((Response) => {
     localStorage.setItem("produtos", JSON.stringify(Response.data));
     produtos.value = Response.data;
   });
@@ -83,7 +84,7 @@ const OnMounted = onMounted(async () => {
 
 const AddProd = (produto) => {
   if (Number(produto.preçovenda) >= produto.preçocust) {
-    if (produto.qtd <= 0) {
+    if (Number(produto.stock_sum_quantity) <= 0) {
       idProd.value = produto.id;
       disabled.value = true;
       setTimeout(() => {

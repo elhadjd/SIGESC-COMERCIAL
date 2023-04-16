@@ -143,7 +143,7 @@ const getItems = (async (rota)=>{
 
 const SearchProduct = ((event)=>{
     const FilterSearch = Produtos.value.StoreProducts.filter(object=>{
-        return object.nome.toLowerCase().includes(event.target.value.toLowerCase())
+        return String(object.nome).toLowerCase().includes(event.target.value.toLowerCase())
     })
     if (FilterSearch.length > 0) {
         Produtos.value.ListProducts = FilterSearch

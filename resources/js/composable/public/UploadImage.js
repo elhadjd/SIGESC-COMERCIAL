@@ -1,5 +1,5 @@
 export const useUploadImage = ((produto,element)=>{
-    
+
 const onFileChange = (e) => {
     var files = e.target.files || e.dataTransfer.files;
     let arquivo = files[0].name;
@@ -33,19 +33,19 @@ const onFileChange = (e) => {
       }
     }
   };
-  
+
   const createImg = (file) => {
     var imagem = new Image();
     var reader = new FileReader();
-  
+
     reader.onload = (e) => {
       element.img = e.target.result;
       produto.imagem = element.img;
     };
-  
+
     reader.readAsDataURL(file);
   };
 
   return {createImg,onFileChange}
-  
+
 })

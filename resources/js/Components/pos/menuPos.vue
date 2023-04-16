@@ -37,7 +37,7 @@
         <Pesquisar />
         <div id="UsuarioConectado">
           <div>
-            <div>{{ $store.state.user.apelido }}</div>
+            <div>{{ $store.state.user.surname }}</div>
           </div>
           <div class="SairPos">
             <Link :href="route('pontodevenda')"
@@ -195,16 +195,11 @@ const InputFocus = () => {
   store.state.PesquisarProduto = "";
 };
 
-const AlterarPedido = (event) => {
-  const VerifarEstado = Encomendas.value[event];
-  if (VerifarEstado.state != "Pago") {
+const AlterarPedido = (event,edit) => {
     localStorage.setItem("NumeroPedidos" + Pedido.value.session, event);
     ListePedidos.value = false;
     InputFocus();
-    getStore();
-  } else {
-    return menssagens("info", "Esta encomenda não pode ser alterada ");
-  }
+    getStore(edit);
 };
 
 const NovoPedido = () => {
@@ -249,7 +244,6 @@ const tipo = (event) => {
 
 const OnMounted = onMounted(async () => {
   await axios.get("/PDV/menuPos").then((Response) => {
-    // store.state.user = Response.data.User;
     method.value = Response.data.methods;
     Pedido.value.user = store.state.user;
   });
@@ -259,7 +253,7 @@ const OnMounted = onMounted(async () => {
   InputFocus();
 });
 
-const getStore = () => {
+const getStore = (edit) => {
   if (JSON.parse(localStorage.getItem("Encomendas" + Pedido.value.session))) {
     Encomendas.value = JSON.parse(
       localStorage.getItem("Encomendas" + Pedido.value.session)
@@ -268,7 +262,7 @@ const getStore = () => {
       "NumeroPedidos" + Pedido.value.session
     );
     //A verificar se esta encomenda esta paga
-    return VerificarCarrinho(Encomendas.value[Pedido.value.number]);
+    return VerificarCarrinho(Encomendas.value[Pedido.value.number],edit);
   } else {
     Pedido.value.cliente = null;
     Pedido.value.number = 0;
@@ -304,11 +298,22 @@ const SetStore = () => {
   getStore();
 };
 
-const VerificarCarrinho = (event) => {
-  if (event.state != "Pago") {
+const VerificarCarrinho = (event,edit) => {
+  if (event.state != "Pago"||edit) {
+
     if (event.items != []) {
       store.state.ClientePos = event.cliente;
-      Pedido.value.items = event.items;
+      if (edit) {
+        Pedido.value.items = []
+        event.items.forEach(item => {
+            item.product.preco_pedido = item.price_sold
+            item.product.quantidade = item.quantity
+            item.product.total = item.total
+            Pedido.value.items.push(item.product)
+        });
+      }else{
+        Pedido.value.items = event.items;
+      }
       CalcularTotal();
     }
   } else {
@@ -377,7 +382,7 @@ const AddProds = (produto) => {
       preco = existProduct.preçovenda;
     }
     var quantidad = existProduct.quantidade + 1;
-    if (existProduct.qtd >= quantidad) {
+    if (existProduct.stock_sum_quantity >= quantidad) {
 
       existProduct.quantidade += 1;
       const total = preco * existProduct.quantidade;
@@ -422,13 +427,15 @@ const Alterar = (numero) => {
     if (TipoAlteration.value === "quantidade") {
       // A verificar se tem stock suficiente
       var quantidad = Number(numeros.value);
-      if (existProduct.qtd >= quantidad) {
+      if (existProduct.stock_sum_quantity >= quantidad) {
         existProduct.quantidade = quantidad;
         const total = preco * existProduct.quantidade;
         existProduct.total = total;
         existProduct.preco_pedido = preco;
+        console.log(existProduct);
         SetStore();
       } else {
+        console.log(existProduct);
         return menssagens(
           "error",
           "Este produto ja nao ten quantidade suficiente em stock"

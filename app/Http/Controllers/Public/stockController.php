@@ -19,7 +19,10 @@ class stockController extends Controller
 
     public function get(company $company)
     {
-        return $company::find(Auth::user()->company_id);
+        return $company::find(Auth::user()->company_id)->with(['armagens' => function($armagen) {
+            $armagen->with('stock')
+            ->get();
+        }])->first();
     }
 
     public function GetAgroup()

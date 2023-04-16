@@ -7,6 +7,7 @@ use App\Models\caixa;
 use App\Models\operation_caixa_type_session;
 use App\Models\operationCaixaType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use PhpParser\Node\Stmt\Return_;
@@ -16,6 +17,7 @@ class pontoVendaController extends Controller
     public function index()
     {
         return Inertia::render('pointSale', [
+            'user' => Auth::user(),
             'data' => caixa::all()
         ]);
     }

@@ -27,7 +27,7 @@ const props = defineProps({
     Agrupar: null
 })
 
-const emits = defineEmits('ListaDefault')
+const emits = defineEmits(['ListDefault'])
 const TipoPesquisar = ref({
     colun: 'id',
     tipo: 'Id da Fatura',
@@ -49,7 +49,7 @@ onMounted(()=>{
 })
 
 const PassarLista = ((list)=>{
-    emits('ListaDefault',list)
+    emits('ListDefault',list)
 })
 
 const filtro = ((event)=>{

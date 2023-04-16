@@ -48,14 +48,12 @@ const Mostrar = ref(null);
 const store = useStore();
 const user = ref(store.state.user);
 const stateLogout = ref(false);
-
 const modulos = (event) => {
   const filter = props.menus.filter((menu) => {
     return event === menu.menu;
   });
   if (!filter[0].subMenu) return showModule(filter[0].menu);
   if (event == Mostrar.value) {
-    console.log('Nao');
     Mostrar.value = null;
   } else {
     Mostrar.value = event;
@@ -63,7 +61,7 @@ const modulos = (event) => {
 };
 
 const Sair = () => {
-  Inertia.post("/sair");
+  Inertia.post("/auth/logout");
 };
 
 const showModule = (module) => {

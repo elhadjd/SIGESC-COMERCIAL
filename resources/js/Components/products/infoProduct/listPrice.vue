@@ -31,7 +31,7 @@
       </form>
     </div>
     <div class="prices">
-      <div 
+      <div
         v-for="item in list_price" :key="item.id"
          @click="form = item"
       >
@@ -84,7 +84,7 @@ function getProduct() {
 
 function AddListPrice() {
   axios
-    .post("AddListPrice", { ...form.value })
+    .post("/AddListPrice", { ...form.value })
     .then((response) => {
       list_price.value = response.data.data.list_price
     })
@@ -94,7 +94,7 @@ function AddListPrice() {
 }
 
 function updateListPrice() {
-    axios.post(`updateListPrice/${form.value.id}/${props.product.id}`,{...form.value})
+    axios.post(`/updateListPrice/${form.value.id}/${props.product.id}`,{...form.value})
     .then((response) => {
         list_price.value = response.data.list_price
     }).catch((err) => {
@@ -104,7 +104,7 @@ function updateListPrice() {
 
 function deleteListPrice(id) {
  axios
-    .put(`DeleteListPrice/${id}/${props.product.id}`)
+    .put(`/DeleteListPrice/${id}/${props.product.id}`)
     .then((response) => {
       list_price.value = response.data.data.list_price
     })

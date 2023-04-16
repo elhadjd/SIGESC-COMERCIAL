@@ -14,7 +14,7 @@
 				@message="message"
 				v-if="modul.active == 'users'"
 			/>
-			<NewUser
+			<new-user
 				@message="message"
 				@Users="modul.active = 'users'"
 				v-if="modul.active == 'NewUser'"
@@ -43,7 +43,7 @@ import { onMounted, ref } from '@vue/runtime-core';
 
 import home from '@/Components/Config/Home.vue'
 import users from '@/Components/Config/user/Index.vue'
-import NewUser from '@/components/Config/user/NewUser.vue'
+import newUser from '@/Components/Config/user/NewUser.vue'
 import { useToast } from 'primevue/usetoast';
 // import License from '@/components/Config/license/index.vue'
 import { Inertia } from '@inertiajs/inertia';
@@ -58,7 +58,7 @@ const MostrarDrop = ref(null);
 const company = ref([]);
 
 const menus = ref([
-    { menu: "Configurações" }, 
+    { menu: "Configurações" },
     { menu: "Liseças" }
 ]);
 

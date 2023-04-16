@@ -20,22 +20,31 @@
             <div>Responsavel</div>
             <div>Total</div>
             <div>Estado</div>
+            <div>Açoes</div>
         </div>
         <div class="List">
-            <div v-for="item in ListaOrdens.slice(0,100)" :key="item.id" @mouseover="ViewPedido(item.number)" class="Items" @click="$emit('AlterarPedido',item.number)" >
+            <div v-for="item in ListaOrdens.slice(0,100)" :key="item.id" @mouseover="ViewPedido(item.number)" class="Items" @click="viewOrder(item)" >
                 <div>{{formatDate(item.created_at)}}</div>
                 <div>{{item.number}}</div>
                 <div>{{item.cliente}}</div>
                 <div>{{item.user.surname}}</div>
                 <div>{{FormatarDineiro.format(item.total)}}</div>
-                <div class="ViewPedido">{{item.state}}
+                <div>{{item.state}}</div>
+                <div class="ViewPedido">
+                    <span v-if="item.state == 'Pago'" @click="edit(item)" class="edit">Editar</span>
                     <Transition>
-                    <span @click="ShowList(item)" v-if="Mostra == item.number">Mostrar</span>
+                        <span  @click="ShowList(item)" v-if="Mostra == item.number && item.state == 'Pago'">Mostrar</span>
                     </Transition>
                 </div>
             </div>
         </div>
     </section>
+    <InvoiceCancel
+        @showOrder="viewOrder"
+        @close="invoice.state = $event" 
+        v-if="invoice.state"
+        :invoice="invoice.data"
+    />
 </div>
 </template>
 
@@ -43,25 +52,33 @@
 import { onMounted, ref } from "@vue/runtime-core";
 import ShowOrder from '@/Components/pos/MostrarPedido.vue';
 import moment from 'moment'
+import InvoiceCancel from './invoiceCancel.vue';
 const FormatarDineiro = Intl.NumberFormat('PT-AO',{style: 'currency',currency: 'AOA'})
 
 const props = defineProps({session: Number})
-
+const emits = defineEmits(['AlterarPedido']);
 const Encomendas = ref()
-
 const ListaOrdens = ref([])
-
 const MostrarLista = ref({
     estado: false,
     dados: null
 })
-
 const Pedidos = ref()
-
 const session = ref()
-
 const Mostra = ref(null)
 const ordersStore = ref()
+
+const invoice = ref({
+    data: [],
+    state: false
+})
+
+const viewOrder = ((order,edit)=>{ 
+    if (order.state != 'Pago' || edit) {
+        emits('AlterarPedido',order.number,'edit')
+        invoice.value.state = false
+    }
+})
 
 const ViewPedido = ((event)=>{
     Mostra.value = event
@@ -82,9 +99,13 @@ const search = ((event)=>{
     const filter = ordersStore.value.filter((item)=>{
         return String(item.id).includes(event.target.value)
     })
-
     ListaOrdens.value = filter
     ListaOrdens.value.reverse()
+})
+
+const edit = ((item)=>{
+    invoice.value.data = item
+    invoice.value.state = true
 })
 
 const OnMounted = onMounted(() => {

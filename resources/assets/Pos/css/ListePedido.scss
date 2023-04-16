@@ -4,8 +4,8 @@
     .Header{
         height: 15%;
         width: 100%;
-        background-color: white;
-        border-bottom: 1px solid #ddd;
+        background-color: var(--appBg);
+        border-bottom: 1px solid var(--borderColor);
         display: flex;
         justify-content: space-between;
         justify-content: center;
@@ -42,15 +42,15 @@
         @include scroll;
         .Titles{
             display: grid;
-            grid-template-columns: repeat(6,1fr);
-            background-color: rgb(169, 169, 169);
+            grid-template-columns: repeat(7,1fr);
+            background-color: var(--buttons-hover);
             div{
                 width: 100%;
                 padding: 10px;
-                border-left: 1px solid rgb(177, 177, 177);
+                border-left: 1px solid var(--borderColor);
                 font: 11pt arial;
                 font-weight: 600;
-                color: #666;
+                color: var(--textColor);
             }
         }
         .List{
@@ -58,23 +58,24 @@
             height: auto;
             min-height: 92%;
             max-height: 93%;
+            background-color: var(--appBg);
             .Items{
                 display: grid;
-                grid-template-columns: repeat(6, 1fr);
-                color: #666;
+                grid-template-columns: repeat(7, 1fr);
+                color: var(--textColor);
                 width: 100%;
                 padding: 5px;
                 font: 10pt arial;
                 font-weight: 600;
                 &:nth-child(even){
-                    background-color: rgb(238, 238, 238);
+                    background-color: var(--buttons-hover);
                 }
                 &:hover{
-                    background-color: #055160;
+                    background-color: var(--textColor);
                     color: white;
                     span{
                         cursor: pointer;
-                        background-color: #6EC89B !important;
+                        background-color: var(--app_color) !important;
                         color: white !important;
                     }
                 }
@@ -89,14 +90,17 @@
                         font: 9pt arial;
                         padding: 1px 5px 1px 5px;
                         border-radius: 5px;
-                        background-color: #055160;
+                        background-color: var(--app_color);
                         color: white;
+                    }
+                    .edit{
+                        background-color: var(--buttons-hover);
                     }
                     .v-enter-active,
                     .v-leave-active {
                       transition: opacity 0.5s ease;
                     }
-                    
+
                     .v-enter-from,
                     .v-leave-to {
                       opacity: 0;

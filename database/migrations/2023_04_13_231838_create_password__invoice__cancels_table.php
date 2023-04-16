@@ -11,20 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('password__invoice__cancels', function (Blueprint $table) {
             $table->id();
-            $table->string('surname');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies');
-            $table->unsignedBigInteger('armagen_id');
-            $table->foreign('armagen_id')->references('id')->on('armagens');
-            $table->string('name');
-            $table->string('email');
-            $table->string('image');
-            $table->enum('nivel',['user','admin'])->default('admin');
             $table->string('password');
-            $table->string('password_invoice_cancel')->nullable();
-            $table->enum('state',['active','inactive'])->default('active');
             $table->timestamps();
         });
     }
@@ -34,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('password__invoice__cancels');
     }
 };

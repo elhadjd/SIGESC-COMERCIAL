@@ -4,7 +4,7 @@
     left: 0;
     bottom: 0;
     position: absolute;
-    background-color: rgba(146, 146, 146, 0.226);
+    background-color: var(--bgModal);
     z-index: 1060;
 
     .formulario-content {
@@ -17,7 +17,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: rgba(80, 80, 80, 0.16);
+            background-color: var(--bgModal);
 
             i {
                 width: 100%;
@@ -32,17 +32,17 @@
             padding: 20px;
             width: 67%;
             height: 93.4vh;
-            background-color: rgb(235, 235, 235);
+            background-color: var(--appBg);
 
             .Container {
                 padding: 0;
-                border: 2px dotted #ddd;
+                border: 2px dotted var(--borderColor);
                 width: 100%;
                 height: 100%;
 
                 .buttons {
                     height: 14%;
-                    border-bottom: 2px dotted #ddd;
+                    border-bottom: 2px dotted  var(--borderColor);
 
                     div {
                         padding: 8px;
@@ -55,20 +55,22 @@
                         }
 
                         button {
-                            background-color: #ddd;
+                            background-color: var(--appBg);
                             padding: 4px;
-                            border: 1px solid rgb(207, 207, 207);
+                            border: 1px solid var(--borderColor);
                             width: 150px;
 
                             &:hover {
-                                background-color: rgb(207, 207, 207);
+                                background-color: var(--buttons-hover);
                             }
                         }
 
                         .Validar {
+                            background-color: var(--bgButtons);
+                            color: var(--text-form);
                             &:hover {
-                                background-color: #6EC89B;
-                                color: white;
+                                background-color: var(--buttons-hover);
+                                color: var(--textColor);
                             }
                         }
 
@@ -90,22 +92,22 @@
                     grid-template-columns: 33% 67%;
 
                     .one {
-                        border-right: 2px dotted #ddd;
+                        border-right: 2px dotted var(--borderColor);
 
                         .opcao {
                             display: flex;
                             flex-direction: column;
                             padding: 8px;
                             .methodo {
-                                background-color: #ddd;
+                                background-color: var(--buttons-hover);
                                 width: 100%;
                                 padding: 18px;
                                 margin-bottom: 1px;
-                                color: rgb(101, 101, 101);
+                                color: var(--textColor);
                                 font-family: Arial, sans-serif;
 
                                 &:hover {
-                                    background-color: rgb(235, 235, 235);
+                                    background-color: var(--appBg);
                                     cursor: pointer;
                                 }
                             }
@@ -122,7 +124,7 @@
                             #totalEncomendaPagamento {
                                 width: 100%;
                                 height: 35%;
-                                border-bottom: 2px dotted #ddd;
+                                border-bottom: 2px dotted var(--borderColor);
 
                                 .TotalEncomendas {
                                     width: 100%;
@@ -132,7 +134,7 @@
                                     align-items: center;
                                     font: 25pt arial;
                                     font-weight: 600;
-                                    color: #6EC89B;
+                                    color: var(--bgButtons);
 
                                 }
 
@@ -144,7 +146,7 @@
                                     padding: 20px;
 
                                     .troco {
-                                        color: #6EC89B;
+                                        color: var(--bgButtons);
                                     }
 
                                     .TotalCompra {
@@ -166,7 +168,7 @@
                                 .Numero {
                                     display: grid;
                                     grid-template-columns: repeat(3, 1fr);
-                                    border: 1px solid rgb(220, 220, 220);
+                                    border: 1px solid var(--borderColor);
 
                                     div {
                                         width: 100%;
@@ -174,14 +176,14 @@
                                         display: flex;
                                         align-items: center;
                                         justify-content: center;
-                                        background-color: #ddd;
-                                        border: 1px solid rgb(237, 237, 237);
-                                        color: rgb(101, 101, 101);
+                                        background-color: var(--appBg);
+                                        border: 1px solid var(--borderColor);
+                                        color: var(--textColor);
                                         font: 25px arial;
                                         font-weight: 600;
 
                                         &:hover {
-                                            background-color: rgb(236, 236, 236);
+                                            background-color: var(--buttons-hover);
                                             cursor: pointer;
                                         }
                                     }
@@ -198,15 +200,15 @@
                                         justify-content: center;
                                         align-items: center;
                                         border: 1px solid;
-                                        font: 10.5pt arial;
+                                        font: 10pt arial;
                                         font-weight: 600;
                                         width: 100%;
-                                        background-color: #ddd;
-                                        border: 1px solid rgb(236, 236, 236);
-                                        color: rgb(101, 101, 101);
+                                        background-color: var(--appBg);
+                                        border: 1px solid var(--borderColor);
+                                        color: var(--textColor);
 
                                         &:hover {
-                                            background-color: rgb(236, 236, 236);
+                                            background-color: var(--buttons-hover);
                                             cursor: pointer;
                                         }
                                     }

@@ -183,7 +183,7 @@ const exportToPDF = (()=> {
   const item = document.getElementById("Container");
   var opt = {
     margin: 0,
-    filename: Invoice.client.surname,
+    filename: Invoice.value.client?.surname,
     html2canvas: { scale: 2},
   };
 

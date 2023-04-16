@@ -19,14 +19,14 @@
         @click="
           user.nivel != 'admin' ? message() : $emit('AbrirCaixa', item.id)
         "
-        v-for="item in sessoes.session"
+        v-for="item in sessoes"
         :key="item.id"
         class="d-flex dadosSessao"
       >
         <div>
           <strong>{{ "Sessões00" + item.id }}</strong>
         </div>
-        <div>{{ sessoes.name }}</div>
+        <div>{{ "sessoes.name" }}</div>
         <div>{{ item.user.surname }}</div>
         <div>{{ formatDate(item.created_at) }}</div>
         <div>{{ formatMoney(item.cash) }}</div>

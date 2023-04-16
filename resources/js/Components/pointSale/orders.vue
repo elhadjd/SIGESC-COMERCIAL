@@ -1,6 +1,6 @@
 <template>
-  <div v-if="encomenda" class="encomenda">
-    <orderItems @message="message" @fechar="encomenda = false" :order="ListPedido" />
+  <div v-if="stateFormItems" class="encomenda">
+    <orderItems @message="message" @fechar="stateFormItems = false" :order="ListPedido" />
   </div>
   <div v-else class="w-100 DivOrdensVendas">
     <div class="h-100">
@@ -10,7 +10,7 @@
         </div>
         <div class="OrdenCimaDireita w-50">
           <KeepAlive>
-            <FiltroOrden @ListaDefault="List" :Filtros="Filtros" class="" />
+            <FiltroOrden @ListDefault="List" :Filtros="Filtros" class="" />
           </KeepAlive>
         </div>
       </div>
@@ -113,7 +113,7 @@ const ListPedido = ref();
 
 const store = useStore();
 
-const encomenda = ref(false);
+const stateFormItems = ref(false);
 
 const ListEncomenda = ref([]);
 
@@ -133,7 +133,7 @@ const formatDate = (date) => {
 };
 
 const Encomendas = (event) => {
-  encomenda.value = true;
+  stateFormItems.value = true;
   ListPedido.value = event;
 };
 

@@ -2,9 +2,9 @@
    <Transition name="bounce">
       <UpdatePassword v-if="StateUpdatePwd" @FecharModal="StateUpdatePwd = false" @message="EmitirMessagem" :user="user"/>
    </Transition>
-   <div class="Principal">
+   <div class="principal">
       <div class="Header">
-         <div class="HeaderOne">
+         <div class="Header-left">
             <h2 @click="$emit('Users')">Usuario</h2>
             <div>
                <button v-if="EstadoForm" @click="SaveUser">Guardar</button>
@@ -13,7 +13,7 @@
                <button @click="StateUpdatePwd = true" class="AtualizarSenha">Atualizar Senha</button>
             </div>
          </div>
-         <div class="HeaderTwo">
+         <div class="Header-right">
          </div>
       </div>
       <div class="Container">
@@ -22,7 +22,7 @@
                <div class="HeaderFormInputs">
                   <div class="Nome">
                      <label for="nome">Nome</label>
-                     <input :disabled="!EstadoForm" type="text" v-model="user.nome_completo" id="nome">
+                     <input :disabled="!EstadoForm" type="text" v-model="user.name" id="nome">
                   </div>
                   <div class="FormInputsFooter">
                      <div class="Email">
@@ -31,13 +31,13 @@
                      </div>
                      <div class="Email">
                         <label for="apelido">Apelido</label>
-                        <input :disabled="!EstadoForm" type="text" v-model="user.apelido" id="apelido"/>
+                        <input :disabled="!EstadoForm" type="text" v-model="user.surname" id="apelido"/>
                      </div>
                   </div>
                   <select :disabled="!EstadoForm" v-model="user.nivel" class="Nivel">
                      <option v-if="user.nivel == '' || user.nivel == null" value="">Seleciona o nivel de acesso</option>
-                     <option :selected="user.nivel == 'Administrador'" value="Administrador">Administrador</option>
-                     <option :selected="user.nivel == 'Usuario'" value="Usuario">Usuario</option>
+                     <option :selected="user.nivel == 'admin'" value="admin">Administrador</option>
+                     <option :selected="user.nivel == 'user'" value="user">Usuario</option>
                   </select>
                </div>
                <div class="Imagem">
@@ -53,9 +53,14 @@
             </div>
             <div class="ContainerFooter">
                <div class="TituloFooter">
-                  <span>Segurança</span>
+                  <span :class="step === 'password'?'active':''"
+                  @click="step = 'password'">Segurança</span>
+                  <span :class="step === 'info'?'active':''"
+                  @click="step = 'info'">Informação do usuario</span>
+                  <span :class="step === 'config'?'active':''"
+                  @click="step = 'config'">Configuração</span>
                </div>
-               <div v-if="user.id == ''" class="DivSenha">
+               <div v-if="user.id == '' && step == 'password'" class="DivSenha">
                   <div>
                      <label for="senha">Senha</label>
                      <input :disabled="!EstadoForm" v-model="senha.senha1" type="password" name="password" id="senha">
@@ -72,6 +77,8 @@
                      </ul>
                   </div>
                </div>
+               <info-user v-if="step === 'info'"/>
+               <config v-if="step === 'config'"/>
             </div>
          </div>
       </div>
@@ -80,6 +87,8 @@
 
 <script setup>
 import UpdatePassword from './UpdatePassword.vue'
+import infoUser from './infoUser.vue'
+import config from './config.vue'
 import {ref,reactive, onMounted} from 'vue';
 const props = defineProps({
     SingleUser: Object
@@ -87,7 +96,7 @@ const props = defineProps({
 const user = ref(props.SingleUser);
 
 const emits = defineEmits(['message']);
-
+const step = ref('password')
 const StateUpdatePwd = ref(false)
 
 const senha = reactive({
@@ -103,11 +112,12 @@ const EstadoForm = ref(false)
 
 const img = ref();
 
-onMounted(()=>{
+onMounted(async ()=>{
+    step.value = 'password'
     if (user.value.id == '') {
         EstadoForm.value = true
     }
-    img.value = 'login/image/'+user.value.imagem
+    img.value = '/login/image/'+user.value.image
 })
 
 const onFileChange = (e) => {
@@ -143,19 +153,19 @@ const onFileChange = (e) => {
 }
 
 const createImg = (file) => {
-    var imagem = new Image;
+    var image = new Image;
     var reader = new FileReader;
 
     reader.onload = (e) => {
-        user.value.imagem = e.target.result;
-        img.value = user.value.imagem
+        user.value.image = e.target.result;
+        img.value = user.value.image
     };
     reader.readAsDataURL(file);
 }
 
 const SaveUser = (()=>{
     if (user.value.id != '') {
-        return InsertUser(user.value)
+        return InsertUser(`SaveUser/${user.value.id}`,user.value)
     }
     if (senha.senha1 == "" || senha.senha1 == null || senha.senha2 == "" || senha.senha2 == null) {
        emits('message','Os campos não podem ser vázios','info')
@@ -169,7 +179,7 @@ const SaveUser = (()=>{
                 const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%*()_+^&}{:;?.])(?:([0-9a-zA-Z!@#$%;*(){}_+^&])(?!\1)){6,}$/;
                 if (regex.test(senha.senha1)) {
                     user.value.password = senha.senha1;
-                    return InsertUser(user.value)
+                    return InsertUser(`SaveUser`,user.value)
                 } else {
                     emits('message','Formato de senha invalida','info')
                 }
@@ -178,22 +188,19 @@ const SaveUser = (()=>{
     }
 })
 
-const InsertUser = ((User)=>{
-    axios.post('/SaveUser',{user:User}).then((response) => {
+const InsertUser = ((route,User)=>{
+    axios.post(route,{...User})
+    .then((response) => {
         if (response.data.tipo == "success") {
-            user.value = response.data.user
+            user.value = response.data.data
             EstadoForm.value = false
         }
-        emits('message',response.data.message,response.data.tipo)
+        emits('message',response.data.message,response.data.type)
     }).catch((erro) => {
         console.log(erro);
     });
 })
 
-const RemoveImage = () => {
-    element.imagem = '/produtos/image/produto-sem-imagen.png';
-    produto.produtos.imagem = 'produto-sem-imagen.png'
-}
 </script>
 
 <style lang="scss" scoped>

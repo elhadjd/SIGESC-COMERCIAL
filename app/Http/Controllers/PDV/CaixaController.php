@@ -30,12 +30,12 @@ class CaixaController extends Controller
     return $this->sumData($session);
   }
 
-  public function sessions(caixa $caixa)
-  {
-    return $caixa->with(['session'=>function($session){
-        $session->orderBy('id','DESC');
-    }])->first();
-  }
+
+    public function sessions(caixa $caixa)
+    {
+      return $caixa->session()->orderBy('id','desc')->limit(100)->get();
+    }
+
 
   public function sumData($session)
   {
@@ -43,7 +43,9 @@ class CaixaController extends Controller
         $payments->where('session_id', $session->id);
     }], 'amountPaid')->get();
 
-    $orders = session::withSum('orders','total')->where('id',$session->id)->first();
+    $orders = session::withSum(['orders' => function($session){
+        $session->where('state','Pago');
+    }], 'total')->whereId($session->id)->first();
 
     $operations = operationCaixaType::withSum(['operations'=>function($operations)use ($session){
         $operations->where('session_id',$session->id);

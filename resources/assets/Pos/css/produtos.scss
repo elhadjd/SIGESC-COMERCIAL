@@ -5,9 +5,10 @@
 }
 .Artigos{
     height: 100%;
+    background-color: var(--appBg);
     .formArtigo{
         width: 133px;
-        background-color: white;
+        background-color: var(--appBg);
         height: 125px;
         margin-top: 10px;
         margin-left: 8px;
@@ -15,8 +16,8 @@
         border-radius: 2px;
         padding: 5px;
         display: inline-flex;
-        color: #777;
-        border: 1px solid #eee;
+        color: var(--textColor);
+        border: 1px solid var(--borderColor);
         &:hover{
             cursor: pointer;
             opacity: 0.8;
@@ -31,8 +32,8 @@
                 left: 0;
             }
             #ProdutoPreco{
-                background-color: #055160;
-                color: white;
+                background-color: var(--buttons-hover);
+                color: var(--textColor);
                 position: absolute;
                 right: 5px;
                 font-size: 12px;

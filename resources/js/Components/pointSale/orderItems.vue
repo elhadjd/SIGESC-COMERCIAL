@@ -28,8 +28,8 @@
                 <div class="border ms-5 mt-1"></div>
                 <div class="Infos ms-4">
                   <div>{{ "Orden" + order.id }}</div>
-                  <div>{{ "Sessão" + order.session.id }}</div>
-                  <div>{{ order.session.caixa.name }}</div>
+                  <div>{{ "Sessão" + order.session?.id }}</div>
+                  <div>{{ order.session.caixa?.name }}</div>
                   <div>{{ order.cliente }}</div>
                 </div>
               </div>
@@ -48,7 +48,7 @@
                 :key="item.id"
                 class="d-flex ListPedidos text-secondary"
               >
-                <div class="w-25">{{ item.product.nome }}</div>
+                <div class="w-25">{{ item.product?.nome }}</div>
                 <div class="text-end">{{ item.quantity + "Un(s)" }}</div>
                 <div class="text-end">
                   {{ FormatDinheiro.format(item.price_sold) }}
@@ -62,7 +62,7 @@
               <div class="d-flex Totaless w-25">
                 <div class="TitleTotaies w-50">
                   <div>Total :</div>
-                  <div v-for="item in order.payments" :key="item.id">{{item.method.name}} :</div>
+                  <div v-for="item in order.payments" :key="item.id">{{item.method?.name}} :</div>
                   <div>Troco :</div>
                   <div>Margin :</div>
                 </div>
@@ -71,7 +71,7 @@
                     {{ FormatDinheiro.format(order.total) }}
                   </div>
                   <div v-for="payment in order.payments" :key="payment.id">{{formatMoney(payment.amountPaid)}}</div>
-                  <div v-html="changes()"></div>
+                  <div>{{change}}</div>
                   <div>{{ FormatDinheiro.format(order.total - order.total_costs ) }}</div>
                 </div>
               </div>
@@ -85,14 +85,12 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref, toRefs } from "@vue/runtime-core";
+import { onMounted, reactive, ref } from "@vue/runtime-core";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 
 const props = defineProps({
-  order: {
-    default:() => Object
-  }
+  order: Object
 });
 
 const order = ref(props.order);
@@ -100,7 +98,7 @@ const order = ref(props.order);
 const amountPaid = ref(0)
 
 const emits = defineEmits(['fechar','message']);
-
+const change = ref(0)
 const toast = useToast();
 
 const FormatDinheiro = new Intl.NumberFormat("pt-AO", {
@@ -108,13 +106,17 @@ const FormatDinheiro = new Intl.NumberFormat("pt-AO", {
   currency: "AOA",
 });
 
+onMounted(()=>{
+    changes()
+})
+
 const changes = (()=>{
     amountPaid.value = 0
     props.order.payments.forEach((amount)=>{
         amountPaid.value += Number(amount.amountPaid)
     })
-    
-    return FormatDinheiro.format(Number(amountPaid.value) - Number(props.order.total))
+
+    change.value = FormatDinheiro.format(Number(amountPaid.value) - Number(props.order.total))
 })
 
 const DevolverFatura = () => {

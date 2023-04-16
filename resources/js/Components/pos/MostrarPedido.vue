@@ -7,7 +7,7 @@
         <div class="Container">
             <div class="Items">
                 <div class="Lista" v-for="item in data.items" :key="item.id">
-                    <div class="nomes">{{item.product.name}}</div>
+                    <div class="nomes">{{item.product.nome}}</div>
                     <div class="Quantidade">
                         <div>{{item.quantity+',00Unidades(s)'}}</div>
                         <div>{{FormatarDineiro.format(item.price_sold)}}</div>
@@ -25,20 +25,28 @@
                 <div class="valores">
                     <div>{{FormatarDineiro.format(data.total)}}</div>
                     <div v-for="method in data.payments" :key="method.id">{{FormatarDineiro.format(method.amountPaid)}}</div>
-                    <div>{{changes()}}</div>
+                    <div>{{change}}</div>
                 </div>
             </div>
         </div>
         <div class="Footer">
-            <button class="PedirReembolso">Pedir devolução</button>
+            <button class="PedirReembolso" @click="invoice.state = true">Pedir devolução</button>
             <button @click="$emit('fechar')" class="Fechar">Fechar</button>
         </div>
     </div>
+    
+    <InvoiceCancel 
+        @close="invoice.state = $event" 
+        v-if="invoice.state"
+        :invoice="data"
+    />
   </div>
+
 </template>
 
 <script setup>
-import { onMounted } from "@vue/runtime-core";
+import InvoiceCancel from './invoiceCancel.vue';
+import { onMounted, reactive, ref } from "@vue/runtime-core";
 
 const FormatarDineiro = new Intl.NumberFormat('PT-AO',{style: 'currency',currency: 'AOA'})
 
@@ -46,14 +54,24 @@ const props = defineProps({
     dados: Object
 });
 
-const data = props.dados
+const invoice = reactive({
+    state:false
+});
+
+const data = ref(props.dados)
+
+const change = ref(0);
+
+onMounted(()=>{
+    changes()
+})
 
 const changes = (()=>{
     let amountPaid = 0
-    data.payments.forEach((amount)=>{
+    data.value.payments.forEach((amount)=>{
         amountPaid += Number(amount.amountPaid)
     })
-    return FormatarDineiro.format(Number(amountPaid) - Number(data.total))
+    change.value = FormatarDineiro.format(Number(amountPaid) - Number(data.value.total))
 })
 
 </script>

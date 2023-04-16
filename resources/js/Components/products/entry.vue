@@ -142,6 +142,7 @@ const getArmagens = (()=>{
 
 const Confirmar = () => {
   if (form.quantity != 0) {
+    if (form.armagen_id == null) return message('seleciona um armagem para continuar','info')
     form.produtos_id = product.value.id;
     ShowModal.value = true;
     axios
@@ -155,19 +156,9 @@ const Confirmar = () => {
           }
           emits("fechar");
           emits("Confirmar");
-          toast.add({
-            severity: "success",
-            summary: "menssagem",
-            detail: "Operação concluida",
-            life: 5000,
-          });
+          message("Operação concluida","success")
         } else {
-          toast.add({
-            severity: "info",
-            summary: "menssagem",
-            detail: Response.data.message,
-            life: 5000,
-          });
+          message(Response.data.message,"info")
         }
         ShowModal.value = false;
       })
@@ -175,14 +166,17 @@ const Confirmar = () => {
         console.log(err);
       });
   } else {
-    toast.add({
-      severity: "info",
-      summary: "menssagem",
-      detail: "A campo quantidade não pode ficar vazio",
-      life: 5000,
-    });
+    message("A campo quantidade não pode ficar vazio","info")
   }
 };
+const message = ((message,type)=>{
+    toast.add({
+      severity: type,
+      summary: "menssagem",
+      detail: message,
+      life: 5000,
+    });
+})
 </script>
 
 <style scoped lang="scss">

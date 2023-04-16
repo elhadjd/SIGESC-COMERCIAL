@@ -5,7 +5,7 @@
             <Addbox @message="message" @Close="caixa.state = false" @Confirmou="BoxConfirm" v-if="caixa.state" :product="caixa.artigo"/>
             <div class="NewProduct" v-if="ModalProduct.state">
                <div class="Modal">
-                  <Product :produto="ModalProduct.produto" @Guardar="SelecionarProduto"/>
+                  <Product :product="ModalProduct.produto" @Guardar="SelectProduct"/>
                </div>
             </div>
          </div>
@@ -95,7 +95,7 @@
                     class="d-flex"
                 >
                     {{produto.nome}}
-                     <div v-if="produto.qtd <= 0"  class="StockEsgatado">
+                     <div v-if="produto.stock_sum_quantity <= 0"  class="StockEsgatado">
                         <i class="fa fa-info-circle text-danger" aria-hidden="true"></i>
                      </div>
                   </div>
@@ -188,9 +188,10 @@ const OnMounted = onMounted(() => {
     requestGet(`getPurchases/${props.id_order}`)
 })
 
+
 const NewProduct = (() => {
    if (produto.value.nome != '' && produto.value.nome != null) {
-      requestPost(`NewProduct/${produto.value.nome}`, order.value.id)
+      requestPost(`/new_product/${produto.value.nome}`)
    } else {
       emits('message', 'Não pode adicionar um produto com nome vazio ', 'info')
    }
@@ -211,7 +212,7 @@ const SelectProduct = (event) => {
    if (!Verificar) {
       produto.value.state = false
       event.idOrdem = order.value.id
-      requestPost(`AddItemPuchase/${props.id_order}`, event)
+      requestPost(`AddItemPuchase/${props.id_order}`,event)
    } else {
       message('Este produto ja encontra na encomenda ', 'info')
    }
@@ -229,7 +230,7 @@ const requestGet = (rota) => {
    })
 }
 
-const requestPost  = (route, param) => {
+const requestPost  = (route, param = null) => {
     ModalProduct.value.state = false
    axios.post(`${route}`, {...param}).then((Response) => {
       order.value = Response.data
@@ -261,7 +262,7 @@ const DeleteItem = ((id) => {
 
 const Pesquisar = ((event) => {
    const filtrar = produto.value.store.filter(object => {
-      return object.nome.toLowerCase().includes(event.target.value.toLowerCase(), 0)
+      return String(object.nome).toLowerCase().includes(event.target.value.toLowerCase(), 0)
    })
    if (filtrar.length != 0) {
       produto.value.lista = filtrar
@@ -282,7 +283,7 @@ const BoxConfirm = ((item) => {
 })
 
 const CreateUpdateProduct = (() => {
-   axios.get(`/novo_produto`)
+   axios.post(`/new_product/${produto.value.nome}`)
       .then((Response) => {
          ModalProduct.value.produto = Response.data.produto
          ModalProduct.value.state = true

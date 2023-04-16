@@ -17,14 +17,14 @@
     <div class="Container">
       <div class="Content">
         <Link
-          v-for="app in props.data.apps"
+          v-for="app in props.data.license.app_license"
           :key="app.id"
-          :href="route(app.name)"
+          :href="route(app.apps.name)"
         >
           <div>
-            <img :src="'/login/image/' + app.image" alt="" />
+            <img :src="'/login/image/' + app.apps.image" alt="" />
           </div>
-          <span class="name_app">{{ app.name }}</span>
+          <span class="name_app">{{ app.apps.name }}</span>
         </Link>
       </div>
     </div>

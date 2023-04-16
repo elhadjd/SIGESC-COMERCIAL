@@ -17,7 +17,13 @@ watch(()=>bus.value.get('EncerrarSessao'), (payload) => {
     store.commit('CloseCash',false)
 })
 const props = defineProps({
+    user: Object,
+    data: Object,
     session: Object
+})
+
+onMounted(()=>{
+    store.commit('ArmazenarDados',props)
 })
 const session = ref(props.session)
 

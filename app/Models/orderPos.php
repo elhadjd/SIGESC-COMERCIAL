@@ -41,6 +41,11 @@ class orderPos extends Model
         return $this->hasMany(ItemOrder::class,'order_id');
     }
 
+    public function movement(): HasMany
+    {
+        return $this->hasMany(movement_type_produtos::class);
+    }
+
     public function session(): BelongsTo
     {
         return $this->belongsTo(session::class);

@@ -24,16 +24,15 @@ class productsController extends Controller
 
     public function get()
     {
-        if (Auth::user()->nivel != 'admin') return $this->RespondError('Atenção Usuario não autorizado',[]);
-        $product = produtos::withSum('stock','quantity')->get();
+        $product = produtos::withSum('stock','quantity')->where('estado','active')->get();
         return $product;
 
     }
 
     public function create(produtos $produtos)
     {
-       $product = $produtos::create([
-            'company_id' => Auth::user()->company_id,
+        $product = $produtos::create([
+            'company_id' => Auth::user()->company_id
         ]);
         return $this->show(produtos::find($product->id));
     }
@@ -50,6 +49,7 @@ class productsController extends Controller
         }
 
         return response()->json([
+            'user'=> Auth::user(),
             'product' => $product,
             'type_movements' =>  $type_movements,
             'suppliers' => fornecedore::all(),
@@ -94,8 +94,9 @@ class productsController extends Controller
         return produtos::all();
     }
 
-    public function delete()
+    public function deleteProduct(produtos $product)
     {
-
+        $product->estado = 'inactive';
+        $product->save();
     }
 }

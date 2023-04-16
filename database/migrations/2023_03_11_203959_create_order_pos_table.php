@@ -20,7 +20,7 @@ return new class extends Migration
             $table->float('total')->nullable();
             $table->float('total_costs')->nullable();
             $table->string('cliente')->nullable();
-            $table->enum('state',['Pago','Anulado'])->default('Pago');
+            $table->enum('state',['Pago','Anulado','Pendente'])->default('Pago');
             $table->integer('number')->nullable();
             $table->integer('print')->nullable();
             $table->timestamps();

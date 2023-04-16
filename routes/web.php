@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'Dashboard'])->name('dashboard');
 
     Route::prefix('PDV')->group(function () {
+
         Route::controller(pontoVendaController::class)->group(function () {
             Route::get('Home', 'Index')->name('pontodevenda');
             Route::get('getOperation','getOperation');
@@ -70,18 +71,14 @@ Route::middleware('auth')->group(function () {
             });
         });
 
-        Route::controller(ListPriceController::class)->group(function () {
-            Route::post('AddListPrice', 'create');
-            Route::put('DeleteListPrice/{id}/{product}','destroy');
-            Route::post('updateListPrice/{listPrice}/{product}','update');
-        });
-
         Route::controller(PointSaleController::class)->group(function(){
             Route::get('Pos/{caixa}','index')->name('pos');
             Route::get('menuPos','menuPos');
             Route::get('getTypeOperation','getTypeOperation');
             Route::post('addOperation','addOperation');
             Route::post('PasswordCash/{session}','PasswordCash');
+            Route::post('get/CancelInvoice/{user}/{invoice}','CancelInvoice');
+            Route::get('getUsersAuthorized','getUsersAuthorized');
         });
 
         Route::controller(OrdersController::class)->group(function()
@@ -117,7 +114,12 @@ Route::middleware('auth')->group(function () {
             Route::get('Home', 'Index')->name('configuracoes');
             Route::get('getConfig','getConfig');
             Route::get('users','users');
+            Route::post('SaveUser/{user?}','SaveUser');
         });
+    });
+
+    Route::controller(configController::class)->group(function () {
+        Route::post('/UpdatePassword/{user}', 'UpdatePassword');
     });
 
 
@@ -125,7 +127,7 @@ Route::middleware('auth')->group(function () {
         Route::controller(faturacaoController::class)->group(function () {
             Route::get('Home', 'Index')->name('faturacao');
             Route::get('getInvoices','getInvoices');
-            Route::post('NewOrder','NewOrder');
+            Route::post('NewOrder/{name?}','NewOrder');
             Route::get('/getItems/{invoice?}','getInvoices');
             Route::post('AddItem/{product}/{invoice}','AddItem');
             Route::delete('deleteItem/{invoice}/{item}','deleteItem');
@@ -134,6 +136,12 @@ Route::middleware('auth')->group(function () {
             Route::post('/ConfirmOrder/{invoice}','ConfirmOrder');
             Route::post('InvoicePayment/{invoice}','InvoicePayment');
         });
+    });
+
+    Route::controller(ListPriceController::class)->group(function () {
+        Route::post('AddListPrice', 'create');
+        Route::put('DeleteListPrice/{id}/{product}','destroy');
+        Route::post('updateListPrice/{listPrice}/{product}','update');
     });
 
     Route::prefix('Stock')->group(function () {
@@ -160,9 +168,10 @@ Route::middleware('auth')->group(function () {
     Route::controller(productsController::class)->group(function () {
         Route::get('/products', 'get');
         Route::get('/products/{product}', 'show');
-        Route::post('/new_product', 'create');
+        Route::post('/new_product/{name?}', 'create');
         Route::post('/update/{product}', 'update');
         Route::post('/saveCategory/{product}/{category?}', 'addCategoryProduct');
+        Route::delete('/deleteProduct/{product}','deleteProduct');
     });
 
     Route::controller(clientsController::class)->group(function () {
@@ -184,6 +193,8 @@ Route::middleware('auth')->group(function () {
         Route::get('getPayments/{invoice}','getPayments');
         Route::get('getPayments','getPaymentOrders');
     });
+
+
 
 
 });
