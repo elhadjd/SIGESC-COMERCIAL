@@ -15,7 +15,7 @@
             <i class="pi pi-search" />
             <input
                 type="text"
-                @keyup="PesquisarCliente"
+                @keyup="searchClient"
                 placeholder="pesquisa aqui..."
             />
         </span>
@@ -24,7 +24,7 @@
     </div>
 
     <div class="Container">
-      <NovoClientes
+      <newClient
         v-if="estadoFormulario"
         @voltar="Descartar"
         :Dados="Dados"
@@ -37,17 +37,17 @@
           @click="mostrarDetalhesCompleto(item)"
           :key="item.id"
         >
-          <div class="FormClient">
-            <div>
-              <img :src="'/Clientes/image/' + item.image" />
-            </div>
+            <div class="FormClient">
+                <div>
+                    <img :src="'/Clientes/image/' + item.image" />
+                </div>
 
-            <div>
-              <strong>{{ item.surname }}</strong>
-              <p>{{ item.email }}</p>
-              <p>{{ item.phone }}</p>
+                <div>
+                    <span>{{ item.surname }}</span>
+                    <p>{{ item.email }}</p>
+                    <p>{{ item.phone }}</p>
+                </div>
             </div>
-          </div>
         </label>
       </div>
     </div>
@@ -57,7 +57,7 @@
 <script setup>
 import axios from "axios";
 import { onMounted, ref, reactive, watch, computed } from "vue";
-import NovoClientes from "@/components/Clients/NovoCliente.vue";
+import newClient from '@/Components/clients/NovoCliente.vue'
 import { useStore } from "vuex";
 
 const store = useStore();
@@ -77,8 +77,15 @@ const Descartar = () => {
 };
 
 const NovoCliente = () => {
-  Dados.value = null;
-  estadoFormulario.value = true;
+
+    axios
+    .post("/createClient")
+    .then((response) => {
+        mostrarDetalhesCompleto(response.data)
+    })
+    .catch((erro) => {
+      console.log(erro);
+    });
 };
 
 const onMountede = onMounted(async () => {
@@ -103,27 +110,15 @@ const Guardar = computed(() => {
   return store.state.GuardarCliente;
 });
 
-const PesquisarCliente = (event) => {
-  if (event.target.value.length === 2) {
-    axios
-      .post("/cliente", { faturacao: event.target.value })
-      .then((Response) => {
-        client.value.list = Response.data;
-        client.value.store = Response.data
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  } else if (event.target.value.length >= 3) {
-    var liste = lista.value;
-    const NovaLista = liste.filter((clientes) => {
-      return clientes.apelido.includes(event.target.value);
-    });
-    client.value.list = NovaLista;
-  } else  {
-    return onMountede();
-  }
-};
+const searchClient = ((event)=>{
+    const filter = clients.value.store.filter((item)=>{
+        return String(item.surname).toLocaleLowerCase().includes(event.target.value.toLocaleLowerCase())
+        || String(item.name).toLocaleLowerCase().includes(event.target.value.toLocaleLowerCase())
+        || String(item.email).toLocaleLowerCase().includes(event.target.value.toLocaleLowerCase())
+        || String(item.phone).toLocaleLowerCase().includes(event.target.value.toLocaleLowerCase())
+    })
+    clients.value.list = filter
+})
 
 const GuardarCliente = () => {
   store.state.GuardarCliente = true;

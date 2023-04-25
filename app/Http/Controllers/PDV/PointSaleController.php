@@ -60,6 +60,8 @@ class PointSaleController extends Controller
         ]);
     }
 
+
+
     public function PasswordCash(Request $request, session $session)
     {
         $session->load('caixa');
@@ -93,12 +95,8 @@ class PointSaleController extends Controller
         }])->whereId($invoice->id)->first();
 
         $ordersController->CancelInvoice($invoice);
-
-
-        $invoice->items()->delete();
-        $invoice->payments()->delete();
-        $invoice->movement()->delete();
-        $invoice->delete();
+        $invoice->number = 0;
+        $invoice->save();
 
         return $this->RespondSuccess('Pedido de anulação enviado com sucesso', $order);
     }

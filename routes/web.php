@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function () {
         Route::controller(PointSaleController::class)->group(function(){
             Route::get('Pos/{caixa}','index')->name('pos');
             Route::get('menuPos','menuPos');
+
             Route::get('getTypeOperation','getTypeOperation');
             Route::post('addOperation','addOperation');
             Route::post('PasswordCash/{session}','PasswordCash');
@@ -83,6 +84,7 @@ Route::middleware('auth')->group(function () {
 
         Route::controller(OrdersController::class)->group(function()
         {
+            Route::get('getOrderSingleUser/{session}','getOrderSingleUser');
             Route::post('ValidatePayment','ValidatePayment');
             Route::get('getOrders','getOrders');
             Route::put('CancelInvoice/{order}','CancelInvoice');
@@ -106,6 +108,7 @@ Route::middleware('auth')->group(function () {
             Route::delete('/deleteItem/{order}/{item}','deleteItem');
             Route::post('confirmOrder/{order}/{armagen}','confirmOrder');
             Route::post('savePayment/{order}','savePayment');
+            Route::get('/purchur/getPayments','getPayments');
         });
     });
 
@@ -115,6 +118,7 @@ Route::middleware('auth')->group(function () {
             Route::get('getConfig','getConfig');
             Route::get('users','users');
             Route::post('SaveUser/{user?}','SaveUser');
+            Route::post('saveCompany','saveCompany');
         });
     });
 
@@ -125,7 +129,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('Faturacao')->group(function () {
         Route::controller(faturacaoController::class)->group(function () {
-            Route::get('Home', 'Index')->name('faturacao');
+            Route::get('Home','Index')->name('faturacao');
             Route::get('getInvoices','getInvoices');
             Route::post('NewOrder/{name?}','NewOrder');
             Route::get('/getItems/{invoice?}','getInvoices');
@@ -155,14 +159,25 @@ Route::middleware('auth')->group(function () {
     Route::prefix('Funcionarios')->group(function () {
         Route::controller(funcionarioController::class)->group(function () {
             Route::get('Home', 'Index')->name('funcionarios');
+            Route::get('getWorkers','get');
+            Route::get('getDepartments','departments');
+            Route::post('saverWorker/{worker}','saverWorker');
+            Route::post('newWorker','newWorker');
+            Route::post('/saveDepartment','saveDepartment');
+            Route::get('AnalisWorker/{month}','AnalisWorker');
+            Route::post('saveExpense','saveExpense');
         });
     });
 
     Route::controller(suppliersController::class)->group(function () {
-        Route::get('/supplier', 'get');
-        Route::get('/supplier/{supplier}', 'show');
+        Route::get('/suppliers', 'get');
+        Route::post('/NewSupplier','create');
+        Route::get('/suppliers/{supplier}','show');
+        Route::post('/supplier/update/{supplier}','update');
         Route::post('/AddProductSupplier/{product}/{supplier}', 'AddProductSupplier');
         Route::post('/deleteSupplierProduct/{product}/{supplier}', 'deleteSupplierProduct');
+        Route::post('/deleteSupplier/{supplier}','deleteSupplier');
+        Route::get('suppliers/relations/{supplier}','relations');
     });
 
     Route::controller(productsController::class)->group(function () {
@@ -175,8 +190,12 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::controller(clientsController::class)->group(function () {
+        Route::post('createClient','createClient');
         Route::get('clients','get');
         Route::get('clients/credit','getClientsCredit');
+        Route::get('clientOrders/{client}','clientOrders');
+        Route::post('updateClient/{client}','updateClient');
+        Route::post('deleteClient/{client}','delete');
     });
 
     Route::controller(movementsController::class)->group(function(){
@@ -193,9 +212,6 @@ Route::middleware('auth')->group(function () {
         Route::get('getPayments/{invoice}','getPayments');
         Route::get('getPayments','getPaymentOrders');
     });
-
-
-
 
 });
 // });

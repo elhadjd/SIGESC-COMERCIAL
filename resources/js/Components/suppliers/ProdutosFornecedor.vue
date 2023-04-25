@@ -1,6 +1,6 @@
 <template>
 <Confirmation v-if="Confirm.estado" @Confirme="EmitConfirme" @descartou="Confirm.estado = false" :SmsConfirm="Confirm.sms"/>
-  <div class="Principal">
+<div class="Principal">
     <div class="Header">
         <div class="HeaderLeft">
             <header>Pesquisar produtos</header>
@@ -20,24 +20,24 @@
     <div class="Container">
         <label @click="MostrarProd(item)" v-for="item in ListProdust" :key="item.id" class="mx-1 mb-2 bloco_artigo" id="bloco_artigo">
             <div class="d-flex">
-                <div id="div_da_imagem"><img :src="'/produtos/image/'+item.imagem" alt="" class="rounded float-right"></div>
+                <div id="div_da_imagem"><img :src="'/produtos/image/'+item.image" class="rounded float-right"></div>
                 <div class="div_preco_qtd text-secondary">
                     <div class="NomeProduto"><strong>{{item.nome}}</strong></div>
                     <div class="d-flex">
                         <div class="preco_qtd">
                             <div><strong>Preço :</strong> {{FormetDineiro.format(item.preçovenda)}} </div>
-                            <div><strong>Stock :</strong> {{item.qtd+',00Un(s)'}}</div>
+                            <div><strong>Stock :</strong> {{item.stock_sum_quantity+',00Un(s)'}}</div>
                         </div>
                     </div>
                 </div>
-                <div><i :class="props.IdFornecedor == item.fornecedores_id ? 'fa fa-check text-warning' : 'fa fa-plus text-warning '"></i></div>
+                <div><i :class="props.IdFornecedor == item.fornecedore_id ? 'fa fa-check text-warning' : 'fa fa-plus text-warning '"></i></div>
             </div>
         </label>
     </div>
     <div class="Footer">
         <button @click="$emit('Fechar')">Fechar</button>
     </div>
-  </div>
+</div>
 </template>
 
 <script setup>
@@ -50,6 +50,7 @@ const StringPesquisa = ref()
 const FormetDineiro = Intl.NumberFormat('PT-AO',{style: 'currency',currency: 'AOA'})
 
 const ListProdust = ref([])
+const emits = defineEmits('Fechar');
 
 const ArtigosGuardados = ref()
 
@@ -90,7 +91,7 @@ const EmitConfirme = (()=>{
 })
 
 const OnMounted = onMounted(()=>{
-    axios.get(`/ProdutosFornecedor/${props.IdFornecedor}`)
+    axios.get(`/Stock/getProductAgroup/supplier/${props.IdFornecedor}`)
     .then((Response) => {
         ListProdust.value = Response.data.products
     }).catch((err) => {

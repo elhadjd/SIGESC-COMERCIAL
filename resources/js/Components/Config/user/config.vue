@@ -5,40 +5,22 @@
                 <label for="armagen">Armagen:</label>
                 <input type="text" v-model="armagens.choose.name" @click="armagens.state = !armagens.state" id="armagen" placeholder="Luanda">
                 <div class="drop" v-if="armagens.state">
-                    <span v-for="item in armagens.list" :key="item.id" @click="chooseArmagen(item)">{{item.name}}</span>
+                    <span v-for="item in armagens.armagens" :key="item.id" @click="chooseArmagen(item)">{{item.name}}</span>
                 </div>
             </div>
 
             <div class="Form-control">
                 <label for="prices">Acesso aos preços:</label>
-                <input type="checkbox" v-model="armagens.choose.name" id="prices" placeholder="Luanda">
+                <input type="checkbox" v-model="armagens.choose.name" id="prices">
             </div>
 
             <div class="Form-control">
                 <label for="quantity">Pode fazer entrada de produto:</label>
-                <input type="checkbox" v-model="armagens.choose.name" id="quantity" placeholder="Luanda">
+                <input type="checkbox" v-model="armagens.choose.name" id="quantity">
             </div>
         </div>
         <div class="Content-right">
-            <!-- <div class="Form-control">
-                <label for="country">Pais de naicimento:</label>
-                <input type="text" id="country" @keyup="searchCountry" v-model="country.choose" @click="country.state = !country.state"  placeholder="Angola">
-                <div class="drop" v-if="country.state">
-                    <span v-for="country in country.list" :key="country" @click="chooseCountry(country)">{{country.name}}</span>
-                </div>
-            </div>
-            <div class="Form-control">
-                <label for="genero">Genero:</label>
-                <input type="text" v-model="genero.choose" @click="genero.state = !genero.state" id="genero" placeholder="H">
-                <div class="drop" v-if="genero.state">
-                    <span @click="genero.choose = 'Feminino'">Feminino</span>
-                    <span @click="genero.choose = 'Masculino'">Masculino</span>
-                </div>
-            </div>
-            <div class="Form-control">
-                <label for="date">Data de naicimento:</label>
-                <input type="date" id="date" placeholder="Luanda">
-            </div> -->
+
         </div>
     </div>
 </template>
@@ -48,9 +30,10 @@ import axios, { all } from "axios";
 import { onMounted, ref } from "vue";
 const emits = defineEmits(['chooseArmagen'])
 const armagens = ref({
-    list:[],
+    armagens:[],
     state: false,
-    choose: []
+    choose: [],
+    data: []
 })
 
 onMounted(async()=>{
@@ -62,7 +45,8 @@ onMounted(async()=>{
 async function getUsers() {
     await axios.get('users')
     .then((response) => {
-        armagens.value.list = response.data.armagens;
+        armagens.value.armagens = response.data.armagens;
+        armagens.value.data = response.data;
     }).catch((err) => {
         console.log(err);
     });

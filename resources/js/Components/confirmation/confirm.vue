@@ -2,7 +2,7 @@
   <div>
     <Modal :SmsConfirm="SmsConfirm" @Confirme="Arquivado" @descartou="StateModal = false" v-if="StateModal"/>
     <section class="agrupar">
-        <span @click="state = !state" class="dropdown-toggle">Agrupar</span>
+        <span @click="state = !state" class="dropdown-toggle">Ação</span>
         <div>
             <div v-if="state" class="listGroup">
                 <span @click="deleteProduct">Apagar</span>
@@ -87,4 +87,5 @@ const Arquivado = (()=>{
 
 <style lang="scss" scoped>
 @include dropList;
+
 </style>

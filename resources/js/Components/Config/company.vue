@@ -13,21 +13,22 @@
             </div>
          </div>
       </div>
+
       <div class="Container">
          <div class="Form">
             <div class="form-container">
                <div class="Header">
                   <button>*</button>
                </div>
-               <div class="Container">
+               <div class="Content">
                   <div class="Name-Img-control">
                      <div class="form-nome">
-                        <input type="text" v-model="company.nome_de_empresa" placeholder="Nome de empresa" name="company-name">
-                        <input type="text" v-model="company.nif_empresa" placeholder="Nif de empresa" name="nif-company">
+                        <input type="text" v-model="company.name" placeholder="Nome de empresa" name="company-name">
+                        <input type="text" v-model="company.nif" placeholder="Nif de empresa" name="nif-company">
                      </div>
                      <div class="form-image">
                         <div>
-                           <img :src="image" alt="">
+                           <img :src="image.img" alt="">
                            <span>
                               <label for="image">
                                  <FontAwesomeIcon icon="fa-solid fa-pen-to-square"/>
@@ -50,16 +51,16 @@
                         </div>
                         <div class="form-Control">
                            <label for="manager">Gerente: </label>
-                           <input type="text" @click="DropShow('manager')" v-model="company.manager" name="manager" id="manager">
+                           <button type="button" @click="DropShow('manager')" id="manager">{{company.manager?.name}}</button>
                            <div class="drop"  v-if="showDrop == 'manager'">
-                              <span v-for="manager in managers" :key="manager.id" @click="selectManager(manager)">{{manager.apelido}}</span>
+                              <span v-for="manager in managers" :key="manager.id" @click="selectManager(manager)">{{manager.surname}}</span>
                            </div>
                         </div>
                      </div>
                      <div class="form-content">
                         <div class="form-Control">
                            <label for="city">Cidade: </label>
-                           <input type="text" v-model="company.cidade" name="city" id="city">
+                           <input type="text" v-model="company.city" name="city" id="city">
                         </div>
                         <div class="form-Control">
                            <label for="cede">Cede: </label>
@@ -67,7 +68,7 @@
                         </div>
                         <div class="form-Control">
                            <label for="NumHouse">Numero de casa: </label>
-                           <input type="text" v-model="company.numero_de_casa" name="NumHouse" id="NumHouse">
+                           <input type="text" v-model="company.house_number" name="NumHouse" id="NumHouse">
                         </div>
                      </div>
                   </div>
@@ -75,15 +76,7 @@
                <div class="Footer">
                   <div class="form-Control">
                      <label for="hour">Tipo de atividade comercial: </label>
-                     <input type="text" v-model="company.tipo_de_atividade" @click="DropShow('activityType')" name="hour" id="hour">
-                     <div class="drop" v-if="showDrop == 'activityType'">
-                        <span @click="selectActivityType('Loja')">Loja</span>
-                        <span @click="selectActivityType('Shopping')">Shopping</span>
-                        <span @click="selectActivityType('Restourante')">Restourante</span>
-                        <span @click="selectActivityType('Farmacia')">Farmacia</span>
-                        <span @click="selectActivityType('Pagaria')">Pagaria</span>
-                        <span @click="selectActivityType('Salao de beleza')">Salao de beleza</span>
-                     </div>
+                     <input type="text" disabled v-model="company.activity.name">
                   </div>
                </div>
             </div>
@@ -96,6 +89,7 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { onMounted, ref } from '@vue/runtime-core'
 import axios from 'axios'
+import {useUploadImage} from '@/composable/public/UploadImage'
 
 const props = defineProps({
     company: Object
@@ -104,94 +98,55 @@ const props = defineProps({
 const showDrop = ref("")
 const company = ref(props.company)
 const managers = ref([])
-const image = ref('/login/image/'+company.value.imagem)
+
+const image = ref({
+    img:'/company/image/'+company.value.image
+})
+
 const emits = defineEmits(['message','close'])
 
+const {onFileChange,createImg} = useUploadImage(company.value,image.value)
+
 onMounted(()=>{
-    axios.get('/users')
+    getUser();
+})
+
+async function getUser() {
+    await axios.get('users')
     .then((response) => {
-        filterUsersAdmin(response.data)
+        filterUsersAdmin(response.data.users)
     }).catch((err) => {
         console.log(err);
     });
-})
+}
 
 const selectManager = ((manager)=>{
     showDrop.value = ""
-    company.value.manager = manager.apelido
+    company.value.manager = manager
 })
 
 const filterUsersAdmin = ((users)=>{
     const filterUser = users.filter((user)=>{
-        return user.nivel == 'Administrador'
+        return user.nivel == 'admin'
     })
 
     managers.value = filterUser
 })
+
 const DropShow = ((drop)=>{
     if (showDrop.value == drop) return showDrop.value = ""
     showDrop.value = drop
 })
 
-const selectActivityType = ((activity)=>{
-    company.value.tipo_de_atividade = activity
-    showDrop.value = ""
-})
-
-
-const onFileChange = (e) => {
-    var files = e.target.files || e.dataTransfer.files;
-    // Verificar o formato da imagem
-    let arquivo = files[0].name;
-    let extension = arquivo.indexOf('.') < 1 ? '' : arquivo.split('.').pop();
-    if (extension == "") {
-        return false;
-    } else {
-        // verificar se este formato existe no Array
-        let formatos_permitidos = ['jpg', 'png', 'gif', 'jpeg', 'JPG', 'PNG', 'GIF', 'JPEG'];
-        let resultado = formatos_permitidos.includes(extension);
-        if (resultado == false) {
-            return false;
-        } else {
-            // Tamanho da foto em MB
-            var tamanho_maximo = 2242880
-            var fsizet = 0;
-            for (var i = 0; i <= e.target.files.length - 1; i++) {
-            // tamanho do arquivo
-            var fsize = e.target.files.item(i).size;
-            // total calculado
-            fsizet = fsizet + fsize;
-            }
-            if (fsizet > tamanho_maximo) {
-                console.log('tamanho de imagem muito grande');
-            } else {
-                createImg(files[0]);
-            }
-        }
-    }
-}
-
-const createImg = (file) => {
-    var imagem = new Image;
-    var reader = new FileReader;
-
-    reader.onload = (e) => {
-    image.value = e.target.result;
-    company.value.imagem = image.value
-    };
-
-    reader.readAsDataURL(file);
-}
-
 const RemoveImage = () => {
-    image.value = '/login/image/logo.png';
-    company.value.imagem = 'logo.png'
+    image.value.img = '/login/image/logo.png';
+    company.value.image = 'logo.png'
 }
 
 const saveCompany = (()=>{
-    axios.post('/saveCompany',{company:company.value})
+    axios.post('saveCompany',{...company.value})
     .then((response) => {
-        emits('message',response.data.message,response.data.tipo)
+        emits('message',response.data.message,response.data.type)
         emits('close')
     }).catch((err) => {
         console.log(err);

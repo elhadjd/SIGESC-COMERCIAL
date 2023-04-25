@@ -251,7 +251,9 @@ const CloseCash = () => {
     });
   } else {
     ShowModal.value = true;
-    const totalValue = Number(DadosCaixa.value.orders.orders_sum_total) + operations.value.entrada + Number(DadosCaixa.value.orders.opening) - operations.value.saida - operations.value.gasto
+    let totals = Number(DadosCaixa.value.orders.orders_sum_total) + Number(operations.value.entrada) + Number(DadosCaixa.value.orders.opening)
+    let discont = Number(operations.value.saida) + Number(operations.value.gasto)
+    const totalValue = totals - discont
     axios.post(`caixa/clossSession/${DadosCaixa.value.orders.id}`, {informado:Input.value,total:totalValue})
       .then((response) => {
         DadosCaixa.value = response.data;

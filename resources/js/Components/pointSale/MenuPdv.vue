@@ -27,7 +27,7 @@
             </div>
             <div v-if="OptionCaixa == item.id" class="options">
               <div @click="user.nivel == 'admin'
-                    ? showOrders(item.id) : $emit('message', 'info', 'Usuario sem acesso')">
+                    ? showOrders(item.session[0].id) : $emit('message', 'info', 'Usuario sem acesso')">
                 Ordens
               </div>
               <div @click="$emit('sessao', item.id)">Sessões</div>

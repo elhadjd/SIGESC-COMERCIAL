@@ -33,18 +33,18 @@
                 <div class="list_items">
                     <div class="rows" @click="showOrder(order)" v-for="order in orders" :key="order.id">
                         <div>{{order.id}}</div>
-                        <div>{{order.nome}}</div>
-                        <div>{{order.id_session}}</div>
+                        <div>{{order.session.caixa.name}}</div>
+                        <div>{{order.session_id}}</div>
                         <div>{{order.cliente}}</div>
-                        <div>{{FormatDate(order.created_at)}}</div>
-                        <div>{{order.apelido}}</div>
-                        <div class="TotalOrden">{{formatCurrency.format(order.total)}}</div>
-                        <div class="px-3">{{order.estado}}</div>
+                        <div>{{formatDate(order.created_at)}}</div>
+                        <div>{{order.user?.surname}}</div>
+                        <div class="TotalOrden">{{formatMoney(order.total)}}</div>
+                        <div class="px-3">{{order.state}}</div>
                     </div>
                 </div>
             </div>
         </div>
-        <Encomendas @fechar="OnMounted()" :ListPedido="list_order.data" v-else/>
+        <Encomendas @fechar="OnMounted()" :order="list_order.data" v-else/>
     </div>
   </div>
 </template>
@@ -75,10 +75,10 @@ const storeOrder = ref([])
 })
 
 const getOrderSingleUser = (()=>{
-    axios.get(`/getOrderSingleUser/${props.idCaixa}`)
+    axios.get(`getOrderSingleUser/${props.idCaixa}`)
     .then((response) => {
-        storeOrder.value = response.data
-        orders.value = response.data
+        storeOrder.value = response.data.data
+        orders.value = response.data.data
     }).catch((err) => {
         console.log(err);
     });

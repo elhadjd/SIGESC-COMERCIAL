@@ -67,7 +67,7 @@ const Dinheiro = Intl.NumberFormat('PT-AO',{style: 'currency',currency: 'AOA'});
 watch(()=>bus.value.get('PerquisarEncomenda'), (payloads) => {
     const payload = payloads[0]
     const FilterSearch = Orders.value.store.filter(object=>{
-        return String(object.supplier.name).toLowerCase().includes(payload.toLowerCase())
+        return String(object.supplier?.name).toLowerCase().includes(payload.toLowerCase())
         || String(object.total).includes(payload)
         || String(object.state).toLowerCase().includes(payload.toLowerCase())
     })

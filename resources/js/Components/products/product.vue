@@ -84,7 +84,7 @@
                     <div class="view_muvementos">
                       <i class="fa fa-bar-chart"></i>
                       <div class="w-100">
-                        <div>{{sumQuantity() + ",00Un(s)" }}</div>
+                        <div>{{product.stock_sum_quantity + ",00Un(s)" }}</div>
                         <strong class="TipoMuv">{{ "Stock real" }}</strong>
                       </div>
                     </div>
@@ -362,14 +362,6 @@ const addTypeProduct = (type) => {
   );
   produto.produtos.product_type_id = types[0].id;
 };
-
-const sumQuantity = (()=>{
-    produto.produtos.qtd = 0
-    produto.produtos.stock.forEach(item => {
-        produto.produtos.qtd += item.quantity
-    });
-    return produto.produtos.qtd;
-})
 
 const Precos = (tipo, valor) => {
   produto.produtos[tipo] = valor;

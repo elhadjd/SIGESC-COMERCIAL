@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\armagen;
 use App\Models\movement_type;
 use App\Models\movement_type_produtos;
+use App\Models\paymentMethod;
 use App\Models\produtos;
 use App\Models\Puchase;
 use App\Models\PuchaseItem;
@@ -201,5 +202,13 @@ class compraController extends Controller
         ]);
 
         return $this->RespondSuccess('Pagamento efectuado com sucesso',$this->Order($order));
+    }
+
+    public function getPayments(paymentMethod $paymentMethod)
+    {
+        return $paymentMethod->with(['paymentsPurchases'=>function($payments)
+        {
+            $payments->with('purchase');
+        }])->get();
     }
 }

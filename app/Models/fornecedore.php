@@ -10,8 +10,25 @@ class fornecedore extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'company_id',
+        'country',
+        'email',
+        'image',
+        'name',
+        'nif',
+        'phone',
+        'sede'
+    ];
+
     public function products()
     {
         return $this->belongsToMany(produtos::class);
     }
+
+    public function orders():HasMany
+    {
+        return $this->hasMany(Puchase::class,'fornecedor_id');
+    }
+
 }

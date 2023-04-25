@@ -191,6 +191,7 @@
     flex-direction: row;
     border-bottom: 1px solid #00000017;
     cursor: pointer;
+    padding-bottom: 10px;
     font: 10pt arial;
     font-weight: bold;
 }

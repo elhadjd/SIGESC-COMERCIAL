@@ -20,6 +20,8 @@ import { onMounted ,ref } from "@vue/runtime-core"
 
 const props = defineProps({SmsConfirm: String})
 
+const emits = defineEmits(['descartou','Confirme'])
+
 const message = ref()
 onMounted(()=>{
     message.value = props.SmsConfirm

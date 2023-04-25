@@ -59,7 +59,7 @@ onMounted(async () => {
 
 async function getSuppliers() {
   await axios
-    .get("/supplier")
+    .get("/suppliers")
     .then((Response) => {
       fornecedores.value.data = Response.data;
       fornecedores.value.store = Response.data;

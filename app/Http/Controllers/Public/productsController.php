@@ -11,6 +11,7 @@ use App\Models\movement_type;
 use App\Models\productType;
 use Illuminate\Support\Str;
 use App\Models\produtos;
+use App\Models\stock;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,7 +51,7 @@ class productsController extends Controller
 
         return response()->json([
             'user'=> Auth::user(),
-            'product' => $product,
+            'product' => $product->withSum('stock','quantity')->whereId($product->id)->first(),
             'type_movements' =>  $type_movements,
             'suppliers' => fornecedore::all(),
             'categorys' => category_product::all(),

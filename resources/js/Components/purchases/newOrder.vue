@@ -6,7 +6,7 @@
     @encomenda="order" @message="message"
     v-if="payment.state"
    />
-   <invoice v-if="StateFatura" 
+   <invoice v-if="StateFatura"
      @FecharModal="StateFatura = false"
      :Order="order"
     />
@@ -48,7 +48,7 @@
                               <label for="armagen"> seleciona armagen: </label>
                               <button type="button" id="armagen" @click="armagens.state = !armagens.state">{{order.armagen?.name}}</button>
                               <div v-if="armagens.state" class="drop">
-                                 <span 
+                                 <span
                                     v-for="armagen in armagens.list" :key="armagen.id"
                                     @click="armagenAdd(armagen)"
                                     >
@@ -147,7 +147,7 @@ const armagenAdd = (event) => {
 }
 
 const getSuppliers = (()=>{
-    axios.get(`/supplier`)
+    axios.get(`/suppliers`)
     .then((Response) => {
         suppliers.list = Response.data
         suppliers.store = Response.data

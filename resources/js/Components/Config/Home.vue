@@ -48,7 +48,7 @@
             <div class="content">
                <div @click="showCompany('company')" class="company">
                   <div class="Imagem">
-                     <img :src="'/login/image/'+company.image" >
+                     <img :src="'/company/image/'+company.image" >
                   </div>
                   <div class="name">
                      {{company.name}}
@@ -80,7 +80,6 @@ const license = ref({
 const Onmounted = onMounted(async ()=>{
    await getConfig();
    await expiration()
-   console.log(company.value);
 })
 
 async function expiration() {

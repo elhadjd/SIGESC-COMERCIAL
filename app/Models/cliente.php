@@ -10,6 +10,20 @@ class cliente extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'city',
+        'company_id',
+        'country',
+        'email',
+        'image',
+        'name',
+        'phone',
+        'rua',
+        'state',
+        'surname',
+        'whatsapp',
+    ];
+
     public function invoices():HasMany
     {
         return $this->hasMany(Invoice::class);

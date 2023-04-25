@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies');
-            $table->string('image')->nullable()->default(null);
+            $table->string('image')->default('produto-sem-imagem.png');
             $table->string('surname')->nullable()->default(null);
             $table->string('name')->nullable()->default(null);
             $table->string('email')->nullable()->default(null);

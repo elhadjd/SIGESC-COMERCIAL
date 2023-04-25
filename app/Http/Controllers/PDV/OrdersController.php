@@ -232,6 +232,11 @@ class OrdersController extends Controller
         }
     }
 
+    public function getOrderSingleUser($caixa)
+    {
+        return orderPos::where('session_id',$caixa)->with('session')->orderBy('id', 'DESC')->paginate(100);
+    }
+
     public function getAllOrders($order = null, $colun = null)
     {
         if ($order != '') {

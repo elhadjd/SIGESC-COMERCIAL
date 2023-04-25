@@ -166,6 +166,7 @@ const exportToPDF = (()=> {
     margin: 0,
     filename: invoice.value.supplier.name+"_"+invoice.value.id,
     html2canvas: { scale: 2},
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait'}
   };
 
   html2pdf().set(opt).from(item).save();

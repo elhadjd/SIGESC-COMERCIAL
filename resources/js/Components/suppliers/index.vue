@@ -1,32 +1,35 @@
 <template>
     <div class="principal">
-        <div class="header">
+        <div class="Header">
 
-            <div>
-                <h1>Fornecedores</h1>
+            <div class="Header-left">
+                <h2>Fornecedores</h2>
                 <div class="buttons" v-if="suppliers.state">
                     <button @click="GuardarFornecedor">Guardar</button>
                     <button @click="Descartar">Descartar</button>
                 </div>
-                <button @click="NovoFornecedor" v-else>Adicionar fornecedore</button>
+                <button @click="NewSupplier" v-else>Adicionar fornecedore</button>
             </div>
 
-            <div>
-                <input type="text" @keyup="PesquisarFornecedor" placeholder="pesquisa aqui..." />
+            <div v-if="!suppliers.state" class="Header-right">
+                <span>
+                    <input type="text" @keyup="PesquisarFornecedor" placeholder="pesquisa aqui..." />
+                </span>
             </div>
         </div>
 
         <div class="Container">
+
             <new-supplier v-if="suppliers.state" @voltar="Descartar" :supplier="supplier"/>
 
             <div v-else class="Clientes">
-                <label @click="showSupplier(supplier)"
+                <label
                     class="clientes"
                     v-for="supplier in suppliers.list"
-                    :key="supplier.id">
+                    :key="supplier.id" @click="showSupplier(supplier)">
                     <div class="FormClient">
                         <div>
-                            <img :src="'Clientes/image/'+supplier.image" />
+                            <img :src="'/supplier/image/'+supplier.image" />
                         </div>
 
                         <div>
@@ -35,7 +38,6 @@
                             <p>{{ supplier.phone }}</p>
                         </div>
                     </div>
-
                 </label>
             </div>
         </div>
@@ -45,7 +47,7 @@
 <script setup>
 import axios from "axios";
 import { onMounted, ref, reactive, watch, computed } from "vue";
-import newSupplier from '@/components/suppliers/NovoFornecedor.vue'
+import newSupplier from './newSupplier.vue'
 import { useStore } from "vuex";
 
 const store = useStore()
@@ -61,18 +63,26 @@ const lista = ref([]);
 
 const Descartar = (()=>{
     suppliers.value.state = false
-    onMountede()
+    getSuppliers()
 })
 
-const NovoFornecedor = (()=>{
-    supplier.value = []
-    suppliers.value.state = true
+const NewSupplier = (()=>{
+    axios.post('/NewSupplier')
+    .then((response) => {
+        showSupplier(response.data)
+    }).catch((err) => {
+        console.log(err);
+    });
 })
 
 
-const onMountede = onMounted(async () => {
-  await axios
-    .get("/supplier")
+onMounted(async () => {
+ getSuppliers()
+});
+
+const getSuppliers = (async()=>{
+     await axios
+    .get("/suppliers")
     .then((response) => {
         suppliers.value.list = response.data;
         suppliers.value.store = response.data;
@@ -80,7 +90,7 @@ const onMountede = onMounted(async () => {
     .catch((erro) => {
       console.log(erro);
     });
-});
+})
 
 const showSupplier = (event) => {
     supplier.value = event
@@ -109,7 +119,7 @@ const PesquisarFornecedor = ((event)=>{
         })
         listaFornecedores.value = NovaLista
     }else if(event.target.value.length == 0){
-        return onMountede()
+        return getSuppliers()
     }
 })
 
@@ -119,7 +129,7 @@ const GuardarFornecedor = (()=>{
 
 watch(Guardar, (novo)=>{
     if (novo == false) {
-        onMountede()
+        getSuppliers()
         suppliers.value.state = false
     }
 })

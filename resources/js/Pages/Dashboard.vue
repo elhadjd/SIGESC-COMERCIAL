@@ -61,12 +61,12 @@ onMounted(() => {
   height: 100vh;
   background: radial-gradient(
       at 100% 0%,
-      rgba(59, 44, 63, 0.737) 0px,
+      var(--app_color) 0px,
       transparent 50%
     ),
-    radial-gradient(at 7% 13%, rgba(132, 123, 144, 0.42) 0px, transparent 50%),
-    radial-gradient(at 96% 94%, rgba(117, 111, 123, 0.601) 0px, transparent 50%),
-    radial-gradient(at 3% 96%, rgba(59, 44, 63, 0.521) 0px, transparent 50%);
+    radial-gradient(at 7% 13%, var(--app_hover) 0px, transparent 50%),
+    radial-gradient(at 96% 94%, var(--app_hover) 0px, transparent 50%),
+    radial-gradient(at 3% 96%, var(--app_color) 0px, transparent 50%);
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 60px 1fr;
@@ -134,15 +134,17 @@ onMounted(() => {
         width: 100%;
         height: 120px;
         list-style: none;
+        text-decoration: none;
         display: grid;
         grid-auto-columns: 1fr;
         grid-template-rows: 70% 30%;
         align-items: center;
         justify-content: center;
-        color: rgb(241, 241, 241);
+        color: var(--appBg);
         border-radius: 10px;
         &:hover {
-          background-color: rgba(255, 255, 255, 0.09);
+          background-color: var(--buttons-hover);
+          color: var(--text-form);
           img {
             transition: 0.2s;
             transition-property: all;

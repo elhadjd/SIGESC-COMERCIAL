@@ -25,7 +25,7 @@
 				v-if="modul.active == 'Liseças'"
 				@close="modul.active = modul.story"
 			/>
-			<Company
+			<companies
 				@message="message"
 				@close="modul.active = modul.story"
 				v-if="modul.active == 'company'"
@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import Company from '@/components/config/company.vue'
+import companies from '@/Components/Config/company.vue'
 import Toast from 'primevue/toast'
 import Index from '@/layouts/index.vue'
 import { onMounted, ref } from '@vue/runtime-core';

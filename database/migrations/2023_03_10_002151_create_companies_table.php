@@ -18,11 +18,13 @@ return new class extends Migration
             $table->string('nif')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->string('manager')->nullable();
             $table->string('city')->nullable();
             $table->string('sede')->nullable();
-            $table->string('house_number')->nullable();
-            $table->string('activity_type')->nullable();
+            $table->string('house_number');
+            $table->unsignedBigInteger('manager')->nullable();
+            $table->foreign('manager')->references('id')->on('users');
+            $table->unsignedBigInteger('activity_type_id')->nullable();
+            $table->foreign('activity_type_id')->references('id')->on('activity_types');
             $table->timestamps();
         });
     }

@@ -272,11 +272,11 @@ const Pesquisar = ((event) => {
 })
 
 const BoxConfirm = ((item) => {
-    console.log(order.value);
-   const Rows = order.value.items.filter(item => item.id === item.id)
+    console.log(item);
+   const Rows = order.value.items.filter(order => order.id === item.id)
 
    Rows[0].quantity = item.QuatidadeFinal
-   Rows[0].custo = item.PrecoUnidade
+   Rows[0].priceCost = item.PrecoUnidade
    Rows[0].spent = item.gasto
    caixa.state = false
    return UpdateItem(Rows[0])

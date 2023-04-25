@@ -8,7 +8,7 @@
          v-if="modulo == 'compra'" :Purchase="Purchase"/>
         <home @message="message" @modulos="showModule" v-if="modulo == 'Compras'"/>
         <suppliers v-if="modulo == 'Fornecedores'"/>
-        <Payments v-if="modulo == 'payments'"/>
+        <payments v-if="modulo == 'Pagamentos'"/>
     </div>
 </div>
 
@@ -26,6 +26,7 @@ import { useStore } from 'vuex';
 import { Inertia } from '@inertiajs/inertia';
 import suppliers from '@/Components/suppliers/index.vue'
 import Headers from '../layouts/header.vue'
+import payments from '@/components/purchases/Payments.vue'
 
 const menus = ref([
     {"menu": "Compras"},
@@ -33,15 +34,6 @@ const menus = ref([
         "subMenu": [
             {"name":"Fornecedores"},
             {"name":"Pagamentos"}
-        ]
-    },
-
-    {"menu":"Relatório",
-        "subMenu": [
-            {"name":"Orden de compra"},
-            {"name":"Relatorio"},
-            {"name":"Pagamentos"},
-            {"name":"Orden"}
         ]
     },
     {"menu": "Artigos"},
