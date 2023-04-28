@@ -2,7 +2,7 @@
  <Progress v-if="ShowModal"/>
   <div class="user-select-none formulario-pagamento">
     <Toast/>
-    <div class="formulario-content">
+    <form @submit.prevent="Validar_Pagamento" class="formulario-content">
       <div class="sessao-one">
         <i class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i>
       </div>
@@ -20,7 +20,7 @@
               </div>
 
               <div>
-                <button class="Validar" v-if="Validar" @click="Validar_Pagamento">Validar <i class="fa fa-angle-double-right"></i></button>
+                <button class="Validar" type="submit" v-if="Validar" :disabled="isSubmitting">Validar <i :class="isSubmitting ? 'fa fa-spinner fa-pulse fa-3x fa-fw' : 'fa fa-angle-double-right'"></i></button>
               </div>
             </div>
           </div>
@@ -91,7 +91,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 <script setup>
@@ -122,7 +122,7 @@ const store = useStore()
 const methodo = ref('Numerario')
 
 const FormatarDineiro = Intl.NumberFormat('PT-AO',{style: 'currency',currency: 'AOA'})
-
+const isSubmitting = ref(false)
 const mostraTotal = ref(true)
 
 const valor_entregue = ref()
@@ -247,7 +247,7 @@ const BUSCAR_RESTO = () =>{
 }
 
  const Validar_Pagamento = ()=> {
-    // ShowModal.value = true
+    isSubmitting.value = true
     Lista.value.methods = methodos.value
     if (RestoPagar.value <= 0) {
     axios.post("/PDV/ValidatePayment",Lista.value)
@@ -265,11 +265,15 @@ const BUSCAR_RESTO = () =>{
             ShowModal.value = false
         } else {
             ShowModal.value = false
-            emits('message',Response.data.type,Response.data.message)
+            emits('message',Response.data.type,'Ocorreu um erro ao enviar o formulário. Por favor, tente novamente mais tarde.')
         }
         })
         .catch(function (error) {
+
             console.log(error);
+        })
+        .finally(()=>{
+            isSubmitting.value = false
         });
     } else {
         emits('message','Info','Valor insuficiente ')

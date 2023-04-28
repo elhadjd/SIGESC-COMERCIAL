@@ -68,6 +68,9 @@
                         .Validar {
                             background-color: var(--bgButtons);
                             color: var(--text-form);
+                            i{
+                                font-size: 20px;
+                            }
                             &:hover {
                                 background-color: var(--buttons-hover);
                                 color: var(--textColor);

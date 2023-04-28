@@ -44,4 +44,10 @@ class LoginController extends Controller
           return Redirect::route('dashboard');
         }
     }
+
+
+    public function saveCompany(Request $request)
+    {
+        return $request;
+    }
 }

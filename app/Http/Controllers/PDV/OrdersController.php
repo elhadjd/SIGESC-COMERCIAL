@@ -234,7 +234,7 @@ class OrdersController extends Controller
 
     public function getOrderSingleUser($caixa)
     {
-        return orderPos::where('session_id',$caixa)->with('session')->orderBy('id', 'DESC')->paginate(100);
+        return orderPos::where('session_id',$caixa)->with('session')->orderBy('id', 'DESC')->paginate(300);
     }
 
     public function getAllOrders($order = null, $colun = null)

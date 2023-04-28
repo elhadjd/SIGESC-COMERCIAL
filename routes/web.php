@@ -19,7 +19,9 @@ use App\Http\Controllers\public\movementsController;
 use App\Http\Controllers\Public\productsController;
 use App\Http\Controllers\public\stockController;
 use App\Http\Controllers\Public\suppliersController;
+use App\Http\Controllers\StartController;
 use App\Models\produtos;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
@@ -38,16 +40,20 @@ use Illuminate\Support\Facades\URL;
 
 // Route::middleware('license')->group(function () {
 
+Route::controller(StartController::class)->group(function(){
+   Route::get('start','index');
+});
+
 Route::get('/databases', function () {
     return ([['name' => 'test'], ['name' => 'Loja2'], ['name' => 'Loja3']]);
 });
 
 Route::prefix('auth')->group(function () {
+    Route::post('/saveCompany',[LoginController::class , 'saveCompany']);
     Route::get('/login', [LoginController::class, 'index'])->name('login');
     Route::post('/logar', [LoginController::class, 'login'])->name('logar');
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 });
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'Dashboard'])->name('dashboard');
@@ -119,6 +125,7 @@ Route::middleware('auth')->group(function () {
             Route::get('users','users');
             Route::post('SaveUser/{user?}','SaveUser');
             Route::post('saveCompany','saveCompany');
+            Route::get('getActivity','getActivity');
         });
     });
 

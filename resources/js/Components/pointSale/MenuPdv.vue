@@ -127,6 +127,7 @@ const OptionCaixas = (event) => {
 };
 
 const showOrders = (id) => {
+    console.log(id);
   modalSingle.value.id = id;
   modalSingle.value.state = true;
 };

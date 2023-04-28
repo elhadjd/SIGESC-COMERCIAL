@@ -3,6 +3,20 @@ import VuexPersistence from 'vuex-persist'
 
 const store = createStore({
     state: {
+
+        start: {
+            company:{
+                name: null,
+                nif: null,
+                phone: null,
+                activity: [],
+                country: []
+            },
+            user: [],
+            step:0
+        },
+
+
         configCash: [],
         StateProgress: false,
         // variaveis formulario de faturação
@@ -44,6 +58,14 @@ const store = createStore({
         ArmazenarDados(state,payload) {
           state.Empresa = payload.data
           state.user = payload.user
+        },
+        StartSaveCompany(state,payload){
+            state.start.company = payload
+            state.start.step = 1
+        },
+        StartSaveUser(state,payload){
+            state.start.user = payload
+            state.start.step = 2
         },
         StoreConfigCash(state,payload){
             state.configCash = payload

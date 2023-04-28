@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Config;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\public\imagensController;
+use App\Models\activity_type;
 use App\Models\company;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -67,5 +68,10 @@ class configController extends Controller
         ]);
 
         return $this->respondSuccess('Dados atualizado com Sucesso');
+    }
+
+    public function getActivity()
+    {
+        return activity_type::all();
     }
 }

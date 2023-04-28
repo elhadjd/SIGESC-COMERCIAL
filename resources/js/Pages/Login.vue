@@ -1,70 +1,64 @@
 <template>
-  <Toast />
-  <Data v-if="connection.state" @closeFormData="connection.state = false" />
-  <div v-else class="container-login100">
-    <div class="wrap-login100">
-      <div
-        class="login100-form-title"
-        style="background-image: url(/login/image/bg-01.jpg)"
-      >
-        <span class="login100-form-title-1"> Identifique-se </span>
-      </div>
-
-      <form @submit.prevent="submit" class="login100-form validate-form">
-        <div
-          class="wrap-input100 validate-input m-b-26"
-          data-validate="O email e obligatorio"
-        >
-          <span class="label-input100">Email</span>
-          <input
-            class="input100"
-            type="text"
-            id="email"
-            v-model="form.email"
-            name="username"
-            placeholder="Digite seu email"
-          />
-          <span class="focus-input100"></span>
+<Toast />
+<div class='principal'>
+    <header>
+        <h1><span>S</span>ISGESC</h1>
+    </header>
+    <div class='container'>
+        <div class="info">
+            <div class='content'>
+                <div>
+                    <div><AiOutlineCheckCircle/></div>
+                    <div>
+                        <span>Comece em pouco tempo</span>
+                        <span>Integre APIs voltadas a desenvolvedores ou opte por soluções com pouco código ou predefinidas.</span>
+                    </div>
+                </div>
+                <div>
+                    <div><AiOutlineCheckCircle/></div>
+                    <div>
+                        <span>Aceite qualquer modelo de negócio</span>
+                        <span>E-commerce, assinaturas, plataformas de SaaS, marketplaces e muito mais. Tudo isso em uma plataforma unificada.</span>
+                    </div>
+                </div>
+                <div>
+                    <div><AiOutlineCheckCircle/></div>
+                    <div>
+                        <span>Junte-se a milhões de empresas</span>
+                        <span>A Sisgesc tem a confiança de empresas e startups de todos os portes.</span>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="form">
+            <form @submit.prevent="submit">
 
-        <div
-          class="wrap-input100 validate-input m-b-18"
-          data-validate="A senha e obligatorio"
-        >
-          <span class="label-input100">Senha</span>
-          <input
-            class="input100"
-            v-model="form.password"
-            id="senha"
-            type="password"
-            name="pass"
-            placeholder="Digite a sua senha"
-          />
-          <span class="focus-input100"></span>
+                <header>
+                    <span>Identifique-se</span>
+                </header>
+
+                <div class='box'>
+                    <label htmlFor="email">Email:</label>
+                    <input type="email" v-model="form.email" id='email' />
+                </div>
+
+                <div class='box'>
+                    <label htmlFor="password">Senha:</label>
+                    <input type="password" v-model="form.password" id='password' />
+                </div>
+
+                <div class='checkbox'>
+                    <input type="checkbox" name="checkbox" id="checkbox" />
+                    <label htmlFor="checkbox">Permanece connectado por uma semana</label>
+                </div>
+
+                <div class='buttons'>
+                    <button type='submit'>Entrar</button>
+                </div>
+            </form>
         </div>
-
-        <div class="flex-sb-m w-full p-b-30">
-          <div class="contact100-form-checkbox">
-            <input
-              class="input-checkbox100"
-              id="ckb1"
-              type="checkbox"
-              name="remember-me"
-            />
-            <label class="label-checkbox100" for="ckb1"> Lembre-me </label>
-          </div>
-
-          <div @click="databases" class="SelectDatabase">
-            <span>Select Database</span>
-          </div>
-        </div>
-
-        <div class="container-login100-form-btn">
-          <button class="login100-form-btn" name="submit">Entrar</button>
-        </div>
-      </form>
     </div>
-  </div>
+</div>
 </template>
 
 <script setup>
@@ -72,7 +66,6 @@ import { useForm } from "@inertiajs/vue3";
 import { onMounted, ref } from "@vue/runtime-core";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
-import Data from "../components/Data/database.vue";
 const form = useForm({
     email: null,
     password: null,
@@ -83,38 +76,13 @@ const toast = useToast();
 
 const connection = ref({
   state: false,
-  database: null,
-});
-
-const databases = () => {
-  connection.value.state = true;
-};
-
-onMounted(() => {
-  if (document.cookie.length > 0) {
-    let c_start = document.cookie.indexOf("database" + "=");
-    if (c_start != -1) {
-      c_start = c_start + "database".length + 1;
-      let c_end = document.cookie.indexOf(";", c_start);
-      if (c_end == -1) {
-        c_end = document.cookie.length;
-      }
-      connection.value.database = unescape(
-        document.cookie.substring(c_start, c_end)
-      );
-    } else {
-      connection.value.state = true;
-    }
-  } else {
-    console.log("o");
-  }
 });
 
 const submit = () => {
-  if (form.email == null) {
+  if (form.email == null || form.email == '') {
     document.querySelector("#email").style.borderBottom = "1px solid red";
-  } else if (form.password == null) {
-    document.querySelector("#senha").style.borderBottom = "1px solid red";
+  } else if (form.password == null || form.password == '') {
+    document.querySelector("#password").style.borderBottom = "1px solid red";
   } else {
     form.post("/auth/logar", {
         onSuccess: (Response) => {
@@ -130,16 +98,13 @@ const submit = () => {
 };
 </script>
 
-<style scoped>
-@import url("../../assets/login/css/login.css");
-.SelectDatabase {
-  font: 12pt arial;
-  font-weight: 600;
-  color: #714b67;
-  padding: 2px;
-}
-.SelectDatabase:hover {
-  color: #017e84;
-  cursor: pointer;
+<style scoped lang="scss">
+@import '../../assets/login/css/login';
+.form{
+    height: 150px !important;
+    .box{
+        margin-bottom: 10px !important;
+
+    }
 }
 </style>
