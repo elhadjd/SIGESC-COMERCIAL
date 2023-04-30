@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies');
-            $table->unsignedBigInteger('type_license_id');
+            $table->unsignedBigInteger('type_license_id')->nullable();
             $table->foreign('type_license_id')->references('id')->on('type_licenses');
             $table->timestamp('from');
             $table->timestamp('to');

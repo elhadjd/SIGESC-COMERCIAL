@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('armagen_id');
             $table->foreign('armagen_id')->references('id')->on('armagens');
             $table->string('name');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('image');
             $table->enum('nivel',['user','admin'])->default('admin');
             $table->string('password');

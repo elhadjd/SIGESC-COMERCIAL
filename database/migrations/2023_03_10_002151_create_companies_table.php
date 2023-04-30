@@ -15,16 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('image')->nullable();
             $table->string('name')->nullable();
-            $table->string('nif')->nullable();
+            $table->string('nif')->nullable()->unique();
             $table->string('phone')->nullable();
-            $table->string('email')->nullable();
+            $table->string('email')->nullable()->unique();
             $table->string('city')->nullable();
             $table->string('sede')->nullable();
-            $table->string('house_number');
+            $table->string('house_number')->nullable();
             $table->unsignedBigInteger('manager')->nullable();
-            $table->foreign('manager')->references('id')->on('users');
             $table->unsignedBigInteger('activity_type_id')->nullable();
-            $table->foreign('activity_type_id')->references('id')->on('activity_types');
             $table->timestamps();
         });
     }

@@ -11,7 +11,7 @@ class armagen extends Model
 
      protected $table = 'armagens';
 
-    // protected $with = ['stock'];
+    protected $fillable = ['name'];
 
     public function stock()
     {

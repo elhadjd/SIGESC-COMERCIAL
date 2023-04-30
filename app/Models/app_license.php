@@ -12,6 +12,12 @@ class app_license extends Model
 
     protected $with = ['apps'];
 
+    protected $fillable = [
+        'app_id',
+        'license_id',
+        'company_id'
+    ];
+
     public function license()
     {
         return $this->belongsTo(license::class);

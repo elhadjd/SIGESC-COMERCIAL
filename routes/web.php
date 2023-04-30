@@ -38,11 +38,13 @@ use Illuminate\Support\Facades\URL;
 */
 
 
-// Route::middleware('license')->group(function () {
-
 Route::controller(StartController::class)->group(function(){
    Route::get('start','index');
+   Route::post('saveCompany','saveCompany');
+   Route::get('welcome/{company}','welcome')->name('welcome');
 });
+
+// Route::middleware('license')->group(function () {
 
 Route::get('/databases', function () {
     return ([['name' => 'test'], ['name' => 'Loja2'], ['name' => 'Loja3']]);
@@ -125,7 +127,6 @@ Route::middleware('auth')->group(function () {
             Route::get('users','users');
             Route::post('SaveUser/{user?}','SaveUser');
             Route::post('saveCompany','saveCompany');
-            Route::get('getActivity','getActivity');
         });
     });
 
@@ -221,6 +222,9 @@ Route::middleware('auth')->group(function () {
     });
 
 });
+
+Route::get('getActivity', [configController::class,'getActivity']);
+
 // });
 
 // require __DIR__ . '/auth.php';
