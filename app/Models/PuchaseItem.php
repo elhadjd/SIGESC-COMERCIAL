@@ -9,7 +9,7 @@ class PuchaseItem extends Model
 {
     use HasFactory;
 
-    protected $with = ['product'];
+    protected $with = ['product','store'];
 
     protected $fillable = [
         'puchase_id',
@@ -23,11 +23,16 @@ class PuchaseItem extends Model
         'spent',
         'priceSold',
         'tax',
-        'totalTax'
+        'totalTax',
+        'armagen_id'
     ];
 
     public function product()
     {
         return $this->belongsTo(produtos::class,'produtos_id');
+    }
+    public function store()
+    {
+        return $this->belongsTo(armagen::class,'armagen_id');
     }
 }

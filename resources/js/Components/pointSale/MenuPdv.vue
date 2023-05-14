@@ -95,7 +95,7 @@ const modalSingle = ref({
   id: "",
 });
 
-const user = computed(()=> store.state.user);
+const user = computed(()=> store.state.publico.user);
 
 
 const form = useForm({
@@ -107,7 +107,7 @@ const OptionCaixa = ref();
 const caixas = ref(props.dados.caixas);
 
 onMounted(() => {
-getCaixas();
+    getCaixas();
 });
 
 const submit = (id) => {
@@ -119,22 +119,27 @@ const submit = (id) => {
 }
 
 const OptionCaixas = (event) => {
-  if (OptionCaixa.value == event) {
-    OptionCaixa.value = null;
-  } else {
-    OptionCaixa.value = event;
-  }
+    if (OptionCaixa.value == event) {
+        OptionCaixa.value = null;
+    } else {
+        OptionCaixa.value = event;
+    }
 };
 
 const showOrders = (id) => {
-    console.log(id);
   modalSingle.value.id = id;
   modalSingle.value.state = true;
 };
 
 const openControl = ((caixa)=>{
+    const savedState = localStorage.getItem('vuex')
     localStorage.clear()
-    Inertia.post(`caixa/opiningControl`,{id:caixa})
+
+    if (savedState) {
+        localStorage.setItem('vuex',savedState)
+        Inertia.post(`caixa/opiningControl`,{id:caixa})
+    }
+
 })
 
 const showCash = (Cash) => {

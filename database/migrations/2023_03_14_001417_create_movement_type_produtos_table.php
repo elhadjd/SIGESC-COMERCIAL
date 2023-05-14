@@ -13,20 +13,20 @@ return new class extends Migration
     {
         Schema::create('movement_type_produtos', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->default(null);
+            $table->integer('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->integer('produtos_id')->default(null);
+            $table->integer('produtos_id')->nullable();
             $table->foreign('produtos_id')->references('id')->on('produtos');
-            $table->integer('order_pos_id')->default(null);
+            $table->integer('order_pos_id')->nullable();
             $table->foreign('order_pos_id')->references('id')->on('order_pos');
-            $table->integer('movement_type_id')->default(null);
+            $table->integer('movement_type_id')->nullable();
             $table->foreign('movement_type_id')->references('id')->on('movement_types');
-            $table->integer('armagen_id')->default(null);
+            $table->integer('armagen_id')->default();
             $table->foreign('armagen_id')->references('id')->on('armagens');
             $table->integer('quantity')->default(0);
             $table->float('price_cost')->default(0);
             $table->float('price_sold')->default(0);
-            $table->string('motive')->default(null);
+            $table->string('motive')->nullable();
             $table->integer('quantityAfter');
             $table->timestamps();
         });

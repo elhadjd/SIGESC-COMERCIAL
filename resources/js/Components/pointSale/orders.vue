@@ -28,10 +28,10 @@
           </strong>
         </div>
         <div class="overflow-auto ListaOrden">
-          <div v-if="$store.state.ListEncomenda.mostrar">
+          <div v-if="$store.state.pos.ListEncomenda.mostrar">
             <div
-              v-show="$store.state.ListEncomenda.MostrarFiltro >= 1"
-              v-for="primeira in $store.state.ListEncomenda.PrimeiraLista"
+              v-show="$store.state.pos.ListEncomenda.MostrarFiltro >= 1"
+              v-for="primeira in $store.state.pos.ListEncomenda.PrimeiraLista"
               :key="primeira.id"
               class="ListAgrupado"
             >
@@ -42,8 +42,8 @@
                 {{ primeira.nome }}
               </div>
               <div
-                v-show="$store.state.ListEncomenda.MostrarFiltro >= 2"
-                v-for="segunda in $store.state.ListEncomenda.SegundaLista"
+                v-show="$store.state.pos.ListEncomenda.MostrarFiltro >= 2"
+                v-for="segunda in $store.state.pos.ListEncomenda.SegundaLista"
                 :key="segunda.id"
                 class="ListAgrupado"
               >
@@ -51,8 +51,8 @@
                   {{ segunda.nome }}
                 </div>
                 <div
-                  v-show="$store.state.ListEncomenda.MostrarFiltro >= 3"
-                  v-for="terceira in $store.state.ListEncomenda.TerceiraLista"
+                  v-show="$store.state.pos.ListEncomenda.MostrarFiltro >= 3"
+                  v-for="terceira in $store.state.pos.ListEncomenda.TerceiraLista"
                   :key="terceira.id"
                   class="ListAgrupado"
                 >
@@ -60,8 +60,8 @@
                     {{ terceira.nome }}
                   </div>
                   <div
-                    v-show="$store.state.ListEncomenda.MostrarFiltro == 4"
-                    v-for="quarta in $store.state.ListEncomenda.QuartaLista"
+                    v-show="$store.state.pos.ListEncomenda.MostrarFiltro == 4"
+                    v-for="quarta in $store.state.pos.ListEncomenda.QuartaLista"
                     :key="quarta.id"
                     class="ListAgrupado"
                   >
@@ -142,10 +142,10 @@ const message = (type, message) => {
 }
 
 const BuscarLista = (event) => {
-  if (store.state.ListEncomenda.MostrarFiltro >= 2) {
-    store.state.ListEncomenda.MostrarFiltro -= 1;
+  if (store.state.pos.ListEncomenda.MostrarFiltro >= 2) {
+    store.state.pos.ListEncomenda.MostrarFiltro -= 1;
   } else {
-    store.state.ListEncomenda.MostrarFiltro += 1;
+    store.state.pos.ListEncomenda.MostrarFiltro += 1;
   }
 };
 

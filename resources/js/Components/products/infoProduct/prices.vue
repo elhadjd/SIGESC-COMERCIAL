@@ -7,6 +7,7 @@
         <div>Preço medio</div>
         <div>Preço de venda</div>
       </div>
+
       <div id="inputs_informacao">
         <div>
           <input

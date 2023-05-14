@@ -1,3 +1,4 @@
+import axios from 'axios';
 import moment from 'moment'
 export default {
     methods: {
@@ -6,16 +7,16 @@ export default {
             try {
                 decimalCount = Math.abs(decimalCount);
                 decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
-        
+
                 const negativeSign = amount < 0 ? "-" : "";
-        
+
                 const i = parseInt(
                     (amount = Math.abs(Number(amount) || 0).toFixed(
                         decimalCount
                     ))
                 ).toString();
                 const j = i.length > 3 ? i.length % 3 : 0;
-        
+
                 return (
                     negativeSign +
                     (j ? i.substr(0, j) + thousands : "") +
@@ -33,7 +34,7 @@ export default {
         },
         /* Method para Formatar Date */
         formatDate(date){
-            return moment(date).format("DD-MM-YYY")
-        }
+            return moment(date).format("DD-MM-YYYY")
+        },
     },
 };

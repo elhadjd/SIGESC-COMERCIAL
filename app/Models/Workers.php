@@ -21,6 +21,7 @@ class Workers extends Model
         'manager',
         'trainer',
         'hourWork',
+        'company_id',
         'salary',
         'dailyExpense'
     ];

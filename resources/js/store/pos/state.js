@@ -1,6 +1,10 @@
 export default {
+    Controlo: {
+        state: false,
+    },
     configCash: [],
     StateProgress: false,
+
     // variaveis formulario de faturação
     MostrarModal: false,
     MethodosPagamento: null,
@@ -27,9 +31,6 @@ export default {
 
     Empresa: [],
 
-    Controlo: {
-        state: false,
-    },
     GuardarCliente: false,
     Painel: null,
     user: [],

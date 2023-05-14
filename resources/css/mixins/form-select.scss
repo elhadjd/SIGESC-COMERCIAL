@@ -1,0 +1,82 @@
+@mixin form-select{
+
+    .addItem {
+        width: 100%;
+        height: 100%;
+        position: relative;
+
+        > button {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 10px 5px 10px;
+            border-radius: 3px;
+            box-shadow: rgb(100, 100, 111, 0.2) 10px 5px 27px 0px;
+            font: 11pt arial;
+            font-weight: bold;
+            color: #000000b2;
+            background-color: #017e840c;
+            i{
+                font-size: 16px;
+                color:  var(--bgButtons);
+            }
+        }
+
+        .list-items {
+            position: absolute;
+            width: 100%;
+            height: 75%;
+            overflow-y: auto;
+            @include scroll;
+            box-shadow: rgb(100, 100, 111, 0.2) 10px 5px 27px 0px;
+            border-radius: 0px 0px 5px 5px;
+
+            > div {
+                padding: 10px 10px 10px 10px;
+                font-size: 15px;
+                color: var(--textColor);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                span{
+                    width: 48%;
+                }
+                >span:nth-child(2){
+                    display: flex;
+                    justify-content: flex-end;
+                }
+                i{
+                    font-size: 18px;
+                }
+
+                &:hover {
+                    background-color: var(--bgButtons);
+                    cursor: pointer;
+                    color: white !important;
+                }
+            }
+
+            > input {
+                @include input_normal;
+                padding: 8px !important;
+            }
+
+            .newItem{
+                justify-content: flex-start !important;
+                align-items: flex-start;
+                display: flex;
+                flex-direction: column;
+                gap: .5rem;
+                padding: 10px;
+                
+                button{
+                    color: var(--bgButtons);
+                    font-size: 15px;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+
+}

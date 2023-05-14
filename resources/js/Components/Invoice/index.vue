@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Menu from "./menu.vue";
+import Menu from "./Home.vue";
 import ModalConfirm from "./ModalConfirm.vue";
 export default {
   setup() {},

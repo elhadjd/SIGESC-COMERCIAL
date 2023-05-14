@@ -51,8 +51,8 @@ import { useStore } from "vuex";
 
 const store = useStore();
 
-const company = computed(()=> store.state.Empresa);
-const user = computed(()=> store.state.user);
+const company = computed(()=> store.state.publico.company);
+const user = computed(()=> store.state.publico.user);
 
 const props = defineProps({
     product:{

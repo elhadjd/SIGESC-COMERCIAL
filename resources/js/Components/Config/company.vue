@@ -112,7 +112,7 @@ onMounted(()=>{
 })
 
 async function getUser() {
-    await axios.get('users')
+    await axios.get('getConfig')
     .then((response) => {
         filterUsersAdmin(response.data.users)
     }).catch((err) => {

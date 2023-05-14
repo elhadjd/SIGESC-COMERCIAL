@@ -8,7 +8,6 @@
 .FormPreco {
     display: flex;
     color: #777;
-
     .informacoa_prod {
         width: 25%;
         font-size: 16px;
@@ -16,7 +15,7 @@
         border-right: 1px solid #ddd;
 
         div {
-            margin-top: 20px;
+            margin-top: 15px;
         }
     }
 
@@ -26,7 +25,7 @@
         width: 75%;
 
         div {
-            margin-top: 13px;
+            margin-top: 10px;
 
             input {
                 @include input_normal;

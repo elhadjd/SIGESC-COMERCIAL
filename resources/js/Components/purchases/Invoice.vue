@@ -11,7 +11,7 @@
          <div id="Container" class="Container">
             <div class="ContainerOne">
                <div class="LogoEmpresa">
-                  <img :src="`/login/image/${empresa.image}`">
+                  <img :src="`/company/image/${empresa.image}`">
                </div>
                <div class="NomeEmpresa">
                   <span>{{empresa.name}}</span>
@@ -145,7 +145,7 @@ const format = Intl.NumberFormat('PT-AO',{
     currency: 'AOA'
 })
 
-const empresa = ref(store.state.Empresa);
+const empresa = ref(store.state.publico.company);
 
 onMounted(()=>{
     Select();

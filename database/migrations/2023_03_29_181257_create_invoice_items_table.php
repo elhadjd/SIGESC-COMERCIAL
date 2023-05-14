@@ -17,13 +17,18 @@ return new class extends Migration
             $table->foreign('invoice_id')->references('id')->on('invoices');
             $table->unsignedBigInteger('produtos_id');
             $table->foreign('produtos_id')->references('id')->on('produtos');
+            $table->unsignedBigInteger('armagen_id');
+            $table->foreign('armagen_id')->references('id')->on('armagens');
             $table->integer('quantity')->default(0);
             $table->float('PriceCost')->default(0);
             $table->float('PriceSold')->default(0);
-            $table->float('TotalSold')->default(0);
-            $table->float('TotalCost')->default(0);
             $table->float('Discount')->default(0);
+            $table->float('tax')->default(0);
+            $table->float('totalTax')->default(0);
             $table->float('TotalDiscount')->default(0);
+            $table->float('final_price')->default(0);
+            $table->float('TotalCost')->default(0);
+            $table->float('TotalSold')->default(0);
             $table->timestamps();
         });
     }

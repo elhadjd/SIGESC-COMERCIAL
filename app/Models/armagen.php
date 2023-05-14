@@ -11,7 +11,7 @@ class armagen extends Model
 
      protected $table = 'armagens';
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name','city','house_number','neighborhood','company_id'];
 
     public function stock()
     {

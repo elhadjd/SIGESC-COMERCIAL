@@ -38,21 +38,27 @@ class OrdersController extends Controller
                 $price_authorized = false;
                 $idOrder = 0;
                 DB::transaction(function () use ($request, &$methods, &$idOrder, &$VerificarPagamento, &$stock_insuficiente, &$price_authorized) {
-                    $order = orderPos::create([
-                        'session_id' => $request->session,
-                        'user_id' => Auth()->user()->id,
-                        'total' => $request->total,
-                        'cliente' => $request->cliente,
-                        'state' => 'Pago',
-                        'number' => $request->number,
-                        'total_costs' => $VerificarPagamento['total_costs']
-                    ]);
                     foreach ($request->items as $item) {
                         $stock = $request->user()->armagen()->first()
                             ->stock()->where('produtos_id', $item['id'])->first();
                         if ($stock->quantity < $item['quantidade']) {
                             return $stock_insuficiente = true;
-                        } else {
+                        }
+                    }
+
+                    if (!$stock_insuficiente) {
+                        $order = orderPos::create([
+                            'session_id' => $request->session,
+                            'user_id' => Auth()->user()->id,
+                            'total' => $request->total,
+                            'cliente' => $request->cliente,
+                            'state' => 'Pago',
+                            'number' => $request->number,
+                            'total_costs' => $VerificarPagamento['total_costs']
+                        ]);
+                        foreach ($request->items as $item) {
+                            $stock = $request->user()->armagen()->first()
+                                ->stock()->where('produtos_id', $item['id'])->first();
                             $product = produtos::find($item['id']);
                             // if ($product->preçovenda != $item['preco_pedido']) {
 
@@ -96,20 +102,19 @@ class OrdersController extends Controller
                             //     }
                             // }
                         }
-                    }
-
-                    foreach ($methods as $method) {
-                        if ($method['valor'] > 0) {
-                            paymentPDV::create([
-                                'session_id' => $request->session,
-                                'order_pos_id' => $order->id,
-                                'payment_method_id' => $method['id'],
-                                'amountPaid' => $method['valor'],
-                                'change' => 0,
-                            ]);
+                        foreach ($methods as $method) {
+                            if ($method['valor'] > 0) {
+                                paymentPDV::create([
+                                    'session_id' => $request->session,
+                                    'order_pos_id' => $order->id,
+                                    'payment_method_id' => $method['id'],
+                                    'amountPaid' => $method['valor'],
+                                    'change' => 0,
+                                ]);
+                            }
                         }
+                        $idOrder = $order->id;
                     }
-                    $idOrder = $order->id;
                 });
 
                 if ($stock_insuficiente) return $this->RespondError('Stock do produto insuficiente', []);
@@ -234,7 +239,7 @@ class OrdersController extends Controller
 
     public function getOrderSingleUser($caixa)
     {
-        return orderPos::where('session_id',$caixa)->with('session')->orderBy('id', 'DESC')->paginate(300);
+        return orderPos::where('session_id', $caixa)->with('session')->orderBy('id', 'DESC')->paginate(300);
     }
 
     public function getAllOrders($order = null, $colun = null)

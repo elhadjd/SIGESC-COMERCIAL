@@ -65,7 +65,7 @@ import axios from "axios";
 import moment from "moment";
 import { useStore } from "vuex";
 const store = useStore();
-const user = ref(store.state.user);
+const user = ref(store.state.publico.user);
 const emits = defineEmits(["message"]);
 
 const props = defineProps({

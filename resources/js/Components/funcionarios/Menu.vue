@@ -78,7 +78,7 @@ const FormNewWorker = ref({
 const Worker = ref([])
 
 const workers = ref({
-    department: [],
+    departments: Array,
     workers: [],
     storeWorkers: [],
 })
@@ -88,6 +88,7 @@ onMounted(()=>{
 })
 
 const NewWorker = (()=>{
+    if (workers.value.departments.length <=0) return message('um departamento requerido','info')
     axios.post('newWorker')
     .then((response) => {
         Worker.value = response.data

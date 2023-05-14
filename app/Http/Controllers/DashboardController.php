@@ -10,7 +10,7 @@ class DashboardController extends Controller
 {
     public function Dashboard(Request $request)
     {
-        return Inertia::render('Dashboard',[
+        return Inertia::render('Dashboard/index',[
             'data'  => $request->user()->company()->first(),
             'user' => $request->user(),
         ]);

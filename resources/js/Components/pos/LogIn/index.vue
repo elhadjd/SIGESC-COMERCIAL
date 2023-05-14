@@ -28,7 +28,7 @@ import { useStore } from "vuex"
 
 const {emit} = useEventsBus();
 const emits = defineEmits(['LogIn','message'])
-const user = computed(()=>store.state.user)
+const user = computed(()=>store.state.publico.user)
 
 const props = defineProps({
     session: Object,
@@ -54,7 +54,7 @@ const Entrar = (()=>{
             .then((Response) => {
                 emits('message',Response.data.type,Response.data.message)
                 if (Response.data.type == 'success') {
-                    store.state.Controlo.state = true
+                    store.state.pos.Controlo.state = true
                     emit('Logado');
                     return OnMounted()
                 }
@@ -70,7 +70,7 @@ const OnMounted = onMounted(async ()=>{
     EnviarCaixa.value.id = session.value.id
 
     if (session.value.password != null || session.value.password !='') {
-        if (store.state.Controlo.state === true) {
+        if (store.state.pos.Controlo.state === true) {
             emits('LogIn',true)
         } else {
             emits('LogIn',false)

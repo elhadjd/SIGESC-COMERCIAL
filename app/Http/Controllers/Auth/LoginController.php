@@ -13,7 +13,7 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Login');
+        return Inertia::render('Auth/Login');
     }
     public function login(Request $request)
     {
@@ -29,7 +29,7 @@ class LoginController extends Controller
         if (Auth::attempt($credencias)) {
             return $this->UrlGuard($request);
         } else {
-            return Inertia::render('Login', [
+            return Inertia::render('Auth/Login', [
                 'erro' => "dados do usuario incorrecto"
             ]);
         }

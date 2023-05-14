@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\operation_caixa_type_session;
 use App\Models\operationCaixaType;
 use App\Models\orderPos;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -63,21 +64,19 @@ class AnalisOrderController extends Controller
 
     public function IntervalDateRelator($month=null,$year=null,$inicio,$fin)
     {
-        if ($inicio < 1 || $inicio > 31 || $fin < 1 || $fin > 31) {
-            return dd('Erro');
-        }
+        $startDate = Carbon::parse("$year-$month-$inicio");
+        $endDate = Carbon::parse("$year-$month-$fin");
 
-        $inicio_date = date('Y-m-d H:m:s', strtotime("$year-$month-$inicio"));
-        $fin_date = date('Y-m-d H:m:s', strtotime("$year-$month-$fin"));
+        $endDate = date('Y-m-d H:i:s', strtotime($endDate.' +1 day -1 second'));
 
         $orders = DB::table('order_pos')->whereMonth('created_at', $month)
             ->whereYear('created_at', $year)
-            ->whereBetween('created_at', [$inicio_date, $fin_date])
+            ->whereBetween('created_at', [$startDate, $endDate])
             ->get();
 
         $operations = DB::table('operation_caixa_type_sessions')->whereMonth('created_at',$month)
         ->whereYear('created_at',$year)
-        ->whereBetween('created_at',[$inicio_date, $fin_date])
+        ->whereBetween('created_at',[$startDate, $endDate])
         ->sum('amount');
         return $this->CalcularRelatorio($orders,$operations);
     }

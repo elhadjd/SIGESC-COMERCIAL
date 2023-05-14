@@ -1,0 +1,11 @@
+
+@mixin scroll {
+    &::-webkit-scrollbar-thumb{
+        overflow-y: auto;
+        border-radius: 5px;
+        background-color: #dde;
+    }
+    &::-webkit-scrollbar{
+        width: 5px;
+    }
+}

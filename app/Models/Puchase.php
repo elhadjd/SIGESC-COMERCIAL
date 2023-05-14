@@ -19,7 +19,8 @@ class Puchase extends Model
         'totalTax',
         'TotalSpending',
         'totalMerchandise',
-        'total'
+        'total',
+        'fornecedor_id'
     ];
 
     public function supplier():BelongsTo

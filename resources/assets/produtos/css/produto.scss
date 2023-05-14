@@ -1,48 +1,18 @@
-.Principal {
+@include components;
+.principal {
     width: 100%;
     height: 100%;
-    background-color: white;
-
-    .titulo {
-        font: 15pt arial;
-        font-weight: 800;
-        height: 15%;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        align-items: center;
-        .Acao {
-            margin-bottom: 10px;
-        }
-        .titulo-left {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 3px;
-            .guardar_descartar {
-                display: flex;
-                background-color: white;
-                button {
-                    @include botao_normal;
-                    margin-right: 3px;
-                }
-                div {
-                    @include botao_descartar;
-                }
-            }
-        }
-    }
-
+    background-color: var(--formList);
     .Formulario {
-        height: 85%;
+        height: 87%;
         max-height: 91%;
         padding: 0;
-        border-top: 2px solid #eee;
-        background-color: #f9f9f9f9;
+        border-top: 2px solid var(--borderColor);
+        background-color: var(--appBg);
         .FormNewProd {
             height: 100%;
             .guard_descart {
-                background-color: #f9f9f9f9;
+                background-color: var(--formList);
                 .FecharForm {
                     background-color: white;
                     div {
@@ -51,18 +21,18 @@
                 }
                 .guardar_descartar {
                     display: flex;
-                    background-color: white;
+                    background-color: var(--formList);
                     button {
                         @include botao_normal;
                     }
                     div {
-                        border: 1px solid white;
-                        color: #017e84;
+                        border: 1px solid var(--borderColor);
+                        color: var(--textColor);
                         padding: 3px 10px 3px 10px;
                         font: 10pt arial;
                         font-weight: 600;
                         &:hover {
-                            border: 1px solid #017e84;
+                            border: 1px solid var(--borderColor);
                             cursor: pointer;
                         }
                     }
@@ -74,35 +44,35 @@
                 background-color: white;
                 height: 87%;
                 margin-top: 1%;
-                border: 1px solid #ddd;
+                border: 1px solid var(--borderColor);
+                border-radius: 5px;
                 .TopProd {
-                    height: 185px;
+                    height: 180px;
                     width: 100%;
                     .ProdutoBarraCima {
                         width: 100%;
-                        height: 35px;
+                        height: 40px;
                         display: flex;
-                        border-bottom: 1px solid #ddd;
+                        border-bottom: 1px solid var(--borderColor);
                         box-sizing: border-box;
 
                         .BotaoMuvementos {
                             border: none;
                             outline: none;
                             width: auto;
-                            border-right: 1px solid #f3f3f3f9;
+                            border-right: 1px solid var(--borderColor);
                             padding-right: 10px;
                             box-sizing: border-box;
 
                             .view_muvementos {
-                                background-color: white;
                                 display: flex;
                                 align-items: center;
                                 justify-content: flex-end;
+                                gap: 1rem;
                                 width: 100%;
                                 height: 100%;
-                                font: 9pt arial;
-                                font-weight: 600;
                                 padding: 1px;
+                                font-size: 11px;
                                 &:hover {
                                     cursor: pointer;
                                     opacity: 0.8;
@@ -111,10 +81,10 @@
                                     font-size: 22px;
                                     margin-top: 5px;
                                     padding-left: 3px;
-                                    color: #65134f;
+                                    color: var(--app_color);
                                 }
                                 div {
-                                    color: #65134f;
+                                    color: var(--textColor);
                                     .TipoMuv{
                                         word-break: break-word;
                                         overflow: hidden;
@@ -131,20 +101,19 @@
                     }
                     .FormContainer {
                         display: flex;
+                        flex-direction: row;
                         justify-content: space-between;
                         width: 100%;
                         .input_nome_tipo {
-                            width: 85%;
-                            padding: 10px 0px 0px 20px;
+                            width: 100%;
+                            padding: 5px 0px 0px 20px;
                             .nome_artigo_data {
                                 @include InputPrincipal;
                             }
                             .ContainerInfo {
                                 display: flex;
-                                margin-top: 5px;
                                 .Titulos {
                                     width: 25%;
-                                    margin-top: 8px;
                                     display: flex;
                                     flex-direction: column;
                                     justify-content: space-between;
@@ -202,69 +171,7 @@
                                 }
                             }
                         }
-                        .DivImagem {
-                            width: 13%;
-                            position: relative;
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: center;
-                            align-items: center;
-                            padding: 0px 10px 0px 10px;
-                            .HeaderImagem {
-                                width: 100%;
-                                display: flex;
-                                justify-content: center;
-                                .Arquivado {
-                                    background-color: #dc3545 !important;
-                                    padding: 10px;
-                                    color: #fff;
-                                    font: 15pt arial;
-                                    font-weight: 600;
-                                    position: absolute;
-                                    margin-top: 48px;
-                                    width: 145px;
-                                    transform: rotate(45deg);
-                                }
-                                .icones {
-                                    position: absolute;
-                                    width: 87%;
-                                    justify-content: space-between;
-                                    align-items: center;
-                                    background-color: transparent;
-                                    color: transparent;
-                                    padding: 3px 5px 3px 5px;
-                                    &:hover {
-                                        background-color: #017e844a;
-                                        opacity: 0.8;
-                                        color: #028087;
-                                    }
-                                    i {
-                                        font-size: 22px;
-                                    }
-                                    label {
-                                        #imagem {
-                                            width: 10%;
-                                        }
-                                    }
-                                    .EditarImagen {
-                                        cursor: pointer;
-                                    }
-                                    #icone_delete_img:hover {
-                                        color: red;
-                                        cursor: pointer;
-                                    }
-                                }
-                            }
-                            .imagem_novo_produto {
-                                background-color: #f9f9f9f9;
-                                border-radius: 10px;
-                                display: flex;
-                                img {
-                                    width: 140px;
-                                    height: 135px;
-                                }
-                            }
-                        }
+                        @include form-img;
                     }
                 }
             }

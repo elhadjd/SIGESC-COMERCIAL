@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('sede')->nullable();
             $table->string('house_number')->nullable();
+            $table->string('country')->nullable();
             $table->unsignedBigInteger('manager')->nullable();
             $table->unsignedBigInteger('activity_type_id')->nullable();
             $table->timestamps();

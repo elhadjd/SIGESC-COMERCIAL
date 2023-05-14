@@ -31,7 +31,7 @@ class PointSaleController extends Controller
             return Redirect::route('pontodevenda');
         }
 
-        return Inertia::render('Pos', [
+        return Inertia::render('PointSale/Pos', [
             'user' => Auth::user(),
             'data' => Auth::user()->company,
             'session' => $data

@@ -22,6 +22,15 @@ trait ResponseMessage
         ]);
     }
 
+    public function RespondWarn($message, $data = null)
+    {
+        return response()->json([
+            'type' => 'warn',
+            'message' => $message,
+            'data'=> $data
+        ]);
+    }
+
     public function RespondInfo($message , $data = null)
     {
         return response()->json([

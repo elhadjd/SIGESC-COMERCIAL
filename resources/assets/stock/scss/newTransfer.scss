@@ -1,7 +1,5 @@
-@import '../../faturacao//css//CriarFaturas.scss';
-
+@include formOrders;
 .principal{
     height: 100%;
-    @extend .Principal
 }
 

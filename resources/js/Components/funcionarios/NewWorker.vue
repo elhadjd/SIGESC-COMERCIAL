@@ -134,13 +134,14 @@ const image = ref({
     img: `/worker/image/${props.worker.image}`
 })
 const form = ref(props.worker)
+console.log(form.value);
 
 const {createImg,onFileChange} = useUploadImage(form.value,image.value)
 
 
 onMounted(()=>{
     store.state.StateProgress = true
-    axios.get('/config/users')
+    axios.get('/config/getConfig')
     .then((response) => {
         users.value = response.data.users
         store.state.StateProgress = false

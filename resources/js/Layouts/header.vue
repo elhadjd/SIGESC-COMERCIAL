@@ -43,10 +43,11 @@ import { Inertia } from "@inertiajs/inertia";
 const props = defineProps({
   menus: Array,
 });
+
 const emits = defineEmits(["modulos"]);
 const Mostrar = ref(null);
 const store = useStore();
-const user = ref(store.state.user);
+const user = ref(store.state.publico.user);
 const stateLogout = ref(false);
 const modulos = (event) => {
   const filter = props.menus.filter((menu) => {

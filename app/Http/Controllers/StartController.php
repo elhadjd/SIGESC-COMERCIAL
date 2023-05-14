@@ -20,7 +20,7 @@ class StartController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Start');
+        return Inertia::render('Start/Start');
     }
 
     public function saveCompany(Request $request,imagensController $uploadImage)
@@ -121,7 +121,7 @@ class StartController extends Controller
 
     public function welcome(company $company)
     {
-        return Inertia::render('Welcome',[
+        return Inertia::render('Start/Welcome',[
             'company' => $company
         ]);
     }

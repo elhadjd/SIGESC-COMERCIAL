@@ -38,6 +38,7 @@
         </div>
     </div>
 </div>
+<Toast/>
 </template>
 
 <script setup>
@@ -48,12 +49,16 @@ import { useForm } from '@inertiajs/inertia'
 import Produto from './product.vue';
 import { useStore } from 'vuex';
 import Progress from '@/components/confirmation/progress.vue'
+import Toast from 'primevue/toast';
+import { useToast } from 'primevue/usetoast';
 const FormetDineiro = new Intl.NumberFormat('pt-AO', { style: 'currency', currency: 'AOA',})
 const store = useStore()
 const FormSingleProduct = reactive({
     state: false,
     product: [],
 });
+
+const toast = useToast()
 
 const Products = reactive({
     Products: [],
@@ -92,8 +97,22 @@ const CriarProduto = (()=>{
     axios.post('/new_product')
     .then((Response) => {
         store.state.StateProgress = false
+        if (Response.data.message) return message(Response.data.message,Response.data.type)
         FormSingleProduct.product = Response.data.product
         return MostrarProd(FormSingleProduct.product)
+    }).catch((err)=>{
+        return message('Aconteceu erro no sistema por favor tenta novamente','error');
+    }).finally(()=>{
+        store.state.StateProgress = false
+    })
+})
+
+const message = ((message,type)=>{
+    toast.add({
+        severity: type,
+        summary:'Informação',
+        detail: message,
+        life:5000
     })
 })
 

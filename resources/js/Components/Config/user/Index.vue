@@ -48,7 +48,7 @@ const users = ref([])
 const emits = defineEmits(['message','ShowSingleUser'])
 
 const Onmounted = onMounted(()=>{
-    axios.get('users')
+    axios.get('getConfig')
     .then((Response) => {
         StoreUsers.value = Response.data.users
         users.value = Response.data.users

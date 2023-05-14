@@ -8,20 +8,27 @@ use App\Models\category_product;
 use App\Models\company;
 use App\Models\fornecedore;
 use App\Models\movement_type_produtos;
+use App\Models\operationCaixaType;
 use App\Models\productType;
 use App\Models\produtos;
 use App\Models\stock;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class stockController extends Controller
 {
 
-    public function get(company $company)
+    public function Index()
     {
-        return $company::find(Auth::user()->company_id)->with(['armagens' => function($armagen) {
-            $armagen->with('stock')
-            ->get();
+        return Inertia::render('Stock/index');
+    }
+
+    public function get(Request $request)
+    {
+        return $request->user()->company()->with(['armagens' => function ($armagen) {
+            $armagen->with('stock')->get();
         }])->first();
     }
 
@@ -111,6 +118,65 @@ class stockController extends Controller
             'motive' => $request->motive,
             'quantityAfter' => $quantityAfter
         ]);
+    }
+
+    public function getRelatorProductsByMonth($month, $year)
+    {
+        $select = movement_type_produtos::whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)->with('movement_type')->get();
+        $spent = operationCaixaType::where('name', 'Gasto')->first();
+        return [
+            'spent' => $spent,
+            'products' => produtos::withSum('stock', 'quantity')->where('estado', 'active')->get(),
+            'list' => $select,
+        ];
+    }
+
+    public function IntervalDateInventory($month = null, $year = null, $from, $to)
+    {
+        $startDate = Carbon::parse("$year-$month-$from");
+        $endDate = Carbon::parse("$year-$month-$to");
+
+        $endDate = date('Y-m-d H:i:s', strtotime($endDate . ' +1 day -1 second'));
+
+        $select = movement_type_produtos::whereBetween('created_at', [$startDate, $endDate])
+            ->with('movement_type')->get();
+
+        $spent = operationCaixaType::where('name', 'Gasto')
+            ->with(['operations' => function ($operations) use ($startDate, $endDate) {
+                $operations->whereBetween('created_at', [$startDate, $endDate]);
+            }])->first();
+
+        return [
+            'spent' => $spent,
+            'products' => produtos::withSum('stock', 'quantity')->where('estado', 'active')->get(),
+            'list' => $select,
+        ];
+    }
+    public function getCatalog()
+    {
+        return produtos::all();
+    }
+
+    public function saveStore(Request $request)
+    {
+        $request->validate([
+            'city' =>  'required',
+            'name' => 'required'
+        ]);
+       
+        armagen::updateOrCreate(
+            ['name' => $request->name,'company_id' => $request->user()->company_id],
+            [
+                'name' => $request->name,
+                'company_id' => $request->user()->company_id,
+                'city' => $request->city,
+                'house_number' => $request->house_number,
+                'neighborhood' => $request->neighborhood
+            ],
+        );
+
+        return $this->RespondSuccess('Dados atualizado com sucesso');
     }
 
 

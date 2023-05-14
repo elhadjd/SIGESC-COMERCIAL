@@ -30,12 +30,16 @@ class productsController extends Controller
 
     }
 
-    public function create(produtos $produtos)
+    public function create(produtos $produtos,$name=null)
     {
-        $product = $produtos::create([
-            'company_id' => Auth::user()->company_id
-        ]);
-        return $this->show(produtos::find($product->id));
+        if (Auth::user()->nivel == 'admin') {
+            $product = $produtos::create([
+                'nome'=> $name,
+                'company_id' => Auth::user()->company_id
+            ]);
+            return $this->show(produtos::find($product->id));
+        }
+        return $this->RespondWarn('Usuario sem acesso !!!');
     }
 
     public function show(produtos $product)
@@ -69,9 +73,17 @@ class productsController extends Controller
                 $data['image'] = $imagensController->UploadImage("/produtos/image/", $request->imagem, $product);
             }
             if ($product->update($data)) {
-                return $this->RespondSuccess('Sucesso');
+                return $this->RespondSuccess('Produto Atualizado com Sucesso',$product->fresh());
             } else {
                 return $this->RespondError('Erro ao Adicionar o produto');
+            }
+        }else{
+            if ($request->imagem != null) {
+                $product->image = $imagensController->UploadImage("/produtos/image/", $request->imagem, $product);
+                $product->save();
+                return $this->RespondSuccess('Imagem Atualizada com Sucesso',$product->fresh());
+            }else{
+                return $this->RespondWarn('Usuario sem acesso');
             }
         }
     }

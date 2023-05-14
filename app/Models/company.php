@@ -21,7 +21,9 @@ class company extends Model
         'name',
         'nif',
         'phone',
-        'sede'
+        'sede',
+        'country',
+        'activity_type_id'
     ];
 
     public function users()

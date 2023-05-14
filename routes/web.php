@@ -19,12 +19,9 @@ use App\Http\Controllers\public\movementsController;
 use App\Http\Controllers\Public\productsController;
 use App\Http\Controllers\public\stockController;
 use App\Http\Controllers\Public\suppliersController;
+use App\Http\Controllers\Public\TransferController;
 use App\Http\Controllers\StartController;
-use App\Models\produtos;
-use Illuminate\Session\Middleware\StartSession;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,12 +36,12 @@ use Illuminate\Support\Facades\URL;
 
 
 Route::controller(StartController::class)->group(function(){
-   Route::get('start','index');
+   Route::get('gettingStarted','index');
    Route::post('saveCompany','saveCompany');
    Route::get('welcome/{company}','welcome')->name('welcome');
 });
 
-// Route::middleware('license')->group(function () {
+Route::middleware('license')->group(function () {
 
 Route::get('/databases', function () {
     return ([['name' => 'test'], ['name' => 'Loja2'], ['name' => 'Loja3']]);
@@ -111,10 +108,11 @@ Route::middleware('auth')->group(function () {
             Route::get('getPurchases','getPurchases');
             Route::get('getPurchases/{order}','Order');
             Route::post('NewPurchase','NewPurchase');
-            Route::post('AddItemPuchase/{order}','AddItemPuchase');
+            Route::post('AddItemPuchase/{product}/{order}','AddItemPuchase');
             Route::post('UpdateItems/{item}','UpdateItems');
+            Route::post('addSupplier/{order}/{supplier}','addSupplier');
             Route::delete('/deleteItem/{order}/{item}','deleteItem');
-            Route::post('confirmOrder/{order}/{armagen}','confirmOrder');
+            Route::post('confirmOrder/{order}/{type}','confirmOrder');
             Route::post('savePayment/{order}','savePayment');
             Route::get('/purchur/getPayments','getPayments');
         });
@@ -140,13 +138,16 @@ Route::middleware('auth')->group(function () {
             Route::get('Home','Index')->name('faturacao');
             Route::get('getInvoices','getInvoices');
             Route::post('NewOrder/{name?}','NewOrder');
+            Route::post('addClient/{order}/{client}','addClient');
             Route::get('/getItems/{invoice?}','getInvoices');
             Route::post('AddItem/{product}/{invoice}','AddItem');
             Route::delete('deleteItem/{invoice}/{item}','deleteItem');
-            Route::put('/UpdateRows/{invoice}','UpdateRows');
-            Route::post('/ChangeDateInvoice/{invoice}','ChangeDateInvoice');
-            Route::post('/ConfirmOrder/{invoice}','ConfirmOrder');
-            Route::post('InvoicePayment/{invoice}','InvoicePayment');
+            Route::post('/UpdateRows/{invoice}','UpdateRows');
+            Route::post('/ChangeDateInvoice/{type}/{invoice}','ChangeDateInvoice');
+            Route::post('/ConfirmOrder/{invoice}/{type}','ConfirmOrder');
+            Route::post('sendPayment/{invoice}','InvoicePayment');
+            Route::post('cancelInvoice/{invoice}/{type}','ConfirmOrder');
+            Route::get('getPayments/{invoice}','getPayments');
         });
     });
 
@@ -157,10 +158,28 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('Stock')->group(function () {
+
         Route::controller(stockController::class)->group(function () {
             Route::get('Home', 'Index')->name('Stock');
             Route::get('GetAgroup','GetAgroup');
             Route::get('getProductAgroup/{type}/{id}','getProductAgroup');
+            Route::get('getRelatorProductsByMonth/{month}/{year}','getRelatorProductsByMonth');
+            Route::get('IntervalDateInventory/{month}/{year}/{from}/{to}','IntervalDateInventory');
+            Route::get('getCatalog','getCatalog');
+            Route::post('saveStore','saveStore');
+        });
+
+        Route::controller(TransferController::class)->group(function(){
+            Route::get('getTransfers','get');
+            Route::post('newTransfer','create');
+            Route::get('selectOrder/{order}','show');
+            Route::post('addItems/{product}/{order}','addItem');
+            Route::post('updateTransfer/{item}','update');
+            Route::delete('deleteItem/{order}/{item}','DeleteItem');
+            Route::post('addLocalDestine/{order}/{store}','addLocalDestine');
+            Route::post('addDateOrder/{type}/{order}','addDateOrder');
+            Route::post('saveTransfer/{order}/{type}','saveTransfer');
+            Route::post('cancelTransfer/{order}/{type}','saveTransfer');
         });
     });
 
@@ -225,6 +244,6 @@ Route::middleware('auth')->group(function () {
 
 Route::get('getActivity', [configController::class,'getActivity']);
 
-// });
+});
 
 // require __DIR__ . '/auth.php';

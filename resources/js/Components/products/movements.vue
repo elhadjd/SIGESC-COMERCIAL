@@ -1,17 +1,17 @@
 <template>
-<Progress v-if="$store.state.StateProgress"/>
+<Progress v-if="$store.state.pos.StateProgress"/>
   <div class="Muvemento w-100">
     <div class="w-100 h-100">
         <div class="d-flex w-100 OrdenCima">
             <div class="OrdenCimaEsquerda w-50">
-                <h3 @click="FecharMuv" class="TipoMuve ms-4">Analise de {{$store.state.EstadoMuvemento.tipo.name }} de {{product.nome}} </h3>
+                <h3 @click="FecharMuv" class="TipoMuve ms-4">Analise de {{$store.state.pos.EstadoMuvemento.tipo.name }} de {{product.nome}} </h3>
             </div>
             <div class="w-50">
                 <span class="p-input-icon-right w-100">
                     <i class="pi pi-search" />
                     <InputText @keyup="Pesquisar" v-model="data" placeholder="Pesquisar... Exemplo 2022-09-21" class="w-100 p-2"/>
                 </span>
-                <span class="w-50" v-show="$store.state.EstadoMuvemento.tipo == 'Muvementos'">
+                <span class="w-50" v-show="$store.state.pos.EstadoMuvemento.tipo == 'Muvementos'">
                     <select class="w-50" v-model="Select">
                         <option >{{Select}}</option>
                         <option v-if="Select != 'Muvementos'">Muvementos</option>
@@ -30,7 +30,6 @@
                     <div>Funcionario</div>
                     <div>Tipo de operação</div>
                     <div>Motivo</div>
-                    <div>Data</div>
                     <div class="text-end px-3">Quantidade</div>
                 </strong>
             </div>
@@ -44,11 +43,10 @@
                         <div v-for="item in data" :key="item.id" class="Esconder border-bottom">
                             <div class="d-flex ListaDeMuvementos">
                                 <div class="w-25">{{item.product.nome}} </div>
-                                <div>{{'Orden '+item.order_pos_id}}</div>
-                                <div>{{item.apelido}}</div>
+                                <div>{{item.quantityAfter+".00Un(s)"}}</div>
+                                <div>{{item.surname}}</div>
                                 <div>{{item.movement_type.name}}</div>
                                 <div>{{item.motive}}</div>
-                                <div>{{item.data}}</div>
                                 <div class="text-end px-3">
                                     <i :class="item.movement_type.name == 'Saida' ? 'fa fa-arrow-down Saidas':item.movement_type.name == 'Entrada' ? 'fa fa-arrow-up text-success Entradas': 'fa fa-cart-arrow-down text-warning'"></i>
                                     {{item.quantity}}
@@ -80,19 +78,19 @@ const props = defineProps({product: Object})
 
 const product = ref([])
 onMounted(() => {
-    store.state.StateProgress = true
-    axios.get(`/movements/${props.product.id}/${store.state.EstadoMuvemento.tipo.id}`)
+    store.state.pos.StateProgress = true
+    axios.get(`/movements/${props.product.id}/${store.state.pos.EstadoMuvemento.tipo.id}`)
     .then((Response) => {
         movements.value = Response.data;
         product.value = props.product
-        store.state.StateProgress = false
+        store.state.pos.StateProgress = false
     }).catch((err) => {
         console.log(err);
     });
 })
 
 const FecharMuv =(()=>{
-    store.state.EstadoMuvemento.estado = false
+    store.state.pos.EstadoMuvemento.estado = false
 })
 
 watch(Select, (newX) => {

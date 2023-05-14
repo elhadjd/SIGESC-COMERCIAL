@@ -16,7 +16,7 @@ class pontoVendaController extends Controller
 {
     public function index()
     {
-        return Inertia::render('pointSale', [
+        return Inertia::render('PointSale/pointSale', [
             'user' => Auth::user(),
             'data' => caixa::all()
         ]);

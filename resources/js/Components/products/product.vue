@@ -1,5 +1,5 @@
 <template>
-  <Progress v-if="$store.state.StateProgress" />
+  <Progress v-if="$store.state.pos.StateProgress" />
   <Transition name="bounce">
     <NewCategory
       v-if="categorys.StateModal"
@@ -9,11 +9,11 @@
   </Transition>
   <Muvementos
     :product="produto.produtos"
-    v-if="$store.state.EstadoMuvemento.estado"
+    v-if="$store.state.pos.EstadoMuvemento.estado"
   />
-  <div v-else class="Principal">
-    <div class="titulo">
-      <div class="titulo-left">
+  <div v-else class="principal">
+    <div class="Header">
+      <div class="Header-left">
         <strong>Novo produto</strong>
         <div class="guardar_descartar">
           <button
@@ -23,29 +23,31 @@
           >
             Guardar
           </button>
-          <div
+          <button type="button" class="botao_descartar"
             v-if="!StateEditProd && produto.produtos.estado != 1"
             @click="StateEditProd = true"
           >
             Editar
-          </div>
-          <div
+          </button>
+          <button type="button" class="botao_descartar"
             v-if="StateEditProd && produto.produtos.estado != 1"
             @click="StateEditProd = false"
           >
             Descartar
-          </div>
-          <div @click="$emit('descartar')" class="mx-1 nao_guadar_artigo">
+          </button>
+          <button type="button" @click="$emit('descartar')" class="mx-1 botao_descartar">
             Fechar
-          </div>
+          </button>
         </div>
       </div>
-      <Confirm
-        :product="produto.produtos"
-        @Voltar="$emit('descartar')"
-        @produto="OnMounted"
-        class="Acao"
-      />
+      <div class="Header-right">
+        <Confirm
+            :product="produto.produtos"
+            @Voltar="$emit('descartar')"
+            @produto="OnMounted"
+            class="Header-right"
+        />
+      </div>
     </div>
     <div class="Formulario">
       <form class="FormNewProd">
@@ -198,34 +200,20 @@
                   </div>
                 </div>
 
-                <div class="DivImagem">
-                  <div class="HeaderImagem">
-                    <div v-if="produto.produtos.estado === 1" class="Arquivado">
-                      <h2>ARQUIVADO</h2>
+                <div class="image">
+                    <div class="form-image">
+                        <div>
+                            <!-- <canvas v-if="element.stateCanvas" id="myCanvas" width="100" height="100"></canvas> -->
+                            <img :src="element.img">
+                            <span>
+                                <label for="image">
+                                    <FontAwesomeIcon icon="fa-solid fa-pen-to-square"/>
+                                    <input type="file" id="image" @change="onFileChange">
+                                </label>
+                                <FontAwesomeIcon @click="RemoveImage" icon="fa-solid fa-trash"/>
+                            </span>
+                        </div>
                     </div>
-                    <div class="d-flex icones" v-else>
-                      <label for="imagem">
-                        <input
-                          type="file"
-                          @change="onFileChange"
-                          ref="fileInput"
-                          id="imagem"
-                          class="position-absolute d-none"
-                        />
-                        <i
-                          class="fa fa-pencil-square-o EditarImagen"
-                          aria-hidden="true"
-                        ></i>
-                      </label>
-                      <div @click="RemoveImage" id="icone_delete_img">
-                        <i class="fa fa-ban" aria-hidden="true"></i>
-                      </div>
-                    </div>
-                  </div>
-
-                  <label class="imagem_novo_produto">
-                    <img :src="element.img" class="rounded float-right" />
-                  </label>
                 </div>
               </div>
             </div>
@@ -235,9 +223,11 @@
       </form>
     </div>
   </div>
+  <Toast/>
 </template>
 
 <script setup>
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useForm } from "@inertiajs/inertia";
 import { onMounted, reactive, ref } from "@vue/runtime-core";
 import { useStore } from "vuex";
@@ -248,9 +238,13 @@ import Progress from "@/components/confirmation/progress.vue";
 import Confirm from "../confirmation/confirm.vue";
 import NewCategory from "./CategoryProduct.vue";
 import {useUploadImage} from '@/composable/public/UploadImage'
+import {getImages} from '@/composable/public/getImages'
+import Toast from "primevue/toast";
+import { useToast } from "primevue/usetoast";
 
-const emits = defineEmits(["descartar", "Guardar"]);
+const emits = defineEmits(["descartar", "saved"]);
 const store = useStore();
+const toast = useToast()
 const StateEditProd = ref(false);
 const props = defineProps({
   product: Object,
@@ -294,6 +288,8 @@ const Entradasaida = ref({
 });
 
 const {createImg,onFileChange} = useUploadImage(produto, element);
+const {getImage,RemoveImage} = getImages(element);
+
 
 const EntradaSaidaProd = (event) => {
   Entradasaida.value.store = event;
@@ -302,8 +298,8 @@ const EntradaSaidaProd = (event) => {
 };
 
 const muvementos = (event) => {
-  store.state.EstadoMuvemento.estado = true;
-  store.state.EstadoMuvemento.tipo = event;
+  store.state.pos.EstadoMuvemento.estado = true;
+  store.state.pos.EstadoMuvemento.tipo = event;
 };
 
 const NewCategoria = (idProduct) => {
@@ -319,7 +315,8 @@ const AddCategoryObject = (event) => {
 };
 
 const OnMounted = onMounted(async () => {
-  store.state.StateProgress = true;
+   await getImage();
+  store.state.pos.StateProgress = true;
   await axios
     .get(`/products/${props.product.id}`)
     .then((Response) => {
@@ -329,14 +326,14 @@ const OnMounted = onMounted(async () => {
       produto.type_movements = Response.data.type_movements
       calcMovement();
       categorys.liste = Response.data.categorys;
-      store.state.StateProgress = false;
+      store.state.pos.StateProgress = false;
       categorys.StateModal = false;
       StateEditProd.value = true;
     })
     .catch((err) => {
       emits("descartar");
       console.log(err);
-      store.state.StateProgress = false;
+      store.state.pos.StateProgress = false;
     });
 });
 
@@ -367,28 +364,33 @@ const Precos = (tipo, valor) => {
   produto.produtos[tipo] = valor;
 };
 
-const RemoveImage = () => {
-  element.img = "/produtos/image/produto-sem-imagen.png";
-  produto.produtos.image = "produto-sem-imagen.png";
-};
-
 const submit = () => {
-  store.state.StateProgress = true;
+  store.state.pos.StateProgress = true;
   if (produto.imagem != null) {
     produto.imagem = element.img;
   }
   axios
     .post(`/update/${produto.produtos.id}`, produto)
     .then((Response) => {
-      store.state.StateProgress = false;
+        message(Response.data.message,Response.data.type)
+      store.state.pos.StateProgress = false;
       StateEditProd.value = false;
-      emits("Guardar", Response.data);
+      emits("saved", Response.data.data);
     })
     .catch((err) => {
-      store.state.StateProgress = false;
+      store.state.pos.StateProgress = false;
       console.log(err);
     });
 };
+
+const message = ((message,type)=>{
+    toast.add({
+        severity: type,
+        summary: 'Informação',
+        detail: message,
+        life:5000,
+    })
+})
 </script>
 
 <style lang="scss" scoped>

@@ -12,7 +12,8 @@ class Invoice extends Model
     protected $fillable = [
         'user_id',
         'DateOrder',
-        'orderNumber'
+        'orderNumber',
+        'tax'
     ];
 
     protected $with = ['client','user'];

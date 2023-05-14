@@ -51,10 +51,6 @@ const image = reactive({
 
 const {createImg,onFileChange} = useUploadImage(User.value, image);
 
-onMounted(()=>{
-    console.log(User.value);
-})
-
 watch(User.value,(newValue)=>{
   if(VerifyObjectValues(newValue)){
         store.commit('Start/StartSaveUser',newValue)

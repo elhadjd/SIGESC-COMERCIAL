@@ -15,7 +15,7 @@ class configController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Config');
+        return Inertia::render('Config/index');
     }
     public function users(Request $request)
     {
@@ -26,10 +26,13 @@ class configController extends Controller
         return $request->user()->company()->first();
     }
 
-    public function SaveUser(User $user = null,Request $request)
+    public function SaveUser(User $user = null,Request $request , imagensController $uploadImage)
     {
         $data = $request->all();
-        unset($data['armagen'],$data['updated_at'],$data['id'],$data['config']);
+        unset($data['armagen'], $data['updated_at'], $data['id'], $data['config']);
+        if ($data['image'] != $user->image) {
+            $data['image'] = $uploadImage->UploadImage('/login/image/',$data['image'],$user);
+        }
         $user->update($data);
         return $this->RespondSuccess('Usuario atualizado com success !!!',$user->fresh());
     }

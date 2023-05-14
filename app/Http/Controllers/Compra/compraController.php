@@ -20,7 +20,7 @@ class compraController extends Controller
 {
     public function index()
     {
-        return Inertia::render('purchase');
+        return Inertia::render('Purchase/index');
     }
 
     public function getPurchases(Puchase $puchase)
@@ -77,24 +77,38 @@ class compraController extends Controller
             'user_id' => Auth()->user()->id
         ]);
 
+        $date = date('d').'-'.date('m').'-'.date('Y');
+        $data->orderNumber = 'CP'.$date.'/'.$data->id;
+        $data->save();
+
        return $this->Order($data);
     }
 
-    public function AddItemPuchase(Request $request, $order)
+    public function addSupplier(Puchase $order,$supplier)
+    {
+
+        $order->fornecedor_id = $supplier;
+        $order->save();
+        
+        return $order->supplier;
+    }
+
+    public function AddItemPuchase(produtos $product, $order)
     {
         if (!$this->checkOrder($order)) return $this->RespondInfo('Esta encomenda ja foi confirmada');
 
-        $result = PuchaseItem::where('puchase_id', $order)->where('produtos_id', $request->id)->exists();
+        $result = PuchaseItem::where('puchase_id', $order)->where('produtos_id', $product->id)->exists();
         if ($result)
         return $this->RespondError('Este produto já foi Adicionada nessa encomenda',[]);
 
-        PuchaseItem::create([
+        $puchase = PuchaseItem::create([
             'quantity' => 1,
             'puchase_id' => $order,
-            'produtos_id' => $request->id,
-            'priceCost' => $request->preçocust,
-            'totalItem' => $request->preçocust,
-            'finalPrice' => $request->preçocust,
+            'produtos_id' => $product->id,
+            'priceCost' => $product->preçocust,
+            'totalItem' => $product->preçocust,
+            'finalPrice' => $product->preçocust,
+            'armagen_id' => Auth::user()->armagen_id
         ]);
 
         return $this->SumPuchase($order);
@@ -102,6 +116,7 @@ class compraController extends Controller
 
     public function UpdateItems(Request $request,PuchaseItem $item)
     {   $update = $request;
+
         if (!$this->checkOrder($update['puchase_id'])) return $this->RespondInfo('Esta encomenda ja foi confirmada');
         $totalIva = ceil($request->priceCost/100 * $request->tax * $request->quantity);
         $totalDiscount = ceil($request->priceCost/100 * $request->discount * $request->quantity);
@@ -115,6 +130,7 @@ class compraController extends Controller
         $item->priceCost = $update['priceCost'];
         $item->tax = $update['tax'];
         $item->discount = $update['discount'];
+        $item->armagen_id = $update['armagen_id'];
         $item->save();
         return $this->SumPuchase($update['puchase_id']);
     }
@@ -126,27 +142,29 @@ class compraController extends Controller
         return $this->SumPuchase($order);
     }
 
-    public function confirmOrder(Request $request,Puchase $order,armagen $armagen)
+    public function confirmOrder(Request $request,Puchase $order,$type)
     {
 
         if (!$this->checkOrder($order->id)) return $this->RespondError('Atenção esta encomenda ja foi confirmada ');
         $order->load('items');
-        DB::transaction(function() use ($order, &$armagen, &$request){
-            foreach ($order->items as $item) {
 
+        if (empty($order->fornecedor_id)) return $this->RespondError('Seleciona um fornecedor para validar a compra',$order);
+
+        DB::transaction(function() use ($order, &$request,&$type){
+            foreach ($order->items as $item) {
                 $consult = stock::where('produtos_id', $item['produtos_id'])
-                ->where('armagen_id', $armagen->id);
+                ->where('armagen_id', $item['armagen_id']);
 
                 if ($consult->count() > 0) {
                     $quantityAfter = $consult->first()->quantity;
                     $consult->update([
-                        'quantity' => $consult->first()->quantity + $item['quantity']
+                        'quantity' => $type == 'save' ? $consult->first()->quantity + $item['quantity'] : $consult->first()->quantity - $item['quantity']
                     ]);
                 } else {
                     $quantityAfter = 0;
                     $consult->create([
                         'produtos_id' => $item['produtos_id'],
-                        'armagen_id' => $armagen->id,
+                        'armagen_id' => $item['armagen_id'],
                         'quantity' => $item['quantity']
                     ]);
                 }
@@ -161,16 +179,16 @@ class compraController extends Controller
                     'user_id' => $request->user()->id,
                     'produtos_id' => $item->product['id'],
                     'movement_type_id' => $movementTypes->id,
-                    'armagen_id' => $armagen->id,
+                    'armagen_id' => $item['armagen_id'],
                     'quantity' => $item['quantity'],
                     'price_cost' => $item['finalPrice'],
-                    'motive' => "Compra",
+                    'motive' => $type == 'save' ? "Compra Confirmada" : 'Compra Anulada',
                     'quantityAfter' => $quantityAfter,
                 ]);
-                $order->fornecedor_id = $request->supplier['id'];
-                $order->state = 'Publicado';
+
+                $order->state = $type == 'save' ? 'Publicado' : 'Anulado';
                 $order->restPayable = $order->total;
-                $order->armagen_id = $armagen->id;
+                $order->armagen_id = $item['armagen_id'];
                 $order->save();
             }
         });

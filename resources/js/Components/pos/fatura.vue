@@ -96,10 +96,10 @@ const props = defineProps({
     dadosFatura: Object
 })
 const store = useStore()
-const config = ref(store.state.configCash)
+const config = ref(store.state.pos.configCash)
 const invoice = ref(props.dadosFatura)
 
-const company = ref(store.state.Empresa)
+const company = ref(store.state.publico.company)
 const FormetDineiro = new Intl.NumberFormat('pt-AO', { style: 'currency', currency: 'AOA',})
 const formatDate = ((data)=>{
     return moment(data).format('DD-MM-YYYY hh:mm:ss')
@@ -139,14 +139,14 @@ onMounted(async ()=>{
         display: flex;
         flex-direction: column;
         >div{
-            
+
         }
         >div:nth-child(1){
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        
+
         h2{
             font: 11pt arial !important;
             font-weight: bold !important;

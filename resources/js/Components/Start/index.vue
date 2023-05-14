@@ -80,7 +80,6 @@ const saveForm = (()=>{
     const form = useForm(store.state.Start.start)
     form.post('/saveCompany',{
         onSuccess: (Response)=>{
-            console.log(Response);
             inSubmit.value = false
         },
         onError:(err)=>{

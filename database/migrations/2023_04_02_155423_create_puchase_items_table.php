@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreign('puchase_id')->references('id')->on('puchases');
             $table->integer('produtos_id');
             $table->foreign('produtos_id')->references('id')->on('produtos');
+            $table->unsignedBigInteger('armagen_id');
+            $table->foreign('armagen_id')->references('id')->on('armagens');
             $table->integer('quantity')->default(1);
             $table->float('priceSold')->default(0);
             $table->float('priceCost')->default(0);

@@ -18,7 +18,7 @@ class movementsController extends Controller
         ->with('movement_type')
         ->where('produtos_id',$product->id)
         ->where('movement_type_id',$movement_type)
-        ->select($movements::raw('DATE(created_at) as dia'),'quantity', 'id' ,'produtos_id','order_pos_id','movement_type_id','quantity')
+        ->select($movements::raw('DATE(created_at) as dia'),'quantity', 'id' , 'quantityAfter' ,'produtos_id','motive','order_pos_id','movement_type_id','quantity')
         ->orderBy('created_at', 'desc')
         ->get()
         ->groupBy('dia');

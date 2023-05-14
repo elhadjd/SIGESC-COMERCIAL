@@ -1,7 +1,7 @@
 <template>
   <div class="ManuPosGeral">
     <Index
-      v-if="!$store.state.Controlo.state"
+      v-if="!$store.state.pos.Controlo.state"
       @LogIn="logIn"
       :session="props.session"
       @message="menssagens"
@@ -37,7 +37,7 @@
         <Pesquisar />
         <div id="UsuarioConectado">
           <div>
-            <div>{{ $store.state.user.surname }}</div>
+            <div>{{ $store.state.publico.user.surname }}</div>
           </div>
           <div class="SairPos">
             <Link :href="route('pontodevenda')"
@@ -152,7 +152,7 @@ const numeros = ref("");
 const TipoAlteration = ref("quantidade");
 const linha = ref(null);
 const Form_Pagamento = ref(false);
-const config = ref(store.state.configCash);
+const config = ref(store.state.pos.configCash);
 const Pedido = ref({
   items: [],
   total: 0,
@@ -174,7 +174,7 @@ const props = defineProps({
 const IdEncomenda = ref();
 
 const LogIn = (event) => {
-  store.commit("CloseCash", event);
+  store.commit("pos/CloseCash", event);
 };
 
 const Imprimir = (event) => {
@@ -187,12 +187,12 @@ const Imprimir = (event) => {
   Pedido.value.number = null;
   Pedido.value.items = [];
   Pedido.value.total = null;
-  store.state.ClientePos = null;
+  store.state.pos.ClientePos = null;
   return OnMounted();
 };
 
 const InputFocus = () => {
-  store.state.PesquisarProduto = "";
+  store.state.pos.PesquisarProduto = "";
 };
 
 const AlterarPedido = (event,edit) => {
@@ -212,7 +212,7 @@ const NovoPedido = () => {
   } else {
     Pedido.value.number = Encomendas.value.length;
     Pedido.value.items = [];
-    store.state.ClientePos = null;
+    store.state.pos.ClientePos = null;
     Pedido.value.total = 0;
     Pedido.value.cliente = null;
     localStorage.setItem(
@@ -245,7 +245,7 @@ const tipo = (event) => {
 const OnMounted = onMounted(async () => {
   await axios.get("/PDV/menuPos").then((Response) => {
     method.value = Response.data.methods;
-    Pedido.value.user = store.state.user;
+    Pedido.value.user = store.state.publico.user;
   });
   localStorage.setItem("session", props.session.id);
   Pedido.value.session = props.session.id;
@@ -302,7 +302,7 @@ const VerificarCarrinho = (event,edit) => {
   if (event.state != "Pago"||edit) {
 
     if (event.items != []) {
-      store.state.ClientePos = event.cliente;
+      store.state.pos.ClientePos = event.cliente;
       if (edit) {
         Pedido.value.items = []
         event.items.forEach(item => {
@@ -325,7 +325,7 @@ const VerificarCarrinho = (event,edit) => {
       );
       Pedido.value.number = testar.number;
       Pedido.value.items = Encomendas.value[testar.number].items;
-      store.state.ClientePos = Encomendas.value[testar.number].cliente;
+      store.state.pos.ClientePos = Encomendas.value[testar.number].cliente;
       CalcularTotal();
     } else {
       Pedido.value.number = Encomendas.value.length;
@@ -336,7 +336,7 @@ const VerificarCarrinho = (event,edit) => {
       Pedido.value.number = localStorage.getItem(
         "NumeroPedidos" + Pedido.value.session
       );
-      Pedido.value.cliente = store.state.ClientePos;
+      Pedido.value.cliente = store.state.pos.ClientePos;
       Encomendas.value.push(Pedido.value);
       localStorage.setItem(
         "Encomendas" + Pedido.value.session,

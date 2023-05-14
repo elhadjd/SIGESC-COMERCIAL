@@ -1,7 +1,6 @@
 <template>
     <Link
         :href="route('dashboard')"
-        @click="showMenu"
         @mouseenter="state = true"
         @mouseout="state = false"
         class="Container"
@@ -29,9 +28,6 @@ import { ref } from "@vue/runtime-core";
 import { Link } from "@inertiajs/vue3";
 const state = ref(false);
 
-const showMenu = () => {
-    Inertia("dashboard");
-};
 </script>
 
 <style scoped lang="scss">

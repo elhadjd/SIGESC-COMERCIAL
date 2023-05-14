@@ -26,6 +26,7 @@ return new class extends Migration
             $table->float('total')->default(0);
             $table->float('restPayable')->default(0);
             $table->enum('state',['Publicado','Cotação','Pago'])->default('Cotação');
+            $table->string('orderNumber');
             $table->timestamps();
         });
     }

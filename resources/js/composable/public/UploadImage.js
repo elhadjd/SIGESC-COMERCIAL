@@ -47,6 +47,6 @@ const onFileChange = (e) => {
   };
 
 
-  return {createImg,onFileChange}
+  return {createImg,onFileChange,object}
 
 })

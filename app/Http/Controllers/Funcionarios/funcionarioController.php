@@ -16,7 +16,7 @@ class funcionarioController extends Controller
 {
     public function Index()
     {
-        return Inertia::render('funcionarios',[
+        return Inertia::render('Funcionarios/index',[
             'user'=>Auth::user()
         ]);
     }
@@ -41,7 +41,7 @@ class funcionarioController extends Controller
             "company_id"=> Auth::user()->company_id
         ]);
 
-        return $this->show($create);
+        return $this->show($create->id);
     }
 
     public function show($id)
@@ -78,6 +78,7 @@ class funcionarioController extends Controller
             'name' => $request->name,
             'cargo' => $request->cargo,
             'email' => $request->email,
+            'company_id' => $request->user()->company_id,
             'phone' => $request->phone,
             'user_id' => $request->user['id'],
             'celular' => $request->celular,
