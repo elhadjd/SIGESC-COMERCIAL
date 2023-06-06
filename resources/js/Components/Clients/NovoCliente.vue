@@ -6,7 +6,7 @@
         <div class="Form">
             <div class="form-container">
                 <div class="Header">
-                    <div class="card-header   Action dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="card-header Action dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                         Ação
                     </div>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -24,10 +24,10 @@
 
                 </div>
 
-                <div class="Content">
+                <div class="Main">
                     <div class="Name-Img-control">
                         <div class="form-nome">
-                            <input :disabled="DadosCliente.state == 0" type="text" v-model="DadosCliente.surname" placeholder="digita o nome do cliente"/>
+                            <input :disabled="DadosCliente.state == 0" type="text" v-model="DadosCliente.surname" placeholder="Apelido"/>
                         </div>
 
                         <div class="form-image">
@@ -87,7 +87,6 @@
                     </div>
                 </div>
                 <div>
-                    em processo...
                 </div>
             </div>
         </div>

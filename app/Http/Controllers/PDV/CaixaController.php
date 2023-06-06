@@ -21,7 +21,7 @@ class CaixaController extends Controller
     return $caixa->with(['session' => function($query){
         $query->where('state','Aberto')
         ->orderBy('id','DESC');
-    }])->get();
+    }])->where('company_id',Auth::user()->company_id)->get();
 
   }
   public function show(session $session)

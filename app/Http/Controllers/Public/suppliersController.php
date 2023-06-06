@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\classes\uploadImage;
 use App\Http\Controllers\Controller;
 use App\Models\fornecedore;
 use App\Models\fornecedore_produtos;
@@ -15,7 +16,7 @@ class suppliersController extends Controller
 {
     public function get()
     {
-        return fornecedore::all();
+        return fornecedore::where('company_id',Auth::user()->company_id)->get();
     }
 
     public function create()
@@ -33,8 +34,9 @@ class suppliersController extends Controller
         return $supplier;
     }
 
-    public function update(fornecedore $supplier , Request $request,imagensController $uploadImage)
+    public function update(fornecedore $supplier , Request $request)
     {
+        $image = new uploadImage();
         $request->validate([
             'name'=> 'required||string'
         ]);
@@ -43,24 +45,24 @@ class suppliersController extends Controller
 
         unset($data['id'],$data['products'],$data['orders'],$data['created_at'],$data['updated_at']);
 
-        if($data['images']!= null) $data['image'] = $uploadImage->UploadImage('/supplier/image/',$request->images);
+        if($data['images']!= null) $data['image'] = $image->Upload('/supplier/image/',$request->images);
 
         if ($supplier->update($data)) return $this->RespondSuccess('Sucesso',$this->relations($supplier));
-        
+
         return $this->RespondError('Erro ao salvar fornecedore');
     }
 
     public function deleteSupplier(fornecedore $supplier)
     {
         $relation = $this->relations($supplier);
-        
+
         if ($relation->products->count() >0 || $relation->orders->count() >0) return $this->RespondError('Não é posivel apagar este fornecedor');
         if ($relation->delete()) return $this->RespondSuccess('Fornecedor eliminado com sucesso');
     }
 
     public function delete()
     {
-        
+
     }
 
     public function AddProductSupplier(produtos $product, fornecedore $supplier)

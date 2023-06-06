@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\public;
+namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Models\armagen;
@@ -29,7 +29,7 @@ class stockController extends Controller
     {
         return $request->user()->company()->with(['armagens' => function ($armagen) {
             $armagen->with('stock')->get();
-        }])->first();
+        }])->whereId(Auth::user()->company_id)->first();
     }
 
     public function GetAgroup()
@@ -108,6 +108,7 @@ class stockController extends Controller
     public function createMovement($request, $product, $quantityAfter)
     {
         movement_type_produtos::create([
+            'company_id' => Auth::user()->company_id,
             'user_id' => Auth::user()->id,
             'produtos_id' => $product->id,
             'movement_type_id' => $request->movement_type['id'],
@@ -123,11 +124,16 @@ class stockController extends Controller
     public function getRelatorProductsByMonth($month, $year)
     {
         $select = movement_type_produtos::whereMonth('created_at', $month)
+        ->where('company_id',Auth::user()->company_id)
             ->whereYear('created_at', $year)->with('movement_type')->get();
-        $spent = operationCaixaType::where('name', 'Gasto')->first();
+
+        $spent = operationCaixaType::with(['operations'=>function($operations){
+            $operations->where('company_id',Auth::user()->company_id)->get();
+        }])->where('name', 'Gasto')->first();
+
         return [
             'spent' => $spent,
-            'products' => produtos::withSum('stock', 'quantity')->where('estado', 'active')->get(),
+            'products' => produtos::where('company_id',Auth::user()->company_id)->withSum('stock', 'quantity')->where('estado', 'active')->get(),
             'list' => $select,
         ];
     }
@@ -140,11 +146,13 @@ class stockController extends Controller
         $endDate = date('Y-m-d H:i:s', strtotime($endDate . ' +1 day -1 second'));
 
         $select = movement_type_produtos::whereBetween('created_at', [$startDate, $endDate])
-            ->with('movement_type')->get();
+        ->where('company_id',Auth::user()->company_id)
+        ->with('movement_type')->get();
 
         $spent = operationCaixaType::where('name', 'Gasto')
             ->with(['operations' => function ($operations) use ($startDate, $endDate) {
-                $operations->whereBetween('created_at', [$startDate, $endDate]);
+                $operations->where('company_id',Auth::user()->company_id)
+                ->whereBetween('created_at', [$startDate, $endDate]);
             }])->first();
 
         return [
@@ -164,7 +172,7 @@ class stockController extends Controller
             'city' =>  'required',
             'name' => 'required'
         ]);
-       
+
         armagen::updateOrCreate(
             ['name' => $request->name,'company_id' => $request->user()->company_id],
             [

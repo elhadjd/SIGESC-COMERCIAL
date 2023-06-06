@@ -3,5 +3,4 @@ export default {
         state.user = payload.user
         state.company = payload.data
     },
-
 }

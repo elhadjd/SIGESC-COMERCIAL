@@ -75,10 +75,10 @@ const ShwInfo = (event) => {
 };
 
 const OnMounted = onMounted(() => {
-  axios.get('/products')
+  axios.get('/products/1500/1')
     .then((Response) => {
-    localStorage.setItem("produtos", JSON.stringify(Response.data));
-    produtos.value = Response.data;
+    localStorage.setItem("produtos", JSON.stringify(Response.data.data));
+    produtos.value = Response.data.data;
   });
 });
 

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Funcionarios;
 
+use App\classes\uploadImage;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\public\imagensController;
 use App\Models\expense;
 use App\Models\session;
 use App\Models\Workers;
@@ -63,12 +63,12 @@ class funcionarioController extends Controller
         return $create;
     }
 
-    public function saverWorker(Request $request , Workers $worker,imagensController $uploadImage)
+    public function saverWorker(Request $request , Workers $worker)
     {
         $data = $request->all();
-
+        $image = new uploadImage();
         if($request->imagem) {
-            $data['image'] = $uploadImage->UploadImage('/worker/image/',$request->imagem);
+            $data['image'] = $image->Upload('/worker/image/',$request->imagem);
         }else {
             $data['image'] = $request->image;
         }

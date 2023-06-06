@@ -12,7 +12,7 @@
             <div class="Apps">
                <div class="App" v-for="app in company?.license?.app_license" :key="app.id">
                   <div class="Imagem">
-                     <img :src="'/login/image/'+app.apps.image" >
+                     <img :src="'/app/image/'+app.apps.image" >
                   </div>
                   <div class="AppName">
                      {{app.apps.name}}
@@ -28,9 +28,9 @@
          </div>
          <div class="CardApps">
             <div class="Apps">
-               <div class="App" @click="ShowUserSingle(user)" v-for="user in company.users?.slice(0,6)" :key="user.id">
+               <div class="App" v-for="user in company.users?.slice(0,6)" @click="ShowUserSingle(user)" :key="user.id">
                   <div class="Imagem">
-                     <img :src="'/login/image/'+user.image" >
+                     <img :src="'/login/image/'+user.image">
                   </div>
                   <div class="AppName">
                      {{user.surname}}
@@ -69,7 +69,7 @@ import axios from "axios";
 import moment from "moment";
 import { useStore } from "vuex";
 const store = useStore()
-const emits = defineEmits('ShowSingleUser')
+const emits = defineEmits(['ShowSingleUser'])
 
 const company = ref([]);
 const license = ref({

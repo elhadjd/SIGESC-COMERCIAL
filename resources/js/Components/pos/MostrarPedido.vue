@@ -25,13 +25,13 @@
                 <div class="valores">
                     <div>{{formatMoney(data.total)}}</div>
                     <div v-for="method in data.payments" :key="method.id">{{formatMoney(method.amountPaid)}}</div>
-                    <div>{{change}}</div>
+                    <div>{{formatMoney(change)}}</div>
                 </div>
             </div>
         </div>
         <div class="Footer">
             <button class="PedirReembolso" @click="invoice.state = true">Pedir devolução</button>
-            <button @click="$emit('fechar')" class="Fechar">Fechar</button>
+            <button @click="$emit('close')" class="Fechar">Fechar</button>
         </div>
     </div>
 
@@ -47,7 +47,7 @@
 <script setup>
 import InvoiceCancel from './invoiceCancel.vue';
 import { onMounted, reactive, ref } from "@vue/runtime-core";
-
+const emits = defineEmits(['close'])
 const props = defineProps({
     dados: Object
 });
@@ -69,7 +69,7 @@ const changes = (()=>{
     data.value.payments.forEach((amount)=>{
         amountPaid += Number(amount.amountPaid)
     })
-    change.value = formatMoney(Number(amountPaid) - Number(data.value.total))
+    change.value = (Number(amountPaid) - Number(data.value.total))
 })
 
 </script>

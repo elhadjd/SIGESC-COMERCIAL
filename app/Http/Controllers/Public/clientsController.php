@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\public;
+namespace App\Http\Controllers\Public;
 
+use App\classes\uploadImage;
 use App\Http\Controllers\Controller;
 use App\Models\cliente;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ class clientsController extends Controller
 {
     public function get()
     {
-        return cliente::all();
+        return cliente::where('company_id',Auth::user()->company_id)->get();
     }
 
     public function getClientsCredit(cliente $clients)
@@ -24,8 +25,9 @@ class clientsController extends Controller
         return $client->invoices()->count();
     }
 
-    public function updateClient(cliente $client , Request $request,imagensController $uploadImage)
+    public function updateClient(cliente $client , Request $request)
     {
+        $Image = new uploadImage();
         $request->validate([
             'name'=> 'required||string'
         ]);
@@ -34,17 +36,17 @@ class clientsController extends Controller
 
         unset($data['id'],$data['created_at'],$data['updated_at']);
 
-        if($data['images']!= null) $data['image'] = $uploadImage->UploadImage('/clientes/image/',$request->images);
+        if($data['images']!= null) $data['image'] = $Image->Upload('/clientes/image/',$request->images);
 
         if ($client->update($data)) return $this->RespondSuccess('Sucesso',$client->fresh());
-        
+
         return $this->RespondError('Erro ao salvar fornecedore');
     }
 
     public function delete(cliente $client)
     {
         $order = $client->load('invoices');
-        
+
         if ($order->invoices->count() >0 ) return $this->RespondError('Não é posivel apagar este fornecedor');
         if ($order->delete()) return $this->RespondSuccess('Fornecedor eliminado com sucesso');
     }
@@ -60,7 +62,6 @@ class clientsController extends Controller
             'company_id'=>Auth::user()->company_id,
             'state'=>1
         ]);
-
         return $this->show($create->id);
     }
 }

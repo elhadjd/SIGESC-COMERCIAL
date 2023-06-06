@@ -21,7 +21,7 @@
         </div>
         <div class="user_conectado">
           <div class="User dropdown-toggle" @click="stateLogout = !stateLogout">
-            <img :src="'/login/image/' + user.image" alt="user" />
+            <img :src="element.img" alt="user" />
             <div>{{ user.surname }}</div>
           </div>
           <div v-if="stateLogout" class="Usuario">
@@ -37,9 +37,10 @@
 
 <script setup>
 import Index from "./index.vue";
-import { onMounted, ref } from "@vue/runtime-core";
+import { onMounted, reactive, ref } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
+import {getImages} from '@/composable/public/getImages'
 const props = defineProps({
   menus: Array,
 });
@@ -49,6 +50,10 @@ const Mostrar = ref(null);
 const store = useStore();
 const user = ref(store.state.publico.user);
 const stateLogout = ref(false);
+const element = reactive({
+    img: '/login/image/' + user.value.image
+})
+const {getImage} = getImages(element);
 const modulos = (event) => {
   const filter = props.menus.filter((menu) => {
     return event === menu.menu;

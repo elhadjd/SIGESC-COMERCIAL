@@ -2,9 +2,9 @@
   <div class="ManuPosGeral">
     <Index
       v-if="!$store.state.pos.Controlo.state"
-      @LogIn="logIn"
       :session="props.session"
       @message="menssagens"
+      @login="teste"
     />
     <Toast />
     <Transition>
@@ -75,15 +75,13 @@
                   <strong class="mr-2">Total:</strong
                   >{{ FormatarDineiro.format(Pedido.total) }}
                 </div>
-                <div class="posAtivo">{{ Pos }}</div>
               </div>
             </div>
           </div>
 
           <div class="esquerdaBaixo">
             <Eventos
-              :session="Pedido.session"
-              @FazerPagamento="FazerPagamento"
+              @payment="makePayment"
               @cliente="client"
               @Alterar="Alterar"
               @tipo="tipo"
@@ -94,7 +92,7 @@
       </div>
       <div class="Posdireita">
         <ListePedido
-          @Fechar="ListePedidos = false"
+          @close="ListePedidos = false"
           @AlterarPedido="AlterarPedido"
           @NovoPedido="NovoPedido"
           v-if="ListePedidos == true"
@@ -110,7 +108,7 @@
         :method="method"
         v-if="Form_Pagamento == true"
         @message="menssagens"
-        @fechar_pagamento="Form_Pagamento = false"
+        @closePaymentForm="Form_Pagamento = false"
         @fatura="Imprimir"
         :dados="Pedido"
       />
@@ -173,7 +171,7 @@ const props = defineProps({
 
 const IdEncomenda = ref();
 
-const LogIn = (event) => {
+const teste = (event) => {
   store.commit("pos/CloseCash", event);
 };
 
@@ -306,10 +304,17 @@ const VerificarCarrinho = (event,edit) => {
       if (edit) {
         Pedido.value.items = []
         event.items.forEach(item => {
-            item.product.preco_pedido = item.price_sold
-            item.product.quantidade = item.quantity
-            item.product.total = item.total
-            Pedido.value.items.push(item.product)
+            if (item.product) {
+                item.product.preco_pedido = item.price_sold
+                item.product.quantidade = item.quantity
+                item.product.total = item.total
+                Pedido.value.items.push(item.product)
+            }else{
+                item.preco_pedido = item.preco_pedido
+                item.quantidade = item.quantidade
+                item.total = item.total
+                Pedido.value.items.push(item)
+            }
         });
       }else{
         Pedido.value.items = event.items;
@@ -442,7 +447,7 @@ const Alterar = (numero) => {
         );
       }
     } else {
-      if (config.value.listPrice === "0") {
+      if (config.value.length <= 0 || config.value.listPrice === "0") {
         return menssagens("info", "Usuario sem aceso");
       } else {
         const total = numeros.value * existProduct.quantidade;
@@ -483,7 +488,7 @@ const CalcularTotal = () => {
   return Pedido.value.total;
 };
 
-const FazerPagamento = (event) => {
+const makePayment = (event) => {
   // A verificar se existe alguns total para pagar
   if (Pedido.value.items.length <= 0) {
     Form_Pagamento.value = false;

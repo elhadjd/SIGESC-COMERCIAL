@@ -13,11 +13,12 @@ use App\Http\Controllers\PDV\ListPriceController;
 use App\Http\Controllers\PDV\OrdersController;
 use App\Http\Controllers\PDV\PointSaleController;
 use App\Http\Controllers\PDV\pontoVendaController;
-use App\Http\Controllers\public\clientsController;
+use App\Http\Controllers\Public\clientsController;
 use App\Http\Controllers\Public\MethodsPaymentController;
-use App\Http\Controllers\public\movementsController;
+use App\Http\Controllers\Public\movementsController;
 use App\Http\Controllers\Public\productsController;
-use App\Http\Controllers\public\stockController;
+use App\Http\Controllers\Public\searchController;
+use App\Http\Controllers\Public\stockController;
 use App\Http\Controllers\Public\suppliersController;
 use App\Http\Controllers\Public\TransferController;
 use App\Http\Controllers\StartController;
@@ -41,7 +42,7 @@ Route::controller(StartController::class)->group(function(){
    Route::get('welcome/{company}','welcome')->name('welcome');
 });
 
-Route::middleware('license')->group(function () {
+// Route::middleware('license')->group(function () {
 
 Route::get('/databases', function () {
     return ([['name' => 'test'], ['name' => 'Loja2'], ['name' => 'Loja3']]);
@@ -56,6 +57,10 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'Dashboard'])->name('dashboard');
+    Route::controller(searchController::class)->group(function () {
+        Route::get('search/{table}/{column}/{tex}','filter');
+    });
+
 
     Route::prefix('PDV')->group(function () {
 
@@ -108,13 +113,16 @@ Route::middleware('auth')->group(function () {
             Route::get('getPurchases','getPurchases');
             Route::get('getPurchases/{order}','Order');
             Route::post('NewPurchase','NewPurchase');
+            Route::post('ChangeDatePurchase/{type}/{order}','ChangeDatePurchase');
             Route::post('AddItemPuchase/{product}/{order}','AddItemPuchase');
             Route::post('UpdateItems/{item}','UpdateItems');
             Route::post('addSupplier/{order}/{supplier}','addSupplier');
             Route::delete('/deleteItem/{order}/{item}','deleteItem');
             Route::post('confirmOrder/{order}/{type}','confirmOrder');
-            Route::post('savePayment/{order}','savePayment');
+            Route::post('cancelInvoice/{order}/{type}','confirmOrder');
+            Route::post('sendPayment/{order}','savePayment');
             Route::get('/purchur/getPayments','getPayments');
+            Route::get('getPayments/{order}','payments');
         });
     });
 
@@ -122,6 +130,7 @@ Route::middleware('auth')->group(function () {
         Route::controller(configController::class)->group(function () {
             Route::get('Home', 'Index')->name('configuracoes');
             Route::get('getConfig','getConfig');
+            Route::post('newUser','newUser');
             Route::get('users','users');
             Route::post('SaveUser/{user?}','SaveUser');
             Route::post('saveCompany','saveCompany');
@@ -208,7 +217,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::controller(productsController::class)->group(function () {
-        Route::get('/products', 'get');
+        Route::get('/products/{page}/{type}', 'get');
         Route::get('/products/{product}', 'show');
         Route::post('/new_product/{name?}', 'create');
         Route::post('/update/{product}', 'update');
@@ -244,6 +253,6 @@ Route::middleware('auth')->group(function () {
 
 Route::get('getActivity', [configController::class,'getActivity']);
 
-});
+// });
 
 // require __DIR__ . '/auth.php';

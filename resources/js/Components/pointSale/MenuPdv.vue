@@ -73,7 +73,7 @@ import { computed, onMounted, ref } from "@vue/runtime-core";
 import axios from "axios";
 import OrderSingleUser from "./orderSingleUser.vue";
 import { useStore } from "vuex";
-import { useForm } from "@inertiajs/vue3";
+import { router, useForm } from "@inertiajs/vue3";
 import { Inertia } from "@inertiajs/inertia";
 const store = useStore();
 
@@ -111,7 +111,7 @@ onMounted(() => {
 });
 
 const submit = (id) => {
-    Inertia.get(`Pos/${id}`, {
+    router.get(`Pos/${id}`, {
         onSuccess: (Response) => {
             emits("message", "info", Response.props.message);
         },
@@ -137,7 +137,7 @@ const openControl = ((caixa)=>{
 
     if (savedState) {
         localStorage.setItem('vuex',savedState)
-        Inertia.post(`caixa/opiningControl`,{id:caixa})
+        router.post(`caixa/opiningControl`,{id:caixa})
     }
 
 })

@@ -6,18 +6,20 @@
         <div>fornecedor</div>
         <div>Responsavel</div>
         <div>Data da encomenda</div>
+        <div>Data de vencimento</div>
         <div class="text-right">Total de mercadoria</div>
         <div class="text-right">Total da fatura</div>
         <div>Estado de pagamento</div>
         <div>Estado da fatura</div>
       </div>
       <div class="FormLista">
-        <div @click="showOrder(order)" class="d-flex ListaFaturas" v-for="order in Orders.list"
+        <div @click="showOrder(order)" class="d-flex ListaFaturas" v-for="order in Orders?.list.data"
         :key="order.id">
           <div>{{'Compra/00'+order.id}}</div>
           <div>{{order.supplier?.name}}</div>
           <div>{{order.user?.surname}}</div>
-          <div>{{formatDate(order.created_at)}}</div>
+          <div>{{formatDate(order.DateOrder)}}</div>
+          <div>{{formatDate(order.DateDue)}}</div>
           <div class="text-right">{{formatMoney(Number(order.total) + Number(order.totalDiscount) - Number(order.totalTax) - Number(order.TotalSpending))}}</div>
           <div class="text-right">{{formatMoney(order.total)}}</div>
           <div class="Pagar">
@@ -52,9 +54,8 @@ const {bus , emit} = useEventsBus();
 
 const emits = defineEmits(['message'])
 
-const Orders = ref({
-    list:[],
-    store: []
+const props = defineProps({
+    Orders: Object,
 });
 
 const Totals = ref({
@@ -63,10 +64,12 @@ const Totals = ref({
 })
 
 const Dinheiro = Intl.NumberFormat('PT-AO',{style: 'currency',currency: 'AOA'});
-
+onMounted(()=>{
+    sumOrders(props.Orders.list.data)
+})
 watch(()=>bus.value.get('PerquisarEncomenda'), (payloads) => {
     const payload = payloads[0]
-    const FilterSearch = Orders.value.store.filter(object=>{
+    const FilterSearch = props.Orders.store.filter(object=>{
         return String(object.supplier?.name).toLowerCase().includes(payload.toLowerCase())
         || String(object.total).includes(payload)
         || String(object.state).toLowerCase().includes(payload.toLowerCase())
@@ -74,25 +77,15 @@ watch(()=>bus.value.get('PerquisarEncomenda'), (payloads) => {
     if (FilterSearch.length<=0) {
         emits('message','Nemhuma fatura encontrada','info')
     }else{
-        Orders.value.list = FilterSearch
-        sumOrders(Orders.value.list)
+        props.Orders.list.data = FilterSearch
+        sumOrders(props.Orders.list.data)
     }
-});
-
-onMounted(() => {
-    axios.get("getPurchases").then((response) => {
-        Orders.value.list = response.data
-        Orders.value.store = response.data
-        sumOrders(response.data)
-    }).catch((erro) => {
-      console.log(erro);
-    });
 });
 
 const sumOrders = ((Orders)=>{
     Totals.value.restPayable = 0,
     Totals.value.totalOrders = 0
-    Orders.forEach(order => {
+    Orders?.forEach(order => {
         Totals.value.restPayable += Number(order.restPayable)
         Totals.value.totalOrders += Number(order.total)
     });

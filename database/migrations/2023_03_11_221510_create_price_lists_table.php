@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('price_lists', function (Blueprint $table) {
             $table->id();
-            $table->integer('produtos_id');
+            $table->unsignedBigInteger('produtos_id');
             $table->foreign('produtos_id')->references('id')->on('produtos');
-            $table->integer('company_id');
+            $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('CASCADE');
-            $table->integer('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('quantity');
             $table->float('price_discount');

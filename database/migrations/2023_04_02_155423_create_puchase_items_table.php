@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('puchase_items', function (Blueprint $table) {
             $table->id();
-            $table->integer('puchase_id');
+            $table->unsignedBigInteger('puchase_id');
             $table->foreign('puchase_id')->references('id')->on('puchases');
-            $table->integer('produtos_id');
+            $table->unsignedBigInteger('produtos_id');
             $table->foreign('produtos_id')->references('id')->on('produtos');
             $table->unsignedBigInteger('armagen_id');
             $table->foreign('armagen_id')->references('id')->on('armagens');

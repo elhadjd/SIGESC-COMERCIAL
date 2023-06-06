@@ -20,7 +20,7 @@
                <div class="Header">
                   <button>*</button>
                </div>
-               <div class="Content">
+               <div class="Main">
                   <div class="Name-Img-control">
                      <div class="form-nome">
                         <input type="text" v-model="company.name" placeholder="Nome de empresa" name="company-name">
@@ -155,5 +155,5 @@ const saveCompany = (()=>{
 </script>
 
 <style scoped lang="scss">
-@import '../../../assets/config/scss/company'
+@import '../../../assets/config/scss/company';
 </style>

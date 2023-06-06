@@ -34,7 +34,7 @@
                     </button>
 
                 </div>
-                <div class="Content">
+                <div class="Main">
                     <div class="Name-Img-control">
                         <div class="form-nome">
                             <input :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.name" placeholder="digita o nome do fornecedor"/>
@@ -98,9 +98,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="Footer">
+                <!-- <div class="Footer">
                     em processo...
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -247,7 +247,12 @@ watch(guardar,(novo)=>{
 <style scoped lang="scss">
 @include components;
 .principal{
+    height: 100%;
     .Container{
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         .Form{
             background-color: #f9f9f9f9;
             width: 100%;

@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_configs', function (Blueprint $table) {
+        Schema::create('user_perfils', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->boolean('price')->default(false);
-            $table->boolean('quantity')->default(false);
-            $table->boolean('infoCompany')->default(false);
-            $table->boolean('print')->default(false);
+            $table->string('phone')->default('244');
+            $table->string('celular')->default('244');
+            $table->string('country')->nullable();
+            $table->string('address')->nullable();
+            $table->string('gender')->nullable();
+            $table->date('birthday')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_configs');
+        Schema::dropIfExists('user_perfils');
     }
 };

@@ -14,6 +14,7 @@ class Puchase extends Model
     protected $with = ['supplier','user','armagen'];
 
     protected $fillable = [
+        'company_id',
         'user_id',
         'totalDiscount',
         'totalTax',

@@ -12,7 +12,7 @@
           <div class="buttons">
             <div>
               <div>
-                <button @click="$emit('fechar_pagamento')"><i class="fa fa-angle-double-left"></i> Cancelar</button>
+                <button @click="$emit('closePaymentForm')"><i class="fa fa-angle-double-left"></i> Cancelar</button>
               </div>
 
               <div>
@@ -113,7 +113,7 @@ const TotalEncomenda = computed(()=>{
     return props.dados.total
 });
 
-const emits = defineEmits(['fatura','message'])
+const emits = defineEmits(['fatura','message','closePaymentForm'])
 
 const methodos = ref()
 
@@ -265,11 +265,10 @@ const BUSCAR_RESTO = () =>{
             ShowModal.value = false
         } else {
             ShowModal.value = false
-            emits('message',Response.data.type,'Ocorreu um erro ao enviar o formulário. Por favor, tente novamente mais tarde.')
+            emits('message',Response.data.type,Response.data.message)
         }
         })
         .catch(function (error) {
-
             console.log(error);
         })
         .finally(()=>{

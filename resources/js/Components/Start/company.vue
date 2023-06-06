@@ -3,9 +3,9 @@
       <div>
          <img :src="image.img" />
          <span>
-         <label for="image">
-         <input type="file" id="image" @change="onFileChange" />
-         </label>
+            <label for="image">
+                <input type="file" id="image" @change="onFileChange" />
+            </label>
          </span>
       </div>
    </div>
@@ -91,7 +91,6 @@ function VerifyObjectValues(object) {
   }
   return true;
   }
-
 }
 async function getCountry() {
   axios.get('/data/country.json').then((response) => {

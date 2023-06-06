@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('operation_caixa_type_sessions', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->unsignedBigInteger('company_id');
+            $table->foreign('company_id')->references('id')->on('companies');
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->integer('session_id')->nullable();
+            $table->unsignedBigInteger('session_id')->nullable();
             $table->foreign('session_id')->references('id')->on('sessions');
-            $table->integer('operation_caixa_type_id')->nullable();
+            $table->unsignedBigInteger('operation_caixa_type_id')->nullable();
             $table->foreign('operation_caixa_type_id')->references('id')->on('operation_caixa_types');
             $table->text('subject');
             $table->float('amount');

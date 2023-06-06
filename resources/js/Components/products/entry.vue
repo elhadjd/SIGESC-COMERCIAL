@@ -46,9 +46,8 @@
             </div>
             <div class="w-50 armagens">
                 <label for="armagen">Armagens: </label>
-                <select @change="addArmagen" id="armagen">
-                    <option selected></option>
-                    <option v-for="item in armagens" :key="item.id">{{item.name}}</option>
+                <select @change="(e)=>addArmagen(e.target.value)" id="armagen">
+                    <option v-for="item in armagens" :selected="form.armagen_id == item.id" :key="item.id">{{item.name}}</option>
                 </select>
             </div>
           </div>
@@ -74,6 +73,8 @@ import Dialog from "primevue/dialog";
 import { onMounted, reactive, ref } from "@vue/runtime-core";
 import { useToast } from "primevue/usetoast";
 import axios from "axios";
+import { useStore } from "vuex";
+const store = useStore()
 
 const quantity = ref(0)
 
@@ -88,7 +89,7 @@ const ShowModal = ref(false);
 const armagens = ref([])
 
 const emits = defineEmits(["Confirmar", "fechar"]);
-
+const user = ref(store.state.publico.user);
 const props = defineProps({
   dados: Object,
 });
@@ -101,19 +102,19 @@ const form = reactive({
   motif: String(),
 });
 
-onMounted(() => {
+onMounted(async() => {
   displayPosition.value = true;
   position.value = "top";
   product.value = props.dados.product;
-  getArmagens()
+ await getArmagens()
+  addArmagen(user.value.armagen.name)
 });
 
 const addArmagen = ((e)=>{
-    let types = armagens.value.filter(
-        (item) => item.name === e.target.value
-    );
-    if (types[0]) {
-        return sumQuantity(types[0])
+
+    let types = armagens.value.find((item) => String(item.name).trim() == String(e).trim() );
+    if (types) {
+        return sumQuantity(types)
     }
     quantity.value = 0
 
@@ -130,12 +131,12 @@ const sumQuantity = ((armagen)=>{
     quantity.value = 0
 })
 
-const getArmagens = (()=>{
-    axios.get('/getArmagens')
+const getArmagens = (async()=>{
+   await axios.get('/getArmagens')
     .then((response) => {
         armagens.value = response.data.armagens
     }).catch((err) => {
-
+        console.log(err);
     });
 })
 

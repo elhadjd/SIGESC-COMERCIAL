@@ -4,9 +4,7 @@
 	</div>
 </template>
 <script setup>
-import { onMounted, ref } from "@vue/runtime-core";
 import Home from '../../Components/Invoice/Home.vue'
-import ModalConfirm from "../../components/Invoice/ModalConfirm.vue";
 </script>
 
 <style scoped>

@@ -2,14 +2,14 @@
 <div class="Principal">
     <div class="Formulario">
         <div class="Header">
-            <h1>{{session.nome}}</h1>
+            <h1>{{user.nome}}</h1>
             <div>
                 <img :src="`/login/image/${user.image}`" alt="">
             </div>
 
         </div>
         <div class="Container">
-            <input @keypress.enter="Entrar" type="password" v-model="EnviarCaixa.password">
+            <input @keypress.enter="Entrar" type="password" placeholder="Digite seu codigo secreto" v-model="EnviarCaixa.password">
         </div>
         <div class="Footer">
             <Link :href="route('pontodevenda')" class="sair">Voltar</Link>
@@ -27,7 +27,7 @@ import axios from "axios"
 import { useStore } from "vuex"
 
 const {emit} = useEventsBus();
-const emits = defineEmits(['LogIn','message'])
+const emits = defineEmits(['login','message'])
 const user = computed(()=>store.state.publico.user)
 
 const props = defineProps({
@@ -36,7 +36,7 @@ const props = defineProps({
 
 const store = useStore()
 
-const session = ref([])
+const Session = ref([])
 
 const EnviarCaixa = ref({
     id: null,
@@ -66,17 +66,17 @@ const Entrar = (()=>{
 })
 
 const OnMounted = onMounted(async ()=>{
-    session.value = props.session
-    EnviarCaixa.value.id = session.value.id
+    Session.value = props.session
+    EnviarCaixa.value.id = Session.value.id
 
-    if (session.value.password != null || session.value.password !='') {
+    if (Session.value.password != null || Session.value.password !='') {
         if (store.state.pos.Controlo.state === true) {
-            emits('LogIn',true)
+            emits('login',true)
         } else {
-            emits('LogIn',false)
+            emits('login',false)
         }
     } else {
-        emits('LogIn',true)
+        emits('login',true)
     }
 })
 </script>

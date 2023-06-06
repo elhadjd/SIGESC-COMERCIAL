@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\public\imagensController;
+use App\classes\uploadImage;
 use App\Models\app;
-use App\Models\armagen;
 use App\Models\company;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +20,7 @@ class StartController extends Controller
         return Inertia::render('Start/Start');
     }
 
-    public function saveCompany(Request $request,imagensController $uploadImage)
+    public function saveCompany(Request $request)
     {
         $request->validate([
             'company.name' => 'required|string',
@@ -37,10 +34,10 @@ class StartController extends Controller
         ]);
 
         if ($request->license === 'free') {
-           $company = $this->saveData($request,$uploadImage);
+           $company = $this->saveData($request,new uploadImage());
            return $this->ValidateLicenseFree($request->license,$company,$request->user);
         } elseif ($request->license === 'Premium') {
-            $this->saveData($request,$uploadImage);
+            $this->saveData($request,new uploadImage());
             $this->ValidateLicense($request->license);
         }
     }
@@ -50,12 +47,12 @@ class StartController extends Controller
         $data = [];
         DB::transaction(function() use ($uploadImage, &$request ,&$data) {
             if ($request->company['imagem'] != null) {
-                $company_img = $uploadImage->UploadImage('/company/image/',$request->company['imagem']);
+                $company_img = $uploadImage->Upload('/company/image/',$request->company['imagem']);
             } else {
                 $company_img = 'produto-sem-imagem.png';
             }
             if ($request->user['imagem'] != null) {
-                $user_img = $uploadImage->UploadImage('/login/image/',$request->user['imagem']);
+                $user_img = $uploadImage->Upload('/login/image/',$request->user['imagem']);
             } else {
                 $user_img = 'produto-sem-imagem.png';
             }
@@ -70,10 +67,10 @@ class StartController extends Controller
             ]);
 
             $armagem = $company->armagens()->create([
-                'name' => 'Principal'
+                'name' => $request->company['name']
             ]);
 
-            $company->users()->create([
+            $user = $company->users()->create([
                 'name' => $request->user['name'],
                 'surname' => $request->user['name'],
                 'email' => $request->user['email'],
@@ -82,6 +79,8 @@ class StartController extends Controller
                 'image' =>  $user_img,
                 'armagen_id' => $armagem->id
             ]);
+            $user->config()->create();
+            $user->perfil()->create();
 
             $data = $company;
 

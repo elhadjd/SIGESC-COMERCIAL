@@ -1,38 +1,38 @@
 <template>
     <div class="Container">
-        <div class="Content-left">
+        <div class="form-content">
             <div class="Form-control">
                 <label for="phone">Telefone:</label>
-                <input type="text" id="phone" placeholder="+244">
+                <input type="text" id="phone" @keyup="(e)=>$emit('changeInput',e)" :value="data.perfil?.phone" placeholder="+244">
             </div>
             <div class="Form-control">
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" placeholder="elhadjd73@gmail.com">
+                <label for="email">Celular:</label>
+                <input type="celular" id="celular" @keyup="(e)=>$emit('changeInput',e)" :value="data.perfil?.celular" placeholder="244">
             </div>
             <div class="Form-control">
                 <label for="address">Morada:</label>
-                <input type="text" id="address" placeholder="Luanda">
+                <input type="text" :value="data.perfil?.address" @keyup="(e)=>$emit('changeInput',e)" id="address" placeholder="Luanda">
             </div>
         </div>
-        <div class="Content-right">
+        <div class="form-content">
             <div class="Form-control">
                 <label for="country">Pais de naicimento:</label>
-                <input type="text" id="country" @keyup="searchCountry" v-model="country.choose" @click="country.state = !country.state"  placeholder="Angola">
+                <input type="text" id="country" @keyup="searchCountry" :value="data.perfil?.country" @click="country.state = !country.state"  placeholder="Angola">
                 <div class="drop" v-if="country.state">
                     <span v-for="country in country.list" :key="country" @click="chooseCountry(country)">{{country.name}}</span>
                 </div>
             </div>
             <div class="Form-control">
-                <label for="genero">Genero:</label>
-                <input type="text" v-model="genero.choose" @click="genero.state = !genero.state" id="genero" placeholder="H">
+                <label for="gender">Genero:</label>
+                <input type="text" :value="data.perfil?.gender" @change="(e)=>$emit('changeInput',e)" @click="genero.state = !genero.state" id="gender" placeholder="H">
                 <div class="drop" v-if="genero.state">
-                    <span @click="genero.choose = 'Feminino'">Feminino</span>
-                    <span @click="genero.choose = 'Masculino'">Masculino</span>
+                    <span @click="handleGender('Feminino')">Feminino</span>
+                    <span @click="handleGender('Masculino')">Masculino</span>
                 </div>
             </div>
             <div class="Form-control">
-                <label for="date">Data de naicimento:</label>
-                <input type="date" id="date" placeholder="Luanda">
+                <label for="birthday">Data de naicimento:</label>
+                <input type="date" @change="(e)=>$emit('changeInput',e)" :value="data.perfil?.birthday" id="birthday">
             </div>
         </div>
     </div>
@@ -44,6 +44,12 @@ import { onMounted, ref } from "vue";
 const genero = ref({
     state: false,
     choose: ''
+})
+
+const emits = defineEmits(['changeInput'])
+
+const props = defineProps({
+    data: Object
 })
 
 const country = ref({
@@ -63,6 +69,11 @@ onMounted(async()=>{
     });
 })
 
+function handleGender(choose) {
+    props.data.perfil.gender = choose
+    genero.value.state = false
+}
+
 const searchCountry = ((event)=>{
     const filter = country.value.store.filter((item)=>{
         return String(item.name).toLocaleLowerCase().includes(event.target.value)
@@ -71,7 +82,7 @@ const searchCountry = ((event)=>{
 })
 
 const chooseCountry = ((item)=>{
-    country.value.choose = item.name
+    props.data.perfil.country = item.name
     country.value.state = false
 })
 </script>
@@ -89,7 +100,6 @@ const chooseCountry = ((item)=>{
     >div{
         width: 100%;
         height: 100%;
-        gap: .5rem;padding: 10px;
         .Form-control{
 
             position: relative;

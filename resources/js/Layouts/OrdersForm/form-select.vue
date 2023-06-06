@@ -47,10 +47,10 @@ const products = ref({
 async function getProducts() {
     if (stateSubmit.value || products.value.state) return products.value.state = false
     stateSubmit.value = true
-    axios.get(`${props.general.routes.products.name}`)
+    axios.get(`${props.general.routes.products.name}/1500/1`)
     .then((response) => {
-        products.value.list = response.data
-        products.value.store = response.data
+        products.value.list = response.data.data
+        products.value.store = response.data.data
         products.value.state = true
     }).catch((err) => {
         console.log(err);

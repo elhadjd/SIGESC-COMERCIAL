@@ -5,7 +5,7 @@
         <img :src="'/company/image/' + props.data.image" alt="" />
       </div>
       <div @click="MostrarDrop = !MostrarDrop" class="user">
-        <img :src="'/login/image/' + props.user.image" alt="" />
+        <img :src="element.img" alt="user" />
         <span>{{ props.user.surname }}</span>
         <div v-show="MostrarDrop" class="logOut">
           <div @click="Sair" class="Sair">
@@ -31,18 +31,23 @@
   </div>
 </template>
 <script setup>
-import { onMounted, ref } from "@vue/runtime-core";
+import { onMounted, reactive, ref } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import Index from '../../Layouts/index.vue'
 import { Link } from "@inertiajs/vue3";
 import { Inertia } from "@inertiajs/inertia";
+import {getImages} from '@/composable/public/getImages'
+
 const store = useStore();
 const MostrarDrop = ref(false);
 const props = defineProps({
   data: Object,
   user: Object,
 });
-
+const element = reactive({
+    img: '/login/image/' + props.user.image
+})
+const {getImage} = getImages(element);
 const Sair = () => {
   Inertia.post("/auth/logout");
 };

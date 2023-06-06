@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="FormPagamentoBaixo">
-        <div class="PagamentoEsquerda" @click="$emit('FazerPagamento',true)">
+        <div class="PagamentoEsquerda" @click="$emit('payment',true)">
             <i class="fa fa-credit-card-alt"></i>
             <div>Pagamento</div>
         </div>
@@ -25,7 +25,7 @@
             </div>
             <div class="nomeros" @click="numero(0)" id="numero">{{ 0 }}</div>
             <div class="nomeros" @click="numero('.')" id="numero">.</div>
-            <div id="numeros" @click="$emit('Remover')">
+            <div id="numeros" @click="$emit('remover')">
                 <i class="fa fa-ban" aria-hidden="true"></i>
             </div>
         </div>
@@ -36,11 +36,11 @@
 import { ref } from '@vue/runtime-core'
 import Cliente from './cliente.vue'
 
+const emits = defineEmits(['Alterar','cliente','remover','payment','tipo'])
+
 const client = ((event)=>{
     emits('cliente',event)
 })
-
-const emits = defineEmits(['Alterar','cliente'])
 
 const numero = ((event)=>{
     emits('Alterar',event)

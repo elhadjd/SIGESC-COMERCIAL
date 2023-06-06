@@ -1,19 +1,23 @@
 <template>
-   <div class="Principal">
+   <div class="principal">
       <div class="Header">
-         <div class="titulo">
+         <div class="Header-left">
             <h2>{{ $store.state.titulo }}</h2>
-            <button class="BotaoCrear" @click="newInvoice">Criar Fatura</button>
+            <button class="BotaoCrear" @click="newInvoice">Criar Fatura
+                <i v-if="loading == 'new'" class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
+            </button>
          </div>
-         <div class="filtros">
+         <div class="Header-right">
             <span class="p-input-icon-right w-100">
-            <i class="fa fa-search"></i>
-            <input @keyup="SearchInvoice" type="text" placeholder="Pesquisar...">
+                <i class="fa fa-search"></i>
+                <input @keyup="SearchInvoice" type="text" placeholder="Pesquisar...">
             </span>
+            <pagination v-if="loading != 'start'" @page="getPage" :object="Invoices.list "/>
          </div>
       </div>
-      <div class="Footer">
-         <div class="TitlsListas text-secondary">
+      <div class="Container">
+         <div v-if="loading == 'start'" class="progress"><i class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i></div>
+         <div v-else class="TitlsListas text-secondary">
             <div>Orden</div>
             <div>Usuario</div>
             <div>Cliente</div>
@@ -27,7 +31,7 @@
          <div class="FormLista">
             <div class="d-flex ListaFaturas"
                 @click="onRowSelect(item)"
-                v-for="item in Invoices.ListaFaturas"
+                v-for="item in Invoices.list.data"
                 :key="item.id
             ">
                <div>{{item.orderNumber+item.id}}</div>
@@ -67,29 +71,44 @@
 
 <script setup>
 import { ref, onMounted,defineEmits, reactive } from 'vue';
+import pagination from '@/Layouts/paginations/paginate.vue'
 import { mapState ,useStore } from "vuex"
 import moment from 'moment'
+import { Search } from '@/composable/public/search';
 
 const Invoices = ref({
-   StoreInvoice: [],
+   search: [],
    TotalFaturas: 0,
    RestoALiquidar: 0,
-   ListaFaturas: []
+   list: []
 })
+const loading = ref(null)
 
 const emits = defineEmits(['fatura', 'message'])
 
-onMounted(() => {
-   getInvoices();
+onMounted(async() => {
+   await getInvoices();
 })
 
-const getInvoices = () => {
-   axios.get('getInvoices').then((Response) => {
-      Invoices.value.StoreInvoice = Response.data
-      Invoices.value.ListaFaturas = Response.data
-      SumInvoice(Invoices.value.ListaFaturas)
+const getPage = ((data)=>{
+    Invoices.value.search = data.data
+    Invoices.value.list = data
+    localStorage.setItem('listStorePaginate',JSON.stringify(data))
+})
+
+const {getFilter} = Search(Invoices.value,loading);
+
+const getInvoices = async () => {
+    loading.value = 'start'
+    await axios.get('getInvoices').then((Response) => {
+      Invoices.value.search = Response.data.data
+      Invoices.value.list = Response.data
+      localStorage.setItem('listStorePaginate',JSON.stringify(Response.data))
+      SumInvoice(Invoices.value.list.data)
    }).catch((err) => {
       console.log(err);
+   }).finally(()=>{
+    loading.value = null
    });
 }
 
@@ -110,28 +129,40 @@ const onRowSelect = (event) => {
 };
 
 const newInvoice = () => {
+    loading.value = 'new'
    axios.post('NewOrder').then((response) => {
       emits('fatura', response.data);
    }).catch((err) => {
       console.log(err);
+   }).finally(()=>{
+    loading.value = null
    });
 }
 
-const SearchInvoice = ((event) => {
-   const FilterSearch = Invoices.value.StoreInvoice.filter(object => {
-      return String(object.client?.surname).toLowerCase().includes(event.target.value.toLowerCase()) ||
-         String(object.DateOrder).toLowerCase().includes(event.target.value.toLowerCase()) ||
-         String(object.TotalInvoice).includes(event.target.value) ||
-         String(object.state).toLowerCase().includes(event.target.value.toLowerCase()) ||
-         String(object.orderNumber+object.id).toLowerCase().includes(event.target.value.toLowerCase())
-   })
-   if (FilterSearch.length <= 0) {
-      emits('message', 'Nenhuma fatura foi encontrada', 'info')
-   } else {
-      Invoices.value.ListaFaturas = FilterSearch
-      return SumInvoice(FilterSearch)
-   }
+const SearchInvoice = (async(event) => {
+    if (event.target.value === null || event.target.value === "") {
+        Invoices.value.list.data = JSON.parse(localStorage.getItem('listStorePaginate')).data
+        Invoices.value.search = JSON.parse(localStorage.getItem('listStorePaginate')).data
+        return false
+    }
+
+    if (search(event.target.value).length == 0) {
+        await getFilter(`/search/invoices/orderNumber/${event.target.value}`)
+        Invoices.value.list.data = search(event.target.value)
+    } else {
+      Invoices.value.list.data = search(event.target.value)
+    }
 })
+
+const search = (event) => {
+   return Invoices.value.search.filter(object => {
+        return String(object.client?.surname).toLowerCase().includes(event.toLowerCase()) ||
+            String(object.DateOrder).toLowerCase().includes(event.toLowerCase()) ||
+            String(object.TotalInvoice).includes(event) ||
+            String(object.state).toLowerCase().includes(event.toLowerCase()) ||
+            String(object.orderNumber+object.id).toLowerCase().includes(event.toLowerCase())
+    })
+}
 
 const SumInvoice = ((Invoice) => {
    Invoices.value.TotalFaturas = 0

@@ -48,6 +48,7 @@
                     cursor: pointer;
                     img{
                         width: 150px;
+                        height: 170px;
                         border-radius: 3px;
                     }
                     .name{
@@ -82,6 +83,9 @@
                         img{
                             width: 78px;
                             height: 80%;
+                        }
+                        .companyImg{
+                            height: 100px !important;
                         }
                     }
                     .AppName{

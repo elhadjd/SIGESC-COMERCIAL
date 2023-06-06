@@ -1,15 +1,10 @@
 <?php
-
-namespace App\Http\Controllers\public;
-
+namespace App\classes;
 use Illuminate\Support\Str;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-
-class imagensController extends Controller
+class uploadImage
 {
-    public function UploadImage($patch, $image, $item = null)
+
+    public function Upload($patch, $image, $item = null)
     {
         if ($item != null && $item->image != null) {
             if ($item->image != $image) {
@@ -39,3 +34,4 @@ class imagensController extends Controller
         }
     }
 }
+?>

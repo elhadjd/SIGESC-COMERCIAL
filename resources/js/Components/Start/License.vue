@@ -6,7 +6,7 @@
                <strong>Plano Premium</strong>
                <span>{{formatMoney(3500)}}</span>
                <span>/Mensal</span>
-               <button>Aderir</button>
+               <button type="button" @click="OpenLicensePremium = true">Aderir</button>
             </div>
             <div>
                <ul>
@@ -34,16 +34,25 @@
             </div>
          </div>
       </div>
+      <div class="premium" v-if="OpenLicensePremium">
+         <modalLicensesPremium 
+            @close="OpenLicensePremium = $event" 
+        />
+      </div>
    </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { useStore } from "vuex";
+import modalLicensesPremium from '@/Components/Start/licensesPremium/modal.vue'
+
 const store = useStore()
 const choose = ref({
     plano: store.state.Start.start.license,
 })
+
+const OpenLicensePremium = ref(false);
 
 const AddFree = ((plan)=>{
     if (choose.value.plano != null) return choose.value.plano = null
@@ -54,4 +63,17 @@ const AddFree = ((plan)=>{
 
 <style lang="scss" scoped>
 @import '../../../assets/Start/cards';
+.principal {
+    position: relative;
+    .premium {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: red;
+    }
+}
 </style>

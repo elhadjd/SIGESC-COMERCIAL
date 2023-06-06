@@ -89,7 +89,6 @@ const relations = ref({
     list: []
 })
 
-
 const stateSubmit = ref(null)
 
 const props = defineProps({
@@ -97,8 +96,6 @@ const props = defineProps({
     order: Object,
     loading:String
 })
-
-console.log(props.order)
 
 const stateFormOrder = ref(props.order.state)
 

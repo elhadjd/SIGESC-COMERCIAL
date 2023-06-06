@@ -41,6 +41,7 @@
 
 <script setup>
 import { onMounted, reactive, ref } from "@vue/runtime-core";
+import axios from "axios";
 const StoreUsers = ref()
 
 const users = ref([])
@@ -59,13 +60,13 @@ const Onmounted = onMounted(()=>{
 
 const user = reactive({
     id: '',
-    apelido: null,
-    nome_completo: null,
+    surname: null,
+    name: null,
     email: null,
     password: null,
-    id_empresa: null,
-    imagem: String('registro-sem-imagen.png'),
-    estado: 'Ativo',
+    company_id: null,
+    image: String('registro-sem-imagen.png'),
+    state: 'active',
     data: null,
     remember_token: null,
     created_at: null,
@@ -77,7 +78,13 @@ const ShowUserSingle = ((event)=>{
 })
 
 const CreateUser = (()=>{
-    emits('ShowSingleUser',user)
+    axios.post('newUser')
+    .then((response) => {
+        emits('ShowSingleUser',response.data)
+    }).catch((err) => {
+        console.log();
+    });
+    
 })
 
 const Pesquisar = ((event)=>{

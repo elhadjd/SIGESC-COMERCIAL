@@ -186,7 +186,7 @@ const UpdateItem = ((Rows)=>{
     if (orderItems.value.state == 'Cotação') {
         if (Number(Rows.quantity) > Number(Rows.stock_sum_quantity)) return emits('message',`Atenção a quantidade fornecida não é suficiente`,'info')
         if (Rows.PriceCost >= Number(Rows.PriceSold)) emits('message',`Atenção o preço fornecido não e valido`,'info')
-        loading.value = 'item'+Rows.id
+        loading.value = 'item' + Rows.id
         axios.post(`${props.general.routes.updateOrder.name}/${Rows.id}`,{...Rows})
         .then((Response) => {
             if (Response.data.message) emits('message',Response.data.message,Response.data.type)
@@ -231,7 +231,7 @@ const Addcaixa = ((product)=>{
 const BoxConfirm = ((payload)=>{
     const Rows = orderItems.value.items.find(item => item.id === payload.id)
     Rows.quantity = payload.quantityFinal
-    Rows.PriceSold ? Rows.PriceSold = payload.PriceUnity : Rows.priceSold = payload.PriceUnity
+    Rows.priceSold ? Rows.priceCost = payload.PriceUnity : Rows.PriceSold = payload.PriceUnity
     AddBox.value.state = false
     return UpdateItem(Rows)
 })

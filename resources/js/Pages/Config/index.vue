@@ -16,14 +16,9 @@
 			/>
 			<new-user
 				@message="message"
-				@Users="modul.active = 'users'"
+				@ListUsers="modulos"
 				v-if="modul.active == 'NewUser'"
 				:SingleUser="SingleUser"
-			/>
-			<License
-				@message="message"
-				v-if="modul.active == 'Liseças'"
-				@close="modul.active = modul.story"
 			/>
 			<companies
 				@message="message"
@@ -38,14 +33,11 @@
 <script setup>
 import companies from '@/Components/Config/company.vue'
 import Toast from 'primevue/toast'
-import Index from '@/layouts/index.vue'
 import { onMounted, ref } from '@vue/runtime-core';
-
 import home from '@/Components/Config/Home.vue'
 import users from '@/Components/Config/user/Index.vue'
 import newUser from '@/Components/Config/user/NewUser.vue'
 import { useToast } from 'primevue/usetoast';
-// import License from '@/components/Config/license/index.vue'
 import { Inertia } from '@inertiajs/inertia';
 import Headers from '../../Layouts/header.vue'
 

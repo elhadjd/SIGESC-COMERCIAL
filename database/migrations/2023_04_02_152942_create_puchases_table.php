@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('puchases', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->nullable();
+            $table->string('orderNumber')->nullable();
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->foreign('company_id')->references('id')->on('companies');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->integer('fornecedor_id')->nullable();
+            $table->unsignedBigInteger('fornecedor_id')->nullable();
             $table->foreign('fornecedor_id')->references('id')->on('fornecedores');
-            $table->integer('armagen_id')->nullable();
+            $table->unsignedBigInteger('armagen_id')->nullable();
             $table->foreign('armagen_id')->references('id')->on('armagens');
             $table->float('TotalSpending')->default(0);
             $table->float('totalMerchandise')->default(0);
@@ -25,8 +28,9 @@ return new class extends Migration
             $table->float('totalTax')->default(0);
             $table->float('total')->default(0);
             $table->float('restPayable')->default(0);
-            $table->enum('state',['Publicado','Cotação','Pago'])->default('Cotação');
-            $table->string('orderNumber');
+            $table->enum('state',['Publicado','Cotação','Anulado','Pago'])->default('Cotação');
+            $table->date('DateOrder')->default(now());
+            $table->date('DateDue')->nullable();
             $table->timestamps();
         });
     }

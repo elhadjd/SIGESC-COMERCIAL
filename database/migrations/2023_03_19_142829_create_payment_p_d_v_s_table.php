@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('payment_p_d_v_s', function (Blueprint $table) {
             $table->id();
-            $table->integer('session_id');
+            $table->unsignedBigInteger('session_id');
             $table->foreign('session_id')->references('id')->on('sessions')->delete('CASCADE');
-            $table->integer('order_pos_id');
+            $table->unsignedBigInteger('order_pos_id');
             $table->foreign('order_pos_id')->references('id')->on('order_pos');
-            $table->integer('payment_method_id');
+            $table->unsignedBigInteger('payment_method_id');
             $table->foreign('payment_method_id')->references('id')->on('payment_methods');
             $table->float('amountPaid');
             $table->float('change')->default(0);

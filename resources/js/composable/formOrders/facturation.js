@@ -75,6 +75,7 @@ export const form = ((print,Invoice,statePayment,loading,form_faturacao,modalCon
             },
         },
         form:{
+            relationType: 'Cliente',
             inputs:[
                 {
                   product: true,
@@ -153,11 +154,12 @@ export const form = ((print,Invoice,statePayment,loading,form_faturacao,modalCon
                 total: {
                     title: 'Total da Fatura',
                     amount: 'TotalInvoice',
-                }
+                },
+                restPayable: 'RestPayable'
             }
         }
     });
-    
+
 
     function printOrder(){
         return print.value = !print.value

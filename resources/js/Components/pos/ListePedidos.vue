@@ -1,12 +1,12 @@
 <template>
 <div class="Principal">
     <TransitionGroup name="list" tag="ul">
-        <ShowOrder :dados="MostrarLista.dados" @fechar="MostrarLista.estado = false" v-if="MostrarLista.estado"/>
+        <ShowOrder :dados="MostrarLista.dados" @close="MostrarLista.estado = false" v-if="MostrarLista.estado"/>
     </TransitionGroup>
     <section class="Header">
         <div>
             <button @click="$emit('NovoPedido')" class="NovoPedido">Nova encomenda</button>
-            <button @click="$emit('Fechar')" class="Voltar">Voltar</button>
+            <button @click="$emit('close')" class="Voltar">Voltar</button>
         </div>
         <div>
             <input type="text" @keyup="search" placeholder="Pesquisar...">
@@ -56,7 +56,7 @@ import InvoiceCancel from './invoiceCancel.vue';
 const FormatarDineiro = Intl.NumberFormat('PT-AO',{style: 'currency',currency: 'AOA'})
 
 const props = defineProps({session: Number})
-const emits = defineEmits(['AlterarPedido']);
+const emits = defineEmits(['AlterarPedido','close']);
 const Encomendas = ref()
 const ListaOrdens = ref([])
 const MostrarLista = ref({
@@ -77,6 +77,8 @@ const viewOrder = ((order,edit)=>{
     if (order.state != 'Pago' || edit) {
         emits('AlterarPedido',order.number,'edit')
         invoice.value.state = false
+    }else{
+        console.log();
     }
 })
 

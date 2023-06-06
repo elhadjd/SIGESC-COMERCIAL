@@ -18,14 +18,15 @@ class pontoVendaController extends Controller
     {
         return Inertia::render('PointSale/pointSale', [
             'user' => Auth::user(),
-            'data' => caixa::all()
+            'data' => caixa::all()->where('company_id',Auth::user()->company_id)
         ]);
     }
 
     public function getOperation(operationCaixaType $operationCaixaType)
     {
         $operationCaixaTypes = $operationCaixaType::with(['operations' => function ($query) {
-            $query->orderBy('created_at', 'desc')->limit(100);
+            $query->where('company_id',Auth::user()->company_id)
+            ->orderBy('created_at', 'desc')->limit(100);
         }])->get();
 
         $groupedOperations = [];

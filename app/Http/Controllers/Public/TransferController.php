@@ -11,13 +11,14 @@ use App\Models\stock;
 use App\Models\transfer;
 use App\Models\transferItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class TransferController extends Controller
 {
     public function get()
     {
-        return transfer::orderBy('id','DESC')->paginate(30);
+        return transfer::where('company_id',Auth::user()->company_id)->orderBy('id','DESC')->paginate(30);
     }
 
     public function show(transfer $order)
@@ -188,6 +189,7 @@ class TransferController extends Controller
                     $movementTypes = movement_type::where('name', 'Transferencia')->first();
 
                     movement_type_produtos::create([
+                        'company_id' => Auth::user()->company_id,
                         'user_id' => $request->user()->id,
                         'produtos_id' => $item->product['id'],
                         'movement_type_id' => $movementTypes->id,

@@ -44,6 +44,7 @@
               <i class="fa fa-file"></i>
               Imprimir
             </button>
+            <pagination v-if="loading != 'start'" @page="getPage" :object="listItems"/>
           </div>
         </div>
       </div>
@@ -61,7 +62,7 @@
           <div class="list_items">
             <div
               @click="MostrarProduct(item)"
-              v-for="item in listItems"
+              v-for="item in listItems?.data"
               :key="item.id"
               :class="
                 item.stock_sum_quantity == 0
@@ -123,6 +124,7 @@ import axios from "axios";
 import { useStore } from "vuex";
 import Produto from "../products/product.vue";
 import Progress from "../confirmation/progress.vue";
+import pagination from '@/Layouts/paginations/paginate.vue'
 
 const inputSearch = ref("");
 const store = useStore();
@@ -130,7 +132,7 @@ const listItems = ref();
 const valores = ref([]);
 const StoreProduct = ref([]);
 const ShowPrecess = ref(true);
-
+const loading = ref(null)
 const ModalProduct = reactive({
   state: false,
   produto: [],
@@ -144,6 +146,11 @@ const agroup = ref({
   type_product:[],
   data: []
 });
+
+const getPage = ((data)=>{
+    listItems.value = data
+    StoreProduct.value = data.data
+})
 
 const MostrarProduct = (event) => {
   ModalProduct.state = true;
@@ -165,32 +172,32 @@ const FormatDinheiro = new Intl.NumberFormat("pt-AO", {
   style: "currency",
   currency: "AOA",
 });
-const OnMounted = onMounted(() => {
-  getProduct();
-  getAgrupate();
+const OnMounted = onMounted(async() => {
+    await getProduct();
+    await getAgrupate();
 });
 
-const getProduct = () => {
-  axios
-    .get("/products")
-    .then((Response) => {
-        listItems.value = Response.data;
-        SumProducts(listItems.value)
-        StoreProduct.value = Response.data;
-        ShowPrecess.value = false;
-        if (inputSearch.value != "") SearchProd(inputSearch.value);
-    })
-    .catch((err) => {
+const getProduct = async() => {
+    loading.value = 'start'
+    await axios
+        .get("/products/1000/1")
+        .then((Response) => {
+            listItems.value = Response.data;
+            SumProducts(listItems.value.data)
+            StoreProduct.value = Response.data.data;
+            ShowPrecess.value = false;
+            if (inputSearch.value != "") SearchProd(inputSearch.value);
+    }).catch((err) => {
       console.log(err);
       ShowPrecess.value = false;
-    })
-    .finally(() => {
+    }).finally(() => {
+        loading.value = null
       ModalProduct.state = false;
     });
 }
 
-const getAgrupate = () => {
-   axios
+const getAgrupate = async() => {
+   await axios
     .get("/Stock/GetAgroup")
     .then((response) => {
       agroup.value = response.data
@@ -253,7 +260,7 @@ const SumProducts = (products) => {
     valores.value.totalVenda_geral += product.preçovenda * product.stock_sum_quantity;
     valores.value.totalLucro_geral = valores.value.totalVenda_geral - valores.value.totalCusto_geral;
   });
-  listItems.value = products
+  listItems.value.data = products
 };
 
 const sumItem = ((type,item)=>{

@@ -26,8 +26,8 @@ class faturacaoController extends Controller
 
     public function getInvoices($invoice = null)
     {
-        if (!$invoice) return Invoice::orderBy('id','desc')->get();
-        $select = Invoice::with(['items' => function ($items) {
+        if (!$invoice) return Invoice::where('company_id',Auth::user()->company_id)->orderBy('id','desc')->paginate(50);
+        $select = Invoice::where('company_id',Auth::user()->company_id)->with(['items' => function ($items) {
             $items->orderBy('id', 'desc');
         }]);
         return $select->where('id',$invoice)->first();
@@ -37,8 +37,9 @@ class faturacaoController extends Controller
     {
         $orderNumber = "FT".date('d-m-Y')."/";
         $create = $invoice->create([
+            'company_id'=>Auth::user()->company_id,
             'orderNumber'=> $orderNumber,
-            'user_id' => Auth()->user()->id
+            'user_id' => Auth::user()->id
         ]);
 
         return $this->getInvoices($create->id);
@@ -174,6 +175,7 @@ class faturacaoController extends Controller
                     $movementTypes = movement_type::where('name', 'Vendido por Faturação')->first();
 
                     movement_type_produtos::create([
+                        'company_id' => Auth::user()->company_id,
                         'user_id' => $request->user()->id,
                         'produtos_id' => $item->product['id'],
                         'movement_type_id' => $movementTypes->id,

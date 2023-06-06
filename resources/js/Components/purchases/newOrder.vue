@@ -1,8 +1,17 @@
 <template>
-  <orders :general="general" :order="Purchase"/>
+<div>
+    <confirm :SmsConfirm="modalConfirm.message" @Confirme="CancelSubmit" @descartou="modalConfirm.state = null" v-if="modalConfirm.state == 'open'"/>
+    <invoice v-if="print" @CloseModal="print = false" :general="general" :order="order"/>
+    <formPayment @close="statePayment = false" v-if="statePayment" @message="message" @invoice="OnMounted" :order="order" :general="general"/>
+    <orders :general="general" :order="Purchase"/>
+</div>
+
 </template>
 
 <script setup>
+import confirm from '@/Components/confirmation/index.vue'
+import formPayment from '@/Layouts/OrdersForm/payments/index.vue'
+import invoice from '@/Layouts/OrdersForm/invoice/index.vue'
 import orders from '@/Layouts/OrdersForm/index.vue'
 import {form} from '@/composable/formOrders/purchase'
 import { onMounted, ref } from 'vue'
@@ -29,7 +38,7 @@ const relations = ref({
 })
 
 
-onMounted(async ()=>{
+const OnMounted = onMounted(async ()=>{
     relations.value.relation = order.value.supplier
     await getRelations();
 })

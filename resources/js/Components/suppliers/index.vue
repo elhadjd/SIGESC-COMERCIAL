@@ -33,9 +33,9 @@
                         </div>
 
                         <div>
-                            <strong>{{ supplier.name }}</strong>
-                            <p>{{ supplier.email }}</p>
-                            <p>{{ supplier.phone }}</p>
+                            <span>{{ supplier.name }}</span>
+                            <span>{{ supplier.email }}</span>
+                            <span>{{ supplier.phone }}</span>
                         </div>
                     </div>
                 </label>

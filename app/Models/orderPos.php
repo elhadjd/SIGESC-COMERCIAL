@@ -12,6 +12,7 @@ class orderPos extends Model
     use HasFactory;
 
     protected $fillable = [
+        'company_id',
         'session_id',
         'user_id' ,
         'armagen_id',

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\classes\uploadImage;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\public\imagensController;
 use App\Models\category_product;
 use App\Models\company;
 use App\Models\fornecedore;
@@ -15,6 +15,7 @@ use App\Models\stock;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class productsController extends Controller
 {
@@ -23,11 +24,28 @@ class productsController extends Controller
         return company::find(Auth::user()->id)->id;
     }
 
-    public function get()
+    public function get($page)
     {
-        $product = produtos::withSum('stock','quantity')->where('estado','active')->get();
+        $product = produtos::withSum('stock','quantity')
+        ->where('company_id',Auth::user()->company_id)
+        ->where('estado','active')->orderBy('nome','asc')->paginate($page);
+        // foreach ($product as $value) {
+        //    $select = DB::table('stocks')->where('armagen_id',Auth::user()->armagen_id)
+        //     ->where('produtos_id',$value->id);
+        //     if ($select->count() >1) {
+        //        $product = $select->orderBy('id','DESC');
+        //     }
+        // }
         return $product;
 
+
+        // foreach ($product as $value) {
+        //     stock::create([
+        //         'armagen_id'=>Auth::user()->armagen_id,
+        //         'produtos_id' => $value['id'],
+        //         'quantity'=>$value['qtd'] == null ? 0: $value['qtd']
+        //     ]);
+        // }
     }
 
     public function create(produtos $produtos,$name=null)
@@ -63,14 +81,15 @@ class productsController extends Controller
         ]);
     }
 
-    public function update(produtos $product, Request $request, imagensController $imagensController)
+    public function update(produtos $product, Request $request)
     {
+        $image = new uploadImage();
         $data = $request->produtos;
         unset($data['id'], $data['category'], $data['movement_stock'], $data['fornecedor'], $data['updated_at'], $data['created_at']);
         if (Auth::user()->nivel == 'admin') {
 
             if ($request->imagem != null) {
-                $data['image'] = $imagensController->UploadImage("/produtos/image/", $request->imagem, $product);
+                $data['image'] = $image->Upload("/produtos/image/", $request->imagem, $product);
             }
             if ($product->update($data)) {
                 return $this->RespondSuccess('Produto Atualizado com Sucesso',$product->fresh());
@@ -79,7 +98,7 @@ class productsController extends Controller
             }
         }else{
             if ($request->imagem != null) {
-                $product->image = $imagensController->UploadImage("/produtos/image/", $request->imagem, $product);
+                $product->image = $image->Upload("/produtos/image/", $request->imagem, $product);
                 $product->save();
                 return $this->RespondSuccess('Imagem Atualizada com Sucesso',$product->fresh());
             }else{

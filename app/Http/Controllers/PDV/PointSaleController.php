@@ -47,6 +47,7 @@ class PointSaleController extends Controller
     {
         $data = $request->data;
         $data['user_id'] = $request->user()->id;
+        $data['company_id'] = $request->user()->company_id;
         if (operation_caixa_type_session::create($data)) {
             return $this->RespondSuccess('Success');
         }

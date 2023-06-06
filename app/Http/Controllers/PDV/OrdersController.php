@@ -31,23 +31,32 @@ class OrdersController extends Controller
 
             if ($VerificarPagamento['total'] <= $VerificarPagamento['ValorPago']) {
 
-                $order = $this->VerificarEncomenda($request);
+                // $order = $this->VerificarEncomenda($request);
 
-                if ($order) return $this->Invoice($order->id);
-                $stock_insuficiente = false;
-                $price_authorized = false;
+                // if ($order) return $this->Invoice($order->id);
+                $message = [
+                    'state'=> false,
+                    'message'=>null
+                ];
+                // $stock_insuficiente = false;
+                // $price_authorized = false;
                 $idOrder = 0;
-                DB::transaction(function () use ($request, &$methods, &$idOrder, &$VerificarPagamento, &$stock_insuficiente, &$price_authorized) {
+                DB::transaction(function () use ($request, &$methods, &$idOrder, &$VerificarPagamento, &$message) {
                     foreach ($request->items as $item) {
                         $stock = $request->user()->armagen()->first()
-                            ->stock()->where('produtos_id', $item['id'])->first();
-                        if ($stock->quantity < $item['quantidade']) {
-                            return $stock_insuficiente = true;
+                            ->stock()->where('produtos_id', $item['id']);
+                        if ($stock->count() <= 0) {
+                            $message['state'] = true;
+                            $message['message'] = 'O produto '.$item['nome'].'não existe no armagen relacionado';
+                        }elseif($stock->first()->quantity < $item['quantidade']){
+                            $message['state'] = true;
+                            $message['message'] = 'O produto '.$item['nome'].' não tem quantidade suficiente em stock';
                         }
                     }
 
-                    if (!$stock_insuficiente) {
+                    if (!$message['state']) {
                         $order = orderPos::create([
+                            'company_id' => Auth()->user()->company_id,
                             'session_id' => $request->session,
                             'user_id' => Auth()->user()->id,
                             'total' => $request->total,
@@ -117,9 +126,7 @@ class OrdersController extends Controller
                     }
                 });
 
-                if ($stock_insuficiente) return $this->RespondError('Stock do produto insuficiente', []);
-
-                if ($price_authorized) return $this->RespondError('Usuario não autorizado para alterar o preço do produto', []);
+                if ($message['state']) return $this->RespondError($message['message'], []);
 
                 if ($idOrder > 0)  return $this->Invoice($idOrder);
             } else {
@@ -132,11 +139,10 @@ class OrdersController extends Controller
 
     public function VerificarEncomenda($order)
     {
-        return orderPos::all()->where('number', $order->number)
+        return orderPos::where('number', $order->number)
             ->where('session_id', $order->session)
             ->where('total', $order->total)->first();
     }
-
 
     public function VerificarValorPago($metodos, $items)
     {
@@ -212,14 +218,18 @@ class OrdersController extends Controller
             return false;
         } else {
             if ($request->get('coluna')) {
-                $orders = DB::table($request->table)->where($request->coluna, $request->tipo)->limit(10)->orderBy('id', 'DESC')->get();
+                $orders = DB::table($request->table)->where($request->coluna, $request->tipo)
+                ->where('company_id',Auth::user()->company_id)
+                ->limit(10)->orderBy('id', 'DESC')->get();
             } else {
                 if ($request->colun == 'TotalMaior') {
                     $orders = orderPos::where('total', '>=', $request->IdOrden)
+                    ->where('company_id',Auth::user()->company_id)
                         ->orderBy('total', 'ASC')
                         ->paginate(100);
                 } elseif ($request->colun == 'TotalMenor') {
                     $orders = orderPos::where('total', '<=', $request->IdOrden)
+                    ->where('company_id',Auth::user()->company_id)
                         ->orderBy('total', 'DESC')
                         ->paginate(100);
                 } else {
@@ -245,9 +255,14 @@ class OrdersController extends Controller
     public function getAllOrders($order = null, $colun = null)
     {
         if ($order != '') {
-            return orderPos::where($colun, 'LIKE', '%' . $order . '%')->orderBy('id', 'DESC')->with('session')->paginate(100);
+            return orderPos::where($colun, 'LIKE', '%' . $order . '%')
+            ->where('company_id',Auth::user()->company_id)
+            ->orderBy('id', 'DESC')->with('session')->paginate(100);
         } else {
-            return orderPos::with('session')->orderBy('id', 'DESC')->paginate(100);
+
+            return orderPos::with('session')->orderBy('id', 'DESC')
+            ->where('company_id',Auth::user()->company_id)
+            ->paginate(100);
         }
     }
 }

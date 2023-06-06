@@ -7,7 +7,6 @@
                     <button class="Imprimir" @click="exportToPDF">Imprimir</button>
                     <button class="Fechar" @click="$emit('CloseModal')">X</button>
                 </div>
-
             </div>
 
             <div id="Container" class="Container">
@@ -28,7 +27,7 @@
                                 <span>NIF</span>
                                 <span>TELEFONE</span>
                             </div>
-                            <div class="Content">
+                            <div class="ContentClient">
                                 <span>
                                     {{company.sede == "" ?'Sem endereço' : company.sede  }}
                                 </span>
@@ -36,7 +35,7 @@
                                 <span>{{company.phone}}</span>
                             </div>
                         </div>
-                        <div class="">
+                        <div class="Client">
                             <div class="NomeCliente">
                                 {{order.relations?.relation?.name}}
                             </div>
@@ -45,7 +44,7 @@
                                     <span>ENDEREÇO</span>
                                     <span>TELEFONE</span>
                                 </div>
-                                <div class="Content">
+                                <div class="ContentClient">
                                     <span>{{order.relations?.relation?.city}}</span>
                                     <span>{{Invoice.client?.phone}}</span>
                                 </div>
@@ -81,7 +80,9 @@
                         <div class="ContainerInvoice">
                             <div v-for="item in Invoice.items" class="Items" :key="item.id">
                                 <div class="item" :class="input.product ? 'Nome': ''" v-for="input,idx in general.form.inputs" :key="idx">
-                                    {{input.product ? item.product.nome : input.type == 'select' ? item.store?.name : input.class == 'quantity' ? item[input.name]+'.00Un(s)': formatMoney(item[input.name])}}
+                                    {{input.product ? item.product.nome : input.type == 'select' ? item.store?.name
+                                    : input.class == 'quantity' ? item[input.name]+'.00Un(s)'
+                                    : input.name == 'Discount' || input.name == 'tax' ? item[input.class]+'%' : formatMoney(item[input.name])}}
                                 </div>
                             </div>
                             <div class="Totals">
@@ -115,7 +116,7 @@
                                             <strong>TOTAL EM DIVIDA</strong>
                                         </div>
                                         <div>
-                                            <span>{{formatMoney(Invoice.RestPayable)}}</span>
+                                            <span>{{formatMoney(Invoice[general.form.totalOrder.restPayable])}}</span>
                                         </div>
                                     </div>
                                 </div>

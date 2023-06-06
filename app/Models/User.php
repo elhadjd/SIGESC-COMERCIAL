@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -25,14 +26,19 @@ class User extends Authenticatable
         'surname',
     ];
 
-    protected $with = ['config','armagen'];
+    protected $with = ['config','armagen','perfil'];
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    public function config()
+    public function perfil(): HasOne
+    {
+        return $this->hasOne(userPerfil::class);
+    }
+
+    public function config(): HasOne
     {
         return $this->hasOne(userConfig::class);
     }

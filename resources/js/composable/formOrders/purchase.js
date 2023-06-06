@@ -65,16 +65,17 @@ export const form = ((emits,print,Invoice,statePayment,loading,modalConfirm)=>{
                 name: 'deleteItem'
             },
             addTerms: {
-                name: 'ChangeDateInvoice'
+                name: 'ChangeDatePurchase'
             },
             addPayment:{
                 name: 'InvoicePayment'
             },
             amountToPay:{
-                name: 'getItems'
+                name: 'getPurchases'
             },
         },
         form:{
+            relationType: 'Fornecedor',
             inputs:[
                 {
                   product: true,
@@ -106,7 +107,7 @@ export const form = ((emits,print,Invoice,statePayment,loading,modalConfirm)=>{
                   disabled: false
                 },
                 {
-                    name: 'discount',
+                    name: 'Discount',
                     type: 'number',
                     label:'Disconto',
                     class: 'discount',
@@ -143,6 +144,7 @@ export const form = ((emits,print,Invoice,statePayment,loading,modalConfirm)=>{
             ],
 
             totalOrder:{
+                
                 totals: [
                     {
                         title: 'Total da mercadoria',
@@ -164,11 +166,12 @@ export const form = ((emits,print,Invoice,statePayment,loading,modalConfirm)=>{
                 total: {
                     title: 'Total da Compra',
                     amount: 'total',
-                }
+                },
+                restPayable: 'restPayable'
             }
         }
     });
-    
+
 
     function printOrder(){
         return print.value = !print.value
@@ -211,7 +214,7 @@ export const form = ((emits,print,Invoice,statePayment,loading,modalConfirm)=>{
     function CancelPurchase() {
         if (Invoice.value.state == 'Anulado') return message('Esta fatura já foi anulada','warn');
         modalConfirm.value.state = 'open'
-        modalConfirm.value.message = 'Anular esta fatura '
+        modalConfirm.value.message = 'Anular esta Compra '
     }
 
     function Close() {

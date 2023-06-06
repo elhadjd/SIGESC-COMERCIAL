@@ -162,6 +162,7 @@ import { Inertia } from "@inertiajs/inertia";
 import Message from "primevue/message";
 import moment from 'moment'
 import { useCurrencyInput } from "vue-currency-input";
+import { router } from "@inertiajs/vue3";
 const emits = defineEmits(["message"]);
 const ShowModal = ref(false);
 const props = defineProps(["caixaId"]);
@@ -191,7 +192,7 @@ const formatDate = (date) => {
 };
 
 const ContinuarVenda = () => {
-  Inertia.get(`Pos/${DadosCaixa.value.caixa.id}`, {
+  router.get(`Pos/${DadosCaixa.value.caixa.id}`, {
     onSuccess: (Response) => {
         emits("message", "info", Response.props.message);
     },

@@ -45,9 +45,8 @@
                     div:nth-child(2) {
                         display: flex;
                         flex-direction: column;
-                        padding: 5px;
-                        strong {
-                            max-width: 17ch;
+                        span {
+                            max-width: 26ch;
                             overflow: hidden;
                             text-overflow: ellipsis;
                             white-space: nowrap;

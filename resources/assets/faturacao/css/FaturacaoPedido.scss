@@ -143,6 +143,7 @@
 .ResultadoTotal{
     height: 44%;
     overflow-y: auto;
+    @include scroll;
     i{
         display: flex;
         justify-content: center;

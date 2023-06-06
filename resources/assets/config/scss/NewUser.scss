@@ -4,95 +4,17 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        .Formulario{
-            width: 80%;
-            height: 85%;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 2px ;
-            .HeaderForm{
-                width: 100%;
-                height: 55%;
-                display: grid;
-                grid-template-columns: 70% 30%;
-                padding: 20px;
-                .HeaderFormInputs{
-                    width: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center !important;
-                    .Nome{
-                        width: 100%;
-                        display: flex;
-                        flex-direction: column;
-                        margin-bottom: 20px;
-                        label{
-                            font: 12pt arial;
-                            font-weight: 600;
-                        }
-                        input{
-                            @include InputPrincipal;
-                        }
-                    }
-                    .FormInputsFooter{
-                        display: grid;
-                        grid-template-columns: repeat(2,1fr);
-                        grid-gap: 5px;
-                        width: 100%;
-                        .Email{
-                            width: 100%;
-                            display: flex;
-                            flex-direction: column;
-                            label{
-                                font: 12pt arial;
-                                font-weight: 600;
-                            }
-                            input{
-                                @include input_normal;
-                            }
-                        }
-                    }
-                    .Nivel{
-                        width: 100%;
-                        margin-top: 10px;
-                        @include input_normal;
-                    }
-                }
+        .Form{
+            background-color: #f9f9f9f9;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .Content{
+                border-bottom: none !important
             }
-            .Imagem{
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                position: relative;
-                .EditarImage{
-                    position: absolute;
-                    top: 15px;
-                    width: 130px;
-                    padding: 5px;
-                    display: flex;
-                    border-radius: 5px;
-                    justify-content: space-between;
-                    background-color: transparent;
-                    color: transparent;
-                    div{
-                        input{
-                        }
-                    }
-                    &:hover{
-                        background-color: var(--buttons-hover);
-                        color: var(--bgButtons);
-                    }
-                    i{
-                        &:hover{
-                            cursor: pointer;
-                        }
-                    }
-                }
-                img{
-                    width: 130px;
-                    height: 130px;
-                }
-            }
+            @include formulary;
             .ContainerFooter{
                 width: 100%;
                 height: 40%;

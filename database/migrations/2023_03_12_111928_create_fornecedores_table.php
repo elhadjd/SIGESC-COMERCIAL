@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('fornecedores', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable()->default(null);
+            $table->string('company')->nullable()->default(null);
             $table->string('image')->default('produto-sem-imagem.png');
-            $table->integer('company_id');
+            $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('CASCADE');
             $table->string('nif')->nullable()->default(null);
             $table->string('phone')->nullable()->default(null);

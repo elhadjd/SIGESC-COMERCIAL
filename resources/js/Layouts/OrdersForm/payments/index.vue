@@ -9,7 +9,7 @@
                <div class="MethodosPagamento">
                   <div class="MethodosPagamento-titulos">
                      <span>Metódos</span>
-                     <span>Fornecedor</span>
+                     <span>{{general.form.relationType}}</span>
                   </div>
                   <div class="MethodosPagamento-container">
                      <input @click="methodPayment.state = !methodPayment.state" type="text" v-model="methodPayment.title"/>
@@ -18,7 +18,7 @@
                         {{method.name}}
                         </span>
                      </div>
-                     <input disabled type="text" placeholder="digita o cliente" :value="invoice.client?.surname">
+                     <input disabled type="text" :value="order.relations.relation?.name">
                   </div>
                </div>
                <div class="ValorPagamento">
@@ -120,8 +120,8 @@ const getInvoice = async () => {
     axios.get(`${props.general.routes.amountToPay.name}/${props.order.id}`)
     .then((response) => {
         invoice.value = response.data
-        numberStr.value = invoice.value.RestPayable
-        number.value = invoice.value.RestPayable
+        numberStr.value = invoice.value[props.general.form.totalOrder.restPayable]
+        number.value = invoice.value[props.general.form.totalOrder.restPayable]
     }).catch((err) => {
         console.log(err);
     })
@@ -143,6 +143,7 @@ axios.post(`sendPayment/${props.order.id}`, {...form})
         emit('invoice',response.data.data)
         emit('close')
     }).catch((err) => {
+        emit('message','Aconteceu um erro ao registrar pagamento por favor tenta novamente mais tarde','info')
         console.log(err);
     })
 })

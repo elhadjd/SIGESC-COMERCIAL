@@ -17,9 +17,11 @@ class AnalisOrderController extends Controller
     public function getRelatorByMonth($mouth = null, $year = null)
     {
         $orders = orderPos::whereMonth('created_at', $mouth)
+        ->where('company_id',Auth::user()->company_id)
         ->whereYear('created_at', $year)->get();
 
         $operations = operation_caixa_type_session::where('operation_caixa_type_id',1)
+        ->where('company_id',Auth::user()->company_id)
         ->whereMonth('created_at', $mouth)
         ->whereYear('created_at', $year)->sum('amount');
 
@@ -54,6 +56,7 @@ class AnalisOrderController extends Controller
                     $resul = '0'.$i;
                 }
             $order = orderPos::whereDay('created_at',$resul)
+            ->where('company_id',Auth::user()->company_id)
             ->whereYear('created_at',date('Y'))
             ->whereMonth('created_at',date('m'))->sum('total');
             $orders[] = $order;
@@ -70,13 +73,16 @@ class AnalisOrderController extends Controller
         $endDate = date('Y-m-d H:i:s', strtotime($endDate.' +1 day -1 second'));
 
         $orders = DB::table('order_pos')->whereMonth('created_at', $month)
+            ->where('company_id',Auth::user()->company_id)
             ->whereYear('created_at', $year)
             ->whereBetween('created_at', [$startDate, $endDate])
             ->get();
 
         $operations = DB::table('operation_caixa_type_sessions')->whereMonth('created_at',$month)
+        ->where('company_id',Auth::user()->company_id)
         ->whereYear('created_at',$year)
         ->whereBetween('created_at',[$startDate, $endDate])
+        ->where('id',1)
         ->sum('amount');
         return $this->CalcularRelatorio($orders,$operations);
     }

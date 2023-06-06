@@ -245,12 +245,13 @@
         .Header{
             height: 15%;
             width: 100%;
-            display: grid;
-            grid-template-columns: repeat(2,1fr);
+            display: flex;
+            flex-direction: row;
             gap: 0rem;
             border-bottom: 2px solid var(--borderColor);
             .Header-left{
                 width: 100%;
+                height: 100%;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
@@ -283,12 +284,23 @@
                 button{
                     @include botao_normal;
                     display: flex;
+                    align-items: center;
                     gap: .5rem;
                     transition: 0.5s;
                     &:hover{
                         background-color: var(--buttons-hover);
                         color: var(--textColor);
                         border: 1px solid var(--borderColor);
+                        i{
+                            color: var(--bgButtons);
+                        }
+                    }
+                    i{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 15px;
+                        color: white;
                     }
                 }
                 .botao_descartar{
@@ -299,9 +311,8 @@
                 width: 100%;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
+                justify-content: space-between;
                 padding: .4rem;
-                align-items: flex-end;
 
                 span{
                     width: 100%;
@@ -316,7 +327,17 @@
             height: 87%;
             background-color: var(--appBg);
             overflow-y: auto;
+            position: relative;
             @include scroll;
+            .progress{
+                display: flex;
+                width: 100%;
+                height: 100%;
+                align-items: center;
+                justify-content: center;
+                color: var(--bgButtons);
+                font-size: 17px;
+            }
         }
     }
 }
@@ -507,7 +528,7 @@
 
         }
 
-        .Content{
+        .Main{
             width: 100%;
             height: 60%;
             border-bottom: 1.5px solid #ebebebf9;
@@ -600,14 +621,15 @@
         flex-direction: column;
         background-color: var(--appBg) !important;
         z-index: 1;
-        margin-top: 27px;
-        margin-left: 30.5%;
-        width: 60%;
+        top: 27px;
+        margin-left: 40%;
+        width: 54%;
         border: 1px solid var(--borderColor);
         border-top: 0px;
         border-bottom-left-radius: 3px;
         border-bottom-right-radius: 3px;
-        max-height: 100px;
+        height: auto;
+        max-height: 90px;
         overflow-y: auto;
         @include scroll;
         span{
@@ -627,15 +649,16 @@
 }
 
 @mixin form-control{
-    display: grid;
-    grid-template-columns: 30% 70%;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
     margin-bottom: 7px;
     margin-top: 5px;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: 0px 10px 0px 10px;
     label{
-        width: 100%;
+        width: 40%;
         font-size: 14px;
         color: #000000c4;
         display: flex;
@@ -647,6 +670,7 @@
         }
         @include form-img
     }
+    select,
     input,
     button
     {
@@ -660,7 +684,7 @@
         box-sizing: 0px 0px 0px 0px;
         font-size: 15px;
         background-color: var(--appBg);
-        width: 100%;
+        width: 60%;
         box-shadow: rgb(100, 100, 111,0.2) 2px 3px 10px 1px;
         color: var(--textColor);
         &:hover{
@@ -670,5 +694,9 @@
             border-bottom: 1px solid #d2d2d2;
             box-shadow: 0 0 0 0 ;
         }
+    }
+    input[type=checkbox]{
+        background-color: var(--bgButtons);
+        width: 20px;
     }
 }

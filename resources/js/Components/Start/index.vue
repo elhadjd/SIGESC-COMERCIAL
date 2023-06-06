@@ -25,7 +25,6 @@
             <company v-if="start.step === 0" />
             <Admin v-else-if="start.step === 1"/>
             <License v-else/>
-
          </div>
          <div class="Footer">
             <button type="button" v-if="start.step > 0" @click="back" class="Descartar">Voltar</button>
@@ -83,6 +82,7 @@ const saveForm = (()=>{
             inSubmit.value = false
         },
         onError:(err)=>{
+            message('Empresa ou email do usuario ja existe por favor verifica e tenta novamente','warn')
             console.log(err);
             inSubmit.value = false
         }

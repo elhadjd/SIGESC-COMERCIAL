@@ -41,11 +41,10 @@
                 <div>
                     <img :src="'/Clientes/image/' + item.image" />
                 </div>
-
                 <div>
                     <span>{{ item.surname }}</span>
-                    <p>{{ item.email }}</p>
-                    <p>{{ item.phone }}</p>
+                    <span>{{ item.email }}</span>
+                    <span>{{ item.phone }}</span>
                 </div>
             </div>
         </label>

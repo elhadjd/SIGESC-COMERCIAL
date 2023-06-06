@@ -25,14 +25,14 @@ class compraController extends Controller
 
     public function getPurchases(Puchase $puchase)
     {
-        return $puchase->orderBy('id','desc')->get();
+        return $puchase->where('company_id',Auth::user()->company_id)->orderBy('id','desc')->paginate(50);
     }
 
     public function Order(Puchase $order)
     {
 
         $data = $order->with(['items' => function ($items) {
-            $items->orderBy('id', 'ASC');
+            $items->orderBy('id', 'desc');
         }])->whereId($order->id)->first();
         $data->load('payments');
         return $data;
@@ -42,6 +42,12 @@ class compraController extends Controller
     {
         if (Puchase::find($order)->state != 'Cotação') return false;
         return true;
+    }
+
+    public function ChangeDatePurchase(Request $request,$type, Puchase $order)
+    {
+        $order[$type] = $request[$type];
+        $order->save();
     }
 
     public function SumPuchase($order)
@@ -74,6 +80,7 @@ class compraController extends Controller
     public function NewPurchase(Puchase $puchase)
     {
         $data = $puchase->create([
+            'company_id'=>Auth::user()->company_id,
             'user_id' => Auth()->user()->id
         ]);
 
@@ -89,8 +96,8 @@ class compraController extends Controller
 
         $order->fornecedor_id = $supplier;
         $order->save();
-        
-        return $order->supplier;
+
+        return $order->fresh()->supplier;
     }
 
     public function AddItemPuchase(produtos $product, $order)
@@ -145,8 +152,10 @@ class compraController extends Controller
     public function confirmOrder(Request $request,Puchase $order,$type)
     {
 
-        if (!$this->checkOrder($order->id)) return $this->RespondError('Atenção esta encomenda ja foi confirmada ');
+        if (!$this->checkOrder($order->id) && $type != 'cancel') return $this->RespondError('Atenção esta encomenda ja foi confirmada ',$order);
         $order->load('items');
+
+        if ($order->state == 'Anulado' && $type == 'cancel') return $this->RespondInfo('Esta compra ja se encontra anulada ',$order);
 
         if (empty($order->fornecedor_id)) return $this->RespondError('Seleciona um fornecedor para validar a compra',$order);
 
@@ -199,25 +208,28 @@ class compraController extends Controller
     public function savePayment(Request $request,Puchase $order)
     {
         $request->validate([
-            'valor' => 'required|integer',
+            'Amount' => 'required|integer',
         ]);
 
         $data = $request->all();
+        DB::transaction(function()use($order,&$data){
+            $RestPayable = $order->restPayable - $data['Amount'];
+            if($RestPayable <= 0) {
+                $RestPayable = 0;
+                $order->state = "Pago";
+            }
+            $order->restPayable = $RestPayable;
+            $order->save();
+            $data['TotalPayments'] = $RestPayable;
+            $order->payments()->create([
+                'puchase_id' => $order->id,
+                'payment_method_id' => $data['payment_method_id'],
+                'Amount' => $data['Amount'],
+                'TotalPayments' => $RestPayable,
+            ]);
+        });
 
-        $RestPayable = $order->restPayable - $data['valor'];
-        if($RestPayable <= 0) {
-            $RestPayable = 0;
-            $order->state = "Pago";
-        }
-        $order->restPayable = $RestPayable;
-        $order->save();
-        $data['TotalPayments'] = $RestPayable;
-        $order->payments()->create([
-            'puchase_id' => $order->id,
-            'payment_method_id' => $data['id'],
-            'Amount' => $data['valor'],
-            'TotalPayments' => $RestPayable,
-        ]);
+
 
         return $this->RespondSuccess('Pagamento efectuado com sucesso',$this->Order($order));
     }
@@ -228,5 +240,10 @@ class compraController extends Controller
         {
             $payments->with('purchase');
         }])->get();
+    }
+
+    public function payments(Puchase $order)
+    {
+        return $order->payments()->with('method')->get();
     }
 }

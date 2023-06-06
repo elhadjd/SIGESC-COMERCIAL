@@ -79,8 +79,16 @@ const sumSold = ((event,spent)=>{
         totals.value.totalCost += Number(product.total_cust)
         totals.value.totalSold += Number(product.patrimonio)
     });
-    totals.value.totalSpent = spent
+    totals.value.totalSpent = sumSpent(spent)
     totals.value.totalProfit = Number(totals.value.totalSold) - Number(totals.value.totalCost)
+})
+
+const sumSpent = ((spent)=>{
+    let total = 0;
+    spent.forEach((item)=>{
+        total += Number(item.amount)
+    })
+    return total;
 })
 
 

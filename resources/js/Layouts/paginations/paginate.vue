@@ -2,7 +2,8 @@
  <!-- v-if="loading == 'page'+item.label" -->
     <div class="Content">
         <i v-if="data.current_page>1"  @click="getPages(data.current_page-1)" class="fa fa-chevron-circle-left" aria-hidden="true"></i>
-        <div v-for="item in data.links" :key="item.label" @click="data.current_page != item.label ? getPages(item.label):''" v-show="item.label != 'pagination.next' && item.label != 'pagination.previous'">
+        <div v-for="item in data.links" :key="item.label" @click="data.current_page != item.label ? getPages(item.label):''" v-show="item.label != 'pagination.next' && item.label != 'pagination.previous'
+        && item.label != '&laquo; Previous' && item.label != 'Next &raquo;'">
             <span >{{item.label}}</span>
             <i v-if="loading == 'page'+item.label" class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
         </div>
@@ -28,7 +29,6 @@ const getPages = ((page)=>{
    axios.get(data.value.links[page].url)
    .then((response) => {
         data.value = response.data
-
         emits('page',data.value)
    }).catch((err) => {
         console.log(err);
@@ -48,14 +48,15 @@ const getPages = ((page)=>{
     gap: .3rem;
     margin-top: 3px;
     padding: 2px;
-    i{
+    i {
         color: var(--bgButtons);
     }
-   >i, div{
+   > i, div{
         background-color: var(--appBg);
         padding: 0px 10px 0px 10px;
-        width: 100%;
-        height: 100%;
+        width: auto;
+        max-width: 150px;
+        height: 25px;
         display: flex;
         gap: .2rem;
         align-items: center;
@@ -69,7 +70,7 @@ const getPages = ((page)=>{
             cursor: pointer;
             color: white;
         }
-        >i{
+        > i {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -82,7 +83,6 @@ const getPages = ((page)=>{
                 color: white;
             }
         }
-
     }
 }
 </style>

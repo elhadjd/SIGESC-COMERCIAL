@@ -13,6 +13,7 @@ class movement_type_produtos extends Model
 
     protected $fillable = [
         'user_id',
+        'company_id',
         'produtos_id',
         'order_pos_id',
         'movement_type_id',

@@ -1,5 +1,5 @@
 <template>
-  <Progress v-if="$store.state.pos.StateProgress" />
+  <!-- <Progress v-if="$store.state.pos.StateProgress" /> -->
   <Transition name="bounce">
     <NewCategory
       v-if="categorys.StateModal"
@@ -86,7 +86,7 @@
                     <div class="view_muvementos">
                       <i class="fa fa-bar-chart"></i>
                       <div class="w-100">
-                        <div>{{product.stock_sum_quantity + ",00Un(s)" }}</div>
+                        <div>{{produto.produtos.stock_sum_quantity + ",00Un(s)" }}</div>
                         <strong class="TipoMuv">{{ "Stock real" }}</strong>
                       </div>
                     </div>
@@ -316,7 +316,7 @@ const AddCategoryObject = (event) => {
 
 const OnMounted = onMounted(async () => {
    await getImage();
-  store.state.pos.StateProgress = true;
+//   store.state.pos.StateProgress = true;
   await axios
     .get(`/products/${props.product.id}`)
     .then((Response) => {
@@ -324,16 +324,22 @@ const OnMounted = onMounted(async () => {
       produto.produtos = Response.data.product;
       productType.value = Response.data.product_type;
       produto.type_movements = Response.data.type_movements
-      calcMovement();
-      categorys.liste = Response.data.categorys;
       store.state.pos.StateProgress = false;
       categorys.StateModal = false;
       StateEditProd.value = true;
+      calcMovement();
+      categorys.liste = Response.data.categorys;
     })
     .catch((err) => {
       emits("descartar");
       console.log(err);
+      categorys.StateModal = false;
+      StateEditProd.value = true;
       store.state.pos.StateProgress = false;
+    }).finally(()=>{
+        categorys.StateModal = false;
+        StateEditProd.value = true;
+        store.state.pos.StateProgress = false;
     });
 });
 
@@ -380,6 +386,8 @@ const submit = () => {
     .catch((err) => {
       store.state.pos.StateProgress = false;
       console.log(err);
+    }).finally(()=>{
+        store.state.pos.StateProgress = false;
     });
 };
 

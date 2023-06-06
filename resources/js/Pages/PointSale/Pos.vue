@@ -23,7 +23,7 @@ const props = defineProps({
 })
 
 onMounted(()=>{
-    store.commit('ArmazenarDados',props)
+    store.commit('publico/saveCompany',props)
 })
 const session = ref(props.session)
 

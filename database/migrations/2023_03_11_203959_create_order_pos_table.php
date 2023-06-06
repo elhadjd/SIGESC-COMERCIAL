@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('order_pos', function (Blueprint $table) {
             $table->id();
-            $table->integer('session_id')->nullable();
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->foreign('company_id')->references('id')->on('companies');
+            $table->unsignedBigInteger('session_id')->nullable();
             $table->foreign('session_id')->references('id')->on('sessions');
-            $table->integer('user_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->float('total')->nullable();
             $table->float('total_costs')->nullable();
