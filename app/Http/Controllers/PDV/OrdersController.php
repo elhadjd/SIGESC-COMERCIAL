@@ -94,7 +94,8 @@ class OrdersController extends Controller
                             $movementTypes = movement_type::all()->where('name', 'Vendido por PDV')->first();
 
                             movement_type_produtos::create([
-                                'user_id' => $request->user()->id,
+                                'company_id' => Auth::user()->company_id,
+                                'user_id' => Auth::user()->id,
                                 'produtos_id' => $product->id,
                                 'order_pos_id' => $order->id,
                                 'movement_type_id' => $movementTypes->id,

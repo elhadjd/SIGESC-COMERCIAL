@@ -46,8 +46,8 @@ class PointSaleController extends Controller
     public function addOperation(Request $request)
     {
         $data = $request->data;
-        $data['user_id'] = $request->user()->id;
-        $data['company_id'] = $request->user()->company_id;
+        $data['user_id'] = Auth::user()->id;
+        $data['company_id'] = Auth::user()->company_id;
         if (operation_caixa_type_session::create($data)) {
             return $this->RespondSuccess('Success');
         }

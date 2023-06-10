@@ -102,4 +102,5 @@ const message = ((message , type)=>{
 
 <style scoped lang="scss">
 @import '../../../assets/Start/index';
+
 </style>

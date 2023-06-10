@@ -12,6 +12,7 @@ class operation_caixa_type_session extends Model
 
     protected $fillable = [
         'user_id',
+        'company_id',
         'session_id',
         'operation_caixa_type_id',
         'amount',

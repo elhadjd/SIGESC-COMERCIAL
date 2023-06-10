@@ -89,3 +89,23 @@
 
     }
 }
+@media screen and (max-width: 450px) {
+    .form{
+        width: 70% !important;
+    }
+    .Footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+@media screen and (max-width: 700px) {
+    .form{
+        width: 60% !important;
+    }
+    .Footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
