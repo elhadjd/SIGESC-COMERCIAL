@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\classes\ActivityRegister;
 use App\Http\Controllers\Controller;
 use App\Models\armagen;
 use App\Models\category_product;
@@ -22,6 +23,8 @@ class stockController extends Controller
 
     public function Index()
     {
+        $register = new ActivityRegister;
+        $register->Activity("Entou no module stock");
         return Inertia::render('Stock/index');
     }
 
@@ -86,7 +89,14 @@ class stockController extends Controller
             ]);
         }
 
+        $this->registerActivity("Fez entrada do produto $product->nome");
         return $this->createMovement($request, $product, $quantityAfter);
+    }
+
+    public function registerActivity($body)
+    {
+        $register = new ActivityRegister;
+        $register->Activity($body);
     }
 
     public function outputProduct($request, $product, stock $stock, $consult)
@@ -97,6 +107,7 @@ class stockController extends Controller
                 $consult->update([
                     'quantity' => $consult->first()->quantity - $request->quantity
                 ]);
+                $this->registerActivity("Fez saida do produto $product->nome");
                 return $this->createMovement($request, $product, $quantityAfter);
             }
 
@@ -187,8 +198,4 @@ class stockController extends Controller
         return $this->RespondSuccess('Dados atualizado com sucesso');
     }
 
-
-    public function destroy(string $id)
-    {
-    }
 }

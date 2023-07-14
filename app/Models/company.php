@@ -64,4 +64,9 @@ class company extends Model
         return $this->hasMany(workers::class);
     }
 
+    function HistoricLogin():HasMany
+    {
+        return $this->hasMany(HistoricLogin::class);
+    }
+
 }

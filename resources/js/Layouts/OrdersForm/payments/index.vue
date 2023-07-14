@@ -6,36 +6,38 @@
          </div>
          <form @submit.prevent="ConfirmPayment">
             <div class="Container">
-               <div class="MethodosPagamento">
-                  <div class="MethodosPagamento-titulos">
-                     <span>Metódos</span>
-                     <span>{{general.form.relationType}}</span>
-                  </div>
-                  <div class="MethodosPagamento-container">
-                     <input @click="methodPayment.state = !methodPayment.state" type="text" v-model="methodPayment.title"/>
-                     <div v-if="methodPayment.state" class="pagamento">
-                        <span @click="Methods(method)" v-for="method in methods" :key="method.id">
-                        {{method.name}}
-                        </span>
-                     </div>
-                     <input disabled type="text" :value="order.relations.relation?.name">
-                  </div>
-               </div>
-               <div class="ValorPagamento">
-                  <div class="ValorPagamento-titulos">
-                     <span>Montante</span>
-                     <span>Data de Pagamento</span>
-                  </div>
-                  <div class="ValorPagamento-container">
-                     <input placeholder="digita o metódo"
-                     :type="type"
-                     :value="numberStr"
-                     @input="onInput"
-                     @blur="onBlur"
-                     @focus="onFocus">
-                     <input type="text" :value="FormatDate()">
-                  </div>
-               </div>
+                <div>
+                    <div>
+                        <label>Metódos:</label>
+                        <input @click="methodPayment.state = !methodPayment.state" type="text" v-model="methodPayment.title"/>
+                        <div v-if="methodPayment.state" class="drop">
+                            <span @click="Methods(method)" v-for="method in methods" :key="method.id">
+                            {{method.name}}
+                            </span>
+                        </div>
+                    </div>
+                    <div >
+                        <label>{{general.form.relationType}}:</label>
+                        <input disabled type="text" :value="order.relations.relation?.name">
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <label ref="amount">Montante:</label>
+                        <input placeholder="digita o metódo"
+                        id="amount"
+                        :type="type"
+                        :value="numberStr"
+                        @input="onInput"
+                        @blur="onBlur"
+                        @focus="onFocus">
+                        
+                    </div>
+                    <div class="ValorPagamento-container">
+                        <label>Data de Pagamento:</label>
+                        <input type="text" :value="FormatDate()">
+                    </div>
+                </div>
             </div>
             <div class="Footer">
                <button @click="$emit('close')" type="button" class="cancelar">Fechar</button>

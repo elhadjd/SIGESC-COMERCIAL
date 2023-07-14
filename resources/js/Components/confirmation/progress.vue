@@ -1,7 +1,6 @@
 <template>
     <span class="Modal">
         <i class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
-        <!-- <img src="/login/image/refresh.gif" width="50"> -->
     </span>
 </template>
 

@@ -20,6 +20,7 @@
   border: 1px solid black;
   width: 75% !important;
   height: 650px !important;
+  overflow-x: auto;
 }
 .Principal .Modal .Header {
   display: flex;
@@ -63,6 +64,7 @@
 }
 .Container {
   display: flex;
+  min-width: 800px !important;
   padding: 10px;
   border-bottom: 1px solid black;
   font: 10pt arial;
@@ -73,6 +75,7 @@
   flex-direction: column;
   height: 600px;
   overflow-y: auto;
+  overflow-x: auto;
 }
 .ContainerOne {
   height: 50px;
@@ -198,6 +201,7 @@
 }
 .HeaderInvoice {
   width: 100%;
+  min-width: 800px;
   display: flex;
   border-bottom: 1px solid black;
 }

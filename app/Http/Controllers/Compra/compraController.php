@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Compra;
 
+use App\classes\ActivityRegister;
 use App\Http\Controllers\Controller;
 use App\Models\armagen;
 use App\Models\movement_type;
@@ -20,6 +21,8 @@ class compraController extends Controller
 {
     public function index()
     {
+        $register = new ActivityRegister;
+        $register->Activity("Entrou no module compra");
         return Inertia::render('Purchase/index');
     }
 
@@ -30,7 +33,6 @@ class compraController extends Controller
 
     public function Order(Puchase $order)
     {
-
         $data = $order->with(['items' => function ($items) {
             $items->orderBy('id', 'desc');
         }])->whereId($order->id)->first();
@@ -96,7 +98,6 @@ class compraController extends Controller
 
         $order->fornecedor_id = $supplier;
         $order->save();
-
         return $order->fresh()->supplier;
     }
 
@@ -134,7 +135,7 @@ class compraController extends Controller
         $item->totalItem = $item->finalPrice * $update['quantity'];
         $item->spent = $update['spent'];
         $item->quantity = $update['quantity'];
-        $item->priceCost = $update['priceCost'];
+        $item->priceCost = $request->priceCost;
         $item->tax = $update['tax'];
         $item->discount = $update['discount'];
         $item->armagen_id = $update['armagen_id'];

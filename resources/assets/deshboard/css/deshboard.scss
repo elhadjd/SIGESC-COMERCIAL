@@ -13,73 +13,148 @@
         z-index: 1080;
         left: 0px;
     }
+    .openMenu{
+        display: none;
+    }
     nav{
+
         background: var(--app_color);
         z-index: 1080;
-        >div{
+        .nave{
             position: relative;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
             padding: 0px;
             margin-left: 50px;
             z-index: 1080;
-            li{
-                text-decoration: none;
-                list-style: none;
-                color: white;
-                padding: 8px;
-                font-weight: 500;
-                &:hover{
-                    cursor: pointer;
-                    opacity: 0.8;
-                    background: var(--app_hover)
+            .menus{
+                display: flex;
+                flex-direction: row;
+                .dashboard{
+                    display: none !important;
                 }
-            }
-            .ListRelatorios{
-                position: absolute;
-                background-color: var(--appBg);
-                border: 1px solid #ddd;
-                width: 200px;
-                z-index: 1080;
-                color: var(--textColor);
-                >div{
-                    padding: 8px 15px 8px 15px;
-                    font: 10pt arial !important;
-                    font-weight: 600 !important;
+                a,li{
+                    text-decoration: none;
+                    list-style: none;
+                    color: white;
+                    padding: 8px;
+                    font-weight: 500;
+                    width: 100%;
                     &:hover{
                         cursor: pointer;
-                        background-color: rgba(0, 0, 0, 0.132);
+                        opacity: 0.8;
+                        background: var(--app_hover)
+                    }
+                }
+                .ListRelatorios{
+                    position: absolute;
+                    background-color: var(--appBg);
+                    border: 1px solid #ddd;
+                    width: 200px;
+                    z-index: 1080;
+                    color: var(--textColor);
+                    >div{
+                        padding: 8px 15px 8px 15px;
+                        font: 10pt arial !important;
+                        font-weight: 600 !important;
+                        &:hover{
+                            cursor: pointer;
+                            background-color: rgba(0, 0, 0, 0.132);
+                        }
+                    }
+                }
+            }
+
+            .user_conectado{
+                right: 0;
+                .User{
+                    display: flex;
+                    padding: 5px;
+                    color: white;
+                    align-items: center;
+                    img{
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50%;
+                        margin-right: 15px;
+                    }
+                    &:hover{
+                        cursor: pointer;
+                        opacity: 0.8;
+                        background: var(--app_hover)
+                    }
+                }
+                .Usuario{
+                    position: absolute;
+                    background-color: transparent;
+                    color: rgba(0, 0, 0, 0.638);
+                    right: 10px;
+                    &:hover{
+                        cursor: pointer;
+                        opacity: 0.8;
                     }
                 }
             }
         }
     }
-    .user_conectado{
-        position: absolute;
-        right: 0;
-        .User{
-            display: flex;
-            padding: 5px;
+}
+
+@media screen and (max-width: 670px) {
+    .nav_da_home_compra {
+        .botao{
+            display: none;
+        }
+        >button{
+            display: block !important;
+            position: absolute !important;
+            align-items: center !important;
+            justify-content: center;
+            width: 45px !important;
+            font-size: 28px;
+            height: 100%;
             color: white;
-            align-items: center;
-            img{
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
-                margin-right: 15px;
+            z-index: 1080;
+            left: 0px;
+            transition: 1s;
+            .two{
+                display: none;
             }
             &:hover{
-                cursor: pointer;
-                opacity: 0.8;
-                background: var(--app_hover)
+                .on{
+                    display: none;
+                }
+                .two{
+                    display: block !important;
+                }
             }
         }
-        .Usuario{
-            position: absolute;
-            background-color: transparent;
-            color: rgba(0, 0, 0, 0.638);
-            right: 10px;
-            &:hover{
-                cursor: pointer;
-                opacity: 0.8;
+        
+        nav{
+            .nave{
+                .menus{
+                    position: relative;
+                    left: -215px;
+                    width: 150px !important;
+                    height: 100% !important;
+                    background-color: var(--app_color);
+                    position: fixed;
+                    display: flex;
+                    flex-direction: column !important;
+                    transition: 1s;
+                    top: 40px;
+                    .dashboard{
+                        display: block !important;
+                    }
+                    .ListRelatorios{
+                        margin-top: -35px;
+                        background-color: white;
+                        left: 150px;
+                    }
+                }
+                .show-menu{
+                    left: 0px;
+                }
             }
         }
     }

@@ -14,12 +14,12 @@
                     <button type="button" @click="OpenLicensePremium = true">Aderir</button>
                 </div>
                 <div>
-                <ul>
-                    <li>Todos Modulos Liberado</li>
-                    <li>Configuração de usuarios ilimitado</li>
-                    <li>Gateway de pagamento</li>
-                    <li>Controle de stock</li>
-                </ul>
+                    <ul>
+                        <li>Todos Modulos Liberado</li>
+                        <li>Configuração de usuarios ilimitado</li>
+                        <li>Gateway de pagamento</li>
+                        <li>Controle de stock</li>
+                    </ul>
                 </div>
             </div>
             <div class="card" :class="choose.plano == 'free' ? 'active' : ''">
@@ -62,7 +62,7 @@ const AddFree = ((plan)=>{
 })
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 @import '../../../assets/Start/cards';
 .principal {
     .premium {

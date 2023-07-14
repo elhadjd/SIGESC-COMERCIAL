@@ -14,8 +14,10 @@ class license extends Model
     protected $fillable = [
          'company_id',
          'type_license_id',
+         'hash',
          'from',
-         'to'
+         'to',
+         'state'
     ];
 
     public function type_license()

@@ -36,5 +36,13 @@ export default {
         formatDate(date){
             return moment(date).format("DD-MM-YYYY")
         },
+
+        formatTime(data){
+            return moment(data).format('HH:mm:ss')
+        },
+
+        formatHourAndTime(data){
+            return moment(data).format('DD-MM-Y HH:mm:ss')
+        }
     },
 };

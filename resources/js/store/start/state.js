@@ -6,7 +6,8 @@ export default {
             phone: null,
             activity: [],
             country: [],
-            imagem: null
+            imagem: null,
+            city: null
         },
         user: {
             name: null,
@@ -16,6 +17,7 @@ export default {
             imagem: null
         },
         license: null,
+        totals: [],
         step: 0,
     },
 }

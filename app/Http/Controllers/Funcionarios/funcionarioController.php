@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Funcionarios;
 
+use App\classes\ActivityRegister;
 use App\classes\uploadImage;
 use App\Http\Controllers\Controller;
 use App\Models\expense;
@@ -16,6 +17,8 @@ class funcionarioController extends Controller
 {
     public function Index()
     {
+        $register = new ActivityRegister;
+        $register->Activity("Entrou no module funcionario");
         return Inertia::render('Funcionarios/index',[
             'user'=>Auth::user()
         ]);
@@ -37,6 +40,8 @@ class funcionarioController extends Controller
 
     public function newWorker()
     {
+        $register = new ActivityRegister;
+        $register->Activity("Criou um funcionario");
         $create = Workers::create([
             "company_id"=> Auth::user()->company_id
         ]);

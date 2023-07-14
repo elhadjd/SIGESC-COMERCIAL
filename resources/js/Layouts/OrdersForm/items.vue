@@ -15,6 +15,7 @@
       @BoxMessage="BoxMessage"
       v-if="AddBox.state"
       />
+
       <div class="Container">
          <div class="d-flex items">
             <div
@@ -30,12 +31,11 @@
             <div
                v-for="item in orderItems.items"
                :key="item.id"
-               class="items"
-               >
+               class="items">
                <div v-for="input,idx in general.form.inputs" :key="idx">
                   <input
                   v-if="input.type != 'select' && !input.disabled"
-                  @keyup.enter="UpdateItem(item)"
+                  @blur="UpdateItem(item)"
                   @keyup="(e) => (item[input.name] = e.target.value)"
                   :value="item[input.name]"
                   @click="Alteracao(item.id,  input.name)"
@@ -63,7 +63,7 @@
             </div>
          </div>
       </div>
-      <div class="ResultadoTotal border-top bg-white d-flex">
+      <div class="ResultadoTotal">
          <div class="w-50">
             <form-select
             v-if="stateFormOrder == 'Cotação'"

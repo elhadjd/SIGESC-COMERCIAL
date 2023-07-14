@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\classes\ActivityRegister;
 use App\classes\uploadImage;
 use App\Http\Controllers\Controller;
 use App\Models\category_product;
@@ -50,14 +51,23 @@ class productsController extends Controller
 
     public function create(produtos $produtos,$name=null)
     {
+
         if (Auth::user()->nivel == 'admin') {
             $product = $produtos::create([
                 'nome'=> $name,
                 'company_id' => Auth::user()->company_id
             ]);
+            $this->registerActivity('Criou um produto');
             return $this->show(produtos::find($product->id));
         }
+
         return $this->RespondWarn('Usuario sem acesso !!!');
+    }
+
+    public function registerActivity($body)
+    {
+        $register = new ActivityRegister;
+        $register->Activity($body);
     }
 
     public function show(produtos $product)
@@ -92,6 +102,7 @@ class productsController extends Controller
                 $data['image'] = $image->Upload("/produtos/image/", $request->imagem, $product);
             }
             if ($product->update($data)) {
+                $this->registerActivity("Atualizou os dados do produto $product->nome");
                 return $this->RespondSuccess('Produto Atualizado com Sucesso',$product->fresh());
             } else {
                 return $this->RespondError('Erro ao Adicionar o produto');

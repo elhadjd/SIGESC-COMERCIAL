@@ -9,6 +9,10 @@ import "../assets/deshboard/css/deshboard.scss";
 import "../assets/login/fonts/font-awesome-4.7.0/css/font-awesome.min.css";
 import "../css/variables.scss";
 import "../css/transicao.css";
+
+import 'sweetalert2/src/sweetalert2.scss'
+import Swal from 'vue-sweetalert2'
+
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
@@ -48,12 +52,25 @@ import {
     faUserGear,
     faUsers,
     faUsersGear,
+    faForward,
     faXmark,
+    faCheck,
+    faLeftLong,
+    faCloudArrowUp,
+    faChevronRight,
+    faArrowRight
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import general from "./mixins/general.js";
-import { faBuilding, faUser } from "@fortawesome/free-regular-svg-icons";
+import {faBuilding, faUser} from "@fortawesome/free-regular-svg-icons";
 library.add(
+    faXmark,
+    faLeftLong,
+    faChevronRight,
+    faArrowRight,
+    faCloudArrowUp,
+    faForward,
+    faCheck,
     faTwitter,
     faDeleteLeft,
     faBuilding,
@@ -106,6 +123,7 @@ createInertiaApp({
             .use(ConfirmationService)
             .use(ToastService)
             .use(store)
+            .use(Swal)
             .mixin(general)
             .mount(el);
     },

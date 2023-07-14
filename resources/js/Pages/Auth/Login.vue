@@ -55,6 +55,7 @@
                 <div class='buttons'>
                     <button type='submit'>Entrar</button>
                 </div>
+                <Link :href="route('startCompany')">Iniciar</Link>
             </form>
         </div>
     </div>
@@ -62,7 +63,7 @@
 </template>
 
 <script setup>
-import { useForm } from "@inertiajs/vue3";
+import { useForm,Link } from "@inertiajs/vue3";
 import { onMounted, ref } from "@vue/runtime-core";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";

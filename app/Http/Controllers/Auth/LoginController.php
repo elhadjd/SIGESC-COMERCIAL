@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\HistoricLogin;
+use Jenssegers\Agent\Agent;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -21,13 +24,27 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
-        $credencias = [
+        $credential = [
             'email' => $request->email,
             "password" => $request->password,
         ];
 
-        if (Auth::attempt($credencias)) {
+        if (Auth::attempt($credential)) {
+
+            $user = User::find(Auth::user()->id);
+
+            $agent = new Agent();
+
+            $browser = $agent->browser();
+
+            $user->historic_login()->create([
+                'company_id' => $user->company_id,
+                'ip_address' => $request->ip(),
+                'browser' => $browser,
+            ]);
+
             return $this->UrlGuard($request);
+
         } else {
             return Inertia::render('Auth/Login', [
                 'erro' => "dados do usuario incorrecto"

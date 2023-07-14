@@ -38,6 +38,10 @@
          <span v-for="country,idx in country.data" @click="chooseCountry(country)" :key="idx">{{country.name}}</span>
       </div>
    </div>
+   <div class="box">
+      <label htmlFor="city">Cidade:</label>
+      <input type="text" required v-model="company.city" id="city" />
+   </div>
 </template>
 
 <script setup>
@@ -86,6 +90,7 @@ function VerifyObjectValues(object) {
   } else {
     for (let propriety in object) {
     if (object[propriety] === null) {
+        console.log(object[propriety]);
       return false;
     }
   }

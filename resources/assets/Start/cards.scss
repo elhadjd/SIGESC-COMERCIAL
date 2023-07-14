@@ -4,8 +4,10 @@
     padding: 15px 0px 5px 0px;
     .cards {
         display: flex;
+        flex-direction: row;
         gap: 20px;
         height: 100%;
+
         .active {
             background-color: var(--app_color) !important;
             color: white;
@@ -61,5 +63,12 @@
                 }
             }
         }
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .cards {
+        display: flex !important;
+        flex-direction: column !important;
     }
 }

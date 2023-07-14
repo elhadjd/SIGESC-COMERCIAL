@@ -5,13 +5,19 @@ namespace App\Http\Controllers;
 use App\classes\uploadImage;
 use App\Models\app;
 use App\Models\company;
+use App\Models\type_license;
+use App\Models\User;
 use Carbon\Carbon;
+use Database\Seeders\typeLicense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Jenssegers\Agent\Agent;
 
 class StartController extends Controller
 {
@@ -36,9 +42,9 @@ class StartController extends Controller
         if ($request->license === 'free') {
            $company = $this->saveData($request,new uploadImage());
            return $this->ValidateLicenseFree($request->license,$company,$request->user);
-        } elseif ($request->license === 'Premium') {
-            $this->saveData($request,new uploadImage());
-            $this->ValidateLicense($request->license);
+        } else {
+            $company = $this->saveData($request,new uploadImage());
+            return $this->ValidateLicense($request->license,$company,$request->user,$request->totals,$request->accounts);
         }
     }
 
@@ -89,17 +95,59 @@ class StartController extends Controller
         return $data;
     }
 
-    public function ValidateLicense()
+    public function ValidateLicense($license,$company,$user,$totals,$accounts)
     {
-        # code...
+        $countApp = count(json_decode(json_encode($license), true));
+        $licenseType = type_license::where('name',
+        $countApp == 2 ? 'Basic' :
+        ($countApp <=4 ? 'Premium' : 'Gold'))->first();
+        $current_date = Carbon::now()->addDays(15);
+        $crateLicense = $company->license()->create([
+            'type_license_id' => $licenseType->id,
+            'hash'=>Crypt::encrypt($current_date->format('Y-m-d')),
+            'from' => now(),
+            'to' => Carbon::now()->addDays(15),
+            'state'=>'active'
+       ]);
+        foreach($license as $app) {
+            $select = app::where('name',str_replace(' ','',$app['label']))->first();
+            $crateLicense->app_license()->create([
+                'company_id' => $company->id,
+                'app_id' => $select->id
+            ]);
+        }
+
+        $credencias = [
+            'email' => $user['email'],
+            "password" => $user['password'],
+        ];
+
+        Auth::attempt($credencias);
+
+        $user = User::find(Auth::user()->id);
+
+        $agent = new Agent();
+
+        $browser = $agent->browser();
+
+        $user->historic_login()->create([
+            'company_id' => $user->company_id,
+            'ip_address' => request()->ip(),
+            'browser' => $browser,
+        ]);
+
+        return Redirect::route('welcome',['company'=>$company->id,'data'=>$totals,'accounts'=>$accounts]);
     }
     public function ValidateLicenseFree($license,$company,$user)
     {
-       $license = $company->license()->create([
-            'type_license_id' => 2,
-            'from' => now(),
-            'to' => Carbon::now()->addDays(15)
-       ]);
+        $current_date = Carbon::now()->addDays(15);
+        $license = $company->license()->create([
+                'type_license_id' => 2,
+                'from' => now(),
+                'to' => Carbon::now()->addDays(15),
+                'state'=>'active',
+                'hash'=>Crypt::encrypt($current_date->format('Y-m-d')),
+        ]);
         foreach (app::all() as $app) {
             $license->app_license()->create([
                 'company_id' => $company->id,
@@ -114,14 +162,50 @@ class StartController extends Controller
 
         Auth::attempt($credencias);
 
+        $user = User::find(Auth::user()->id);
+
+        $agent = new Agent();
+
+        $browser = $agent->browser();
+
+        $user->historic_login()->create([
+            'company_id' => $user->company_id,
+            'ip_address' => request()->ip(),
+            'browser' => $browser,
+        ]);
+
         return Redirect::route('welcome',['company'=>$company->id]);
 
     }
 
     public function welcome(company $company)
     {
-        return Inertia::render('Start/Welcome',[
-            'company' => $company
-        ]);
+        return Inertia::render('Start/Welcome',['company' => $company]);
+    }
+
+    function activeLicense(Request $request,company $companies)
+    {
+
+        $response = Http::withHeaders([
+            'Authorization' => 'moXx5PRBRn4D37zR9Ham7IQpphnLnWSsAdUE9M3VAH5bW0O0lhVNhl2qWiKW',
+        ])->post('http://127.0.0.1:8000/api/activeLicense',$request);
+
+       $data = json_decode($response);
+
+        if (!$data->data) {
+            return $this->RespondError('Cliente não encontrado');
+        }
+        $company = $companies->where('nif',$data->data->nif)->first();
+
+        if (!$company) return $this->RespondError('Aconteceu um erro no sistema por favor tenta novamente');
+        if ($company->license->state == 'active') return $this->RespondError('Esta licença ja foi ativada');
+
+        $company->license->state = 'active';
+        $company->license->to = $data->data->license->to;
+        $company->license->from = $data->data->license->from;
+        $company->license->hash = Crypt::encrypt($data->data->license->to);
+
+        if (!$company->license->save()) return $this->RespondError('Erro ao ativar a licença');
+        return $this->RespondSuccess('Licença ativada com sucesso');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Config;
 
+use App\classes\ActivityRegister;
 use App\classes\uploadImage;
 use App\Http\Controllers\Controller;
 use App\Models\activity_type;
@@ -16,6 +17,7 @@ class configController extends Controller
 {
     public function index()
     {
+        $this->registerActivity('Entrou no module configuração');
         return Inertia::render('Config/index');
     }
 
@@ -24,13 +26,26 @@ class configController extends Controller
         return company::find($request->user()->company_id)->load('users');
     }
 
+    function getLoginRegister()
+    {
+        $company = company::find(Auth::user()->company_id);
+        return $company->HistoricLogin()->get();
+    }
+
     public function getConfig(Request $request)
     {
         return $request->user()->company()->first();
     }
 
+    public function registerActivity($body)
+    {
+        $register = new ActivityRegister;
+        $register->Activity($body);
+    }
+
     public function newUser(User $users)
     {
+        $this->registerActivity('Criou um novo usuario');
         $user = $users->create([
             'company_id'=>Auth::user()->company_id
         ]);
@@ -53,7 +68,9 @@ class configController extends Controller
         $user->update($data);
         $user->perfil()->update($data['perfil']);
         $user->config()->update($data['config']);
-        return $this->RespondSuccess('Usuario atualizado com success !!!',$user->fresh());
+        $user->fresh();
+        $this->registerActivity("Atualizou dados do usuario $user->name");
+        return $this->RespondSuccess('Usuario atualizado com success !!!',$user);
     }
 
     public function UpdatePassword(Request $request,User $user)
@@ -66,6 +83,7 @@ class configController extends Controller
         }
         $user->password = Hash::make($request->NovaSenha);
         if ($user->save()) {
+            $this->registerActivity("Atualizou a senha do usuario $user->name");
             return $this->RespondSuccess('success','Senha atualizada com sucesso');
         }
     }
@@ -89,6 +107,7 @@ class configController extends Controller
             'sede' => $request->sede
         ]);
 
+        $this->registerActivity("Atualizou dados da empresa");
         return $this->respondSuccess('Dados atualizado com Sucesso');
     }
 

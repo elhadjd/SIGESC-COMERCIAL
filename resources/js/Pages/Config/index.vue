@@ -26,11 +26,13 @@
 				v-if="modul.active == 'company'"
 				:company="company"
 			/>
+            <login-register v-if="modul.active == 'Logins'" @message="message"/>
 		</div>
 	</div>
 </template>
 
 <script setup>
+import loginRegister from '@/Components/Config/loginRegister.vue'
 import companies from '@/Components/Config/company.vue'
 import Toast from 'primevue/toast'
 import { onMounted, ref } from '@vue/runtime-core';
@@ -51,7 +53,7 @@ const company = ref([]);
 
 const menus = ref([
     { menu: "Configurações" },
-    { menu: "Liseças" }
+    { menu: "Logins" }
 ]);
 
 const message = (message, tipo) => {

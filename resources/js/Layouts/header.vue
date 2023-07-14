@@ -1,49 +1,63 @@
 <template>
     <div class="nav_da_home_compra">
-    <Index class="botao" />
-    <nav>
-      <div class="d-flex">
-        <div v-for="menu in props.menus" :key="menu.menu">
-          <li @mouseenter="showDown(menu.menu)" @click="modulos(menu.menu)">
-            {{ menu.menu }}
-          </li>
-          <div v-show="Mostrar == menu.menu">
-            <div v-if="user.nivel == 'admin'" class="ListRelatorios">
-              <div
-                v-for="subMenu, index in menu.subMenu"
-                :key="index"
-                @click="showModule(subMenu.name)"
-              >
-                {{ subMenu.name }}
-              </div>
-            </div>
-          </div>
+        <div class="botao">
+            <Index />
         </div>
-        <div class="user_conectado">
-          <div class="User dropdown-toggle" @click="stateLogout = !stateLogout">
-            <img :src="element.img" alt="user" />
-            <div>{{ user.surname }}</div>
-          </div>
-          <div v-if="stateLogout" class="Usuario">
-            <div @click="Sair" class="Sair">
-              Sair <i class="fa fa-sign-out"></i>
+        <button @click="stateMenu = !stateMenu" class="openMenu">
+            <FontAwesomeIcon class="on" icon="fa-solid fa-chevron-right" />
+            <font-awesome-icon class="two" icon="fa-solid fa-arrow-right" />
+        </button>
+        <nav>
+            <div class="nave">
+
+                <div :class="stateMenu ? 'show-menu' : ''" class="menus">
+                    <Link class="dashboard" :href="route('dashboard')">Dashboard</Link>
+                    <div v-for="menu in props.menus" :key="menu.menu">
+                        <li @mouseenter="showDown(menu.menu)" @click="modulos(menu.menu)">
+                            {{ menu.menu }}
+                        </li>
+                        <div v-show="Mostrar == menu.menu">
+                            <div v-if="user.nivel == 'admin'" class="ListRelatorios">
+                                <div
+                                    v-for="subMenu, index in menu.subMenu"
+                                    :key="index"
+                                    @click="showModule(subMenu.name)">
+                                    {{ subMenu.name }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div></div>
+                <div class="user_conectado">
+                    <div class="User dropdown-toggle" @click="stateLogout = !stateLogout">
+                        <img :src="element.img" alt="user" />
+                        <div>{{ user.surname }}</div>
+                    </div>
+                    <div v-if="stateLogout" class="Usuario">
+                        <div @click="Sair" class="Sair">
+                        Sair <i class="fa fa-sign-out"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </div>
+        </nav>
+    </div>
 </template>
 
 <script setup>
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import Index from "./index.vue";
 import { onMounted, reactive, ref } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { Inertia } from "@inertiajs/inertia";
 import {getImages} from '@/composable/public/getImages'
+import { Link } from "@inertiajs/vue3";
 const props = defineProps({
   menus: Array,
 });
+
+const stateMenu = ref(false)
 
 const emits = defineEmits(["modulos"]);
 const Mostrar = ref(null);
@@ -71,8 +85,9 @@ const Sair = () => {
 };
 
 const showModule = (module) => {
-  emits("modulos", module);
-  Mostrar.value = null;
+    stateMenu.value = false
+    emits("modulos", module);
+    Mostrar.value = null;
 };
 
 const showDown = (event) => {
@@ -80,7 +95,16 @@ const showDown = (event) => {
     Mostrar.value = event;
   }
 };
-onMounted(() => {});
+
+window.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("openMenu").addEventListener("click", function() {
+    var menu = document.querySelector(".menus");
+    menu.classList.toggle("show-menu");
+  });
+});
+
+
+
 </script>
 
 <style>

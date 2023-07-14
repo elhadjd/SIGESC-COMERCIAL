@@ -31,6 +31,10 @@
             @include scroll;
             box-shadow: rgb(100, 100, 111, 0.2) 10px 5px 27px 0px;
             border-radius: 0px 0px 5px 5px;
+            @media screen and (max-width: 970px)  {
+                background-color: white;
+                height: 200px !important;
+            }
 
             > div {
                 padding: 10px 10px 10px 10px;

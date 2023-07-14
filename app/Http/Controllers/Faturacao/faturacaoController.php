@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Faturacao;
 
+use App\classes\ActivityRegister;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Public\TransferController;
 use App\Models\Invoice;
@@ -21,6 +22,8 @@ class faturacaoController extends Controller
 {
     public function index()
     {
+        $register = new ActivityRegister;
+        $register->Activity("Entrou no module faturação");
         return Inertia::render('Invoice/index');
     }
 
@@ -42,6 +45,8 @@ class faturacaoController extends Controller
             'user_id' => Auth::user()->id
         ]);
 
+        $register = new ActivityRegister;
+        $register->Activity("Criou uma fatura no module faturação");
         return $this->getInvoices($create->id);
     }
 

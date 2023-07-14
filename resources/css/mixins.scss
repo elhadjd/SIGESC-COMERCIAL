@@ -12,8 +12,22 @@
     max-width: 200px;
     color: var(--btnColor);
     border: 1px solid var(--bgButtons);
-    &:hover {
-        cursor: pointer;
+    transition: 0.5s;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    >svg,i{
+        font-size: 18px;
+    }
+    &:hover{
+        background-color: var(--buttons-hover);
+        color: var(--textColor);
+        border: 1px solid var(--borderColor);
+        i{
+            color: var(--bgButtons);
+        }
     }
 }
 
@@ -657,6 +671,21 @@
     align-items: center;
     justify-content: space-between;
     padding: 0px 10px 0px 10px;
+    @media screen and (max-width: 850px) {
+        align-items: start !important;
+        flex-direction: column !important;
+        justify-content: unset !important;
+        gap: .5rem !important;
+        label{
+            width: 100% !important;
+            margin-top: 5px !important;
+        }
+        select,
+        input,
+        button{
+            width: 100% !important;
+        }
+    }
     label{
         width: 40%;
         font-size: 14px;

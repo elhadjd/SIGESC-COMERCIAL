@@ -2,9 +2,73 @@
     width: 100%;
     height: 100%;
     display: flex;
+    gap: 1rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
+    >a{
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        >svg{
+            background: transparent;
+            border:none;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 5px 10px 5px 10px;
+            min-width: 100px;
+            max-width: 200px;
+            color: var(--btnColor);
+            border: 1px solid transparent;
+            transition: 0.5s;
+            padding: 10px;
+            border-radius: 3px;
+            &:hover{
+                background-color: #3f4f6c1d;
+            }
+        }
+    }
+    .buttons{
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        button{
+            @include botao_normal;
+            border-radius: 3px;
+        }
+    }
+    .mini-form{
+        width: 50%;
+        height: 150px;
+        background-color: var(--appBg);
+        box-shadow: rgb(100 ,100 ,111, 0.2) 10px 9px 35px 10px;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        display: flex;
+        flex-direction: column;
+        >div:nth-child(1){
+            height: 70%;
+            padding: 15px;
+            border-bottom: 1px solid var(--borderColor);
+            .Form-control{
+                @include form-control;
+            }
+        }
+
+        >div:nth-child(2){
+            height: 30%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-right: 10px;
+            button{
+                @include botao_normal;
+            }
+        }
+    }
     background: radial-gradient(
         at 100% 0%,
         var(--app_color) 0px,
@@ -89,7 +153,12 @@
 
     }
 }
-@media screen and (max-width: 450px) {
+
+@media screen and (max-width: 700px) {
+    .mini-form{
+        width: 70% !important;
+        height: 150px;
+    }
     .form{
         width: 70% !important;
     }
@@ -99,11 +168,17 @@
         justify-content: space-between;
     }
 }
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 450px) {
+    .mini-form{
+        width: 90% !important;
+        height: 150px;
+    }
     .form{
-        width: 60% !important;
+        width: 80% !important;
     }
     .Footer {
+        width: 100%;
+        padding:  5px !important;
         display: flex;
         flex-direction: row;
         justify-content: space-between;

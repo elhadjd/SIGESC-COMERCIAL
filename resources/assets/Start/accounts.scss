@@ -1,0 +1,143 @@
+.payment {
+    width: 70%;
+    height: 250px;
+    background-color: var(--appBg);
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    .banks {
+        width: 100%;
+        height: 170px;
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1.5px solid var(--borderColor);
+        header {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 15% 40% 15% 30%;
+            border-bottom: 1.5px solid var(--borderColor);
+            span {
+                width: 100%;
+                font-size: 14px;
+                font-weight: 600;
+                padding: 10px;
+                color: var(--textColor);
+                border-left: 1.5px solid var(--borderColor);
+            }
+        }
+        main {
+            width: 100%;
+            height: 100%;
+
+            .rows {
+                display: grid;
+                grid-template-columns: 15% 40% 15% 30%;
+                border-bottom: 1px solid #dddddd47;
+                &:nth-child(even) {
+                    background-color: white;
+                }
+                span {
+                    width: 100%;
+                    font-size: 14px;
+                    font-weight: 500;
+                    padding: 7px;
+                    color: var(--textColor);
+                }
+            }
+        }
+    }
+    .totals {
+        width: 100%;
+        height: 80px;
+        display: flex;
+        flex-direction: row;
+        > div:nth-child(1) {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding-right: 20px;
+            > label {
+                width: 50%;
+                height: 30px;
+                @include botao_normal;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                > input {
+                    display: none;
+                }
+            }
+            > div {
+                width: 50px;
+                height: 60px;
+                display: flex;
+                flex-direction: column;
+                > img {
+                    width: 100%;
+                    height: 50px;
+                    border-radius: 1px;
+                }
+                button {
+                    height: 30%;
+                    bottom: 0;
+                    font-size: 12px;
+                    background-color: transparent;
+                    color: var(--bgButtons);
+                    &:hover {
+                        background-color: #00a6cf9e;
+                        color: white;
+                    }
+                    i{
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+        > div {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            padding: 5px;
+
+            div {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                span {
+                    font: 11pt arial;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .payment {
+        width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .row,
+    header {
+        grid-template-columns: 10% 30% 15% 35% 10% !important;
+        span {
+            width: 100% !important;
+        }
+    }
+    .payment {
+        overflow-x: auto;
+        width: 90% !important;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .payment {
+        width: 100% !important;
+    }
+}

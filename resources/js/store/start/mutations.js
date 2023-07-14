@@ -14,5 +14,9 @@ export default {
 
     StartSaveLicense(state,payload){
         state.start.license = payload
+    },
+
+    StartSaveTotals(state,payload){
+        state.start.totals = payload
     }
 }
