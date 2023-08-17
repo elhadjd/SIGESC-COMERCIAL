@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreign('store_destination_id')->references('id')->on('armagens');
             $table->float('total_spent')->default(0)->nullable();
             $table->enum('state',['Cotação','Publicado','Anulado'])->default('Cotação');
+            $table->float('totalMerchandise')->default(0);
             $table->float('total')->default(0);
             $table->date('DateOrder')->default(now());
             $table->date('DateDue')->default(now());

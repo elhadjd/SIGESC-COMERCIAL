@@ -11,8 +11,7 @@
 
       <div
         :class="props.produto.tipo == 'fornecedore' ? 'core' : ''"
-        @click="Tipoinfos('fornecedore')"
-      >
+        @click="Tipoinfos('fornecedore')">
         Fornecedore
       </div>
       <div

@@ -1,14 +1,16 @@
 <?php
-
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Compra\chartPurchase;
 use App\Http\Controllers\Compra\compraController;
 use App\Http\Controllers\Config\configController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Faturacao\chartInvoice;
 use App\Http\Controllers\Faturacao\faturacaoController;
 use App\Http\Controllers\Funcionarios\funcionarioController;
 use App\Http\Controllers\PDV\AnalisOrderController;
 use App\Http\Controllers\PDV\CaixaController;
+use App\Http\Controllers\PDV\chartPdvController;
 use App\Http\Controllers\PDV\ListPriceController;
 use App\Http\Controllers\PDV\OrdersController;
 use App\Http\Controllers\PDV\PointSaleController;
@@ -38,7 +40,6 @@ use Inertia\Inertia;
 |
 */
 
-
 Route::controller(StartController::class)->group(function () {
     Route::get('gettingStarted', 'index')->name('startCompany');
     Route::post('saveCompany', 'saveCompany');
@@ -46,14 +47,12 @@ Route::controller(StartController::class)->group(function () {
     Route::post('activeLicense', 'activeLicense');
 });
 
-
 Route::prefix('auth')->group(function () {
     Route::post('/saveCompany', [LoginController::class, 'saveCompany']);
     Route::get('/login', [LoginController::class, 'index'])->name('login');
     Route::post('/logar', [LoginController::class, 'login'])->name('logar');
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 });
-
 
 Route::get('/databases', function () {
     return ([['name' => 'test'], ['name' => 'Loja2'], ['name' => 'Loja3']]);
@@ -74,7 +73,6 @@ Route::middleware('auth')->group(function () {
             Route::get('search/{table}/{column}/{tex}', 'filter');
         });
 
-
         Route::prefix('PDV')->group(function () {
 
             Route::controller(pontoVendaController::class)->group(function () {
@@ -91,6 +89,7 @@ Route::middleware('auth')->group(function () {
                     Route::post('opiningControl/{session?}', 'opiningControl');
                     Route::post('/clossSession/{session}', 'clossSession');
                     Route::post('updateSession/{session}', 'updateSession');
+                    Route::post('savePoint/{caixa?}','savePoint');
                 });
             });
 
@@ -108,14 +107,26 @@ Route::middleware('auth')->group(function () {
             Route::controller(OrdersController::class)->group(function () {
                 Route::get('getOrderSingleUser/{session}', 'getOrderSingleUser');
                 Route::post('ValidatePayment', 'ValidatePayment');
-                Route::get('getOrders', 'getOrders');
+                Route::get('getOrders/{order?}/{column?}', 'getOrders');
                 Route::put('CancelInvoice/{order}', 'CancelInvoice');
+                Route::get('printInvoice/{session}/{type}','printInvoice');
+                Route::get('groupBy/{event}/{column}','groupBy');
             });
 
             Route::controller(AnalisOrderController::class)->group(function () {
                 Route::get('getRelatorByMonth/{mouth?}/{year?}', 'getRelatorByMonth');
                 Route::get('analisDay/{day}', 'analisDay');
                 Route::get('IntervalDateRelator/{month?}/{year?}/{inicio}/{fin}', 'IntervalDateRelator');
+            });
+
+            Route::prefix('analis')->group(function(){
+                Route::controller(chartPdvController::class)->group(function(){
+                    Route::get('/','index');
+                    Route::get('/user','users');
+                    Route::get('/state','state');
+                    Route::get('/data/{type}','data');
+                    Route::get('/dataSub/{type}/{start}/{end}','data');
+                });
             });
         });
 
@@ -136,6 +147,16 @@ Route::middleware('auth')->group(function () {
                 Route::get('/purchur/getPayments', 'getPayments');
                 Route::get('getPayments/{order}', 'payments');
             });
+
+            Route::prefix('analis')->group(function(){
+                Route::controller(chartPurchase::class)->group(function(){
+                    Route::get('/','index');
+                    Route::get('/user','users');
+                    Route::get('/state','state');
+                    Route::get('/data/{type}','data');
+                    Route::get('/dataSub/{type}/{start}/{end}','data');
+                });
+            });
         });
 
         Route::prefix('config')->group(function () {
@@ -154,7 +175,6 @@ Route::middleware('auth')->group(function () {
             Route::post('/UpdatePassword/{user}', 'UpdatePassword');
         });
 
-
         Route::prefix('Faturacao')->group(function () {
             Route::controller(faturacaoController::class)->group(function () {
                 Route::get('Home', 'Index')->name('faturacao');
@@ -170,6 +190,16 @@ Route::middleware('auth')->group(function () {
                 Route::post('sendPayment/{invoice}', 'InvoicePayment');
                 Route::post('cancelInvoice/{invoice}/{type}', 'ConfirmOrder');
                 Route::get('getPayments/{invoice}', 'getPayments');
+            });
+
+            Route::prefix('analis')->group(function(){
+                Route::controller(chartInvoice::class)->group(function(){
+                    Route::get('/','index');
+                    Route::get('/user','users');
+                    Route::get('/state','state');
+                    Route::get('/data/{type}','data');
+                    Route::get('/dataSub/{type}/{start}/{end}','data');
+                });
             });
         });
 

@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="h-100">
     <confirm :SmsConfirm="modalConfirm.message" @Confirme="CancelSubmit" @descartou="modalConfirm.state = null" v-if="modalConfirm.state == 'open'"/>
     <invoice v-if="print" @CloseModal="print = false" :general="general" :order="order"/>
     <formPayment @close="statePayment = false" v-if="statePayment" @message="message" @invoice="OnMounted" :order="order" :general="general"/>

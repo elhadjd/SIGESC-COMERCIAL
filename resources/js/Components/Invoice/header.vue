@@ -22,6 +22,7 @@ const MostrarTitls = (event)=>{
     }
 }
 const menus = ref([
+    {'menu':'Paineis'},
     {"menu": "Ordens"},
     {"menu":"Clientes",
         "subMenu": [

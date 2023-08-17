@@ -27,8 +27,9 @@ class productsController extends Controller
 
     public function get($page)
     {
-        $product = produtos::withSum('stock','quantity')
-        ->where('company_id',Auth::user()->company_id)
+        $product = produtos::withSum(['stock' => function($stock){
+            $stock->where('armagen_id',Auth::user()->armagen_id);
+        }],'quantity')->where('company_id',Auth::user()->company_id)
         ->where('estado','active')->orderBy('nome','asc')->paginate($page);
         // foreach ($product as $value) {
         //    $select = DB::table('stocks')->where('armagen_id',Auth::user()->armagen_id)
@@ -77,13 +78,18 @@ class productsController extends Controller
            $type_movements = $product->type_movement()->first()->with(['movements' => function($query) use ($product){
                 $query->where('produtos_id',$product->id);
             }])->get();
+
         }else{
             $type_movements = movement_type::all();
         }
 
+        $prod = $product->withSum(['stock' => function($stock){
+            $stock->where('armagen_id',Auth::user()->armagen_id);
+        }],'quantity')->whereId($product->id)->first();
+
         return response()->json([
             'user'=> Auth::user(),
-            'product' => $product->withSum('stock','quantity')->whereId($product->id)->first(),
+            'product' => $prod,
             'type_movements' =>  $type_movements,
             'suppliers' => fornecedore::all(),
             'categorys' => category_product::all(),

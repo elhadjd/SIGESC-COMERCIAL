@@ -8,6 +8,7 @@ use App\Models\operation_caixa_type_session;
 use App\Models\operationCaixaType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use PhpParser\Node\Stmt\Return_;
@@ -16,6 +17,7 @@ class pontoVendaController extends Controller
 {
     public function index()
     {
+        // return Crypt::encrypt('2024-02-14');
         return Inertia::render('PointSale/pointSale', [
             'user' => Auth::user(),
             'data' => caixa::all()->where('company_id',Auth::user()->company_id)
@@ -26,8 +28,8 @@ class pontoVendaController extends Controller
     {
         $operationCaixaTypes = $operationCaixaType::with(['operations' => function ($query) {
             $query->where('company_id',Auth::user()->company_id)
-            ->orderBy('created_at', 'desc')->limit(100);
-        }])->get();
+            ->orderBy('created_at', 'desc')->get();
+        }])->limit(100)->get();
 
         $groupedOperations = [];
 
@@ -55,6 +57,7 @@ class pontoVendaController extends Controller
         }
         operation_caixa_type_session::create([
             'amount' => $request->amount,
+            'company_id'=>Auth::user()->company_id,
             'operation_caixa_type_id' => 1,
             'subject' => $request->subject,
             'user_id' => Auth()->user()->id,

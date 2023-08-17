@@ -29,8 +29,8 @@ class faturacaoController extends Controller
 
     public function getInvoices($invoice = null)
     {
-        if (!$invoice) return Invoice::where('company_id',Auth::user()->company_id)->orderBy('id','desc')->paginate(50);
-        $select = Invoice::where('company_id',Auth::user()->company_id)->with(['items' => function ($items) {
+        if (!$invoice) return $this->companyUser()->invoice()->orderBy('id','desc')->paginate(50);
+        $select = $this->companyUser()->invoice()->with(['items' => function ($items) {
             $items->orderBy('id', 'desc');
         }]);
         return $select->where('id',$invoice)->first();
@@ -39,9 +39,10 @@ class faturacaoController extends Controller
     public function NewOrder(Invoice $invoice)
     {
         $orderNumber = "FT".date('d-m-Y')."/";
-        $create = $invoice->create([
-            'company_id'=>Auth::user()->company_id,
+
+        $create = $this->companyUser()->invoice()->create([
             'orderNumber'=> $orderNumber,
+            'DateOrder'=>now(),
             'user_id' => Auth::user()->id
         ]);
 

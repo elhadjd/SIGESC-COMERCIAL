@@ -21,7 +21,7 @@
          </div>
       </div>
       <div class="Container">
-         <div v-if="!formDepartment.state" class="departments">
+         <div v-if="!formDepartment.state" class="Main">
             <div v-for="department in departments" :key="department.id" class="form-Content">
                <div @click="showDepartment(department)">
                   <span>{{department.name}}</span>

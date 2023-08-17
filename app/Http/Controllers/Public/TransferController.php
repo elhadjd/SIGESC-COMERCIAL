@@ -18,7 +18,7 @@ class TransferController extends Controller
 {
     public function get()
     {
-        return transfer::where('company_id',Auth::user()->company_id)->orderBy('id','DESC')->paginate(30);
+        return $this->companyUser()->transfer()->orderBy('id','DESC')->paginate(100);
     }
 
     public function show(transfer $order)
@@ -30,14 +30,15 @@ class TransferController extends Controller
 
     public function create(Request $request,transfer $transfer)
     {
-        $create = $transfer->create([
-            'company_id'=> $request->user()->company_id,
+        $number = 'TF'.date('d').'-'.date('m').'-'.date('Y').'/';
+        $create = $this->companyUser()->transfer()->create([
+            'orderNumber'=> $number,
             'user_id' => $request->user()->id,
             'store_principal_id' => $request->user()->armagen_id
         ]);
 
         $model = transfer::find($create->id);
-        $model->orderNumber = 'TF'.date('d').'-'.date('m').'-'.date('Y').'/'.$model->id;
+        $model->orderNumber = $model->orderNumber.$model->id;
         $model->save();
 
         return $this->show($model);

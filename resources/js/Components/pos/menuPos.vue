@@ -3,50 +3,51 @@
     <Index
       v-if="!$store.state.pos.Controlo.state"
       :session="props.session"
-      @message="menssagens"
+      @message="messages"
       @login="teste"
     />
     <Toast />
     <Transition>
       <EntradaSaida
         v-if="entradaSaida"
-        @message="menssagens"
+        @message="messages"
         @fechar="entradaSaida = false"
       />
     </Transition>
     <div v-if="fatura" class="fatura">
-      <Fatura :dadosFatura="dadosFatura" />
+      <Fatura :dadosFatura="dadosFatura" @closePrint="closePrint"/>
     </div>
 
     <section id="headerPos">
-      <div class="header-One">
-        <li>
-          <strong> SISGESC </strong>
-        </li>
-        <div class="EntradaSaida" @click="entradaSaida = true">
-          <cash />
-          <span>Entrada & Saida & gastos</span>
-        </div>
-        <div @click="ListePedidos = true" id="pos">
-          <i class="fa fa-ticket" aria-hidden="true"></i>
-          <strong>{{ Pedido.number }}</strong>
-          <span>Pedido</span>
-        </div>
-      </div>
+        <button type="button" class="header-One">
+            <li>
+                <strong> SISGESC </strong>
+                <i class="fa fa-chevron-down openMenu" aria-hidden="true"></i>
+            </li>
+            <div class="menu">
+                <div class="EntradaSaida" @click="entradaSaida = true">
+                    <cash />
+                    <span>Entrada & Saida & gastos</span>
+                </div>
+                <div @click="ListePedidos = true,showProducts = !showProducts" id="pos">
+                    <i class="fa fa-ticket" aria-hidden="true"></i>
+                    <strong>{{ Pedido.number }}</strong>
+                    <span>Pedido</span>
+                </div>
+            </div>
+        </button>
       <div class="header-two">
         <Pesquisar />
-        <div id="UsuarioConectado">
-          <div>
-            <div>{{ $store.state.publico.user.surname }}</div>
-          </div>
-          <div class="SairPos">
-            <Link :href="route('pontodevenda')"
-              >Close <i class="fa fa-sign-out"></i
-            ></Link>
-          </div>
-        </div>
+        <button class="user">
+            <img :src="image.img"/>
+            <div class="closePos">
+                <span>{{ $store.state.publico.user.surname }}</span>
+                <div @click="close">Sair <i class="fa fa-sign-out"></i></div>
+            </div>
+        </button>
       </div>
     </section>
+
     <section class="MenuPos user-select-none">
       <div class="cartShop">
         <shopping :size="200" />
@@ -81,35 +82,43 @@
 
           <div class="esquerdaBaixo">
             <Eventos
-              @payment="makePayment"
-              @cliente="client"
-              @Alterar="Alterar"
-              @tipo="tipo"
-              @Remover="Remover"
+                :idSession="session.id"
+                :user="props.user"
+                @message="messages"
+                @invoice="print"
+                @payment="makePayment"
+                @cliente="client"
+                @Alterar="updateOrder"
+                @tipo="tipo"
+                @showProds="showProducts = !showProducts"
+                @Remover="Remover"
             />
           </div>
         </div>
       </div>
-      <div class="Posdireita">
+      <div class="Posdireita" :class="showProducts ? 'showProducts' : ''">
         <ListePedido
           @close="ListePedidos = false"
           @AlterarPedido="AlterarPedido"
           @NovoPedido="NovoPedido"
+          :session="session.id"
           v-if="ListePedidos == true"
         />
         <div v-else class="w-100 h-100">
-          <div class="direitaCima"></div>
+          <div class="direitaCima">
+            <i @click="showProducts = false" class="fa fa-close"></i>
+          </div>
           <div v-if="!fatura" class="direitaBaixo">
-            <Produtos @AddProds="AddProds" @message="menssagens" />
+            <Produtos @AddProds="AddProds" @message="messages" />
           </div>
         </div>
       </div>
       <Pagamento
         :method="method"
         v-if="Form_Pagamento == true"
-        @message="menssagens"
+        @message="messages"
         @closePaymentForm="Form_Pagamento = false"
-        @fatura="Imprimir"
+        @fatura="print"
         :dados="Pedido"
       />
     </section>
@@ -125,13 +134,14 @@ import Pagamento from "./pagamento.vue";
 import Produtos from "./produtos.vue";
 import ListePedido from "./ListePedidos.vue";
 import Toast from "primevue/toast";
-import { Link } from "@inertiajs/vue3";
+import { Link,router } from "@inertiajs/vue3";
 import EntradaSaida from "./SaidaEntrada.vue";
 import Eventos from "./eventos.vue";
 import "./inatividade";
 import { onMounted, reactive, ref } from "@vue/runtime-core";
 import { useToast } from "primevue/usetoast";
 import Pesquisar from "./pesquisar.vue";
+import { getImages } from "@/composable/public/getImages";
 
 const store = useStore();
 const ListePedidos = ref(false);
@@ -139,6 +149,12 @@ const FormatarDineiro = Intl.NumberFormat("PT-AO", {
   style: "currency",
   currency: "AOA",
 });
+const image = reactive({
+    img:'/login/image/'+store.state.publico.user.surname
+})
+
+const showProducts = ref(false)
+const {getImage} = getImages(image);
 const toast = useToast();
 const pos = ref("Pos");
 const entradaSaida = ref(false);
@@ -149,8 +165,14 @@ const fatura = ref(false);
 const numeros = ref("");
 const TipoAlteration = ref("quantidade");
 const linha = ref(null);
-const Form_Pagamento = ref(false);
-const config = ref(store.state.pos.configCash);
+const Form_Pagamento = ref(false)
+
+const props = defineProps({
+  session: Object,
+  user:Object
+});
+
+const user = ref(props.user);
 const Pedido = ref({
   items: [],
   total: 0,
@@ -160,14 +182,12 @@ const Pedido = ref({
   number: null,
   session: null,
 });
-
+const close = ()=>{
+    router.get('/PDV/Home')
+}
 const Encomendas = ref([]);
 
 const method = ref();
-
-const props = defineProps({
-  session: Object,
-});
 
 const IdEncomenda = ref();
 
@@ -175,19 +195,20 @@ const teste = (event) => {
   store.commit("pos/CloseCash", event);
 };
 
-const Imprimir = (event) => {
-  dadosFatura.value = event;
-  fatura.value = true;
-  Form_Pagamento.value = false;
-  setTimeout(() => {
-    fatura.value = false;
-  }, 50);
-  Pedido.value.number = null;
-  Pedido.value.items = [];
-  Pedido.value.total = null;
-  store.state.pos.ClientePos = null;
-  return OnMounted();
+const print = (event) => {
+    dadosFatura.value = event;
+    fatura.value = true;
+    Form_Pagamento.value = false;
+    Pedido.value.number = null;
+    Pedido.value.items = [];
+    Pedido.value.total = null;
+    store.state.pos.ClientePos = null;
 };
+
+const closePrint = (()=>{
+    fatura.value = false;
+    return OnMounted();
+})
 
 const InputFocus = () => {
   store.state.pos.PesquisarProduto = "";
@@ -203,7 +224,7 @@ const AlterarPedido = (event,edit) => {
 const NovoPedido = () => {
   //A verificar se o carrinho interior tem alguns items
   if (Pedido.value.items.length <= 0) {
-    return menssagens(
+    return messages(
       "info",
       "Atenção não e possivel crear duas pedidos vazios"
     );
@@ -241,14 +262,15 @@ const tipo = (event) => {
 };
 
 const OnMounted = onMounted(async () => {
-  await axios.get("/PDV/menuPos").then((Response) => {
-    method.value = Response.data.methods;
-    Pedido.value.user = store.state.publico.user;
-  });
-  localStorage.setItem("session", props.session.id);
-  Pedido.value.session = props.session.id;
-  getStore();
-  InputFocus();
+    await getImage();
+    await axios.get("/PDV/menuPos").then((Response) => {
+        method.value = Response.data.methods;
+        Pedido.value.user = store.state.publico.user;
+    });
+    localStorage.setItem("session", props.session.id);
+    Pedido.value.session = props.session.id;
+    getStore();
+    InputFocus();
 });
 
 const getStore = (edit) => {
@@ -358,7 +380,7 @@ const ClicarLinha = (event, prod) => {
   linha.value = prod;
 };
 
-const menssagens = (tipo, message) => {
+const messages = (tipo, message) => {
   toast.add({
     severity: tipo,
     summary: "Menssagem",
@@ -394,7 +416,7 @@ const AddProds = (produto) => {
       existProduct.total = total;
       existProduct.preco_pedido = preco;
     } else {
-      return menssagens(
+      return messages(
         "error",
         "Este produto ja nao ten quantidade suficiente em stock"
       );
@@ -406,11 +428,12 @@ const AddProds = (produto) => {
     Pedido.value.items.push(produto);
     IdAlterar.value = produto.id;
   }
+  showProducts.value = false
   CalcularTotal();
   SetStore();
 }
 
-const Alterar = (numero) => {
+const updateOrder = (numero) => {
   numeros.value = numeros.value + String(numero);
   const existProduct = Pedido.value.items.find((o) => o.id === IdAlterar.value);
   if (existProduct) {
@@ -428,7 +451,6 @@ const Alterar = (numero) => {
     } else {
       preco = existProduct.preçovenda;
     }
-    // A verificar o tipo de alteração
     if (TipoAlteration.value === "quantidade") {
       // A verificar se tem stock suficiente
       var quantidad = Number(numeros.value);
@@ -441,14 +463,14 @@ const Alterar = (numero) => {
         SetStore();
       } else {
         console.log(existProduct);
-        return menssagens(
+        return messages(
           "error",
           "Este produto ja nao ten quantidade suficiente em stock"
         );
       }
     } else {
-      if (config.value.length <= 0 || config.value.listPrice === "0") {
-        return menssagens("info", "Usuario sem aceso");
+      if (user.value.config.length <= 0 || user.value.config.listPrice === "0") {
+        return messages("info", "Usuario sem aceso");
       } else {
         const total = numeros.value * existProduct.quantidade;
         existProduct.total = total;
@@ -492,7 +514,7 @@ const makePayment = (event) => {
   // A verificar se existe alguns total para pagar
   if (Pedido.value.items.length <= 0) {
     Form_Pagamento.value = false;
-    return menssagens(
+    return messages(
       "info",
       "Não tem nehum item no carrinho por favor adicione"
     );

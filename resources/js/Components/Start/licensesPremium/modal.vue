@@ -7,7 +7,7 @@
                     <font-awesome-icon  v-if="checkApp(app.id)" icon="fa-solid fa-check" />
                     <font-awesome-icon class="add" v-else icon="fa-solid fa-plus" />
                     <div class="price">{{formatMoney(app.price)}}</div>
-                    <img :src="`http://127.0.0.1:8000/app/image/${app.image}`">
+                    <img :src="`http://bosgc.sisgesc.net/app/image/${app.image}`">
                     <div class="appName">{{app.label}}</div>
                 </span>
             </div>
@@ -86,9 +86,13 @@ function addApp(app) {
         const newObject = appUser.value.filter(e=>e.id !== app.id)
         appUser.value = newObject
         store.commit('Start/StartSaveLicense',appUser.value)
+        totals.month = null
+        store.commit('Start/StartSaveTotals',totals)
         return sum()
     }
     appUser.value.push(app)
+    totals.month = null
+    store.commit('Start/StartSaveTotals',totals)
     store.commit('Start/StartSaveLicense',appUser.value)
     return sum()
 }

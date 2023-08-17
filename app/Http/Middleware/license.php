@@ -39,15 +39,15 @@ class License
             $finally_login = $user->historic_login()->orderBy('id', 'DESC')->first();
             $data_format = Carbon::parse($finally_login->created_at)->format('d-m-Y');
             $current_date = Carbon::now();
-
-            if ($data_format > $current_date->format('d-m-Y')) {
-                return Redirect::route('LicenseBlocked');
-            }
             if ($license->to < $current_date->format('Y-m-d')) {
                 $license->state = 'expired';
                 $license->save();
                 return Redirect::route('LicenseBlocked');
             }
+            if ($data_format > $current_date->format('d-m-Y')) {
+                return Redirect::route('LicenseBlocked');
+            }
+
         }
 
         return $next($request);

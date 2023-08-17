@@ -4,6 +4,8 @@
     height: 100%;
     background-color: var(--formList);
     .Formulario {
+        overflow-y: auto;
+        @include scroll;
         height: 87%;
         max-height: 91%;
         padding: 0;
@@ -38,143 +40,112 @@
                     }
                 }
             }
-            .form_novo_prod {
-                width: 90%;
-                margin: 0 auto;
-                background-color: white;
-                height: 87%;
-                margin-top: 1%;
-                border: 1px solid var(--borderColor);
-                border-radius: 5px;
-                .TopProd {
-                    height: 180px;
-                    width: 100%;
-                    .ProdutoBarraCima {
-                        width: 100%;
-                        height: 40px;
-                        display: flex;
-                        border-bottom: 1px solid var(--borderColor);
+            @include formulary;
+            .Headers{
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                height: 60px;
+                .drop{
+                    position: absolute;
+                    left: 10px;
+                    width: 80px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+                    visibility: hidden;
+                    @include botao_descartar;
+                }
+                .movements{
+                    display: flex !important;
+                    height: 100%;
+                    .BotaoMuvementos {
+                        border: none;
+                        outline: none;
+                        width: auto;
+                        border-right: 1px solid var(--borderColor);
+                        padding-right: 10px;
                         box-sizing: border-box;
 
-                        .BotaoMuvementos {
-                            border: none;
-                            outline: none;
-                            width: auto;
-                            border-right: 1px solid var(--borderColor);
-                            padding-right: 10px;
-                            box-sizing: border-box;
-
-                            .view_muvementos {
-                                display: flex;
-                                align-items: center;
-                                justify-content: flex-end;
-                                gap: 1rem;
-                                width: 100%;
-                                height: 100%;
-                                padding: 1px;
-                                font-size: 11px;
-                                &:hover {
-                                    cursor: pointer;
-                                    opacity: 0.8;
-                                }
-                                i {
-                                    font-size: 22px;
-                                    margin-top: 5px;
-                                    padding-left: 3px;
-                                    color: var(--app_color);
-                                }
-                                div {
-                                    color: var(--textColor);
-                                    .TipoMuv{
-                                        word-break: break-word;
-                                        overflow: hidden;
-                                        text-overflow: ellipsis;
-                                        display: -webkit-box;
-                                        line-height: 16px; /* fallback */
-                                        max-height: 32px; /* fallback */
-                                        -webkit-line-clamp: 2; /* number of lines to show */
-                                        -webkit-box-orient: vertical;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .FormContainer {
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: space-between;
-                        width: 100%;
-                        .input_nome_tipo {
+                        .view_muvementos {
+                            display: flex;
+                            align-items: center;
+                            justify-content: flex-end;
+                            gap: 1rem;
                             width: 100%;
-                            padding: 5px 0px 0px 20px;
-                            .nome_artigo_data {
-                                @include InputPrincipal;
+                            height: 100%;
+                            padding: 1px;
+                            font-size: 11px;
+                            &:hover {
+                                cursor: pointer;
+                                opacity: 0.8;
                             }
-                            .ContainerInfo {
-                                display: flex;
-                                .Titulos {
-                                    width: 25%;
-                                    display: flex;
-                                    flex-direction: column;
-                                    justify-content: space-between;
-                                    div {
-                                        padding: 10px;
-                                        display: flex;
-                                    }
-                                }
-                                .InfoContainer {
-                                    width: 100%;
-                                    display: flex;
-                                    flex-direction: column;
-                                    justify-content: space-between;
-                                    .TipoCategoria {
-                                        width: 70%;
-                                        display: flex;
-
-                                        .tipoartigo {
-                                            display: flex;
-                                            width: 40%;
-                                            .tipo_artigo {
-                                                width: 100%;
-                                                margin-right: 8px;
-                                                @include input_normal;
-                                                padding: 0px !important;
-                                            }
-                                        }
-                                        .DivCategoria {
-                                            display: flex;
-                                            width: 70%;
-                                            .Categoria {
-                                                @include input_normal;
-                                                width: 60% !important;
-                                                padding: 0px !important;
-                                            }
-                                            button {
-                                                margin-left: 1%;
-                                                display: flex;
-                                                justify-content: space-between;
-                                                width: 39%;
-                                                i {
-                                                    font-size: 15px;
-                                                }
-                                                @include botao_normal;
-                                            }
-                                        }
-                                    }
-                                    .CodeBar {
-                                        width: 70%;
-                                        left: 0;
-                                        input {
-                                            @include input_normal;
-                                        }
-                                    }
+                            i {
+                                font-size: 22px;
+                                margin-top: 5px;
+                                padding-left: 3px;
+                                color: var(--app_color);
+                            }
+                            div {
+                                color: var(--textColor);
+                                .TipoMuv{
+                                    word-break: break-word;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    display: -webkit-box;
+                                    line-height: 16px; /* fallback */
+                                    max-height: 32px; /* fallback */
+                                    -webkit-line-clamp: 2; /* number of lines to show */
+                                    -webkit-box-orient: vertical;
                                 }
                             }
                         }
-                        @include form-img;
                     }
                 }
             }
+            .Main{
+                height: 50% !important;
+            }
+        }
+    }
+}
+
+
+@media screen and (max-width: 975px) {
+    .Headers{
+        position: relative !important;
+        .drop{
+            visibility: visible !important;
+        }
+
+        .movements{
+            visibility: hidden !important;
+            display: flex !important;
+            position: absolute !important;
+            flex-direction: column !important;
+            top: 50px !important;
+            left: 10px !important;
+            background-color: white !important;
+            height: auto !important;
+            max-height: 150px !important;
+            overflow-y: auto;
+            z-index: 999;
+            box-shadow: var(--box-shadow);
+            @include scroll;
+        }
+
+        .active{
+            display: none !important;
+            visibility: visible !important;
+        }
+    }
+}
+@media screen and (max-width: 1000px) {
+    .FormNewProd{
+        height: 800px !important;
+        .info-basic{
+            height: 100% !important;
         }
     }
 }

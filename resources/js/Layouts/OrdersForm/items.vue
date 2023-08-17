@@ -112,25 +112,21 @@ const AddBox = ref({
     spent: false,
     product: []
 })
-
+const {bus} = useEventsBus()
+const loading = ref(null)
+const stores = ref([])
+const emits = defineEmits(['message']);
+const orderItems = ref([]);
 const stateFormOrder = ref(null)
-
 const props = defineProps({
     general:Object,
     order:Object
 })
-const {bus} = useEventsBus()
 const modalProduct = ref({
     product: [],
     state: false,
     type: null
 })
-const loading = ref(null)
-const stores = ref([])
-
-const emits = defineEmits(['message']);
-
-const orderItems = ref([]);
 watch(()=>bus.value.get('stateFormOrder'),(payload)=>{
     stateFormOrder.value = payload
 })
@@ -213,7 +209,7 @@ const DeleteItem = (id) => {
     });
 }
 
- const Alteracao = (id, type)=> {
+const Alteracao = (id, type)=> {
     if (orderItems.value.state === 'Cotação') {
         var classe = type + id
         document.querySelector('.' + classe).select();
@@ -229,9 +225,14 @@ const Addcaixa = ((product)=>{
 })
 
 const BoxConfirm = ((payload)=>{
+
     const Rows = orderItems.value.items.find(item => item.id === payload.id)
+    if (props.general.form.title === 'Fatura') {
+        Rows.PriceSold = payload.PriceUnity
+    }else{
+        Rows.priceCost = payload.PriceUnity
+    }
     Rows.quantity = payload.quantityFinal
-    Rows.priceSold ? Rows.priceCost = payload.PriceUnity : Rows.PriceSold = payload.PriceUnity
     AddBox.value.state = false
     return UpdateItem(Rows)
 })

@@ -1,27 +1,18 @@
 <template>
-  <div class="principal">
-    <div class="form-container">
-        <div class="Header">
-            <button>
-                <FontAwesomeIcon icon="fa-solid fa-users"/>
-                <div>
-                    <span>{{department.workers?.length}}</span>
-                    <span>Funcionarios</span>
-                </div>
-            </button>
-        </div>
-        <div class="Content">
-            <div class="Name-Img-control">
-                <div class="form-nome">
-                    <input type="text" v-model="department.name" placeholder="Nome de departamento">
+    <div class="principal-form-department">
+        <div class="form-container">
+            <div class="Main">
+                <div class="Name-Img-control">
+                    <div class="form-nome">
+                        <input type="text" v-model="department.name" placeholder="Nome de departamento">
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="Footer">
+            <div class="Footer">
 
+            </div>
         </div>
     </div>
-  </div>
 </template>
 
 <script setup>
@@ -62,7 +53,6 @@ const saveDepartment = (()=>{
         console.log(err);
     });
 })
-
 </script>
 
 <style lang="scss" scoped>

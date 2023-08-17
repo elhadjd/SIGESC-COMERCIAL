@@ -33,19 +33,30 @@ class StartController extends Controller
             'company.nif' => 'required|unique:companies,nif',
             'company.phone' => 'required|numeric',
             'user.name' => 'required|string',
-            'user.email' =>  'required|email|unique:users,email',
+            'user.email' =>  'required|unique:users,email',
             'user.phone' => 'required',
             'user.password' => 'required|min:6|max:50',
+            'totals.month' => 'required||numeric',
             'license' => 'required'
         ]);
 
-        if ($request->license === 'free') {
-           $company = $this->saveData($request,new uploadImage());
-           return $this->ValidateLicenseFree($request->license,$company,$request->user);
-        } else {
+        $response = Http::withHeaders([
+            'Authorization' => 'oEn34JE6gDfVuZlR6QRWX8Q2byn9repjspVFWoz2SZdncBYePGc7XoKZ8Noo',
+        ])->post('http://bosgc.sisgesc.net/api/SaveCompany',$request);
+
+       if ($response->successful()) {
             $company = $this->saveData($request,new uploadImage());
             return $this->ValidateLicense($request->license,$company,$request->user,$request->totals,$request->accounts);
+        } else {
+            // Se a requisição não for bem-sucedida, você pode lidar com erros aqui
+            $statusCode = $response->status(); // Obtenha o código de status da resposta
+            $errorMessage = $response->body(); // Obtenha o corpo da resposta em caso de erro
+            return $this->RespondError($errorMessage);
+            // Lidar com o erro conforme necessário
+            // ...
         }
+        
+        
     }
 
     public function saveData($request,$uploadImage)
@@ -136,8 +147,9 @@ class StartController extends Controller
             'browser' => $browser,
         ]);
 
-        return Redirect::route('welcome',['company'=>$company->id,'data'=>$totals,'accounts'=>$accounts]);
+        return $this->RespondSuccess('Dados registrados com sucesso',$company);
     }
+
     public function ValidateLicenseFree($license,$company,$user)
     {
         $current_date = Carbon::now()->addDays(15);
@@ -174,7 +186,7 @@ class StartController extends Controller
             'browser' => $browser,
         ]);
 
-        return Redirect::route('welcome',['company'=>$company->id]);
+        return $this->RespondSuccess('Dados registrados com sucesso',$company);
 
     }
 
@@ -187,18 +199,19 @@ class StartController extends Controller
     {
 
         $response = Http::withHeaders([
-            'Authorization' => 'moXx5PRBRn4D37zR9Ham7IQpphnLnWSsAdUE9M3VAH5bW0O0lhVNhl2qWiKW',
-        ])->post('http://127.0.0.1:8000/api/activeLicense',$request);
+            'Authorization' => 'oEn34JE6gDfVuZlR6QRWX8Q2byn9repjspVFWoz2SZdncBYePGc7XoKZ8Noo',
+        ])->post('http://bosgc.sisgesc.net/api/activeLicense',$request);
 
        $data = json_decode($response);
 
         if (!$data->data) {
             return $this->RespondError('Cliente não encontrado');
         }
+
         $company = $companies->where('nif',$data->data->nif)->first();
 
         if (!$company) return $this->RespondError('Aconteceu um erro no sistema por favor tenta novamente');
-        if ($company->license->state == 'active') return $this->RespondError('Esta licença ja foi ativada');
+        if ($company->license->state == 'active') return $this->RespondError('Esta empresa esta com uma licença ativa');
 
         $company->license->state = 'active';
         $company->license->to = $data->data->license->to;

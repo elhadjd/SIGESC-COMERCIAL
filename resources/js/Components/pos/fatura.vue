@@ -42,8 +42,8 @@
                 <div>{{item.product.nome}} </div>
                 <div class="PrecoQuant">
                     <div class="QuantidadeFatura">{{item.quantity+'Un(s)'}}</div>
-                    <div class="PrecoFatura">{{FormetDineiro.format(item.price_sold)}}</div>
-                    <div class="TotalFatura">{{FormetDineiro.format(item.total)}}</div>
+                    <div class="PrecoFatura">{{formatMoney(item.price_sold)}}</div>
+                    <div class="TotalFatura">{{formatMoney(item.total)}}</div>
                 </div>
             </div>
         </div>
@@ -59,8 +59,8 @@
                 </div>
 
                 <div class="totais">
-                    <div id="TotalFatura">{{FormetDineiro.format(invoice.total)}}</div>
-                    <div id="transferencia" v-for="payment in invoice.payments" :key="payment.id">{{FormetDineiro.format(payment.amountPaid)}}</div>
+                    <div id="TotalFatura">{{formatMoney(invoice.total)}}</div>
+                    <div id="transferencia" v-for="payment in invoice.payments" :key="payment.id">{{formatMoney(payment.amountPaid)}}</div>
                     <div id="troco">{{changes()}}</div>
                     <div id="operador">{{invoice.user.surname}}</div>
                 </div>
@@ -70,11 +70,11 @@
         <div class="data_fatura">
             <div>
                 <span>Data: </span>
-                <span>{{formatDate(invoice.created_at)}}</span>
+                <span>{{formatHourAndTime(invoice.created_at)}}</span>
             </div>
             <div>
                 <span>Numero da fatura: </span>
-                <span>{{invoice.id}}</span>
+                <span>{{invoice.number}}</span>
             </div>
             <div>
                 <span>Total de items: </span>
@@ -84,6 +84,7 @@
         <div class="Obrigado">OBRIGADO VOLTE SEMPRE !!!</div>
     </div>
 </div>
+
 </template>
 
 
@@ -98,12 +99,10 @@ const props = defineProps({
 const store = useStore()
 const config = ref(store.state.pos.configCash)
 const invoice = ref(props.dadosFatura)
+const emits = defineEmits(['closePrint'])
 
 const company = ref(store.state.publico.company)
 const FormetDineiro = new Intl.NumberFormat('pt-AO', { style: 'currency', currency: 'AOA',})
-const formatDate = ((data)=>{
-    return moment(data).format('DD-MM-YYYY hh:mm:ss')
-})
 
 const changes = (()=>{
     let amountPaid = 0
@@ -116,6 +115,7 @@ const changes = (()=>{
 
 onMounted(async ()=>{
     window.print()
+    window.addEventListener('afterprint', emits('closePrint'))
 })
 </script>
 

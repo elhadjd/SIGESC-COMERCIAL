@@ -18,7 +18,7 @@
             <div>Pedido</div>
             <div>Cliente</div>
             <div>Responsavel</div>
-            <div>Total</div>
+            <div class="text-right">Total</div>
             <div>Estado</div>
             <div>Açoes</div>
         </div>
@@ -28,7 +28,7 @@
                 <div>{{item.number}}</div>
                 <div>{{item.cliente}}</div>
                 <div>{{item.user.surname}}</div>
-                <div>{{FormatarDineiro.format(item.total)}}</div>
+                <div class="text-right">{{formatMoney(item.total)}}</div>
                 <div>{{item.state}}</div>
                 <div class="ViewPedido">
                     <span v-if="item.state == 'Pago'" @click="edit(item)" class="edit">Editar</span>
@@ -41,7 +41,7 @@
     </section>
     <InvoiceCancel
         @showOrder="viewOrder"
-        @close="invoice.state = $event" 
+        @close="invoice.state = $event"
         v-if="invoice.state"
         :invoice="invoice.data"
     />
@@ -53,6 +53,7 @@ import { onMounted, ref } from "@vue/runtime-core";
 import ShowOrder from '@/Components/pos/MostrarPedido.vue';
 import moment from 'moment'
 import InvoiceCancel from './invoiceCancel.vue';
+import axios from "axios";
 const FormatarDineiro = Intl.NumberFormat('PT-AO',{style: 'currency',currency: 'AOA'})
 
 const props = defineProps({session: Number})
@@ -73,7 +74,7 @@ const invoice = ref({
     state: false
 })
 
-const viewOrder = ((order,edit)=>{ 
+const viewOrder = ((order,edit)=>{
     if (order.state != 'Pago' || edit) {
         emits('AlterarPedido',order.number,'edit')
         invoice.value.state = false
@@ -99,10 +100,12 @@ const ShowList = ((event)=>{
 
 const search = ((event)=>{
     const filter = ordersStore.value.filter((item)=>{
-        return String(item.id).includes(event.target.value)
+        return String(item.total).includes(event.target.value)
+        || String(item.cliente).toLocaleLowerCase().includes(event.target.value.toLocaleLowerCase())
+        || String(item.number).includes(event.target.value)
+        || String(item.state).toLocaleLowerCase().includes(event.target.value.toLocaleLowerCase())
     })
     ListaOrdens.value = filter
-    ListaOrdens.value.reverse()
 })
 
 const edit = ((item)=>{
@@ -110,11 +113,25 @@ const edit = ((item)=>{
     invoice.value.state = true
 })
 
-const OnMounted = onMounted(() => {
+const OnMounted = onMounted(async() => {
+    await axios.get(`/PDV/getOrderSingleUser/${props.session}`)
+    .then((response) => {
+        ListaOrdens.value = response.data.data
+        ordersStore.value = response.data.data
+        filterOrder()
+    }).catch((err) => {
+        console.log(err);
+    });
+})
+
+const filterOrder = (()=>{
     session.value = localStorage.getItem('session')
-    Encomendas.value = localStorage.getItem('Encomendas'+session.value);
-    ListaOrdens.value = JSON.parse(Encomendas.value);
-    ordersStore.value = JSON.parse(Encomendas.value)
+    Encomendas.value = JSON.parse(localStorage.getItem('Encomendas'+session.value));
+    Encomendas.value.forEach(item => {
+        if (item.state != 'Pago') {
+            ListaOrdens.value.push(item)
+        }
+    });
     ListaOrdens.value.reverse()
 })
 
@@ -122,6 +139,6 @@ const OnMounted = onMounted(() => {
 </script>
 
 <style  lang="scss" scoped>
-    @import '../../../assets/Pos/css/ListePedido.scss';
+    @import '../../../assets/Pos/css/listOrders.scss';
 </style>
 

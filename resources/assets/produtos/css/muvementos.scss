@@ -13,6 +13,10 @@
 }
 .ListaMuvemento{
     height: 85%;
+    overflow-x: auto;
+}
+.titleOrden {
+    min-width: 850px;
 }
 .titleOrden strong div{
     width: 16%;
@@ -37,6 +41,7 @@ input ,select{
 }
 .ListaOrden{
     height: 98%;
+    min-width: 850px;
     overflow-y: auto;
 }
 .ListData{

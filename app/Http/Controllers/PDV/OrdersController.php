@@ -62,9 +62,10 @@ class OrdersController extends Controller
                             'total' => $request->total,
                             'cliente' => $request->cliente,
                             'state' => 'Pago',
-                            'number' => $request->number,
+                            'number' => "$request->session-$request->number",
                             'total_costs' => $VerificarPagamento['total_costs']
                         ]);
+
                         foreach ($request->items as $item) {
                             $stock = $request->user()->armagen()->first()
                                 ->stock()->where('produtos_id', $item['id'])->first();
@@ -171,19 +172,49 @@ class OrdersController extends Controller
         ];
     }
 
+    public function printInvoice(session $session,$type)
+    {
+        if (!$session) return $this->RespondError('Aconteceu um erro no sistema');
+        if ($type == 'last') {
+            $order = $session->orders()->orderBy('id','DESC')->first();
+            $order->print = +1;
+            $order->save();
+            return $this->returnInvoice($order);
+        }
+
+        if($type == null || $type == "") return $this->RespondError('O campo numero de fatura não pode ser vazio');
+
+        $order = orderPos::where('number',$type)->first();
+        if (!$order) return $this->RespondWarn('Nenhuma fatura encontrada com este numero por favor verifique e tenta novamente');
+        $order->print = +1;
+        $order->save();
+        return $this->returnInvoice($order);
+    }
+
+    function returnInvoice($order)
+    {
+        return $order->with(['items' => function ($query) {
+            $query->with(['product' => function ($product) {
+                $product->withSum('stock', 'quantity');
+            }]);
+        }])->whereId($order->id)->first();
+    }
+
     public function Invoice($order)
     {
         $order = orderPos::find($order);
         if ($order->print > 0) return $this->RespondInfo('Atenção esta fatura ja foi imprimida por favor contacte o administrador do sistema !!!');
         $order->print = 1;
         $order->save();
-        $invoice = $order->with(['items' => function ($query) {
-            $query->with(['product' => function ($product) {
-                $product->withSum('stock', 'quantity');
-            }]);
-        }])->whereId($order->id)->first();
-        return $invoice;
+        return $this->returnInvoice($order);
     }
+
+    public function groupBy(orderPos $orderPos,$event, $column)
+    {
+        return $orderPos->where($column,$event)
+        ->where('company_id',Auth::user()->company_id)->with('session')->orderBy('id', 'desc')->paginate(100);
+    }
+
     public function CancelInvoice(orderPos $order)
     {
 
@@ -212,45 +243,33 @@ class OrdersController extends Controller
         );
     }
 
-    public function getOrders(Request $request)
+    public function getOrders($order=null, $column=null)
     {
-        $users = User::all();
         if (Auth::user()->nivel != 'admin') {
             return false;
         } else {
-            if ($request->get('coluna')) {
-                $orders = DB::table($request->table)->where($request->coluna, $request->tipo)
+            if ($column == 'TotalMaior') {
+                $orders = orderPos::where('total', '>=', $order)
                 ->where('company_id',Auth::user()->company_id)
-                ->limit(10)->orderBy('id', 'DESC')->get();
+                    ->orderBy('total', 'ASC')->with('session')
+                    ->paginate(100);
+            } elseif ($column == 'TotalMenor') {
+                $orders = orderPos::where('total', '<=', $order)
+                ->where('company_id',Auth::user()->company_id)
+                    ->orderBy('total', 'DESC')->with('session')
+                    ->paginate(100);
             } else {
-                if ($request->colun == 'TotalMaior') {
-                    $orders = orderPos::where('total', '>=', $request->IdOrden)
-                    ->where('company_id',Auth::user()->company_id)
-                        ->orderBy('total', 'ASC')
-                        ->paginate(100);
-                } elseif ($request->colun == 'TotalMenor') {
-                    $orders = orderPos::where('total', '<=', $request->IdOrden)
-                    ->where('company_id',Auth::user()->company_id)
-                        ->orderBy('total', 'DESC')
-                        ->paginate(100);
-                } else {
-
-                    $orderPos = $request->IdOrden;
-                    $orders = $this->getAllOrders($orderPos, $request->colun);
-                }
+                $orderPos = $order;
+                $orders = $this->getAllOrders($orderPos, $column);
             }
-            foreach ($users as $user) {
-                $array[] = array(
-                    'cname' => $user->apelido
-                );
-            }
+            
             return $orders;
         }
     }
 
     public function getOrderSingleUser($caixa)
     {
-        return orderPos::where('session_id', $caixa)->with('session')->orderBy('id', 'DESC')->paginate(300);
+        return orderPos::where('session_id', $caixa)->with('session')->orderBy('id', 'ASC')->paginate(500);
     }
 
     public function getAllOrders($order = null, $colun = null)

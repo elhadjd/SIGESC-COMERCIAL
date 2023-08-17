@@ -8,6 +8,7 @@
          v-if="modulo == 'compra'" :Purchase="Purchase"/>
         <home @message="message" @modulos="showModule" v-if="modulo == 'Compras'"/>
         <suppliers v-if="modulo == 'Fornecedores'"/>
+        <analis-orders v-if="modulo == 'Paineis'" :prefix="'analis'"/>
         <payments v-if="modulo == 'Pagamentos'"/>
     </div>
 </div>
@@ -27,6 +28,7 @@ import { Inertia } from '@inertiajs/inertia';
 import suppliers from '@/Components/suppliers/index.vue'
 import Headers from '../../layouts/header.vue'
 import payments from '@/components/purchases/Payments.vue'
+import analisOrders from '@/Components/charts/index.vue'
 
 const menus = ref([
     {"menu": "Compras"},
@@ -36,6 +38,7 @@ const menus = ref([
             {"name":"Pagamentos"}
         ]
     },
+    {'menu':'Paineis'},
     {"menu": "Artigos"},
 ])
 const toast = useToast()

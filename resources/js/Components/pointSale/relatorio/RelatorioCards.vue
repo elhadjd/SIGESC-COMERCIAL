@@ -1,97 +1,115 @@
 <template>
-	<Progress v-if="$store.state.StateProgress" />
-	<div class="Principal">
-		<div class="Header-Cards">
-			<div class="carde">
-				<p>{{ cards.ListOrder.list.length }}</p>
-				<i class="fa fa-shopping-bag shop" aria-hidden="true"></i>
-				<span>Total de encomendas solicitadas</span>
-			</div>
-			<div class="carde">
-				<p>{{ cards.ListOrder.canceladas }}</p>
-				<i class="fa fa-ban text-danger shop" aria-hidden="true"></i>
-				<span>Total de fatura canceladas</span>
-			</div>
-			<div class="carde">
-				<p>{{ cards.ListOrder.list.length - cards.ListOrder.canceladas }}</p>
-				<i class="fa fa-check concluida" aria-hidden="true"></i>
-				<span>Total de encomendas concluidas</span>
-			</div>
-		</div>
-		<div class="Container-cards">
-			<div class="Container-left">
-				<div class="cards">
-					<div class="card">
-						<div class="TotalVenda">
-							<span></span>
-							<div>Tota de Venda</div>
-							<strong>{{
-								FormatCurrency.format(cards.relat.TotalVenda)
-							}}</strong>
-						</div>
-					</div>
-					<div class="card">
-						<div class="TotalGasto">
-							<span></span>
-							<div>Tota de Gastos</div>
-							<strong>{{
-								FormatCurrency.format(cards.relat.TotalGasto)
-							}}</strong>
-						</div>
-					</div>
-					<div class="card">
-						<div class="TotalCusto">
-							<span></span>
-							<div>Tota de custo dos produtos</div>
-							<strong>{{
-								FormatCurrency.format(cards.relat.CustoProd)
-							}}</strong>
-						</div>
-					</div>
-					<div class="card">
-						<div class="TotalLucro">
-							<span></span>
-							<div>Tota de lucro</div>
-							<strong>{{
-								FormatCurrency.format(cards.relat.TotalLucro)
-							}}</strong>
-						</div>
-					</div>
-				</div>
-				<div class="ListOrders">
-					<div class="InputSearch">
-						<span class="p-input-icon-right w-100">
-							<i class="pi pi-search" />
-							<input
-								type="text"
-								@keyup="FilterOrder"
-								placeholder="Pesquisar..."
-							/>
-						</span>
-					</div>
-					<div class="list">
-						<div
-							v-for="item in cards.ListOrder.list.slice(0, 20)"
-							:key="item.id"
-							class="Items"
-						>
-							<span>{{ item.id }}</span>
-							<span>{{ item.apelido }}</span>
-							<span>{{ item.cliente }}</span>
-							<strong>{{ FormatCurrency.format(item.total) }}</strong>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="Container-right">
-				<calender
-					:Orders="cards.ListOrder.list"
-					@progres="progres"
-					@RelatorByMonth="RelatorByMonth"
-				/>
-			</div>
-		</div>
-	</div>
+<Progress v-if="$store.state.StateProgress" />
+<div class="principal">
+    <div class="Header">
+        <div class="Header-left">
+            <h2> Relatorio </h2>
+            <span>
+                <button @click="$emit('change')">Calendario</button>
+                <button @click="$emit('change')">Painel</button>
+            </span>
+        </div>
+        <div class="Header-right">
+            <div class="">
+                <Agrupar v-if="ShowRelat == 'painel'" @Agrup="Agrup" />
+            </div>
+        </div>
+    </div>
+    <div class="Container">
+        <div class="Principal">
+            <div class="Header-Cards">
+                <div class="carde">
+                    <p>{{ cards.ListOrder.list.length }}</p>
+                    <i class="fa fa-shopping-bag shop" aria-hidden="true"></i>
+                    <span>Total de encomendas solicitadas</span>
+                </div>
+                <div class="carde">
+                    <p>{{ cards.ListOrder.canceladas }}</p>
+                    <i class="fa fa-ban text-danger shop" aria-hidden="true"></i>
+                    <span>Total de fatura canceladas</span>
+                </div>
+                <div class="carde">
+                    <p>{{ cards.ListOrder.list.length - cards.ListOrder.canceladas }}</p>
+                    <i class="fa fa-check concluida" aria-hidden="true"></i>
+                    <span>Total de encomendas concluidas</span>
+                </div>
+            </div>
+            <div class="Container-cards">
+                <div class="Container-left">
+                    <div class="cards">
+                        <div class="card">
+                            <div class="TotalVenda">
+                                <span></span>
+                                <div>Tota de Venda</div>
+                                <strong>{{
+                                    FormatCurrency.format(cards.relat.TotalVenda)
+                                }}</strong>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="TotalGasto">
+                                <span></span>
+                                <div>Tota de Gastos</div>
+                                <strong>{{
+                                    FormatCurrency.format(cards.relat.TotalGasto)
+                                }}</strong>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="TotalCusto">
+                                <span></span>
+                                <div>Tota de custo dos produtos</div>
+                                <strong>{{
+                                    FormatCurrency.format(cards.relat.CustoProd)
+                                }}</strong>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="TotalLucro">
+                                <span></span>
+                                <div>Tota de lucro</div>
+                                <strong>{{
+                                    FormatCurrency.format(cards.relat.TotalLucro)
+                                }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ListOrders">
+                        <div class="InputSearch">
+                            <span class="p-input-icon-right w-100">
+                                <i class="pi pi-search" />
+                                <input
+                                    type="text"
+                                    @keyup="FilterOrder"
+                                    placeholder="Pesquisar..."
+                                />
+                            </span>
+                        </div>
+                        <div class="list">
+                            <div
+                                v-for="item in cards.ListOrder.list.slice(0, 20)"
+                                :key="item.id"
+                                class="items"
+                            >
+                                <span>{{ item.number }}</span>
+                                <span>{{ item.user.surname }}</span>
+                                <span>{{ item.cliente }}</span>
+                                <strong>{{ FormatCurrency.format(item.total) }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="Container-right">
+                    <calender
+                        :Orders="cards.ListOrder.list"
+                        @progres="progres"
+                        @RelatorByMonth="RelatorByMonth"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </template>
 
 <script setup>
@@ -104,7 +122,7 @@ const FormatCurrency = new Intl.NumberFormat("pt-ao", {
 	style: "currency",
 	currency: "AOA",
 });
-const emits = defineEmits(["message"]);
+const emits = defineEmits(["message","change"]);
 const store = useStore();
 const cards = reactive({
 	ListOrder: {
@@ -137,7 +155,7 @@ const RelatorByMonth = async (Relator) => {
 
 const AnalisInvoice = (list) => {
 	const FilterInvoice = list.filter((item) => {
-		return String(item.estado).includes("Annulado");
+		return String(item.estado).includes("Anulado");
 	});
 	cards.ListOrder.canceladas = FilterInvoice.length;
 };

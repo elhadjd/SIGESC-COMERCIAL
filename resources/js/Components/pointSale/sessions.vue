@@ -1,60 +1,44 @@
 <template>
-  <div class="sessao">
-    <div class="cabecalho">
-      <h2>Lista de Sessões</h2>
+  <div class="principal">
+    <div class="Header">
+        <div class="Header-left">
+            <h2>Lista de Sessões</h2> 
+        </div>
     </div>
-    <div class="p-0 SessaoLista">
-      <div class="d-flex text-secondary titulosSessao">
-        <div>Id da sessão</div>
-        <div>Ponto de venda</div>
-        <div>Responsavel</div>
-        <div>Data de abertura</div>
-        <div>Valor enformado</div>
-        <div>Diferencia</div>
-        <div>Data de fecho</div>
-        <div>Estado</div>
-      </div>
+    <div class="Container">
+        <div class="Title">
+            <div>Id da sessão</div>
+            <div>Ponto de venda</div>
+            <div>Responsavel</div>
+            <div>Data de abertura</div>
+            <div>Valor enformado</div>
+            <div>Diferencia</div>
+            <div>Data de fecho</div>
+            <div>Estado</div>
+        </div>
 
-      <div
-        @click="
-          user.nivel != 'admin' ? message() : $emit('AbrirCaixa', item.id)
-        "
-        v-for="item in sessoes"
-        :key="item.id"
-        class="d-flex dadosSessao"
-      >
-        <div>
-          <strong>{{ "Sessões00" + item.id }}</strong>
+        <div class="list_items">
+            <span class="rows" @click=" user.nivel != 'admin' ? message() : $emit('AbrirCaixa', item.id)"
+                v-for="item in sessoes" :key="item.id">
+                <div>
+                    <strong>{{ "Sessões00" + item.id }}</strong>
+                </div>
+                <div>{{ item.caixa.name }}</div>
+                <div>{{ item.user.surname }}</div>
+                <div>{{ formatDate(item.created_at) }}</div>
+                <div>{{ formatMoney(item.cash) }}</div>
+                <div :class="item.cash - Number(item.orders_values) < 0 ? 'text-danger' : ''">
+                    {{ formatMoney(item.cash - Number(item.orders_values)) }}
+                </div>
+                <div>{{ formatDate(item.updated_at) }}</div>
+                <div :class="item.state == 'A abrir' ? 'Abrir'
+                    : item.state == 'Aberto' ? 'Aberto' : 'Fechado'">
+                    {{ item.state }}
+                    <i :class="item.state == 'A abrir' ? 'fa fa-clock-o'
+                        : item.state == 'Aberto' ? 'fa fa-opencart': 'fa fa-check'"></i>
+                </div>
+            </span>
         </div>
-        <div>{{ "sessoes.name" }}</div>
-        <div>{{ item.user.surname }}</div>
-        <div>{{ formatDate(item.created_at) }}</div>
-        <div>{{ formatMoney(item.cash) }}</div>
-        <div :class="item.cash - Number(item.orders_values) < 0 ? 'text-danger' : ''">
-          {{ formatMoney(item.cash - Number(item.orders_values)) }}
-        </div>
-        <div>{{ formatDate(item.updated_at) }}</div>
-        <div
-          :class="
-            item.state == 'A abrir'
-              ? 'Abrir'
-              : item.state == 'Aberto'
-              ? 'Aberto'
-              : 'Fechado'
-          "
-        >
-          {{ item.state }}
-          <i
-            :class="
-              item.state == 'A abrir'
-                ? 'fa fa-clock-o'
-                : item.state == 'Aberto'
-                ? 'fa fa-opencart'
-                : 'fa fa-check'
-            "
-          ></i>
-        </div>
-      </div>
     </div>
   </div>
 </template>

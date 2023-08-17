@@ -58,4 +58,9 @@ class User extends Authenticatable
         return $this->belongsTo(armagen::class);
     }
 
+    public function invoice():HasMany
+    {
+        return $this->hasMany(Invoice::class,'user_id');
+    }
+
 }

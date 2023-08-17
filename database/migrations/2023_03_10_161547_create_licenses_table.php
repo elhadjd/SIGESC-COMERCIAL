@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('hash')->nullable();
             $table->date('from');
             $table->date('to');
-            $table->enum('state',['active','inactive','expired','blocked'])->default('inactive');
+            $table->enum('state',['active','inactive','expired','blocked','teste'])->default('inactive');
             $table->timestamps();
         });
     }

@@ -5,6 +5,8 @@
     .cards {
         display: flex;
         flex-direction: row;
+        align-items: center;
+        justify-content: center;
         gap: 20px;
         height: 100%;
 
@@ -18,13 +20,13 @@
         }
         .card {
             height: 100%;
-            width: 100%;
+            width: 50%;
+            min-height: 280px;
             background-color: var(--appBg);
             border: none;
             border-radius: 6px;
             border: 1px solid #dddddd5f;
             border-radius: 10px;
-
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.037), 0 6px 20px 0 rgba(0, 0, 0, 0.037);
             display: grid;
             grid-template-rows: 45% 55%;

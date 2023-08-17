@@ -17,41 +17,47 @@
                 </button>
             </span>
         </div>
+
         <div class="Header-right">
             <span v-if="!FormNewWorker.state" class="p-input-icon-right w-100">
                 <i class="pi pi-search" />
-                <input type="search" @keydown="(e)=>filterWorker(e.target.value)" placeholder="Digite nome ou preço do artigo">
+                <input type="search" @keydown="(e)=>filterWorker(e.target.value)" placeholder="Digite nome do funcionario">
             </span>
         </div>
     </div>
     <div v-if="!FormNewWorker.state" class="Container">
-        <div class="Types-content">
-            <div class="department">
-                <img src="/login/image/funcionarios.png" alt="">
-                <h3>DEPARTAMENTO</h3>
-            </div>
-            <div class="list-department">
-                <div v-for="department in workers.departments" :key="department.id" @click="filterWorker(String(department.id))">
-                    <span>{{department.name}}</span>
-                    <strong>{{department.workers?.length}}</strong>
+        <button type="button" class="menuDepartment">
+            <i class="fa fa-bars"></i>
+            <div class="Types-content">
+                <div class="department">
+                    <img src="/app/image/funcionarios.png" alt="">
+                    <h3>DEPARTAMENTO</h3>
+                </div>
+                <div class="list-department">
+                    <div v-for="department in workers.departments" :key="department.id" @click="filterWorker(String(department.id))">
+                        <span>{{department.name}}</span>
+                        <strong>{{department.workers?.length}}</strong>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="list-content">
-            <label @click="showWorker(worker)" class="card-worker" v-for="worker in workers.workers" :key="worker.id">
-                <div class="image">
-                    <img :src="`/worker/image/${worker.image}`" :alt="worker.name">
+        </button>
+        <div>
+            <div class="list-content">
+                <div class="card-worker" v-for="worker in workers.workers" @click="showWorker(worker)" :key="worker.id">
+                    <div class="image">
+                        <img :src="`/worker/image/${worker.image}`" :alt="worker.name">
+                    </div>
+                    <div class="worker-info">
+                        <span class="name">{{worker.name}}</span>
+                        <span>{{worker.cargo}}</span>
+                        <span>{{worker.email}}</span>
+                        <span>{{worker.phone}}</span>
+                    </div>
                 </div>
-                <div class="worker-info">
-                    <span class="name">{{worker.name}}</span>
-                    <span>{{worker.cargo}}</span>
-                    <span>{{worker.email}}</span>
-                    <span>{{worker.phone}}</span>
-                </div>
-            </label>
-            <!-- <div v-if="workers.workers.length > 0">
+                <!-- <div v-if="workers.workers.length > 0">
 
-            </div> -->
+                </div> -->
+            </div>
         </div>
     </div>
     <NewWorkers :worker="Worker" @message="message" v-else/>

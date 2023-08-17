@@ -58,7 +58,7 @@
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { usePreviewPdf } from "@/composable/public/previewPdf";
 import { useUploadImage } from "@/composable/public/UploadImage";
-import { defineProps, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 import {Request} from '@/composable/public/RequestApi'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 

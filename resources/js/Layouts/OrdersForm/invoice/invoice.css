@@ -1,7 +1,7 @@
 .Principal {
   position: fixed;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   top: 0;
   left: 0;
   right: 0;
@@ -15,14 +15,15 @@
   margin-top: 0px !important;
 }
 .Principal .Modal {
-  margin-top: 45px;
+  margin-top: 45px !important;
   background-color: white;
   border: 1px solid black;
   width: 75% !important;
-  height: 650px !important;
-  overflow-x: auto;
+  min-width: 800px !important;
+  height: 100% !important;
+  overflow-y: auto;
 }
-.Principal .Modal .Header {
+.Header {
   display: flex;
   align-items: center;
   padding: 10px;
@@ -33,7 +34,7 @@
   height: 50px;
   justify-content: space-between;
 }
-.Header .Imprimir {
+.Imprimir {
     background: #017e84;
     border:none;
     font: 10pt arial;
@@ -44,13 +45,13 @@
     color: white;
     border: 1px solid #017e84;
 }
-.Header .Imprimir:hover{
+.Imprimir:hover{
     cursor: pointer;
         background: #00686e26;
         color: #00686e;
         border: 1px solid #00686e4a;
 }
-.Principal .Modal .Header .Fechar {
+.Fechar {
   margin-left: 5px;
   padding: 10px;
   border-radius: 50%;
@@ -59,8 +60,11 @@
   background-color: white;
   color: #017e84;
 }
-.Principal .Modal .Header .Fechar:hover {
+.Fechar:hover {
   background-color: rgba(1, 126, 132, 0.2078431373);
+}
+@page {
+    size: A4;
 }
 .Container {
   display: flex;
@@ -71,23 +75,24 @@
   font-weight: 600;
   color: rgb(0, 0, 0);
   justify-content: unset;
+  overflow-x: auto;
   align-items: unset;
   flex-direction: column;
-  height: 600px;
   overflow-y: auto;
-  overflow-x: auto;
+  height: auto;
 }
 .ContainerOne {
-  height: 50px;
+  height: 75px;
   border-bottom: 1px solid black;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 0px 10px 0px 10px;
 }
 .LogoEmpresa {
   width: 60px;
-  height: 50px;
+  height: 60px;
 }
 .LogoEmpresa img {
   width: 100%;
@@ -102,7 +107,8 @@
   font-size: 20px;
 }
 .ContainerTwo {
-  height: 500px;
+  height: auto;
+  overflow-y: auto;
 }
 .InfoClienteEmpresa {
   height: 100px;
@@ -195,18 +201,17 @@
     font-weight: 600;
   }
 .ContainerFatura {
-    overflow-y: auto;
-    height: 360px;
+    height: auto;
     border: 1px solid black;
 }
 .HeaderInvoice {
   width: 100%;
-  min-width: 800px;
+  min-width: 770px;
   display: flex;
   border-bottom: 1px solid black;
 }
 .ContainerInvoice {
-  height: 90%;
+  height: auto;
   display: flex;
   color: black;
   flex-direction: column;
@@ -215,7 +220,8 @@
 .Items {
   width: 100%;
   display: flex;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ddd;
 }
 .title {
     width: 11%;
@@ -223,6 +229,17 @@
 }
 .Items >div{
     width: 30%;
+    font-size: 11px;
+    display: flex; /* Fallback for non-webkit */
+    display: -webkit-box;
+    line-height: 1.5em;
+    -webkit-line-clamp: 4; /* if you change this, make sure to change the fallback line-height and height */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.Nome{
+    width: 50% !important;
 }
 .HeaderInvoice >span {
   width: 30%;

@@ -17,6 +17,7 @@ class Puchase extends Model
         'company_id',
         'user_id',
         'totalDiscount',
+        'DateOrder',
         'totalTax',
         'TotalSpending',
         'totalMerchandise',

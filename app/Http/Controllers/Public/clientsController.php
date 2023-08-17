@@ -47,8 +47,8 @@ class clientsController extends Controller
     {
         $order = $client->load('invoices');
 
-        if ($order->invoices->count() >0 ) return $this->RespondError('Não é posivel apagar este fornecedor');
-        if ($order->delete()) return $this->RespondSuccess('Fornecedor eliminado com sucesso');
+        if ($order->invoices->count() >0 ) return $this->RespondError('Não é posivel apagar este Cliente');
+        if ($order->delete()) return $this->RespondSuccess('Cliente eliminado com sucesso');
     }
 
     public function show($id)

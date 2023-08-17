@@ -1,87 +1,76 @@
 <template>
-  <div class="ArquivoPedidos w-100">
-    <div class="h-100">
-      <div class="w-100 FormListaCima">
-        <h4 class="ListOrdenClick ms-4 text-secondary" @click="$emit('fechar')">
-          Ordens
-        </h4>
-      </div>
-      <div class="w-100 FormListaBaixo">
-        <div class="d-flex bg-white botoes rounded-0">
-          <button type="button" @click="DevolverFatura" class="annular">
-            Devolver Artigos
-          </button>
+    <div class="principal">
+        <div class="Header">
+            <div class="Header-left"><h2 @click="$emit('fechar')">Ordens</h2></div>
         </div>
-        <div class="FormListPedidos">
-          <div class="FormListPedido">
-            {{ order.state }}
-          </div>
-          <div class="FormList">
-            <div class="mt-4 text-secondary">
-              <div class="d-flex">
-                <div class="font-weight-600 InformacoesEncomenda">
-                  <div>Ref da Orden</div>
-                  <div>Sessão</div>
-                  <div>Caixa</div>
-                  <div>Cliente</div>
-                </div>
-                <div class="border ms-5 mt-1"></div>
-                <div class="Infos ms-4">
-                  <div>{{ "Orden" + order.id }}</div>
-                  <div>{{ "Sessão" + order.session?.id }}</div>
-                  <div>{{ order.session.caixa?.name }}</div>
-                  <div>{{ order.cliente }}</div>
-                </div>
-              </div>
+        <div class="Container">
+            <div class="d-flex bg-white botoes rounded-0">
+                <button type="button" @click="DevolverFatura" class="annular">
+                    Devolver Artigos
+                </button>
             </div>
-            <div class="BorderBottom mt-3">
-              <div
-                class="d-flex titloListPedidos text-secondary border-0 bg-light rounded-0"
-              >
-                <div class="w-25 boder-left">Artigos</div>
-                <div class="boder-left text-end">Quantidade</div>
-                <div class="boder-left text-end">Preço Unitario</div>
-                <div class="boder-left text-end">Total</div>
-              </div>
-              <div
-                v-for="item in order.items"
-                :key="item.id"
-                class="d-flex ListPedidos text-secondary"
-              >
-                <div class="w-25">{{ item.product?.nome }}</div>
-                <div class="text-end">{{ item.quantity + "Un(s)" }}</div>
-                <div class="text-end">
-                  {{ FormatDinheiro.format(item.price_sold) }}
+            <div class="FormListPedidos">
+                <div class="FormListPedido">
+                    {{ order.state }}
                 </div>
-                <div class="text-end">
-                  {{ FormatDinheiro.format(item.total) }}
+                <div class="FormList">
+                    <div class="mt-4 text-secondary">
+                        <div class="d-flex">
+                            <div class="font-weight-600 InformacoesEncomenda">
+                                <div>Ref da Orden</div>
+                                <div>Sessão</div>
+                                <div>Caixa</div>
+                                <div>Cliente</div>
+                            </div>
+                            <div class="border ms-5 mt-1"></div>
+                            <div class="Infos ms-4">
+                                <div>{{ "Orden" + order.id }}</div>
+                                <div>{{ "Sessão" + order.session?.id }}</div>
+                                <div>{{ order.session.caixa?.name }}</div>
+                                <div>{{ order.cliente }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="BorderBottom mt-3">
+                        <div class="d-flex titloListPedidos text-secondary border-0 bg-light rounded-0" >
+                            <div class="w-25 boder-left">Artigos</div>
+                            <div class="boder-left text-end">Quantidade</div>
+                            <div class="boder-left text-end">Preço Unitario</div>
+                            <div class="boder-left text-end">Total</div>
+                        </div>
+                        <div v-for="item in order.items" :key="item.id"
+                            class="d-flex ListPedidos text-secondary">
+                            <div class="w-25">{{ item.product?.nome }}</div>
+                            <div class="text-end">{{ item.quantity + "Un(s)" }}</div>
+                            <div class="text-end">
+                            {{ FormatDinheiro.format(item.price_sold) }}
+                            </div>
+                            <div class="text-end">{{ FormatDinheiro.format(item.total) }}</div>
+                        </div>
+                    </div>
+                    <div class="w-100 form-control-sm text-secondary">
+                        <div class="d-flex Totaless w-25">
+                            <div class="TitleTotaies w-50">
+                                <div>Total :</div>
+                                <div v-for="item in order.payments" :key="item.id">{{item.method?.name}} :</div>
+                                <div>Troco :</div>
+                                <div>Margin :</div>
+                            </div>
+                            <div class="Totaies w-50">
+                                <div>
+                                    {{ FormatDinheiro.format(order.total) }}
+                                </div>
+                                <div v-for="payment in order.payments" :key="payment.id">{{formatMoney(payment.amountPaid)}}</div>
+                                <div>{{change}}</div>
+                                <div>{{ FormatDinheiro.format(order.total - order.total_costs ) }}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-            <div class="w-100 form-control-sm text-secondary">
-              <div class="d-flex Totaless w-25">
-                <div class="TitleTotaies w-50">
-                  <div>Total :</div>
-                  <div v-for="item in order.payments" :key="item.id">{{item.method?.name}} :</div>
-                  <div>Troco :</div>
-                  <div>Margin :</div>
-                </div>
-                <div class="Totaies w-50">
-                  <div>
-                    {{ FormatDinheiro.format(order.total) }}
-                  </div>
-                  <div v-for="payment in order.payments" :key="payment.id">{{formatMoney(payment.amountPaid)}}</div>
-                  <div>{{change}}</div>
-                  <div>{{ FormatDinheiro.format(order.total - order.total_costs ) }}</div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
+        <Toast />
     </div>
-    <Toast />
-  </div>
 </template>
 
 <script setup>
@@ -138,5 +127,6 @@ const DevolverFatura = () => {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../assets/FiltrosPesquisas/css/encomenda.scss";
+@import "../../../assets/filterSearch/css/encomenda.scss";
+@include components;
 </style>

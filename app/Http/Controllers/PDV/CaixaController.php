@@ -11,6 +11,7 @@ use App\Models\paymentMethod;
 use App\Models\session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -51,11 +52,11 @@ class CaixaController extends Controller
         $operations->where('session_id',$session->id);
     }],'amount')->get();
 
-
     return response()->json([
         'operations'=> $operations,
         'orders' => $orders,
         'methods' => $methods,
+        'length' => $session->orders()->count()
     ]);
   }
 
@@ -118,6 +119,33 @@ class CaixaController extends Controller
     ]);
     $session->load('orders');
     return $this->sumData($session);
+  }
+
+  public function savePoint(Request $request, $caixa = null)
+  {
+
+    $request->validate([
+        'name'=>'required',
+        'user'=>'required',
+    ]);
+    if ($caixa!=null) {
+       $caixa = caixa::find($caixa);
+       $caixa->name = $request->name;
+       $caixa->user_id = $request->user['id'];
+       if ($request->password) $caixa->password = $request->password;
+
+       if ($caixa->save()) return $this->RespondSuccess('Dados atualizado com sucesso');
+
+       return $this->RespondError('Erro ao atualizar os dados');
+    }
+
+    caixa::create([
+        'name'=>$request->name,
+        'password'=>Hash::make($request->password),
+        'user_id'=>$request->user['id'],
+        'company_id'=>$request->user['company_id'],
+    ]);
+    return $this->RespondSuccess('Caixa adicionada com sucesso');
   }
 
 }

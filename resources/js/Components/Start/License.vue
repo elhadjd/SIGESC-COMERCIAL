@@ -22,7 +22,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="card" :class="choose.plano == 'free' ? 'active' : ''">
+            <!-- <div class="card" :class="choose.plano == 'free' ? 'active' : ''">
                 <div>
                 <strong>Plano Free</strong>
                 <span>{{formatMoney(0)}}</span>
@@ -37,7 +37,7 @@
                     <li>Apenas 3 clientes</li>
                 </ul>
                 </div>
-            </div>
+            </div> -->
         </div>
 
    </div>

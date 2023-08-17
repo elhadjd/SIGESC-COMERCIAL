@@ -1,6 +1,7 @@
- @include components;
- @import '../../PontoVenda//css//relatorio//relatorioCards.scss';
+@include components;
+@import '../../PontoVenda//css//relatorio//relatorioCards.scss';
 @mixin product($gbColor,$color,$svgColor){
+
     .product{
         width: 80%;
         height: 85% !important;
@@ -10,6 +11,7 @@
         justify-content: flex-end;
         align-items: center;
         position: relative;
+
         >strong{
             border-radius: 50%;
             background-color: $gbColor;
@@ -47,9 +49,8 @@
     }
 }
  .principal{
-
     width: 100%;
-   .Containers{
+   .Container{
         @extend .Principal;
         .TotalGasto{
             @include product(rgba(238, 170, 52, 0.419),rgb(238, 170, 52) ,rgba(255, 0, 0, 0.625))

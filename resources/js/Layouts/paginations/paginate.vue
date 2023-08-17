@@ -1,6 +1,5 @@
 <template>
- <!-- v-if="loading == 'page'+item.label" -->
-    <div class="Content">
+    <div class="Contents">
         <i v-if="data.current_page>1"  @click="getPages(data.current_page-1)" class="fa fa-chevron-circle-left" aria-hidden="true"></i>
         <div v-for="item in data.links" :key="item.label" @click="data.current_page != item.label ? getPages(item.label):''" v-show="item.label != 'pagination.next' && item.label != 'pagination.previous'
         && item.label != '&laquo; Previous' && item.label != 'Next &raquo;'">
@@ -41,7 +40,7 @@ const getPages = ((page)=>{
 </script>
 
 <style lang="scss" scoped>
-.Content{
+.Contents{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -83,6 +82,18 @@ const getPages = ((page)=>{
                 color: white;
             }
         }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .Contents{
+        margin-top: 10px;
+        flex-direction: column !important;
+        z-index: 999;
+        width: 100px;
+        max-height: 150px;
+        overflow-y: auto;
+        @include scroll;
     }
 }
 </style>

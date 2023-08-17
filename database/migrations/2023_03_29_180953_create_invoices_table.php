@@ -25,7 +25,7 @@ return new class extends Migration
             $table->float('TotalMerchandise')->default(0);
             $table->float('tax')->default(0);
             $table->enum('state',['Cotação','Pago','Publicado','Anulado'])->default('Cotação');
-            $table->date('DateOrder')->default(now());
+            $table->date('DateOrder')->nullable();
             $table->date('DateDue')->nullable();
             $table->float('RestPayable')->default(0);
             $table->timestamps();

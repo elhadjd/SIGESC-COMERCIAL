@@ -78,7 +78,7 @@
       <NewOperation
         @update="(operations.data = $event), (newOperation.state = false)"
         @message="message"
-        @Fechar="newOperation.state = false"
+        @close="newOperation.state = false"
         :data="newOperation.data"
         v-if="newOperation.state"
       />

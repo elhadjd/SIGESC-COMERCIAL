@@ -22,8 +22,9 @@
             </span>
          </div>
       </div>
+
       <div class="Container">
-         <div v-if="!formArmagen.state" class="departments">
+         <div v-if="!formArmagen.state" class="Main">
             <div v-for="armagen in formArmagen.armagens" :key="armagen.id" class="form-Content">
                <div @click="showFormArmagen(armagen)">
                   <span>{{armagen.name}}</span>

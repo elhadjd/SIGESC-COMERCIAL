@@ -172,9 +172,12 @@ class stockController extends Controller
             'list' => $select,
         ];
     }
+
     public function getCatalog()
     {
-        return produtos::all();
+        return $this->companyUser()->products()->withSum(['stock' => function($stock){
+            $stock->where('armagen_id',Auth::user()->armagen_id);
+        }],'quantity')->get();
     }
 
     public function saveStore(Request $request)

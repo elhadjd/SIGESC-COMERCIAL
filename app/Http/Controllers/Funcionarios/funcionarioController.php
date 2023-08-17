@@ -12,6 +12,7 @@ use App\Models\WorkersDepartment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use PharIo\Manifest\Author;
 
 class funcionarioController extends Controller
 {
@@ -33,9 +34,9 @@ class funcionarioController extends Controller
         ];
     }
 
-    public function departments(WorkersDepartment $WorkersDepartment)
+    public function departments()
     {
-        return $WorkersDepartment->with('workers')->get();
+        return $this->companyUser()->DepartmentWorkers()->get();
     }
 
     public function newWorker()
@@ -58,6 +59,7 @@ class funcionarioController extends Controller
     {
         if ($request->id == null) {
             $create = WorkersDepartment::create([
+                'company_id'=>$this->companyUser()->company_id,
                 'name'=> $request->name
             ]);
         } else{

@@ -11,12 +11,15 @@
         color: rgb(255, 255, 255);
         width: 100%;
         height: 7.5%;
+        min-height: 60px;
+        min-width: 450px;
         display: grid;
         grid-template-columns: 45% 55%;
         .header-One{
             width: 100%;
             height: 100%;
             display: flex;
+            flex-direction: row;
             align-items: center;
             li{
                 list-style: none;
@@ -24,10 +27,18 @@
                 display: flex;
                 align-items: center;
                 height: 100%;
+                .openMenu{
+                    display: none;
+                }
                 strong{
                     font: 23.5pt arial;
                     font-weight: 600;
                 }
+            }
+            >div{
+                display: flex;
+                flex-direction: row;
+                height: 100%;
             }
             #pos{
                 display: flex;
@@ -38,31 +49,30 @@
                 margin-left: 3px;
                 padding: 3px;
                 padding-left: 0px 15px 0px 15px;
-            }
-            #pos span{
-                margin-left: 23px;
-            }
-            #pos strong{
-                font-size: 12px;
-                font-weight: 500;
-                position: absolute;
-                margin-left: 10px;
-                background-color: var(--bgButtons);
-                padding: 0px 10px 0px 10px;
-                border-radius: 30px;
-            }
-            #pos i{
-                margin-top: 10px;
-            }
-            #pos:hover{
-                cursor: pointer;
-                opacity: 0.8;
-                background-color: var(--app_hover);
+                span{
+                    margin-left: 23px;
+                }
+                strong{
+                    font-size: 12px;
+                    font-weight: 500;
+                    position: absolute;
+                    margin-left: 10px;
+                    background-color: var(--bgButtons);
+                    padding: 0px 10px 0px 10px;
+                    border-radius: 30px;
+                }
+                i{
+                    margin-top: 10px;
+                }
+                &:hover{
+                    cursor: pointer;
+                    opacity: 0.8;
+                    background-color: var(--app_hover);
+                }
             }
             .EntradaSaida{
                 display: flex;
                 align-items: center;
-                font-family: sans-serif;
                 font-weight: 500;
                 height: 100%;
                 padding: 10px;
@@ -78,35 +88,48 @@
         .header-two{
             width: 100%;
             height: 100%;
-            display: grid;
-            grid-template-columns: repeat(2,1fr);
+            display: flex;
+            flex-direction: row;
             align-items: center;
             height: 100%;
-            #UsuarioConectado{
+            gap: 1rem;
+            .user{
                 width: 100%;
                 height: 100%;
                 display: flex;
+                flex-direction: row;
                 justify-content: flex-end;
+                gap: 1rem;
                 align-items: center;
-                .SairPos{
-                    height: 100%;
+                padding: 5px;
+                >img{
+                    width: 45px;
+                    height: 40px;
+                    border-radius: 50%;
+                }
+                >div:nth-child(2){
                     display: flex;
-                    align-items: center;
-                    padding: 5px;
-                    font: 18pt arial;
-                    &:hover{
-                        cursor: pointer;
-                        background-color: var(--app_hover);
+                    flex-direction: row;
+                    gap: .5rem;
+                    span{
+                        max-width: 25ch;
+                        display: -webkit-box;
+                        align-items: center;
+                        -webkit-line-clamp: 1;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
-                    a{
+                    >div{
+                        font: 18pt arial;
+                        display: flex;
+                        gap: .5rem;
+                        height: 100%;
                         text-decoration: none;
                         color: white;
                     }
-
                 }
-
             }
-
         }
     }
     .MenuPos{
@@ -114,6 +137,7 @@
         height: 92.5%;
         width: 100%;
         display: flex;
+        overflow-y: auto;
         .cartShop{
             position: absolute;
             display: flex;
@@ -122,12 +146,18 @@
             width: 32.5%;
             height: 45%;
             color: #e6e6e6ad;
+            min-width: 450px;
+        }
+        .showProducts{
+            display: flex;
         }
         .Posesquerda{
             background-color: transparent;
             width: 33%;
             border: 2px solid var(--borderColor);
+            min-width: 450px;
             height: 100%;
+            min-height: 600px;
             z-index: 1060;
             .esquerdaCima{
                 width: 100%;
@@ -187,12 +217,28 @@
             width: 67%;
             background-color: var(--appBg);
             height: 100%;
+            min-height: 600px;
             .direitaCima{
                 background-color: white;
                 border: 1px solid var(--borderColor);
                 padding: 10px;
                 width: 100%;
-                display: flex;
+                display: none;
+                display: flex !important;
+                justify-content: flex-end;
+
+                i{
+                    display: none;
+                    cursor: pointer;
+                    border-radius: 50%;
+                    background-color: white;
+                    box-shadow:  var(--box-shadow);
+                    font-size: 20px;
+                    &:hover{
+
+                        color: var(--bgButtons);
+                    }
+                }
             }
             .direitaBaixo{
                 width: 100%;
@@ -200,6 +246,133 @@
                 background-color: var(--appBg);
                 overflow-y: auto;
             }
+        }
+    }
+}
+
+@media screen and (max-width: 1150px) {
+    #headerPos{
+        -webkit-user-select: none;
+        grid-template-columns: 65% 35% !important;
+
+        .header-two{
+            position: relative !important;
+            .user{
+                width: unset !important;
+                .closePos{
+                    display: none !important;
+                }
+                &:focus{
+                    width: auto;
+                    display: flex !important;
+                    flex-direction: row !important;
+                    position: absolute;
+                    width: 300px !important;
+                    height: auto !important;
+                    top: 70px !important;
+                    right: 0 !important;
+                    justify-content: flex-end !important;
+                    align-items: center !important;
+                    box-shadow: var(--box-shadow) !important;
+                    z-index: 1080 !important;
+                    background-color: white !important;
+                    >img{
+                        right: 0 !important;
+                    }
+                    .closePos{
+                        right: 0 !important;
+                        display: flex !important;
+                        flex-direction: column !important;
+                        align-items: flex-end !important;
+                        color: var(--textColor) !important;
+                        >div{
+                            padding: 5px !important;
+                            font: 15pt arial !important;
+                            color: var(--textColor) !important;
+                            transition: .4s !important;
+                            &:hover{
+                                font: 16pt arial !important;
+                                color: var(--app_color) !important;
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #headerPos{
+        -webkit-user-select: none;
+        grid-template-columns: 45% 55% !important;
+        .header-One{
+            position: relative !important;
+            >li{
+                display: flex !important;
+                gap: .5rem !important;
+                .openMenu{
+                    display: block !important;
+                }
+            }
+            >div{
+                width: 300px !important;
+                visibility: hidden !important;
+                height: auto !important;
+                position: absolute !important;
+                display: flex !important;
+                flex-direction: column !important;
+                top: 70px !important;
+                background-color: white !important;
+                box-shadow: var(--box-shadow) !important;
+                color:  var(--textColor) !important;
+                z-index: 1080 !important;
+            }
+            &:focus{
+                >div{
+                    visibility: visible !important;
+                }
+
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .cartShop,
+    .Posesquerda{
+        min-width: unset !important;
+        width: 100% !important;
+    }
+    #headerPos{
+        min-width: unset !important;
+        width: 100% !important;
+        .header-One{
+            >div{
+                top: 56px !important;
+            }
+            >li{
+                strong{
+                    font: 20pt arial !important;
+                }
+            }
+        }
+    }
+    .Posdireita{
+        display: none !important;
+    }
+    .showProducts{
+        display: flex !important;
+        position: absolute !important;
+        background-color: white !important;
+        z-index: 1080 !important;
+        width: 100% !important;
+        height: 92% !important;
+    }
+    .direitaCima{
+        >i{
+            display: flex !important;
         }
     }
 }

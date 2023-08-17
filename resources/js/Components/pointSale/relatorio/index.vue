@@ -1,45 +1,11 @@
 <template>
-	<div class="MenuRelatorio">
-		<div class="Header">
-			<div class="Header-left">
-				<strong> Relatorio </strong>
-				<div>
-					<button @click="ShowRelat = 'cards'">Calendario</button>
-					<button @click="ShowRelat = 'painel'">Painel</button>
-				</div>
-			</div>
-			<div class="Header-right">
-				<span class="p-input-icon-right w-100">
-					<i class="pi pi-search" />
-					<input
-						@keyup="PesquisarOrden"
-						v-model="NumeroOrden"
-						type="search"
-						class="Pesquisar"
-						placeholder="Pesquisar por id da orden , Exemplo(110)"
-					/>
-				</span>
-				<div class="">
-					<Agrupar v-if="ShowRelat == 'painel'" @Agrup="Agrup" />
-				</div>
-			</div>
-		</div>
-		<div class="Container">
-			<Chart
-				v-if="ShowRelat == 'painel'"
-				class="Painel"
-				type="bar"
-				:data="chartData"
-				:options="chartOptions"
-			/>
-			<RelatorioCards v-if="ShowRelat == 'cards'" />
-		</div>
-	</div>
+    <Chart v-if="ShowRelat == 'chart'" :prefix="'analis'"/>
+    <RelatorioCards @change="ShowRelat = 'chart'" v-if="ShowRelat == 'cards'" />
 </template>
 
 <script setup>
 import { computed, onMounted, reactive, ref, watch } from "vue";
-import Chart from "primevue/chart";
+import Chart from "@/Components/charts/index.vue";
 import axios from "axios";
 import RelatorioCards from "./RelatorioCards.vue";
 import Agrupar from "@/components/pointSale/relatorio/agrupar.vue";
@@ -130,5 +96,4 @@ watch(Agrup, (novo) => {
 });
 </script>
 <style scoped lang="scss">
-@import "../../../../assets/PontoVenda/css/relatorio/relatorio";
 </style>

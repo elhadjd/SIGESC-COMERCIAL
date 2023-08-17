@@ -1,5 +1,5 @@
 <template>
-    <div class="div1 d-flex">
+    <div class="search">
         <span class="p-input-icon-left w-100">
             <i class="pi pi-search" />
             <input
@@ -40,13 +40,18 @@ watch(Watche, (novo)=>{
 </script>
 
 <style lang="scss" scoped>
-input{
-    border: none !important;
-    outline: none !important;
-    box-shadow: 0 0 0 0;
-    padding: 3px 15px 3px 30px !important;
-    border-bottom: 1px solid #610246;
-    border-radius: 3px;
-    color:rgba(0, 0, 0, 0.535);
+.search{
+    width: 100% !important;
+    input{
+        width: 100% !important;
+        border: none !important;
+        outline: none !important;
+        box-shadow: 0 0 0 0;
+        padding: 3px 15px 3px 30px !important;
+        border-bottom: 1px solid #610246;
+        border-radius: 3px;
+        color:rgba(0, 0, 0, 0.535);
+    }
 }
+
 </style>

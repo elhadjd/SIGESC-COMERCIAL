@@ -205,6 +205,12 @@ const filterExpenses = ((worker)=>{
         ToReceive = Number(worker.salary) - Number(discount) - dispenses
     })
 
+    if (worker.expenses.length <= 0) {
+        dispenses = Number(worker.dailyExpense * 30)
+        discount = String(valueSession).replace('-','')
+        ToReceive = Number(worker.salary) - Number(discount) - dispenses
+    }
+    
     return {
         dispenses: dispenses,
         discount: discount,

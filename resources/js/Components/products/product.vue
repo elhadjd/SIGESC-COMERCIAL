@@ -1,5 +1,4 @@
 <template>
-  <!-- <Progress v-if="$store.state.pos.StateProgress" /> -->
   <Transition name="bounce">
     <NewCategory
       v-if="categorys.StateModal"
@@ -22,6 +21,7 @@
             class=""
           >
             Guardar
+            <i v-if="loading == 1" class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
           </button>
           <button type="button" class="botao_descartar"
             v-if="!StateEditProd && produto.produtos.estado != 1"
@@ -35,7 +35,7 @@
           >
             Descartar
           </button>
-          <button type="button" @click="$emit('descartar')" class="mx-1 botao_descartar">
+          <button v-if="!StateEditProd" type="button" @click="$emit('descartar')" class="mx-1 botao_descartar">
             Fechar
           </button>
         </div>
@@ -64,147 +64,39 @@
           @Confirmar="OnMounted"
           @fechar="Entradasaida.estado = false"
         />
-        <div class="form_novo_prod">
-          <div class="h-100">
-            <div class="TopProd">
-              <div class="ProdutoBarraCima">
-                <div v-if="user.nivel == 'admin'" class="d-flex">
-                  <div
-                    v-for="item in produto.type_movements"
-                    :key="item.id"
-                    class="BotaoMuvementos"
-                  >
-                    <div @click="muvementos(item)" class="view_muvementos">
-                      <i :class="item.icon"></i>
-                      <div class="w-100">
-                        <div>{{ item.count + ",00Un(s)" }}</div>
-                        <strong class="TipoMuv">{{ item.name }}</strong>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="BotaoMuvementos">
-                    <div class="view_muvementos">
-                      <i class="fa fa-bar-chart"></i>
-                      <div class="w-100">
-                        <div>{{produto.produtos.stock_sum_quantity + ",00Un(s)" }}</div>
-                        <strong class="TipoMuv">{{ "Stock real" }}</strong>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-              <div class="FormContainer">
-                <div class="input_nome_tipo">
-                  <div>
-                    <div>
-                      <label for="nome_do_artigo">Nome do Artigo</label>
-                    </div>
-                    <div>
-                      <input
-                        type="text"
-                        v-model="produto.produtos.nome"
-                        class="nome_artigo_data"
-                        :disabled="
-                          produto.produtos.estado === 1 || !StateEditProd
-                        "
-                        id="nome_do_artigo"
-                        placeholder="Digite nome de produto"
-                      />
-                    </div>
-                  </div>
-                  <div class="ContainerInfo">
-                    <div class="Titulos">
-                      <div class="w-100 text-sm p-1">
-                        <strong>Tipo de artigo</strong>
-                      </div>
-                      <div class="w-100 text-sm p-1">
-                        <strong>QR codigo de barra</strong>
-                      </div>
-                    </div>
-
-                    <div class="InfoContainer">
-                      <div class="TipoCategoria">
-                        <div class="tipoartigo">
-                          <select
-                            @change="addTypeProduct"
-                            class="tipo_artigo"
-                            :disabled="
-                              produto.produtos.estado === 1 || !StateEditProd
-                            "
-                          >
-                            <option
-                              v-if="produto.produtos.product_type_id == null"
-                            >
-                              Selecionar Categoria
-                            </option>
-                            <option
-                              v-for="item in productType"
-                              :key="item.id"
-                              :value="item.name"
-                              :selected="
-                                produto.produtos.product_type_id == item.id
-                              "
-                            >
-                              {{ item.name }}
-                            </option>
-                          </select>
+        <div class="form-container">
+            <div class="Headers">
+                <div class="drop dropdown-toggle" @click="stateDrop = stateDrop == 'mov' ? '' : 'mov'"><i class="fa fa-bars"></i></div>
+                <div v-if="user.nivel == 'admin'" class="movements" :class="stateDrop == 'mov' ? 'active' : ''">
+                    <div v-for="item in produto.type_movements"
+                        :key="item.id" class="BotaoMuvementos">
+                        <div @click="muvementos(item)" class="view_muvementos">
+                            <i :class="item.icon"></i>
+                            <div class="w-100">
+                                <div>{{ item.count + ",00Un(s)" }}</div>
+                                <strong class="TipoMuv">{{ item.name }}</strong>
+                            </div>
                         </div>
-
-                        <div class="DivCategoria">
-                          <select
-                            @change="AddCategoryObject"
-                            :disabled="
-                              produto.produtos.estado === 1 || !StateEditProd
-                            "
-                            class="Categoria"
-                          >
-                            <option
-                              v-if="
-                                produto.produtos.category_product_id == null
-                              "
-                            >
-                              Selecionar Categoria
-                            </option>
-                            <option
-                              v-for="item in categorys.liste"
-                              :key="item.id"
-                              :value="item.name"
-                              :selected="
-                                produto.produtos.category_product_id == item.id
-                              "
-                            >
-                              {{ item.name }}
-                            </option>
-                          </select>
-                          <button
-                            class="AdicionarCategoria"
-                            type="button"
-                            @click.prevent="NewCategoria(produto.produtos.id)"
-                          >
-                            <i class="fa fa-plus"></i>Add Categoria
-                          </button>
-                        </div>
-                      </div>
-                      <div class="CodeBar">
-                        <input
-                          type="text"
-                          placeholder="QR code bar"
-                          :disabled="
-                            produto.produtos.estado === 1 || !StateEditProd
-                          "
-                          v-model="produto.produtos.codego"
-                        />
-                      </div>
                     </div>
-                  </div>
+                    <div class="BotaoMuvementos">
+                        <div class="view_muvementos">
+                            <i class="fa fa-bar-chart"></i>
+                            <div class="w-100">
+                                <div>{{produto.produtos.stock_sum_quantity + ",00Un(s)" }}</div>
+                                <strong class="TipoMuv">{{ "Stock real" }}</strong>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="image">
+            </div>
+            <div class="Main">
+                <div class="Name-Img-control">
+                    <div class="form-nome">
+                        <input type="text" :disabled="produto.produtos.estado === 1 || !StateEditProd" v-model="produto.produtos.nome" placeholder="Digite nome do produto">
+                    </div>
                     <div class="form-image">
                         <div>
-                            <!-- <canvas v-if="element.stateCanvas" id="myCanvas" width="100" height="100"></canvas> -->
-                            <img :src="element.img">
+                            <img :src="element.img" alt="">
                             <span>
                                 <label for="image">
                                     <FontAwesomeIcon icon="fa-solid fa-pen-to-square"/>
@@ -215,10 +107,42 @@
                         </div>
                     </div>
                 </div>
-              </div>
+                <div class="info-basic">
+                    <div class="form-content">
+                        <div class="form-Control">
+                            <label for="category">Categoria:</label>
+                            <button @click="stateDrop = 'category'" type="button" id="category"
+                            :disabled="produto.produtos.estado === 1 || !StateEditProd">
+                                {{produto.produtos.category != null ? produto.produtos.category.name : 'Seleciona a categoria do produto'}}
+                            </button>
+                            <div v-if="stateDrop == 'category'" class="drop">
+                                <span v-for="item in categorys.liste" :key="item.id" @click="AddCategoryObject(item)">{{item.name}}</span>
+                                <button type="button" @click="newCategory(produto.produtos.id)">Criar nova categoria</button>
+                            </div>
+                        </div>
+                        <div class="form-Control">
+                            <label for="productType">Tipo de artigo:</label>
+                            <button @click="stateDrop = 'type'" type="button" id="productType"
+                            :disabled="produto.produtos.estado === 1 || !StateEditProd">
+                                {{produto.produtos.product_type != null ? produto.produtos.product_type.name : 'Seleciona o tipo de artigo'}}
+                            </button>
+                            <div v-if="stateDrop == 'type'" class="drop">
+                                <span v-for="item in productType" :key="item.id" @click="addTypeProduct(item)">{{item.name}}</span>
+                            </div>
+                        </div>
+                        <div class="form-Control">
+                            <label for="bare">Codego de barro:</label>
+                            <input type="text" v-model="produto.produtos.codego" :disabled="produto.produtos.estado === 1 || !StateEditProd" id="bare" placeholder="bare code">
+                        </div>
+                    </div>
+                    <div class="form-content">
+
+                    </div>
+                </div>
             </div>
-            <InfoProd v-if="user.nivel == 'admin'" @prices="Precos" :produto="produto" />
-          </div>
+            <div class="ContainerFooter">
+                <InfoProd v-if="user.nivel == 'admin'" @prices="Precos" :produto="produto" />
+            </div>
         </div>
       </form>
     </div>
@@ -249,9 +173,9 @@ const StateEditProd = ref(false);
 const props = defineProps({
   product: Object,
 });
-
+const loading = ref(0)
 const user = ref([])
-
+const stateDrop = ref(null)
 const productType = ref([]);
 
 const categorys = reactive({
@@ -302,21 +226,20 @@ const muvementos = (event) => {
   store.state.pos.EstadoMuvemento.tipo = event;
 };
 
-const NewCategoria = (idProduct) => {
+const newCategory = (idProduct) => {
   categorys.StateModal = true;
   categorys.SingleCateg.idProduct = idProduct;
 };
 
 const AddCategoryObject = (event) => {
-  let CategoriaFiltrada = categorys.liste.filter(
-    (item) => item.name === event.target.value
-  );
-  produto.produtos.category_product_id = CategoriaFiltrada[0].id;
+    produto.produtos.category = event
+    produto.produtos.category_product_id = event.id;
+    stateDrop.value = null
 };
 
 const OnMounted = onMounted(async () => {
    await getImage();
-//   store.state.pos.StateProgress = true;
+  store.state.pos.StateProgress = true;
   await axios
     .get(`/products/${props.product.id}`)
     .then((Response) => {
@@ -360,34 +283,31 @@ const calcMovement = () => {
 };
 
 const addTypeProduct = (type) => {
-  let types = productType.value.filter(
-    (item) => item.name === type.target.value
-  );
-  produto.produtos.product_type_id = types[0].id;
+  produto.produtos.product_type = type
+  produto.produtos.product_type_id = type.id;
+  stateDrop.value = null
 };
 
 const Precos = (tipo, valor) => {
   produto.produtos[tipo] = valor;
 };
 
-const submit = () => {
-  store.state.pos.StateProgress = true;
+const submit = async() => {
+  loading.value = true;
   if (produto.imagem != null) {
     produto.imagem = element.img;
   }
-  axios
+    await axios
     .post(`/update/${produto.produtos.id}`, produto)
     .then((Response) => {
         message(Response.data.message,Response.data.type)
-      store.state.pos.StateProgress = false;
-      StateEditProd.value = false;
-      emits("saved", Response.data.data);
+        StateEditProd.value = false;
+        emits("saved", Response.data.data);
     })
     .catch((err) => {
-      store.state.pos.StateProgress = false;
       console.log(err);
     }).finally(()=>{
-        store.state.pos.StateProgress = false;
+        loading.value = false;
     });
 };
 

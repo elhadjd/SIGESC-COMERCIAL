@@ -3,15 +3,13 @@
         <div class="botao">
             <Index />
         </div>
-        <button @click="stateMenu = !stateMenu" class="openMenu">
-            <FontAwesomeIcon class="on" icon="fa-solid fa-chevron-right" />
-            <font-awesome-icon class="two" icon="fa-solid fa-arrow-right" />
-        </button>
         <nav>
             <div class="nave">
-
                 <div :class="stateMenu ? 'show-menu' : ''" class="menus">
-                    <Link class="dashboard" :href="route('dashboard')">Dashboard</Link>
+                    <span class="open-menu">
+                        <font-awesome-icon v-if="stateMenu" @click="stateMenu = false" icon="fa-solid fa-chevron-left" />
+                        <font-awesome-icon v-else @click="stateMenu = true" icon="fa-solid fa-chevron-right" />
+                    </span>
                     <div v-for="menu in props.menus" :key="menu.menu">
                         <li @mouseenter="showDown(menu.menu)" @click="modulos(menu.menu)">
                             {{ menu.menu }}
@@ -28,14 +26,13 @@
                         </div>
                     </div>
                 </div>
-                <div></div>
                 <div class="user_conectado">
                     <div class="User dropdown-toggle" @click="stateLogout = !stateLogout">
                         <img :src="element.img" alt="user" />
                         <div>{{ user.surname }}</div>
                     </div>
-                    <div v-if="stateLogout" class="Usuario">
-                        <div @click="Sair" class="Sair">
+                    <div v-if="stateLogout" class="user">
+                        <div @click="Sair" class="Sair" :class="!stateMenu ? 'text-white' : ''">
                         Sair <i class="fa fa-sign-out"></i>
                         </div>
                     </div>
@@ -85,7 +82,7 @@ const Sair = () => {
 };
 
 const showModule = (module) => {
-    stateMenu.value = false
+    stateMenu.value = true
     emits("modulos", module);
     Mostrar.value = null;
 };
@@ -96,12 +93,12 @@ const showDown = (event) => {
   }
 };
 
-window.addEventListener("DOMContentLoaded", function() {
-  document.getElementById("openMenu").addEventListener("click", function() {
-    var menu = document.querySelector(".menus");
-    menu.classList.toggle("show-menu");
-  });
-});
+// window.addEventListener("DOMContentLoaded", function() {
+//   document.getElementById("openMenu").addEventListener("click", function() {
+//     var menu = document.querySelector(".menus");
+//     menu.classList.toggle("show-menu");
+//   });
+// });
 
 
 

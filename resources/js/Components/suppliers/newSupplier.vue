@@ -109,7 +109,7 @@
 
 <script setup>
 import Confirmation from '@/components/confirmation/index.vue'
-import { onMounted, ref, reactive, watch ,defineProps, computed} from "vue";
+import { onMounted, ref, reactive, watch , computed} from "vue";
 import { useStore } from "vuex";
 import Confirm from '@/components/confirmation/confirm.vue'
 import ProdutosFornecedor from './ProdutosFornecedor.vue'
@@ -245,22 +245,19 @@ watch(guardar,(novo)=>{
 </script>
 
 <style scoped lang="scss">
-@include components;
 .principal{
     height: 100%;
     .Container{
         height: 100%;
-        display: flex;
         justify-content: center;
         align-items: center;
         .Form{
             background-color: #f9f9f9f9;
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
+            .form-container{
+                height: 50% !important;
+            }
             @include formulary;
         }
     }

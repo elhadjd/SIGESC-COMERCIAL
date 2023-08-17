@@ -4,7 +4,7 @@
          <div class="Header">
             <button>Contactos</button>
          </div>
-         <div class="Content">
+         <div class="Main">
             <div class="Name-Img-control">
                <div class="form-nome">
                   <input type="text" v-model="form.name" placeholder="Nome completo" id="name">
@@ -110,8 +110,10 @@ import useEventsBus from '@/Eventbus'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { onMounted, reactive, ref, watch } from '@vue/runtime-core'
 import {useUploadImage} from '@/composable/public/UploadImage'
+import {InputCurrency} from '@/composable/public/inputCurrency'
 import axios from 'axios'
 import { useStore } from 'vuex'
+import { getImages } from '@/composable/public/getImages'
 const store = useStore()
 const users = ref([])
 const {bus,emit} = useEventsBus()
@@ -119,6 +121,9 @@ const emits = defineEmits(['message'])
 const props = defineProps({
     worker: Object
 })
+const form = ref(props.worker)
+const number = ref(props.worker.salary);
+const {onBlur,onFocus,onInput,numberStr,type} = InputCurrency(number,form)
 
 const hours = ref([
     {name: "Padrão 66 Hora por semana"},
@@ -133,13 +138,12 @@ const drop = ref("")
 const image = ref({
     img: `/worker/image/${props.worker.image}`
 })
-const form = ref(props.worker)
-console.log(form.value);
 
 const {createImg,onFileChange} = useUploadImage(form.value,image.value)
+const {getImage,RemoveImage} = getImages(image.value);
 
-
-onMounted(()=>{
+onMounted(async()=>{
+    await getImage();
     store.state.StateProgress = true
     axios.get('/config/getConfig')
     .then((response) => {
@@ -204,47 +208,9 @@ const selectUser = ((user)=>{
     return drop.value = ""
 })
 
-
-const format = (n)=>{
-    return new Intl.NumberFormat('PT-AO', {
-    style: 'currency',
-    currency: 'AOA',
-  }).format(n);
-}
-
-const number = ref(0);
-
-const type = ref('text');
-
-const numberStr = ref(format(number.value));
-
-const onInput = ({ target }) => {
-    if (target.value != '' ) {
-    number.value = parseInt(target.value);
-    }
-};
-const onFocus = () => {
-    if (number.value != '' ) {
-    numberStr.value = number.value;
-    type.value = 'number';
-    }
-};
-const onBlur = () => {
-    if (number.value != '' ) {
-        type.value = 'text';
-        numberStr.value = format(number.value);
-        form.value.salary = number.value
-    }
-};
-
-const RemoveImage = () => {
-    form.value.image = "/worker/image/produto-sem-imagem.png"
-}
-
 watch(()=>bus.value.get('SaveWorker'),(payload)=>{
     return SaveWorker()
 })
-
 
 const SaveWorker = (()=>{
     if (form.value.name == "") return emits('message','Nome do funcionario e Obligatorio','info')

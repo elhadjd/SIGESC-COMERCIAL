@@ -44,7 +44,6 @@
               <i class="fa fa-file"></i>
               Imprimir
             </button>
-            <pagination v-if="loading != 'start'" @page="getPage" :object="listItems"/>
           </div>
         </div>
       </div>
@@ -180,7 +179,7 @@ const OnMounted = onMounted(async() => {
 const getProduct = async() => {
     loading.value = 'start'
     await axios
-        .get("/products/1000/1")
+        .get("/products/1500/1")
         .then((Response) => {
             listItems.value = Response.data;
             SumProducts(listItems.value.data)

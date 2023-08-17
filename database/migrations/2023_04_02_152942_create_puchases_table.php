@@ -29,7 +29,7 @@ return new class extends Migration
             $table->float('total')->default(0);
             $table->float('restPayable')->default(0);
             $table->enum('state',['Publicado','Cotação','Anulado','Pago'])->default('Cotação');
-            $table->date('DateOrder')->default(now());
+            $table->date('DateOrder')->nullable();
             $table->date('DateDue')->nullable();
             $table->timestamps();
         });

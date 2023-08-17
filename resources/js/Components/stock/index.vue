@@ -11,7 +11,7 @@
             </span>
          </div>
       </div>
-      <div class="Containers">
+      <div class="Container">
          <div class="Header-Cards">
 
             <div class="carde">
@@ -279,7 +279,7 @@ const exportToPDF = (()=> {
 <style scoped lang="scss">
 .testar{
     width: 100%;
-    height: 50%;
+    height: 100%;
     overflow-y: auto
 }
 @import '../../../assets/stock/scss/menuStock';

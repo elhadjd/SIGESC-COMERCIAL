@@ -2,77 +2,40 @@
 body{
     background-color: white;
 }
-@mixin invoiceState($color,$bgColor){
-    span{
-        background-color: $bgColor;
-        color: $color;
-        padding: 2px;
-        border-radius: 5px;
-        padding-left: 5px;
-        padding-right: 5px;
+@include components;
+.Header{
+    .Header-right{
+        >div{
+            height: 100%;
+            display: flex;
+            flex-direction: row !important;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            >div{
+                display: flex;
+                flex-direction: row;
+                gap: .8rem;
+                >i{
+                    font-size: 23px;
+                    cursor: pointer;
+                    &:hover{
+                        color: var(--bgButtons);
+                    }
+                }
+            }
+        }
     }
 }
-@include components;
-
 .Container{
-    .TitlsListas{
-        background-color: rgb(249, 249, 249);
-        font: 10pt arial;
-        border-bottom: 1px solid rgb(243, 242, 242);
-        display: flex;
-        >div{
-            width: 100%;
-            border-left: 1px solid #eee;
-            padding: 5px;
-        }
-    }
-
-    .FormLista{
-        height: 82%;
-        overflow-y: auto;
-        @include scroll;
-        .ListaFaturas{
-            border-bottom: 1px solid #eee;
-            &:nth-child(even){
-                background-color: rgb(250, 250, 250);
-            }
-            &:hover{
-                cursor: pointer;
-                opacity: 0.8;
-                background-color: #eee;
-            }
-            div{
-                display: flex;
-                align-items: center;
-                width: 12.5%;
-                font: 10pt arial;
-                font-weight: 500;
-                padding: 4px;
-                padding-left: 10px;
-                color: #666;
-                
-                
-
-            }
-            .Cotação{
-                @include invoiceState(rgb(1, 48, 12),rgba(40, 167, 69, 0.5))
-            }
-            .overflow-auto{
-                height: 95%;
-            }
-            .Pagar{
-                @include invoiceState(rgb(27, 27, 1),rgba(171, 171, 33, 0.597))
-            }
-            .Pago {
-                @include invoiceState(white,green)
-            }
-            .Anulado {
-                @include invoiceState(red,rgba(255, 0, 0, 0.216))
-            }
-            .Publicado{
-                @include invoiceState(var(--appBg),var(--bgButtons))
-            }
-        }
+    width: 100%;
+    overflow-x: auto;
+    .list{
+        @include form_lists;
+        width: 100%;
+        height: 90%;
+        min-width: 950px;
+        @include state;
     }
 
     .RodaPe{
@@ -80,6 +43,7 @@ body{
         display: flex;
         justify-content: flex-end;
         background-color: white;
+        min-width: 1000px;
         .Totals{
             width: 35%;
             height: 100%;

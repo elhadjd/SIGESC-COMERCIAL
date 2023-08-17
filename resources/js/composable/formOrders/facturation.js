@@ -75,6 +75,7 @@ export const form = ((print,Invoice,statePayment,loading,form_faturacao,modalCon
             },
         },
         form:{
+            title: 'Fatura',
             relationType: 'Cliente',
             inputs:[
                 {

@@ -58,15 +58,20 @@ import {
     faLeftLong,
     faCloudArrowUp,
     faChevronRight,
-    faArrowRight
+    faArrowRight,
+    faChevronLeft,
+    faChartColumn,
+    faChartPie,
+    faChartArea
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import general from "./mixins/general.js";
 import {faBuilding, faUser} from "@fortawesome/free-regular-svg-icons";
 library.add(
+    faChevronLeft,
+    faChevronRight,
     faXmark,
     faLeftLong,
-    faChevronRight,
     faArrowRight,
     faCloudArrowUp,
     faForward,
@@ -101,7 +106,11 @@ library.add(
     faReceipt,
     faXmark,
     faUser,
-    faCertificate
+    faCertificate,
+    faChartColumn,
+    faChartPie,
+    faChartArea,
+    faChartGantt
 );
 
 const appName =

@@ -1,98 +1,98 @@
 <template>
  <Progress v-if="ShowModal"/>
-  <div class="user-select-none formulario-pagamento">
+<div class="user-select-none formulario-pagamento">
     <Toast/>
     <form @submit.prevent="Validar_Pagamento" class="formulario-content">
-      <div class="sessao-one">
-        <i class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i>
-      </div>
-
-      <div class="sessao-two">
-        <div class="Container">
-          <div class="buttons">
-            <div>
-              <div>
-                <button @click="$emit('closePaymentForm')"><i class="fa fa-angle-double-left"></i> Cancelar</button>
-              </div>
-
-              <div>
-                <h2>Pagamento</h2>
-              </div>
-
-              <div>
-                <button class="Validar" type="submit" v-if="Validar" :disabled="isSubmitting">Validar <i :class="isSubmitting ? 'fa fa-spinner fa-pulse fa-3x fa-fw' : 'fa fa-angle-double-right'"></i></button>
-              </div>
-            </div>
-          </div>
-
-          <div class="container-two">
-            <div class="one">
-              <div class="opcao">
-                <div
-                  class="methodo"
-                  v-for="method in methodos"
-                  :key="method"
-                  @click="methods(method.name)"
-                >
-                  <strong>{{ method.name + " : " + FormatarDineiro.format(method.valor) }}</strong>
-                  <strong class="ValorEntregue"></strong>
-                </div>
-              </div>
-            </div>
-
-            <div class="two">
-              <div class="container-thee">
-                <div id="totalEncomendaPagamento">
-                    <h1 class="TotalEncomendas" v-if="mostraTotal==true">{{FormatarDineiro.format(TotalEncomenda)}}</h1>
-                    <div class="CalculoTotal" v-else>
-                        <div class="TotalCompra">
-                            <h3 class="Restante">
-                                <strong>Restante : </strong>
-                                <span >{{FormatarDineiro.format(RestoPagar)}}</span>
-                            </h3>
-                            <h5 class="div5">
-                                <span>Toatal da compra</span>
-                                <span id="TotalCompra">: {{FormatarDineiro.format(TotalEncomenda)}}</span>
-                            </h5>
-                        </div>
-                        <div class="troco">
-                            <span >
-                                <strong>Troco : </strong>
-                                <strong id="TrocoCliente">{{FormatarDineiro.format(Troco)}} </strong>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="numeros">
-                    <div class="Numero">
-                        <div v-for="i in 9" :key="i" @click="numer(i)" :numero="i"><strong>{{i}}</strong></div>
-                        <div @click="numer(0)"><strong>0</strong></div>
-                        <div><strong>.</strong></div>
-                        <div id="TiraNumeros" @click="reduzir_pagamento"><strong><i class="fa fa-eraser" aria-hidden="true"></i></strong></div>
-                    </div>
-                    <div class="Valores">
-                        <div @click="numero(100)">{{FormatarDineiro.format(100)}}</div>
-                        <div @click="numero(200)">{{FormatarDineiro.format(200)}}</div>
-                        <div @click="numero(500)">{{FormatarDineiro.format(500)}}</div>
-                        <div @click="numero(1000)">{{FormatarDineiro.format(1000)}}</div>
-                        <div @click="numero(2000)">{{FormatarDineiro.format(2000)}}</div>
-                        <div @click="numero(8000)">{{FormatarDineiro.format(8000)}}</div>
-                        <div @click="numero(3000)">{{FormatarDineiro.format(3000)}}</div>
-                        <div @click="numero(4000)">{{FormatarDineiro.format(4000)}}</div>
-                        <div @click="numero(5000)">{{FormatarDineiro.format(5000)}}</div>
-                        <div @click="numero(6000)">{{FormatarDineiro.format(6000)}}</div>
-                        <div @click="numero(7000)">{{FormatarDineiro.format(7000)}}</div>
-                        <div @click="numero(10000)">{{FormatarDineiro.format(10000)}}</div>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="sessao-one">
+            <i class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i>
         </div>
-      </div>
+
+        <div class="sessao-two">
+            <div class="Container">
+                <div class="buttons">
+                    <div>
+                        <div>
+                            <button @click="$emit('closePaymentForm')"><i class="fa fa-angle-double-left"></i> Cancelar</button>
+                        </div>
+
+                        <div>
+                            <h2>Pagamento</h2>
+                        </div>
+
+                        <div>
+                            <button class="Validar" type="submit" v-if="Validar" :disabled="isSubmitting">Validar <i :class="isSubmitting ? 'fa fa-spinner fa-pulse fa-3x fa-fw' : 'fa fa-angle-double-right'"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-two">
+                    <div class="one">
+                        <div class="opcao">
+                            <div
+                            class="methodo"
+                            v-for="method in methodos"
+                            :key="method"
+                            @click="methods(method.name)"
+                            >
+                                <strong>{{ method.name + " : " + FormatarDineiro.format(method.valor) }}</strong>
+                                <strong class="ValorEntregue"></strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="two">
+                        <div class="container-thee">
+                            <div id="totalEncomendaPagamento">
+                                <h1 class="TotalEncomendas" v-if="mostraTotal==true">{{FormatarDineiro.format(TotalEncomenda)}}</h1>
+                                <div class="CalculoTotal" v-else>
+                                    <div class="TotalCompra">
+                                        <h3 class="Restante">
+                                            <strong>Restante : </strong>
+                                            <span >{{FormatarDineiro.format(RestoPagar)}}</span>
+                                        </h3>
+                                        <h5 class="div5">
+                                            <span>Toatal da compra</span>
+                                            <span id="TotalCompra">: {{FormatarDineiro.format(TotalEncomenda)}}</span>
+                                        </h5>
+                                    </div>
+                                    <div class="troco">
+                                        <span >
+                                            <strong>Troco : </strong>
+                                            <strong id="TrocoCliente">{{FormatarDineiro.format(Troco)}} </strong>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="numeros">
+                                <div class="Numero">
+                                    <div v-for="i in 9" :key="i" @click="numer(i)" :numero="i"><strong>{{i}}</strong></div>
+                                    <div @click="numer(0)"><strong>0</strong></div>
+                                    <div><strong>.</strong></div>
+                                    <div id="TiraNumeros" @click="reduzir_pagamento"><strong><i class="fa fa-eraser" aria-hidden="true"></i></strong></div>
+                                </div>
+                                <div class="Valores">
+                                    <div @click="numero(100)">{{FormatarDineiro.format(100)}}</div>
+                                    <div @click="numero(200)">{{FormatarDineiro.format(200)}}</div>
+                                    <div @click="numero(500)">{{FormatarDineiro.format(500)}}</div>
+                                    <div @click="numero(1000)">{{FormatarDineiro.format(1000)}}</div>
+                                    <div @click="numero(2000)">{{FormatarDineiro.format(2000)}}</div>
+                                    <div @click="numero(8000)">{{FormatarDineiro.format(8000)}}</div>
+                                    <div @click="numero(3000)">{{FormatarDineiro.format(3000)}}</div>
+                                    <div @click="numero(4000)">{{FormatarDineiro.format(4000)}}</div>
+                                    <div @click="numero(5000)">{{FormatarDineiro.format(5000)}}</div>
+                                    <div @click="numero(6000)">{{FormatarDineiro.format(6000)}}</div>
+                                    <div @click="numero(7000)">{{FormatarDineiro.format(7000)}}</div>
+                                    <div @click="numero(10000)">{{FormatarDineiro.format(10000)}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
-  </div>
+</div>
 </template>
 <script setup>
 import { computed, onMounted ,ref} from "@vue/runtime-core";
@@ -249,6 +249,7 @@ const BUSCAR_RESTO = () =>{
  const Validar_Pagamento = ()=> {
     isSubmitting.value = true
     Lista.value.methods = methodos.value
+    let number = Lista.value.number
     if (RestoPagar.value <= 0) {
     axios.post("/PDV/ValidatePayment",Lista.value)
         .then((Response) => {
@@ -258,13 +259,10 @@ const BUSCAR_RESTO = () =>{
 
             Lista.value = Response.data
 
-            Encomendas.value[Lista.value.number] = Lista.value
+            Encomendas.value[number] = Lista.value
             localStorage.setItem('Encomendas'+session.value,JSON.stringify(Encomendas.value))
-
             emits("fatura",Response.data);
-            ShowModal.value = false
         } else {
-            ShowModal.value = false
             emits('message',Response.data.type,Response.data.message)
         }
         })
@@ -272,6 +270,7 @@ const BUSCAR_RESTO = () =>{
             console.log(error);
         })
         .finally(()=>{
+            ShowModal.value = false
             isSubmitting.value = false
         });
     } else {

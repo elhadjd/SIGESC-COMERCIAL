@@ -1,0 +1,139 @@
+
+.groupBy{
+    background-color: white;
+    color: #222;
+    font: 10pt arial;
+    font-weight: 600;
+    position: relative;
+    z-index: 999;
+    >div{
+        button{
+            padding: 5px;
+            display: flex;
+            flex-direction: row;
+            gap: .5rem;
+            background-color: white;
+            border: 1px solid white;
+            margin: 2px;
+            &:hover{
+                border: 1px solid #017e84;
+                color: #017e84;
+            }
+        }
+    }
+    .Form1{
+        z-index: 1080;
+        position: absolute;
+        width: 150px;
+        height:auto;
+        border-radius: 5px;
+        .Opcoes{
+            width: 100%;
+            padding: 10px;
+            background-color: white;
+            &:hover{
+                background-color: #eee;
+                cursor: pointer;
+            }
+        }
+        .SubOpcao{
+            position: absolute;
+            margin-left: 140px;
+            width: 180px;
+            height: auto;
+            min-height: 50px;
+            background-color: white;
+            border-radius: 5px;
+            label{
+                display: flex;
+                flex-direction: row;
+                gap: .5rem;
+                padding: 10px;
+                width: 100%;
+                &:hover{
+                    background-color: #eee;
+                    cursor: pointer;
+                }
+                .InputRadio {
+                    width: 16px;
+                    border: none !important;
+                    outline: none !important;
+                    margin-right: 5px !important;
+                    border-radius: 50% !important;
+                    padding: 0px !important;
+                    justify-content: center;
+                    cursor: pointer;
+                }
+                >span{
+                    max-width: 22ch;
+                    display: -webkit-box;
+                    align-items: center;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                .options{
+                    position: absolute;
+                    width: 150px;
+                    left: 180px;
+                    height: auto;
+                    background-color: white;
+                    box-shadow: var(--box-shadow);
+                    span{
+                        width: 100%;
+                        padding: 10px;
+                        &:hover{
+                            background-color: #eee;
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+.PesquisarCliente{
+    font: 9pt arial;
+    font-weight: 600;
+    padding: 7px !important;
+}
+/* p-multiselect p-component p-inputwrapper p-multiselect-chip p-inputwrapper-filled p-inputwrapper-focus p-overlay-open */
+.TipoFiltro{
+    width: 25%;
+    border: 1px solid #017e84;
+    border-bottom: none;
+    padding: 1px;
+}
+.InputPesquisar{
+    width: 100%;
+    display: flex;
+    strong{
+        border-bottom: 1px solid #017e84;
+    }
+}
+.FilterOrder{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    >div:nth-child(2){
+        width: 100%;
+        display: flex;
+        gap: 1rem;
+    }
+}
+.Pesquisar{
+    @include input_normal
+}
+
+@media screen and (max-width: 700px)  {
+    canvas{
+        width: 70% !important;
+    }
+    .SubOpcao {
+        margin-left: -175px !important;
+    }
+}

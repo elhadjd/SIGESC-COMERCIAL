@@ -55,7 +55,7 @@
                 <div class='buttons'>
                     <button type='submit'>Entrar</button>
                 </div>
-                <Link :href="route('startCompany')">Iniciar</Link>
+                <Link :href="route('startCompany')">Iniciar uma empresa</Link>
             </form>
         </div>
     </div>

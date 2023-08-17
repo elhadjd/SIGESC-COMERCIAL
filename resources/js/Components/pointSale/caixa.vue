@@ -4,26 +4,20 @@
   <div class="principal">
     <div class="Header"></div>
     <div class="Container">
-      <div class="Botoes">
-        <button
-          @click="AbrirControlo"
+      <div class="buttons">
+        <button @click="AbrirControlo"
           v-if="DadosCaixa.orders.state == 'A abrir'"
-          class="botoesCaixa"
-        >
+          class="botoesCaixa">
           Abrir controlo
         </button>
-        <button
-          @click="ContinuarVenda"
+        <button @click="ContinuarVenda"
           v-if="DadosCaixa.orders.state == 'Aberto'"
-          class="BtnColor Continuar botoesCaixa"
-        >
+          class="BtnColor Continuar botoesCaixa" >
           Continuar
         </button>
-        <button
-          @click="CloseCash"
+        <button @click="CloseCash"
           v-if="DadosCaixa.orders.state == 'Aberto'"
-          class="mx-1 botoesCaixa"
-        >
+          class="mx-1 botoesCaixa">
           Fechar
         </button>
         <button
@@ -36,8 +30,8 @@
       </div>
       <div class="FormCaixaCompleta">
         <div class="FormCaixa">
-          <div class="p-0" id="FormSession">
-            <div class="d-flex FormSessionCima">
+          <div id="FormSession">
+            <div class="FormSessionCima">
               <div class="d-flex" v-for="item in DadosCaixa.operations" :key="item.id">
                 <cash class="mt-2" :size="25" />
                 <div class="TotalPorCima">
@@ -66,7 +60,7 @@
               <div class="d-flex">
                 <shopping class="mt-2" :size="25" />
                 <div class="TotalPorCima">
-                  <div>{{ DadosCaixa.orders.pedidos }}</div>
+                  <div>{{ DadosCaixa.length }}</div>
                   <div>Pedidos</div>
                 </div>
               </div>

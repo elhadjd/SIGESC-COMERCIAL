@@ -1,6 +1,6 @@
 <template>
-    <div class="w-25 user-select-none Agrupar">
-        <div class="mt-1">
+    <div class="groupBy">
+        <div>
             <button @click="AbrirForm">
                 <i class="fa fa-filter"></i>
                 <span>Filtrar</span>
@@ -8,7 +8,7 @@
         </div>
         <div v-if="EstadoForm" class="Form1 shadow-lg">
             <div>
-                <div class="Opcoes" @click="$emit('filtro','Id da Fatura'),EstadoForm = false">Id da Fatura</div>
+                <div class="Opcoes" @click="$emit('filtro','Numero da Fatura'),EstadoForm = false">Numero da Fatura</div>
             </div>
             <div>
                 <div class="Opcoes" @click="$emit('filtro','Total da Fatura'),EstadoForm = false">Total da fatura</div>
@@ -18,6 +18,9 @@
             </div>
             <div>
                 <div class="Opcoes" @click="$emit('filtro','Total menor Igual'),EstadoForm = false">Total menor igual</div>
+            </div>
+            <div>
+                <div class="Opcoes" @click="$emit('filtro','Cliente'),EstadoForm = false">Cliente</div>
             </div>
         </div>
     </div>
@@ -102,5 +105,5 @@ const Opcao = ((event)=>{
 </script>
 
 <style scoped lang="scss">
-@import '../../../assets/FiltrosPesquisas/css/Agrupar';
+@import '../../../assets/filterSearch/css/filter';
 </style>

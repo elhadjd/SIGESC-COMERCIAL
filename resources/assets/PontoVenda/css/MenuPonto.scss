@@ -1,86 +1,106 @@
 @include components;
 .principal{
     .Container{
-        background-color: var(--appBg) !important;
-        width: 100%;
-        height: 100%;
-        overflow-y: auto;
-        @include scroll;
-        display: grid;
-        grid-template-columns: repeat(2,1fr);
-        padding: 15px;
-        justify-content: center;
-        gap: 1rem;
-        .cardCash{
-            background-color: white;
-            border-radius: 3px;
-            box-shadow: rgba(158, 158, 166, 0.2) 2px 9px 27px 10px;
-            height: 145px;
-            .cashHeader{
+        >div{
+            width: 100%;
+            height: auto;
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            padding: 15px;
+            gap: 1rem;
+            .cardCash{
                 width: 100%;
-                height: 32px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 2px 7px 2px 7px;
-                border-bottom: 1px solid #f9f9f9;
-                color:  #000000a5;
-                font-size: 15px;
-                font-weight: bold;
-                background-color: #f9f9f9;
+                background-color: white;
                 border-radius: 3px;
-                .bars{
-                    position: relative;
+                box-shadow: rgba(158, 158, 166, 0.2) 2px 9px 27px 10px;
+                height: 145px;
+                .cashHeader{
+                    width: 100%;
+                    height: 32px;
                     display: flex;
-                    flex-direction: column;
-                    justify-content: flex-end;
-                    i{
-                        cursor: pointer;
-                        &:hover{
-                            color: #00686e;
-                        }
-                    }
-                    .options{
-                        background-color: white;
-                        position: absolute;
-                        top: 20px;
-                        right: 0;
-                        box-shadow: rgba(167, 167, 177, 0.2) 2px 9px 27px 10px;
-                        border-radius: 3px;
-                        width: 150px;
-                        font-size: 14px;
-                        font-weight: bold;
-                        border: 1px solid #00000010;
-                        div{
-                            padding: 2px 3px 2px 3px;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 2px 7px 2px 7px;
+                    border-bottom: 1px solid #f9f9f9;
+                    color:  #000000a5;
+                    font-size: 15px;
+                    font-weight: bold;
+                    background-color: #f9f9f9;
+                    border-radius: 3px;
+                    .bars{
+                        position: relative;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: flex-end;
+                        i{
+                            cursor: pointer;
                             &:hover{
-                                background-color: #0000000c;
-                                cursor: pointer;
-                                color: #000000b3;
+                                color: #00686e;
+                            }
+                        }
+                        .options{
+                            background-color: white;
+                            position: absolute;
+                            top: 20px;
+                            right: 0;
+                            box-shadow: rgba(167, 167, 177, 0.2) 2px 9px 27px 10px;
+                            border-radius: 3px;
+                            width: 150px;
+                            font-size: 14px;
+                            font-weight: bold;
+                            border: 1px solid #00000010;
+                            div{
+                                padding: 2px 3px 2px 3px;
+                                &:hover{
+                                    background-color: #0000000c;
+                                    cursor: pointer;
+                                    color: #000000b3;
+                                }
                             }
                         }
                     }
                 }
-            }
-            .cash-container{
-                height: 112px;
-                display: flex;
-                align-items: center;
-                padding: 15px;
-                flex-direction: row;
-                gap: 5px;
-                div{
-                    button,a{
-                        list-style: none;
-                        text-decoration: none;
-                        @include botao_normal;
-                    }
-                    .showCash{
-                        @include botao_descartar;
+                .cash-container{
+                    height: 112px;
+                    display: flex;
+                    align-items: center;
+                    padding: 15px;
+                    flex-direction: row;
+                    gap: 5px;
+                    div{
+                        button,a{
+                            list-style: none;
+                            text-decoration: none;
+                            @include botao_normal;
+                        }
+                        .showCash{
+                            @include botao_descartar;
+                        }
                     }
                 }
             }
         }
+
     }
 }
 
+
+@media screen and (max-width: 800px) {
+    .Container{
+        padding: 20px;
+        >div{
+            display: flex !important;
+            flex-direction: column !important;
+        }
+    }
+}
+
+
+@media screen and (max-width: 1200px) {
+    .Container{
+        padding: 20px;
+        >div{
+            grid-template-columns: repeat(2,3fr) !important;
+        }
+    }
+}

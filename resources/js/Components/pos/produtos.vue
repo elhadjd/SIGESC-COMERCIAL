@@ -75,7 +75,7 @@ const ShwInfo = (event) => {
 };
 
 const OnMounted = onMounted(() => {
-  axios.get('/products/1500/1')
+  axios.get('/products/1600/1')
     .then((Response) => {
     localStorage.setItem("produtos", JSON.stringify(Response.data.data));
     produtos.value = Response.data.data;

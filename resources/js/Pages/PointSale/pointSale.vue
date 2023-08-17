@@ -26,10 +26,10 @@
         @AbrirCaixa="AbrirCaixa"
         @message="message"
       />
-      <NovaCaixa
+      <new-point
         @message="message"
-        @close="modulos('menu')"
-        :DadosCaixa="DadosCaixa"
+        @close="modulos('Ponto de venda')"
+        :point="DadosCaixa"
         v-if="modul == 'NovaCaixa'"/>
     </div>
   </div>
@@ -47,7 +47,7 @@ import { useStore } from "vuex";
 import analisProducts from '@/Components/pointSale/analisProducts.vue'
 import Relatorio from "@/components/pointSale/relatorio/index.vue";
 import Caixa from "@/Components/pointSale/caixa.vue";
-import NovaCaixa from "@/components/pointSale/CashConfig/NovaCaixa.vue";
+import newPoint from '../../Components/pointSale/CashConfig/newPoint.vue'
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 import axios from "axios";
@@ -141,6 +141,7 @@ const EmitsMenu = (event, OutroEvento) => {
 };
 
 const CriarCaixa = () => {
+    DadosCaixa.value = ''
   modul.value = "NovaCaixa";
 };
 

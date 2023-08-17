@@ -1,0 +1,31 @@
+@mixin invoiceState($color,$bgColor){
+    span{
+        background-color: $bgColor;
+        color: $color;
+        padding: 2px;
+        border-radius: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
+
+@mixin state{
+    .Cotação{
+        @include invoiceState(rgb(1, 48, 12),rgba(40, 167, 69, 0.5))
+    }
+    .overflow-auto{
+        height: 95%;
+    }
+    .Pagar{
+        @include invoiceState(rgb(27, 27, 1),rgba(171, 171, 33, 0.597))
+    }
+    .Pago {
+        @include invoiceState(white,green)
+    }
+    .Anulado {
+        @include invoiceState(red,rgba(255, 0, 0, 0.216))
+    }
+    .Publicado{
+        @include invoiceState(var(--appBg),var(--bgButtons))
+    }
+}

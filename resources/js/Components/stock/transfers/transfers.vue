@@ -120,16 +120,20 @@ const newTransfer = (()=>{
         color: $color;
     }
 }
+.Container{
+    min-width: 900px;
+    overflow-x: auto;
+}
 .list{
     @include form_lists;
     .list_items{
         .Cotação{
             @include stateTransfer(rgba(40, 167, 69, 0.5), rgb(1, 48, 12))
         }
-        .Annulado{
+        .Anulado{
             @include stateTransfer(rgba(255, 0, 0, 0.232), red)
         }
-        .Confirmado{
+        .Publicado{
             @include stateTransfer(#a3498b8b, #340126)
         }
     }

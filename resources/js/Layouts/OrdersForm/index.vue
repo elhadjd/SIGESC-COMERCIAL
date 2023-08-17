@@ -1,13 +1,13 @@
 <template>
    <div class="Principal">
         <div class="Header">
-            <h1>Fatura</h1>
+            <h1>{{general.form.title}}</h1>
         </div>
-        <div class="Content">
+        <div class="Main">
             <div class="drop-up">
                 <button @click="stateDrop = !stateDrop" type="button" class="dropdown-toggle">Açao</button>
             </div>
-            
+
             <div :class="stateDrop ? '' : 'hidden'" class="Botoes" >
                 <div v-show="button.state" v-for="button,idx in general.buttons"
                 :key="idx">

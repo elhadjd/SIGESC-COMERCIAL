@@ -1,7 +1,6 @@
 @include components;
-@import '../../funcionarios/scss/department.scss';
+@include listForm(100%,140px,3,2,2,1,1);
 .principal{
-    @extend .departments;
     .buttons{
         display: flex;
         gap: .5rem;

@@ -61,12 +61,36 @@ class company extends Model
     }
     public function workers()
     {
-        return $this->hasMany(workers::class);
+        return $this->hasMany(Workers::class);
     }
 
     function HistoricLogin():HasMany
     {
         return $this->hasMany(HistoricLogin::class);
+    }
+
+    public function purchase() : HasMany {
+        return $this->hasMany(Puchase::class,'company_id');
+    }
+
+    public function invoice() : HasMany {
+        return $this->hasMany(Invoice::class,'company_id');
+    }
+
+    public function transfer():HasMany {
+        return $this->hasMany(transfer::class,'company_id');
+    }
+
+    public function products() : HasMany {
+        return $this->hasMany(produtos::class,'company_id');
+    }
+
+    public function OrderPdv() : HasMany {
+        return $this->hasMany(orderPos::class,'company_id');
+    }
+
+    public function DepartmentWorkers() : HasMany {
+        return $this->hasMany(WorkersDepartment::class,'company_id');
     }
 
 }

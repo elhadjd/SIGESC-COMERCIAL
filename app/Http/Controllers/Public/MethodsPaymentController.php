@@ -7,6 +7,7 @@ use App\Models\Invoice;
 use App\Models\PaymentInvoice;
 use App\Models\paymentMethod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MethodsPaymentController extends Controller
 {
@@ -17,7 +18,7 @@ class MethodsPaymentController extends Controller
 
     public function getPayments(Invoice $invoice)
     {
-        return $invoice->payments()->with('method')->get();
+        return $invoice->where('company_id',Auth::user()->company_id)->payments()->with('method')->get();
     }
 
     public function getPaymentOrders(paymentMethod $paymentMethod)

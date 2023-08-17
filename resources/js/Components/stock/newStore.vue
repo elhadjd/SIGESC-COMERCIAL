@@ -10,7 +10,7 @@
                </div>
             </button>
          </div>
-         <div class="Content">
+         <div class="Main">
             <div class="Name-Img-control">
                <div class="form-nome">
                   <input type="text" v-model="form.name" placeholder="Nome do armagen">

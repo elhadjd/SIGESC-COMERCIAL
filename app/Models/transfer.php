@@ -14,6 +14,7 @@ class transfer extends Model
     protected $fillable = [
         'user_id',
         'company_id',
+        'orderNumber',
         'store_principal_id',
         'store_destination_id',
         'total_spent',

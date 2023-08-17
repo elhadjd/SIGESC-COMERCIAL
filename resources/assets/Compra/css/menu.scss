@@ -1,1 +1,64 @@
-@include components
+@include components;
+@mixin invoiceState($color,$bgColor){
+    span{
+        background-color: $bgColor;
+        color: $color;
+        padding: 2px;
+        border-radius: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
+.Container{
+      height: 100% !important;
+      overflow-x: auto;
+    .list{
+        @include form_lists;  
+        width: 100%;
+        height: 90%;
+        min-width: 950px;
+        .Cotação{
+            @include invoiceState(rgb(1, 48, 12),rgba(40, 167, 69, 0.5))
+        }
+        .overflow-auto{
+            height: 95%;
+        }
+        .Pagar{
+            @include invoiceState(rgb(27, 27, 1),rgba(171, 171, 33, 0.597))
+        }
+        .Pago {
+            @include invoiceState(white,green)
+        }
+        .Anulado {
+            @include invoiceState(red,rgba(255, 0, 0, 0.216))
+        }
+        .Publicado{
+            @include invoiceState(var(--appBg),var(--bgButtons))
+        }
+    }
+    .RodaPe{
+        height: 10%;
+        display: flex;
+        justify-content: flex-end;
+        background-color: white;
+        min-width: 1000px;
+        .Totals{
+            width: 35%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            div{
+                display: flex;
+                flex-direction: column;
+                font: 12pt arial;
+                font-weight: 600;
+                color: #777;
+                span{
+                    font: 18pt arial;
+                    font-weight: 600;
+                    color: #017e84;
+                }
+            }
+        }
+    }
+}

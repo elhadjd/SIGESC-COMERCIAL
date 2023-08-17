@@ -2,6 +2,8 @@
 @import './mixins/scroll.scss';
 @import './mixins/formOrders.scss';
 @import './mixins/form-select.scss';
+@import './mixins/list-kanban.scss';
+@import './mixins//invoiceState.scss';
 @mixin botao_normal {
     background: var(--bgButtons);
     border:none;
@@ -205,6 +207,7 @@
                 background-color: white;
                 border-radius: 5px;
                 box-shadow: 2px 3px 4px 1px #ddd;
+                z-index: 1000;
                 @include scroll();
                 span {
                     padding: 8px 10px 8px 10px;
@@ -256,8 +259,10 @@
         height: 100%;
         display: flex;
         flex-direction: column;
-        .Header{
+        >.Header{
             height: 15%;
+            min-height: 90px;
+            max-height: 150px;
             width: 100%;
             display: flex;
             flex-direction: row;
@@ -317,6 +322,21 @@
                         color: white;
                     }
                 }
+                .delete{
+                    i{
+                        color: var(--color-delete) !important;
+                    }
+                    &:hover{
+                        color: var(--color-delete) !important;
+                        border-color: var(--color-delete) !important;
+                    }
+                }
+                .archive{
+                    i{
+                        color: #0101015f;
+                    }
+                }
+
                 .botao_descartar{
                     @include botao_descartar;
                 }
@@ -330,11 +350,13 @@
 
                 span{
                     width: 100%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
                     input{
                         @include input_normal
                     }
                 }
-
             }
         }
         .Container{
@@ -384,6 +406,8 @@
         overflow-y: auto;
         @include scroll;
         .TotalOrden{
+            width: 100%;
+            display: flex;
             justify-content: flex-end;
             font-weight: bold;
         }
@@ -406,24 +430,50 @@
                 align-items: center;
                 padding: 2px 10px 2px 10px;
                 font-size: 13.5px;
+                display: -webkit-box;
+                align-items: center;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .TotalOrden{
+                width: 100%;
+                display: flex;
+                justify-content: flex-end;
+                font-weight: bold;
             }
         }
+
     }
 }
 
 @mixin form-img{
     .form-image{
+        position: relative;
         width: 100%;
-        height: 105px;
+        height: auto;
         display: flex;
         justify-content: flex-end;
         align-items: center;
         padding: 5px;
-
+        .archived{
+            position: absolute;
+            z-index: 999;
+            width: 100px;
+            height: 35px;
+            background-color: rgba(255, 0, 0, 0.147);
+            text-align: center;
+            padding: 3px 0px 3px 0px;
+            transform: rotate(45deg);
+            font-size: 17px;
+            font-weight: 600;
+            color: rgb(180, 6, 6);
+        }
         div{
             position: relative;
             width: 100px;
-            height: 100%;
+            height: auto;
             img{
                 width: 100%;
                 height: 95px;
@@ -489,12 +539,14 @@
     .form-container {
         width: 90%;
         height: 90%;
+        min-height: 500px !important;
+        margin: 0 auto;
         background-color: white;
         box-shadow: rgb(100, 100, 100, 0.2) 9px 3px 29px 0px;
         border-radius: 3px;
         border: 1px solid #ebebebf9;
         .Header{
-            height: 50px;
+            height: 40px;
             border-bottom: 1.5px solid #ebebeb;
             display: flex;
             justify-content: flex-end;
@@ -507,10 +559,11 @@
                 border-left: 1px solid var(--borderColor);
                 color: var(--bgButtons);
                 >svg{
-                    font-size: 28px;
+                    font-size: 25px;
                 }
                 span{
                     display: flex;
+                    font-size: 13px;
                     flex-direction: column;
                 }
                 &:hover{
@@ -530,9 +583,7 @@
                 border-top: none;
                 width: 200px !important;
                 a{
-                    padding: 10px !important;
                     font: 11pt arial;
-                    font-weight: 600;
                     color: var(--bgButtons);
                     &:hover{
                         background-color: var(--buttons-hover);
@@ -548,9 +599,11 @@
             border-bottom: 1.5px solid #ebebebf9;
             display: flex;
             flex-direction: column;
+            overflow-y: auto;
+            @include scroll;
             .Name-Img-control{
                 width: 100%;
-                height: 50%;
+                height: 45%;
                 display: grid;
                 grid-template-columns: 79% 20%;
                 gap: 1%;
@@ -574,8 +627,8 @@
             .info-basic{
                 width: 100%;
                 height: 45%;
-                display: grid;
-                grid-template-columns: repeat(2,1fr);
+                display: flex;
+                flex-direction: row;
                 gap: 1rem;
                 .form-content{
                     width: 100%;
@@ -586,11 +639,24 @@
                         @include dopDown;
                     }
                 }
+                @media screen and (max-width: 500px) {
+                    display: flex !important;
+                    align-items: flex-start !important;
+                    flex-direction: column !important;
+                    gap: 1rem !important;
+                }
+                @media screen and (max-width: 850px) {
+                    .drop{
+                        margin-left: 0px !important;
+                        margin-top: 30px !important;
+                        width: 94% !important;
+                    }
+                }
             }
             .buttons{
                 padding-left: 20px;
                 width: 100%;
-                height: 12%;
+                height: 10%;
                 box-sizing: border-box;
                 button{
                     font-size: 15px;
@@ -623,6 +689,73 @@
                 @include form-control;
                 position: relative;
                 @include dopDown;
+            }
+        }
+        .ContainerFooter{
+            width: 100%;
+            height: 40%;
+            .TituloFooter{
+                display: flex;
+                width: 100%;
+                border-bottom: 1px solid var(--bgButtons);
+                .active{
+                    background-color: var(--bgButtons);
+                    color: white;
+                    border: 1px solid var(--bgButtons);
+                }
+                span{
+                    padding: 8px;
+                    border: 1px solid transparent;
+                    border-bottom: none;
+
+                    &:hover{
+                        cursor: pointer;
+                        background-color: var(--buttons-hover);
+                        border-bottom: 0px;
+                        color: #00686e;
+                    }
+                }
+            }
+            .DivSenha{
+                width: 100%;
+                height: 82.5%;
+                display: grid;
+                grid-template-columns: repeat(2,1fr);
+                padding: 15px;
+                div{
+                    width: 95%;
+                    display: flex;
+                    flex-direction: column;
+                    label{
+                        font: 14pt arial;
+                        font-weight: 600;
+                        padding: 5px;
+                        color: rgba(0, 0, 0, 0.581)
+                    }
+                    input{
+                        @include input_normal;
+                    }
+                }
+            }
+
+            .regras-senha {
+                width: 80%;
+                border: 1px solid #ddd;
+                border-left: 4px solid red;
+                padding: 4px;
+                ul {
+                   height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    list-style-type: decimal;
+                    margin-left:20px;
+                    li {
+                        padding: 4px;
+                        font:10pt Arial;
+                        color: rgba(0, 0, 0, 0.692);
+                    }
+                }
             }
         }
     }

@@ -1,54 +1,55 @@
 <template>
-	<div class="Principal">
-		<div class="Form-calendar">
-			<div class="Header-calendar">
-				<span class="text-star">
-					<i
-						@click="getMonth(Data.month - 1)"
-						class="fa fa-chevron-left"
-						aria-hidden="true"
-					></i>
-				</span>
-				<span>
-					{{ Data.Active.month + " " + Data.Active.year }}
-				</span>
-				<span class="text-end">
-					<i
-						@click="getMonth(Data.month + 1)"
-						class="fa fa-chevron-right"
-						aria-hidden="true"
-					></i>
-				</span>
-			</div>
-			<div class="Container-calendar">
-				<div class="month">
-					<span
-						@click="getMonth(month.month)"
-						v-for="month in Month"
-						:key="month.month"
-						:class="month.month == Data.month ? 'MonthActive' : ''"
-						>{{ month.name }}</span
-					>
-				</div>
-				<div class="days">
-					<div
-						@click="RelatorBayDay(dia)"
-						:class="
-							Data.day >= dia ||
-							(Data.Active.date.fin >= dia && Data.Active.date.inicio <= dia)
-								? 'day DayActive'
-								: 'day'
-						"
-						v-for="(dia, index) in Data.days"
-						:key="index"
-					>
-						<span>{{ dia }}</span>
-						<strong></strong>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+
+<div class="Principal">
+    <div class="Form-calendar">
+        <div class="Header-calendar">
+            <span class="text-star">
+                <i
+                    @click="getMonth(Data.month - 1)"
+                    class="fa fa-chevron-left"
+                    aria-hidden="true"
+                ></i>
+            </span>
+            <span>
+                {{ Data.Active.month + " " + Data.Active.year }}
+            </span>
+            <span class="text-end">
+                <i
+                    @click="getMonth(Data.month + 1)"
+                    class="fa fa-chevron-right"
+                    aria-hidden="true"
+                ></i>
+            </span>
+        </div>
+        <div class="Container-calendar">
+            <div class="month">
+                <span
+                    @click="getMonth(month.month)"
+                    v-for="month in Month"
+                    :key="month.month"
+                    :class="month.month == Data.month ? 'MonthActive' : ''"
+                    >{{ month.name }}</span
+                >
+            </div>
+            <div class="days">
+                <div
+                    @click="RelatorBayDay(dia)"
+                    :class="
+                        Data.day >= dia ||
+                        (Data.Active.date.fin >= dia && Data.Active.date.inicio <= dia)
+                            ? 'day DayActive'
+                            : 'day'
+                    "
+                    v-for="(dia, index) in Data.days"
+                    :key="index"
+                >
+                    <span>{{ dia }}</span>
+                    <strong></strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </template>
 
 <script setup>

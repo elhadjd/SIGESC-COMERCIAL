@@ -1,28 +1,30 @@
 .Principal{
     width: 100%;
-    height: 100%;
+    height: 98%;
     .Header{
         height: 15%;
         width: 100%;
         background-color: var(--appBg);
         border-bottom: 1px solid var(--borderColor);
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
         justify-content: center;
         align-items: center;
         padding: 5px;
-        div:nth-child(1){
-            width: 50%;
+        >div:nth-child(1){
+            width: 100%;
             display: flex;
             align-items: center;
         }
-        div:nth-child(2){
-            width: 50%;
+
+        >div:nth-child(2){
+            width: 100%;
         }
-        div{
+        >div{
             input{
                 @include input_normal;
-                padding: 0px !important;
+                padding: 5px !important;
             }
             .NovoPedido{
                 @include botao_normal
@@ -39,11 +41,14 @@
         width: 100%;
         height: 85%;
         overflow-y: auto;
+        overflow-x: auto;
         @include scroll;
         .Titles{
+            width: 100%;
             display: grid;
             grid-template-columns: repeat(7,1fr);
             background-color: var(--buttons-hover);
+            min-width: 800px;
             div{
                 width: 100%;
                 padding: 10px;
@@ -55,6 +60,7 @@
         }
         .List{
             width: 100%;
+            min-width: 800px;
             height: auto;
             min-height: 92%;
             max-height: 93%;
@@ -62,6 +68,8 @@
             .Items{
                 display: grid;
                 grid-template-columns: repeat(7, 1fr);
+                align-items: center;
+                justify-content: center;
                 color: var(--textColor);
                 width: 100%;
                 padding: 5px;
@@ -69,6 +77,17 @@
                 font-weight: 600;
                 &:nth-child(even){
                     background-color: var(--buttons-hover);
+                }
+                div{
+                    width: 100;
+                    padding-left: 5px;
+                    max-width: 25ch;
+                    display: -webkit-box;
+                    align-items: center;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
                 &:hover{
                     background-color: var(--textColor);
@@ -107,6 +126,17 @@
                     }
                 }
             }
+        }
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .Header{
+        flex-direction: column !important;
+        align-items: unset !important;
+        gap: 1rem !important;
+        >div{
+            width: 100% !important;
         }
     }
 }

@@ -21,19 +21,19 @@
                </div>
                <div class="money">
                   <span>
-                     {{formatMoney(data.salary)}} 
+                     {{formatMoney(data.salary)}}
                      <FontAwesomeIcon icon="fa-sack-dollar"/>
                   </span>
                   <span>
-                     {{formatMoney(data.totalDispenses)}} 
+                     {{formatMoney(data.totalDispenses)}}
                      <FontAwesomeIcon icon="fa-solid fa-receipt" />
                   </span>
                   <span>
-                     {{formatMoney(totalExpenses)}} 
+                     {{formatMoney(totalExpenses)}}
                      <FontAwesomeIcon icon="fa-solid fa-money-bill-1-wave"/>
                   </span>
                   <span>
-                     {{formatMoney(data.totalExpense)}} 
+                     {{formatMoney(data.totalExpense)}}
                      <FontAwesomeIcon icon="fa-solid fa-arrow-down" />
                   </span>
                </div>
@@ -87,12 +87,11 @@ const props = defineProps({
 
 const data = ref(props.worker.worker)
 const store = useStore()
-const company = ref(store.state.Empresa)
+const company = ref(store.state.publico.company)
 const sessions = ref([])
 const expenses = ref([])
 
 const totalExpenses = ref(0)
-
 
 const OnMounted = onMounted(()=>{
     filterSession(data.value, props.session)

@@ -12,47 +12,58 @@
                 <i class="fa fa-search"></i>
                 <input @keyup="SearchInvoice" type="text" placeholder="Pesquisar...">
             </span>
-            <pagination v-if="loading != 'start'" @page="getPage" :object="Invoices.list "/>
+            <div>
+                <div>
+                    <i @click="listType = 'list'" class="fa fa-list"></i>
+                    <i @click="listType = 'large'" class="fa fa-th-large" aria-hidden="true"></i>
+                </div>
+                <pagination v-if="loading != 'start'" @page="getPage" :object="Invoices.list "/>
+            </div>
          </div>
       </div>
       <div class="Container">
-         <div v-if="loading == 'start'" class="progress"><i class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i></div>
-         <div v-else class="TitlsListas text-secondary">
-            <div>Orden</div>
-            <div>Usuario</div>
-            <div>Cliente</div>
-            <div>Data da Encomenda</div>
-            <div>Data de Vencimento</div>
-            <div class="text-right">Total sem desconto</div>
-            <div class="text-right">Total da fatura</div>
-            <div>Resto a pagar</div>
-            <div>Estado da fatura</div>
-         </div>
-         <div class="FormLista">
-            <div class="d-flex ListaFaturas"
-                @click="onRowSelect(item)"
-                v-for="item in Invoices.list.data"
-                :key="item.id
-            ">
-               <div>{{item.orderNumber+item.id}}</div>
-               <div>{{item.user.surname}}</div>
-               <div>{{item.client?.surname}} </div>
-               <div>{{ item.DateOrder != null ? formateDate(item.DateOrder) : formateDate(item.created_at) }} </div>
-               <div>{{item.DateDue != null ? formateDate(item.DateDue) : 'Não definido'}} </div>
-               <div class="text-end">{{FrmatDinheiro.format(item.TotalMerchandise)}} </div>
-               <div class="text-end">{{FrmatDinheiro.format(item.TotalInvoice)}}</div>
-               <div>
-                  <span>
-                  {{item.RestPayable >=1 ? FrmatDinheiro.format(item.RestPayable): FrmatDinheiro.format(0)}}
-                  </span>
-               </div>
-               <div :class="item.state">
-                  <span class="">
-                  {{item.state}}
-                  </span>
-               </div>
+        <div v-if="loading == 'start'" class="progress"><i class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i></div>
+        <invoices-th v-if="listType == 'large'" @showInvoice="onRowSelect" :Invoices="Invoices"/>
+        <div v-if="listType == 'list'" class="list">
+            <div class="Title text-secondary">
+                <div>Orden</div>
+                <div>Usuario</div>
+                <div>Cliente</div>
+                <div>Data da Encomenda</div>
+                <div>Data de Vencimento</div>
+                <div class="text-right">Total sem desconto</div>
+                <div class="text-right">Total da fatura</div>
+                <div>Resto a pagar</div>
+                <div>Estado da fatura</div>
             </div>
-         </div>
+
+            <div class="list_items">
+                <div class="rows"
+                    @click="onRowSelect(item)"
+                    v-for="item in Invoices.list.data"
+                    :key="item.id
+                ">
+                <div>{{item.orderNumber+item.id}}</div>
+                <div>{{item.user.surname}}</div>
+                <div>{{item.client?.surname}} </div>
+                <div>{{ item.DateOrder != null ? formateDate(item.DateOrder) : formateDate(item.created_at) }} </div>
+                <div>{{item.DateDue != null ? formateDate(item.DateDue) : 'Não definido'}} </div>
+                <div class="text-end">{{FrmatDinheiro.format(item.TotalMerchandise)}} </div>
+                <div class="text-end">{{FrmatDinheiro.format(item.TotalInvoice)}}</div>
+                <div>
+                    <span>
+                    {{item.RestPayable >=1 ? FrmatDinheiro.format(item.RestPayable): FrmatDinheiro.format(0)}}
+                    </span>
+                </div>
+                <div :class="item.state">
+                    <span class="">
+                    {{item.state}}
+                    </span>
+                </div>
+                </div>
+            </div>
+        </div>
+
          <div class="RodaPe">
             <div class="Totals">
                <div>
@@ -70,11 +81,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted,defineEmits, reactive } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
 import pagination from '@/Layouts/paginations/paginate.vue'
 import { mapState ,useStore } from "vuex"
 import moment from 'moment'
 import { Search } from '@/composable/public/search';
+import invoicesTh from './invoicesTh.vue'
 
 const Invoices = ref({
    search: [],
@@ -83,7 +95,7 @@ const Invoices = ref({
    list: []
 })
 const loading = ref(null)
-
+const listType = ref('large')
 const emits = defineEmits(['fatura', 'message'])
 
 onMounted(async() => {

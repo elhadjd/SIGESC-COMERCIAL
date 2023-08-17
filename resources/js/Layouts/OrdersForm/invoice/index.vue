@@ -16,16 +16,15 @@
                     </div>
                     <div class="NomeEmpresa">
                         <span>{{company.name}}</span>
-
                     </div>
                 </div>
                 <div class="ContainerTwo">
                     <div class="InfoClienteEmpresa">
                         <div class="InfoEmpresa">
                             <div class="Titulo">
-                                <span>ENDEREÇO</span>
-                                <span>NIF</span>
-                                <span>TELEFONE</span>
+                                <span>Endereço:</span>
+                                <span>Nif:</span>
+                                <span>Telefone:</span>
                             </div>
                             <div class="ContentClient">
                                 <span>
@@ -36,15 +35,14 @@
                             </div>
                         </div>
                         <div class="Client">
-                            <div class="NomeCliente">
-                                {{order.relations?.relation?.name}}
-                            </div>
                             <div class="InfoCliente">
                                 <div class="Titulo">
-                                    <span>ENDEREÇO</span>
-                                    <span>TELEFONE</span>
+                                    <span>Cliente:</span>
+                                    <span>Endereço:</span>
+                                    <span>Telefone:</span>
                                 </div>
                                 <div class="ContentClient">
+                                    <span>{{order.relations?.relation?.name}}</span>
                                     <span>{{order.relations?.relation?.city}}</span>
                                     <span>{{Invoice.client?.phone}}</span>
                                 </div>

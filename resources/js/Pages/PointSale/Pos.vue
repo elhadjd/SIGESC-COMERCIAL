@@ -1,6 +1,6 @@
 <template>
     <opining v-if="session.caixa.state != 'Aberto' && $store.state.pos.Controlo.state" :session_id="session.id" @openControl="openControl"/>
-    <Menu :session="session"/>
+    <Menu :session="session" :user="user"/>
 </template>
 
 <script setup>

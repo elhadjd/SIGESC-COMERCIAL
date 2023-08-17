@@ -2,11 +2,11 @@
 <div class="principal">
     <div class="Header">
         <div class="Header-left">
-            <h2>Historia de login</h2>
+            <h2>Historico de login</h2>
         </div>
         <div class="Header-right">
             <span>
-                <input type="text" placeholder="Pesquisar...">
+                <input type="text" @keyup="search" placeholder="Pesquisar...">
             </span>
         </div>
     </div>
@@ -18,7 +18,7 @@
             <div>Navegador Usado</div>
         </div>
         <div class="list_items">
-            <div v-for="item in data" :key="item.id">
+            <div v-for="item in data.list" :key="item.id">
                 <div @click="openList(item.id)" class="rows">
                     <div>{{formatDate(item.created_at)}}</div>
                     <div>{{item.user.name}}</div>
@@ -41,7 +41,10 @@
 import axios from "axios";
 import moment from "moment";
 import { onMounted, ref } from "vue";
-const data = ref([])
+const data = ref({
+    list: [],
+    store: []
+})
 
 const emits = defineEmits(['message'])
 const stateList = ref(null)
@@ -52,7 +55,8 @@ onMounted(()=>{
 async function getData() {
     axios.get('getLoginRegister')
     .then((response) => {
-        data.value = response.data
+        data.value.list = response.data
+        data.value.store = response.data
     }).catch((err) => {
         emits('message',err.response.data,'error')
         console.log(err);
@@ -63,18 +67,30 @@ const openList = ((id)=>{
     if (stateList.value == id) return stateList.value = null
     stateList.value = id
 })
+
+const search =((e)=>{
+    const filter = data.value.store.filter((item)=>{
+        return String(moment(item.created_at).format("DD-MM-YYYY")).includes(e.target.value)
+        || String(item.user.name).toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase())
+        || String(item.browser).includes(e.target.value)
+    })
+    data.value.list = filter
+})
 </script>
 
 <style lang="scss" scoped>
 @include components;
 .Container{
+    overflow-x: auto;
     @include form_lists;
-
+    .Title,
+    .list_items{
+        min-width: 1000px;
+    }
     .rows{
         >div{
             padding: 10px !important;
         }
-
     }
     .operations{
         border-bottom: 1px solid #00000010;

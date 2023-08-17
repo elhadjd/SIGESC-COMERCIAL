@@ -97,7 +97,7 @@ import Counts from './licensesPremium/counts.vue'
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 import axios from 'axios';
-import { useForm,Link } from '@inertiajs/vue3';
+import { useForm,Link,router } from '@inertiajs/vue3';
 import {Request} from '@/composable/public/RequestApi'
 const stateForm = ref(null)
 const inSubmit = reactive({
@@ -140,7 +140,6 @@ const nextStep = (()=>{
 
 const saveForm = (()=>{
     if (!start.value.license || store.state.Start.start.license == null) return message('Selecina seu plano ','info')
-    if (typeof(store.state.Start.start.license) != 'string') return SaveCompany()
     return saveData()
 })
 
@@ -149,27 +148,22 @@ async function SaveCompany() {
     const response = await ReqPost('SaveCompany',store.state.Start.start)
     inSubmit.state = false
     if (!response.data) return message(response.message,'error');
-    return saveData(response.data)
 }
 
 async function saveData(accounts = null) {
     store.state.Start.start.accounts = accounts
     const form = useForm(store.state.Start.start)
     inSubmit.state = true
-    await form.post('/saveCompany',{
-        onSuccess: (Response)=>{
-            inSubmit.value = false
-            console.log(Response);
-        },
-        onError:(err)=>{
-            message(err,'warn')
-            console.log(err);
-            inSubmit.value = false
-        },
-        finally:()=>{
-            inSubmit.value = false
-        }
-    })
+    await axios.post('/saveCompany',{...store.state.Start.start})
+    .then((Response) => {
+        message(Response.message,Response.data.type)
+        router.get(`/welcome/${Response.data.data.id}`)
+    }).catch((err) => {
+        message(err.response.message,'warn')
+        console.log(err);
+    }).finally(()=>{
+        inSubmit.state = false
+    });
 }
 
 async function RequestAmount() {

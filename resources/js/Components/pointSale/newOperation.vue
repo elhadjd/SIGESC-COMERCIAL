@@ -23,7 +23,7 @@
 
       <div class="Footer">
         <div class="buttons">
-          <button @click="$emit('Fechar')" class="Descartar">Fechar</button>
+          <button @click="$emit('close')" class="Descartar">Fechar</button>
           <button type="submit" class="save">Confirmar</button>
         </div>
       </div>
@@ -31,7 +31,6 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import { computed, onMounted, ref } from "vue";
 import { useCurrencyInput } from "vue-currency-input";
@@ -49,9 +48,9 @@ const {inputRef} = useCurrencyInput({
 
 const store = useStore();
 
-const user = computed(() => store.state.user);
+const user = computed(() => store.state.publico.user);
 
-const emit = defineEmits(['message']);
+const emits = defineEmits(['message','update','close']);
 
 const form = ref({
   amount: 0,
@@ -61,8 +60,8 @@ const form = ref({
 
 function SaveOperation() {
     axios.post('SaveOperation',{...form.value}).then((response) => {
-        emit('message',response.data.type,response.data.message)
-        emit('update',response.data.data)
+        emits('message',response.data.message,response.data.type)
+        emits('update',response.data.data)
     }).catch((err) => {
         console.log(err);
     });
@@ -82,52 +81,63 @@ onMounted(() => {
   .Modal {
     border-radius: 6px;
     height: 300px !important;
-    .Header {
-      display: flex;
-      justify-content: center;
-      h3 {
-        font-weight: 600 !important;
-      }
-    }
-    .Container {
-      display: flex !important;
-      flex-direction: column !important;
-      > div {
-        display: flex !important;
-        width: 100% !important;
-        textarea {
-          width: 100% !important;
-          height: 60px;
-          max-width: 100%;
-          max-height: 60px !important;
-          box-shadow: 0 0 0 0;
-          border: 1px solid #ddd;
-          border-radius: 5px;
-          margin-bottom: 30px;
+        .Header {
+            height: 70px !important;
+            display: flex;
+            justify-content: center;
+            h3 {
+                font-weight: 600 !important;
+            }
         }
-      }
-      > div:nth-child(2) {
-        width: 100% !important;
-        display: flex !important;
-        justify-content: space-between !important;
-        > div:nth-child(1) {
-          display: flex;
-          flex-direction: column;
-          span {
-            margin-bottom: 5px;
-          }
+        form{
+            height: 230px !important;
+            .Container {
+                height: 170px;
+                display: flex !important;
+                flex-direction: column !important;
+                > div {
+                    display: flex !important;
+                    width: 100% !important;
+                    textarea {
+                    width: 100% !important;
+                    height: 60px;
+                    max-width: 100%;
+                    max-height: 60px !important;
+                    box-shadow: 0 0 0 0;
+                    border: 1px solid #ddd;
+                    border-radius: 5px;
+                    margin-bottom: 30px;
+                    }
+                }
+                > div:nth-child(2) {
+                    width: 100% !important;
+                    display: flex !important;
+                    justify-content: space-between !important;
+                    > div:nth-child(1) {
+                        display: flex;
+                        flex-direction: column;
+                        span {
+                            margin-bottom: 5px;
+                        }
+                    }
+                    > div:nth-child(2) {
+                        width: 50% !important;
+                        input {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+            .Footer{
+                height: 70px;
+                display: flex;
+                align-items: center;
+                >div{
+                    display: flex;
+                    flex-direction: row;
+                }
+            }
         }
-        > div:nth-child(2) {
-          width: 50% !important;
-          input {
-            width: 100%;
-          }
-        }
-      }
     }
-    .Footer{
-        height: 25%;
-    }
-  }
 }
 </style>

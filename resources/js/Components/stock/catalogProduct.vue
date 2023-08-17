@@ -17,8 +17,8 @@
                <div class="filter">
                   <span @click="dropdown.state == true ? dropdown.state = false :  dropdown.state = true" class="dropdown-toggle">Filtrar</span>
                   <div v-if="dropdown.state" class="drop">
-                     <span @click="filterSearch('qtd','>')" class="drop-item">Stock insuficiente</span>
-                     <span @click="filterSearch('qtd')" class="drop-item">Stock Disponivel</span>
+                     <span @click="filterSearch('stock_sum_quantity','>')" class="drop-item">Stock insuficiente</span>
+                     <span @click="filterSearch('stock_sum_quantity')" class="drop-item">Stock Disponivel</span>
                      <span @click="filterSearch('quantidade')" class="drop-item">Produtos com desconto</span>
                   </div>
                </div>
@@ -38,9 +38,10 @@
                </span>
             </div>
             <div class="title-item">Preço de disconto</div>
+            <div class="title-item">Estado do stock</div>
             <div class="title-item">
                stock
-               <span @click="Order('qtd')">
+               <span @click="Order('stock_sum_quantity')">
                   <font-awesome-icon icon="fa-solid fa-up-long" />
                   <font-awesome-icon icon="fa-solid fa-down-long" />
                </span>
@@ -55,14 +56,11 @@
                <div class="content-item">{{product.nome}}</div>
                <div class="content-item currency">{{currencyFormat.format(product.preçovenda)}}</div>
                <div class="content-item currency">
-                  {{
-                  product.quantidade > 0 ?
-                  ">= "+product.quantidade+" Unidades "+currencyFormat.format(product.preco_de_desconto)
-                  : currencyFormat.format(product.preçovenda)+' '
-                  }} <i v-if="product.quantidade <= 0 "> Este produto não tem disconto</i>
+                  <i v-if="product.list_price.length <= 0 "> Este produto não tem disconto</i>
                </div>
-               <div :class="product.qtd > 0 ? 'available' : 'unavailable'" class="content-item currency">{{product.qtd > 0 ? "Stock disponivel" : "Stock não disponivel"}}</div>
-               <div :class="product.estado == 0 ? 'available' : 'unavailable'" class="content-item currency">{{product.estado == 0 ? "Disponivel" : 'Não disponivel'}}</div>
+               <div :class="product.stock_sum_quantity > 0 ? 'available' : 'unavailable'" class="content-item currency">{{product.stock_sum_quantity > 0 ? "Stock disponivel" : "Stock não disponivel"}}</div>
+               <div :class="product.stock_sum_quantity > 0 ? 'available' : 'unavailable'" class="content-item currency">{{formatMoney(product.stock_sum_quantity)}}</div>
+               <div :class="product.estado == 'active' ? 'available' : 'unavailable'" class="content-item currency">{{product.estado == 0 ? "inactive" : 'Não disponivel'}}</div>
             </div>
          </div>
       </div>
@@ -82,7 +80,7 @@ const products = ref({
 })
 
 const orderBy = ref({
-    qtd: null,
+    stock_sum_quantity: null,
     preçovenda: null,
     nome: null,
     type: null,
@@ -102,7 +100,7 @@ const Order = ((ord)=>{
         }
         products.value.list.sort(orderMine)
         return orderBy.value[ord] = 'mine'
-    }else if(ord == 'qtd'){
+    }else if(ord == 'stock_sum_quantity'){
         if (orderBy.value[ord] == null || orderBy.value[ord] == 'mine') {
             products.value.list.sort(orderStockMax)
             return orderBy.value[ord] = 'max'
@@ -112,10 +110,10 @@ const Order = ((ord)=>{
     }
 })
 function orderStockMax(a,b){
-    return (b.qtd - a.qtd);
+    return (b.stock_sum_quantity - a.stock_sum_quantity);
 }
 function orderStockMine(a,b){
-    return (a.qtd - b.qtd);
+    return (a.stock_sum_quantity - b.stock_sum_quantity);
 }
 function orderMax(a,b){
     return(b.preçovenda - a.preçovenda);
@@ -126,7 +124,7 @@ const orderMine = (a,b)=>{
 
 const FormatDate = ((data) =>{
     return moment(data).format('DD-MM-YYYY')
-}) 
+})
 
 onMounted(()=>{
     axios.get('getCatalog')
@@ -139,7 +137,7 @@ onMounted(()=>{
 })
 
 const filterSearch = ((event, type = null)=>{
-    if (event == 'quantidade'|| event == 'qtd') {
+    if (event == 'quantidade'|| event == 'stock_sum_quantity') {
         const filter = products.value.store.filter((product)=>{
             if (type) return product[event] <= 0;
             return product[event] > 0;
@@ -149,9 +147,9 @@ const filterSearch = ((event, type = null)=>{
         const filter = products.value.store.filter((product)=>{
             return String(product.nome).toLowerCase().includes(event.toLowerCase())
         })
-        products.value.list = filter  
+        products.value.list = filter
     }
-      
+
 })
 
 const exportToPDF = (()=> {

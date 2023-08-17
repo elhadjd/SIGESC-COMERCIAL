@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Compra;
 
 use App\classes\ActivityRegister;
 use App\Http\Controllers\Controller;
-use App\Models\armagen;
 use App\Models\movement_type;
 use App\Models\movement_type_produtos;
 use App\Models\paymentMethod;
@@ -28,7 +27,7 @@ class compraController extends Controller
 
     public function getPurchases(Puchase $puchase)
     {
-        return $puchase->where('company_id',Auth::user()->company_id)->orderBy('id','desc')->paginate(50);
+        return $puchase->where('company_id', Auth::user()->company_id)->orderBy('id', 'desc')->paginate(50);
     }
 
     public function Order(Puchase $order)
@@ -46,7 +45,7 @@ class compraController extends Controller
         return true;
     }
 
-    public function ChangeDatePurchase(Request $request,$type, Puchase $order)
+    public function ChangeDatePurchase(Request $request, $type, Puchase $order)
     {
         $order[$type] = $request[$type];
         $order->save();
@@ -56,11 +55,11 @@ class compraController extends Controller
     {
         $order = Puchase::find($order);
 
-        $orderPuchase = Puchase::withSum('items','spent')->withSum('items','totalDiscount')
-        ->withSum('items','totalTax')
-        ->withSum('items','totalItem')
-        ->where('id',$order->id)
-        ->first();
+        $orderPuchase = Puchase::withSum('items', 'spent')->withSum('items', 'totalDiscount')
+            ->withSum('items', 'totalTax')
+            ->withSum('items', 'totalItem')
+            ->where('id', $order->id)
+            ->first();
 
         if ($orderPuchase->items_sum_total_item == null) {
             $orderPuchase->items_sum_total_discount = 0;
@@ -81,19 +80,19 @@ class compraController extends Controller
 
     public function NewPurchase(Puchase $puchase)
     {
-        $data = $puchase->create([
-            'company_id'=>Auth::user()->company_id,
+        $data = $this->companyUser()->purchase()->create([
+            'DateOrder'=>now(),
             'user_id' => Auth()->user()->id
         ]);
 
-        $date = date('d').'-'.date('m').'-'.date('Y');
-        $data->orderNumber = 'CP'.$date.'/'.$data->id;
+        $date = date('d') . '-' . date('m') . '-' . date('Y');
+        $data->orderNumber = 'CP' . $date . '/' . $data->id;
         $data->save();
 
-       return $this->Order($data);
+        return $this->Order($data);
     }
 
-    public function addSupplier(Puchase $order,$supplier)
+    public function addSupplier(Puchase $order, $supplier)
     {
 
         $order->fornecedor_id = $supplier;
@@ -107,7 +106,7 @@ class compraController extends Controller
 
         $result = PuchaseItem::where('puchase_id', $order)->where('produtos_id', $product->id)->exists();
         if ($result)
-        return $this->RespondError('Este produto já foi Adicionada nessa encomenda',[]);
+            return $this->RespondError('Este produto já foi Adicionada nessa encomenda', []);
 
         $puchase = PuchaseItem::create([
             'quantity' => 1,
@@ -122,12 +121,13 @@ class compraController extends Controller
         return $this->SumPuchase($order);
     }
 
-    public function UpdateItems(Request $request,PuchaseItem $item)
-    {   $update = $request;
+    public function UpdateItems(Request $request, PuchaseItem $item)
+    {
+        $update = $request;
 
         if (!$this->checkOrder($update['puchase_id'])) return $this->RespondInfo('Esta encomenda ja foi confirmada');
-        $totalIva = ceil($request->priceCost/100 * $request->tax * $request->quantity);
-        $totalDiscount = ceil($request->priceCost/100 * $request->discount * $request->quantity);
+        $totalIva = ceil($request->priceCost / 100 * $request->tax * $request->quantity);
+        $totalDiscount = ceil($request->priceCost / 100 * $request->discount * $request->quantity);
         $item->totalTax = $totalIva;
         $item->totalDiscount = $totalDiscount;
         $sum = $request->quantity * $request->priceCost - $totalDiscount + $totalIva;
@@ -143,27 +143,26 @@ class compraController extends Controller
         return $this->SumPuchase($update['puchase_id']);
     }
 
-    public function deleteItem($order,PuchaseItem $item)
+    public function deleteItem($order, PuchaseItem $item)
     {
         if (!$this->checkOrder($order)) return $this->RespondInfo('Esta encomenda ja foi confirmada');
         $item->delete();
         return $this->SumPuchase($order);
     }
 
-    public function confirmOrder(Request $request,Puchase $order,$type)
+    public function confirmOrder(Request $request, Puchase $order, $type)
     {
-
-        if (!$this->checkOrder($order->id) && $type != 'cancel') return $this->RespondError('Atenção esta encomenda ja foi confirmada ',$order);
+        if (!$this->checkOrder($order->id) && $type != 'cancel') return $this->RespondError('Atenção esta encomenda ja foi confirmada ', $order);
         $order->load('items');
 
-        if ($order->state == 'Anulado' && $type == 'cancel') return $this->RespondInfo('Esta compra ja se encontra anulada ',$order);
+        if ($order->state == 'Anulado' && $type == 'cancel') return $this->RespondInfo('Esta compra ja se encontra anulada ', $order);
 
-        if (empty($order->fornecedor_id)) return $this->RespondError('Seleciona um fornecedor para validar a compra',$order);
+        if (empty($order->fornecedor_id)) return $this->RespondError('Seleciona um fornecedor para validar a compra', $order);
 
-        DB::transaction(function() use ($order, &$request,&$type){
+        DB::transaction(function () use ($order, &$request, &$type) {
             foreach ($order->items as $item) {
                 $consult = stock::where('produtos_id', $item['produtos_id'])
-                ->where('armagen_id', $item['armagen_id']);
+                    ->where('armagen_id', $item['armagen_id']);
 
                 if ($consult->count() > 0) {
                     $quantityAfter = $consult->first()->quantity;
@@ -186,6 +185,7 @@ class compraController extends Controller
                 $movementTypes = movement_type::all()->where('name', 'Compra')->first();
 
                 movement_type_produtos::create([
+                    'company_id' => Auth::user()->company_id,
                     'user_id' => $request->user()->id,
                     'produtos_id' => $item->product['id'],
                     'movement_type_id' => $movementTypes->id,
@@ -206,16 +206,16 @@ class compraController extends Controller
         return $this->Order($order);
     }
 
-    public function savePayment(Request $request,Puchase $order)
+    public function savePayment(Request $request, Puchase $order)
     {
         $request->validate([
             'Amount' => 'required|integer',
         ]);
 
         $data = $request->all();
-        DB::transaction(function()use($order,&$data){
+        DB::transaction(function () use ($order, &$data) {
             $RestPayable = $order->restPayable - $data['Amount'];
-            if($RestPayable <= 0) {
+            if ($RestPayable <= 0) {
                 $RestPayable = 0;
                 $order->state = "Pago";
             }
@@ -230,15 +230,12 @@ class compraController extends Controller
             ]);
         });
 
-
-
-        return $this->RespondSuccess('Pagamento efectuado com sucesso',$this->Order($order));
+        return $this->RespondSuccess('Pagamento efectuado com sucesso', $this->Order($order));
     }
 
     public function getPayments(paymentMethod $paymentMethod)
     {
-        return $paymentMethod->with(['paymentsPurchases'=>function($payments)
-        {
+        return $paymentMethod->with(['paymentsPurchases' => function ($payments) {
             $payments->with('purchase');
         }])->get();
     }

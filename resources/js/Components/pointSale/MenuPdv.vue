@@ -16,53 +16,51 @@
       <div class="Header-right"></div>
     </div>
     <div class="Container">
-      <div v-for="item in caixas" :key="item.id" class="cardCash">
-        <div class="cashHeader">
-          <div>
-            <div>{{ item.name }}</div>
-          </div>
-          <div class="bars">
-            <div>
-              <i @click="OptionCaixas(item.id)" class="fa fa-bars"></i>
-            </div>
-            <div v-if="OptionCaixa == item.id" class="options">
-              <div @click="user.nivel == 'admin'
-                    ? showOrders(item.session[0].id) : $emit('message', 'info', 'Usuario sem acesso')">
-                Ordens
-              </div>
-              <div @click="$emit('sessao', item.id)">Sessões</div>
-              <div
-                @click="
-                  user.nivel == 'admin'
-                    ? $emit('definicaoCaixa', item)
-                    : $emit('message', 'info', 'Usuario sem acesso')
-                "
-              >
-                Definições
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="cash-container">
-          <div v-if="item.state != 'Aberto'">
-            <button @click="openControl(item.id)">
-              Abrir
-            </button>
-          </div>
+        <div>
+            <div v-for="item in Points" :key="item.id" class="cardCash">
+                <div class="cashHeader">
+                    <div>
+                        <div>{{ item.name }}</div>
+                    </div>
+                    <div class="bars">
+                        <div>
+                            <i @click="OptionCaixas(item.id)" class="fa fa-bars"></i>
+                        </div>
+                        <div v-if="OptionCaixa == item.id" class="options">
+                            <div @click="user.nivel == 'admin'
+                                    ? showOrders(item.session[0].id) : $emit('message', 'info', 'Usuario sem acesso')">
+                                Ordens
+                            </div>
+                            <div @click="$emit('sessao', item.id)">Sessões</div>
+                            <div
+                                @click="
+                                user.nivel == 'admin'
+                                    ? $emit('definicaoCaixa', item)
+                                    : $emit('message', 'info', 'Usuario sem acesso')">Definições</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cash-container">
+                    <div v-if="item.state != 'Aberto'">
+                        <button @click="openControl(item.id)">
+                        Abrir
+                        </button>
+                    </div>
 
-          <div v-if="item.state == 'Aberto'">
-            <button @click="submit(item.id)" type="submit">Continuar</button>
-          </div>
-          <div v-if="item.state == 'Aberto'">
-            <button
-              @click=" user.nivel == 'admin' ? showCash(item.session[0].id)
-                  : $emit('message', 'info', 'Usuario sem acesso')" class="showCash" type="button">
-              Ver
-              <FontAwesomeIcon icon="fa fa-eye" />
-            </button>
-          </div>
+                    <div v-if="item.state == 'Aberto'">
+                        <button @click="submit(item.id)" type="submit">Continuar</button>
+                    </div>
+                    <div v-if="item.state == 'Aberto'">
+                        <button
+                            @click=" user.nivel == 'admin' ? showCash(item.session[0].id)
+                                : $emit('message', 'info', 'Usuario sem acesso')" class="showCash" type="button">
+                            Ver
+                            <FontAwesomeIcon icon="fa fa-eye" />
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
   </div>
 </template>
@@ -80,7 +78,8 @@ const store = useStore();
 const props = defineProps({
   dados: Object,
 });
-
+const OptionCaixa = ref();
+const Points = ref([]);
 const emits = defineEmits([
     'definicaoCaixa',
     'Caixa',
@@ -102,9 +101,7 @@ const form = useForm({
   id_da_caixa: null,
 });
 
-const OptionCaixa = ref();
 
-const caixas = ref(props.dados.caixas);
 
 onMounted(() => {
     getCaixas();
@@ -145,13 +142,13 @@ const openControl = ((caixa)=>{
 const showCash = (Cash) => {
     emits("AbrirCaixa", Cash);
 };
-const getCaixas = () => {
-    axios.get('caixa/buscar')
-  .then((Response) => {
-      caixas.value = Response.data
-  }).catch((err) => {
-      console.log(err);
-  });
+const getCaixas = async() => {
+   await axios.get('caixa/buscar')
+    .then((Response) => {
+        Points.value = Response.data
+    }).catch((err) => {
+        console.log(err);
+    });
 }
 </script>
 

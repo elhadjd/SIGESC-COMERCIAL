@@ -75,6 +75,7 @@ export const form = ((emits,print,Invoice,statePayment,loading,modalConfirm)=>{
             },
         },
         form:{
+            title: 'Orden de compra',
             relationType: 'Fornecedor',
             inputs:[
                 {
@@ -144,7 +145,7 @@ export const form = ((emits,print,Invoice,statePayment,loading,modalConfirm)=>{
             ],
 
             totalOrder:{
-                
+
                 totals: [
                     {
                         title: 'Total da mercadoria',

@@ -6,9 +6,9 @@ export const Request = (()=>{
 
     const store = useStore()
     async function ReqGet(route: String): Promise<void> {
-        return await axios.get(`http://127.0.0.1:8000/api/${route}`,{
+        return await axios.get(`http://bosgc.sisgesc.net/api/${route}`,{
             headers: {
-                Authorization: 'CQAS9vkO0HTqZ8t9Igorqnvfm8yBYMeiKRhadwmSSIFLIBx4AevO8ZCX7aSm'
+                Authorization: 'oEn34JE6gDfVuZlR6QRWX8Q2byn9repjspVFWoz2SZdncBYePGc7XoKZ8Noo'
             },
         }).then((response) => {
             return response.data
@@ -17,11 +17,11 @@ export const Request = (()=>{
         });
     }
     async function ReqPost(route: String,param: Object): Promise<void> {
-      return await axios.post(`http://127.0.0.1:8000/api/${route}`,{
+      return await axios.post(`http://bosgc.sisgesc.net/api/${route}`,{
             ...param
         },{
             headers: {
-                Authorization: 'CQAS9vkO0HTqZ8t9Igorqnvfm8yBYMeiKRhadwmSSIFLIBx4AevO8ZCX7aSm',
+                Authorization: 'oEn34JE6gDfVuZlR6QRWX8Q2byn9repjspVFWoz2SZdncBYePGc7XoKZ8Noo',
             }
         }).then((response) => {
             return response.data
