@@ -12,7 +12,7 @@ class ListPriceController extends Controller
 
     public function index()
     {
-       
+
     }
 
     public function create(Request $request)
@@ -34,7 +34,7 @@ class ListPriceController extends Controller
             $lista_price
         );
     }
-  
+
     public function update(Request $request, price_list $listPrice,produtos $product)
     {
         $listPrice->update([
@@ -43,7 +43,7 @@ class ListPriceController extends Controller
         ]);
         return $product->refresh();
     }
-   
+
     public function destroy($id, produtos $product)
     {
        price_list::find($id)->delete();

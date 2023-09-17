@@ -46,7 +46,7 @@ class StartController extends Controller
 
        if ($response->successful()) {
             $company = $this->saveData($request,new uploadImage());
-            return $this->ValidateLicense($request->license,$company,$request->user,$request->totals,$request->accounts);
+            return $this->ValidateLicense($request->license,$company,$request->user);
         } else {
             // Se a requisição não for bem-sucedida, você pode lidar com erros aqui
             $statusCode = $response->status(); // Obtenha o código de status da resposta
@@ -55,8 +55,6 @@ class StartController extends Controller
             // Lidar com o erro conforme necessário
             // ...
         }
-        
-        
     }
 
     public function saveData($request,$uploadImage)
@@ -102,11 +100,10 @@ class StartController extends Controller
             $data = $company;
 
         });
-
         return $data;
     }
 
-    public function ValidateLicense($license,$company,$user,$totals,$accounts)
+    public function ValidateLicense($license,$company,$user)
     {
         $countApp = count(json_decode(json_encode($license), true));
         $licenseType = type_license::where('name',
@@ -200,7 +197,7 @@ class StartController extends Controller
 
         $response = Http::withHeaders([
             'Authorization' => 'oEn34JE6gDfVuZlR6QRWX8Q2byn9repjspVFWoz2SZdncBYePGc7XoKZ8Noo',
-        ])->post('http://bosgc.sisgesc.net/api/activeLicense',$request);
+        ])->post('https://bosgc.sisgesc.net/api/activeLicense',$request);
 
        $data = json_decode($response);
 

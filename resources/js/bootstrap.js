@@ -12,6 +12,16 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = 'XHTRgFlKgkoVu1Kk46GzmV6uAujKXvXBHQ4eAWeJ';
 window.axios.defaults.withCredentials = true;
 
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+    .then(registration => {
+    console.log('Service Worker registrado com sucesso:', registration);
+    })
+    .catch(error => {
+    console.log('Falha ao registrar o Service Worker:', error);
+    });
+}
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

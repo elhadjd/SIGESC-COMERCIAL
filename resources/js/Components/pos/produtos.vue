@@ -7,15 +7,14 @@
     />
   </Transition>
   <div class="Artigos">
-    <label
+    <div
       :class="idProd == product.id ? { shake: disabled } : ''"
       v-for="product in produtos.slice(0,100)"
       :key="product.id"
       class="formArtigo"
     >
-      <div style="height: 122px; width: 125px; padding: 5px, 5px, 5px, 5px">
-        <div>
-          <div class="PrecoProd">
+      <div>
+        <div class="PrecoProd">
             <div class="iconesBloco">
               <i
                 class="fa fa-exclamation-circle"
@@ -29,18 +28,18 @@
               {{ FormatarDineiro.format(product.preçovenda) }}
             </div>
           </div>
-          <div class="ProdutoImagem">
+        <div>
+
+          <div @click="AddProd(product)" class="ProdutoImagem">
             <img
-              @click="AddProd(product)"
               :src="'/produtos/image/' + product.image"
               :alt="product.image"
-              srcset=""
             />
           </div>
           <div class="ProdutoNome">{{ product.nome }}</div>
         </div>
       </div>
-    </label>
+    </div>
   </div>
 </template>
 

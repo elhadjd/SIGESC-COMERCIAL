@@ -4,7 +4,7 @@
             <Cliente @cliente="client"/>
             <span @click="$emit('showProds')">Add Prod <i class="fa fa-plus"></i></span>
         </div>
-        
+
         <div class="QtdPrcImpr">
             <div @click="print">Imprimir</div>
             <div @click="$emit('tipo','preco')">Preço</div>
@@ -37,6 +37,7 @@
                 class="nomeros" id="numero" :key="index" @click="numero(i)">
                 {{ i }}
             </div>
+            
             <div class="nomeros" @click="numero(0)" id="numero">{{ 0 }}</div>
             <div class="nomeros" @click="numero('.')" id="numero">.</div>
             <div id="numeros" @click="$emit('remover')">
@@ -79,7 +80,7 @@ async function printInvoice(type = null) {
     }).catch((err) => {
         console.log(err);
     }).finally(()=>{
-        
+
     });
 }
 

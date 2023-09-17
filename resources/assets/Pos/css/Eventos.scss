@@ -69,18 +69,15 @@
         }
     }
     .PagamentoDireita{
-        display: grid;
-        grid-template-columns: repeat(3,1fr);
-        grid-template-rows: repeat(4,1fr);
-        align-items: center;
-        justify-content: center;
-        text-align: center;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
         width: 50%;
         border: 1px solid var(--borderColor);
         margin-left: 1%;
         border-radius: 5px;
         #numeros{
-            display: flex;
+            flex: 1 1 70px;
             align-items: center;
             justify-content: center;
             &:hover{
@@ -89,14 +86,15 @@
             }
         }
         div {
-            width: 100%;
+            flex: 1 1 70px;
+            height: 100% !important;
             font-weight: 600;
             background-color: var(--appBg);
             font-size: 33px;
+            height: 50px !important;
             text-align: center;
             border: 1px solid var(--borderColor);
             color: #777;
-            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -118,6 +116,7 @@
 
 }
 @media screen and (max-width: 600px) {
+
     .FormPagamentoCima{
         >div:nth-child(1){
             display: flex;
@@ -138,6 +137,13 @@
                     color: var(--bgButtons) !important;
                 }
             }
+        }
+    }
+}
+@media screen and (max-width: 415px) {
+    .PagamentoDireita{
+        #numeros,>div{
+            flex: 1 1 50px !important;
         }
     }
 }

@@ -97,9 +97,11 @@
 
                 .user{
                     position: absolute;
-                    background-color: transparent;
+                    width: 80px;
+                    background-color: var(--app_color);
                     color: rgba(0, 0, 0, 0.638);
-                    right: 10px;
+                    right: 0px;
+                    padding-left: 5px;
                     &:hover{
                         cursor: pointer;
                         opacity: 0.8;

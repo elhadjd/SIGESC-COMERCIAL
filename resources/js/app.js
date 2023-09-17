@@ -113,8 +113,9 @@ library.add(
     faChartGantt
 );
 
+
 const appName =
-    window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
+    window.document.getElementsByTagName("title")[0]?.innerText || "SIGESC";
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

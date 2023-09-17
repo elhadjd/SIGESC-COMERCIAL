@@ -53,11 +53,10 @@
         <shopping :size="200" />
       </div>
       <div class="Posesquerda">
-        <div style="height: 100%">
           <div class="esquerdaCima">
             <div class="Carrinho">
                 <li
-                  class="listaPedido"
+                  :class="`${IdAlterar == Pedido.id && 'last-element'} listaPedido`"
                   v-for="(Pedido, index) in Pedido.items"
                   :key="index"
                   @click="ClicarLinha(Pedido.id, 'linha')"
@@ -71,12 +70,10 @@
                     {{ FormatarDineiro.format(Pedido.total) }}
                   </div>
                 </li>
-              <div v-if="Pedido.items.length > 0" class="totalEncomendase">
-                <div class="totalEncomenda">
-                  <strong class="mr-2">Total:</strong
-                  >{{ FormatarDineiro.format(Pedido.total) }}
+                <div v-if="Pedido.items.length > 0">
+                    <strong class="mr-2">Total:</strong>
+                    <span>{{ FormatarDineiro.format(Pedido.total) }}</span>
                 </div>
-              </div>
             </div>
           </div>
 
@@ -94,7 +91,6 @@
                 @Remover="Remover"
             />
           </div>
-        </div>
       </div>
       <div class="Posdireita" :class="showProducts ? 'showProducts' : ''">
         <ListePedido

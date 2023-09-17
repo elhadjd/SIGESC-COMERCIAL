@@ -13,7 +13,6 @@ class chartInvoice extends Controller
     {
         $nowDate = Carbon::now();
         $month = $nowDate->daysInMonth;
-        $date = new Data;
         $array = [];
         for ($i = 1; $i <= $month; $i++) {
             $totalInvoice = $this->companyUser()->invoice()->whereDay('DateOrder', $i <= 9 ? '0' . $i : $i)

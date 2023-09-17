@@ -61,8 +61,6 @@ class PointSaleController extends Controller
         ]);
     }
 
-
-
     public function PasswordCash(Request $request, session $session)
     {
         $session->load('caixa');
@@ -71,10 +69,12 @@ class PointSaleController extends Controller
         }
         return $this->RespondError('Dados encorretos');
     }
+
     public function getUsersAuthorized()
     {
         return Password_Invoice_Cancel::all();
     }
+
     public function CancelInvoice(Request $request, $user, orderPos $invoice, OrdersController $ordersController)
     {
         $request->validate([
