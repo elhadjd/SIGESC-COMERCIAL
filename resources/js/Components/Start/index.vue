@@ -4,34 +4,36 @@
             <font-awesome-icon icon="fa-solid fa-left-long" />
         </Link>
         <header>
-            <h1><span>S</span>ISGESC</h1>
+            <h1><span>S</span>IGESC</h1>
         </header>
         <div class="buttons">
             <button @click="stateForm = 'new'">Nova empresa</button>
-            <button @click="stateForm = 'payment'">Pagar licensa</button>
-            <button @click="stateForm = 'license'">Ativar licensa</button>
+            <button @click="stateForm = 'payment'">Pagar licença</button>
+            <button @click="stateForm = 'license'">Ativar licença</button>
+            <button @click="stateForm = 'renew'">Renovar licença</button>
         </div>
         <Counts :data="accountClient.data" v-if="stateForm == 'counts'"/>
-        <div v-if="stateForm == 'license'" class="mini-form">
+        <form v-if="stateForm == 'license'" class="mini-form">
             <div>
                 <div class="Form-control">
                     <label for="nif">Nif:</label>
-                    <input type="text" v-model="license.nif" placeholder="Digita seu nif" id="nif">
+                    <input type="text" required v-model="license.nif" placeholder="Digita seu nif" id="nif">
                 </div>
                 <div class="Form-control">
                     <label for="license">Licença:</label>
-                    <input type="text" v-model="license.hash" placeholder="Digita sua licensa" id="license">
+                    <input type="text" required v-model="license.hash" placeholder="Digita sua licensa" id="license">
                 </div>
             </div>
             <div>
-                <button @click="activeLicense">
+                <button @submit.prevent.stop="activeLicense">
                     Validar
                     <i v-if="license.state == 0" class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
                     <font-awesome-icon
                     :icon="`fa-solid ${license.state == 1 ? 'fa-check' : license.state == 2 ? 'fa-xmark': ''}`" />
                 </button>
             </div>
-        </div>
+        </form>
+        <renew-license  v-if="stateForm == 'renew'"/>
         <div v-if="stateForm == 'payment'" class="mini-form">
             <div>
                 <div class="Form-control">
@@ -91,6 +93,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import company from "./company.vue";
 import License from "./License.vue";
 import Admin from "./Admin.vue";
+import renewLicense from './licensesPremium/renewLicense.vue'
 import { computed, reactive, ref, watch } from "vue";
 import { useStore } from 'vuex';
 import Counts from './licensesPremium/counts.vue'

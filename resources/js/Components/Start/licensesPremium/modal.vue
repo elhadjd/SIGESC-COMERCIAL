@@ -7,7 +7,7 @@
                     <font-awesome-icon  v-if="checkApp(app.id)" icon="fa-solid fa-check" />
                     <font-awesome-icon class="add" v-else icon="fa-solid fa-plus" />
                     <div class="price">{{formatMoney(app.price)}}</div>
-                    <img :src="`http://bosgc.sisgesc.net/app/image/${app.image}`">
+                    <img :src="`https://bosgc.sisgesc.net/app/image/${app.image}`">
                     <div class="appName">{{app.label}}</div>
                 </span>
             </div>

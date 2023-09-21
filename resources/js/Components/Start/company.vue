@@ -23,7 +23,7 @@
    </div>
    <div class="box">
       <label htmlFor="activity">Tipo de atividade:</label>
-      <button type="button" id="activity" @click="activities.state = !activities.state">{{company.activity?.name}}</button>
+      <button type="button" id="activity" @click="activities.state = !activities.state">{{company.activity?.name?company.activity.name:'Seleciona o tipo de atividade'}}</button>
       <div class="drop" v-if="activities.state">
          <span v-for="item in activities.data" :key="item.id" @click="chooseActivity(item)">{{item.name}}</span>
       </div>
@@ -31,7 +31,7 @@
    <div class="box">
       <label for="country">Pais:</label>
       <button @click="country.state = ! country.state" id="country" type="button">
-      <span>{{company.country != [] ? company.country?.name : 'Escolhe seu pais'}}</span>
+      <span>{{company.country?.name ? company.country?.name : 'Escolhe seu pais'}}</span>
       </button>
       <div class="drop" v-if="country.state" >
          <input type="text" @keyup="searchCountry" placeholder="Nome do pais" />

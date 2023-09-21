@@ -17,7 +17,7 @@ return [
     */
     // 'log' => 'errorlog',
 
-    'name' => env('APP_NAME', 'Sigesc'),
+    'name' => env('APP_NAME', 'SIGESC'),
 
     /*
     |--------------------------------------------------------------------------

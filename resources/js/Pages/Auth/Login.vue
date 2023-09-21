@@ -2,7 +2,7 @@
 <Toast />
 <div class='principal'>
     <header>
-        <h1><span>S</span>ISGESC</h1>
+        <h1><span>S</span>IGESC</h1>
     </header>
     <div class='container'>
         <div class="info">
@@ -10,22 +10,22 @@
                 <div>
                     <div><AiOutlineCheckCircle/></div>
                     <div>
-                        <span>Comece em pouco tempo</span>
-                        <span>Integre APIs voltadas a desenvolvedores ou opte por soluções com pouco código ou predefinidas.</span>
+                        <span>Sistema de PDV Avançado</span>
+                        <span>Melhore a eficiência das suas vendas com o nosso Módulo de PDV de última geração.</span>
                     </div>
                 </div>
                 <div>
                     <div><AiOutlineCheckCircle/></div>
                     <div>
-                        <span>Aceite qualquer modelo de negócio</span>
-                        <span>E-commerce, assinaturas, plataformas de SaaS, marketplaces e muito mais. Tudo isso em uma plataforma unificada.</span>
+                        <span>Emissão de Faturas e Controle Financeiro</span>
+                        <span>Simplifique a emissão de faturas e controle as finanças da sua empresa com o nosso Módulo de Faturamento.</span>
                     </div>
                 </div>
                 <div>
                     <div><AiOutlineCheckCircle/></div>
                     <div>
-                        <span>Junte-se a milhões de empresas</span>
-                        <span>A Sisgesc tem a confiança de empresas e startups de todos os portes.</span>
+                        <span>Gestão de Compras Simplificada</span>
+                        <span>Otimize o seu processo de compra com o nosso Módulo de Compras.</span>
                     </div>
                 </div>
             </div>

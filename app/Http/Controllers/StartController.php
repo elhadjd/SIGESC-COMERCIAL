@@ -42,18 +42,14 @@ class StartController extends Controller
 
         $response = Http::withHeaders([
             'Authorization' => 'oEn34JE6gDfVuZlR6QRWX8Q2byn9repjspVFWoz2SZdncBYePGc7XoKZ8Noo',
-        ])->post('http://bosgc.sisgesc.net/api/SaveCompany',$request);
+        ])->post('https://bosgc.sisgesc.net/api/SaveCompany',$request);
 
        if ($response->successful()) {
             $company = $this->saveData($request,new uploadImage());
             return $this->ValidateLicense($request->license,$company,$request->user);
         } else {
-            // Se a requisição não for bem-sucedida, você pode lidar com erros aqui
-            $statusCode = $response->status(); // Obtenha o código de status da resposta
-            $errorMessage = $response->body(); // Obtenha o corpo da resposta em caso de erro
+            $errorMessage = $response->body();
             return $this->RespondError($errorMessage);
-            // Lidar com o erro conforme necessário
-            // ...
         }
     }
 
@@ -98,7 +94,6 @@ class StartController extends Controller
             $user->perfil()->create();
 
             $data = $company;
-
         });
         return $data;
     }
@@ -182,9 +177,7 @@ class StartController extends Controller
             'ip_address' => request()->ip(),
             'browser' => $browser,
         ]);
-
         return $this->RespondSuccess('Dados registrados com sucesso',$company);
-
     }
 
     public function welcome(company $company)
