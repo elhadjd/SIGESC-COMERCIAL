@@ -22,8 +22,8 @@
                 <div class="Main">
                     <div class="Name-Img-control">
                         <div class="form-nome">
-                            <input :disabled="!EstadoForm" type="text" v-model="user.name" id="nome">
-                            <input :disabled="!EstadoForm" type="text" v-model="user.surname" id="surname">
+                            <input :disabled="!EstadoForm" type="text" placeholder="Nome" v-model="user.name" id="nome">
+                            <input :disabled="!EstadoForm" type="text" placeholder="Apelido" v-model="user.surname" id="surname">
                         </div>
                         <div class="form-image">
                             <div>
@@ -68,15 +68,7 @@
                         <span :class="step === 'config'?'active':''"
                         @click="step = 'config'">Configuração</span>
                     </div>
-                    <div v-if="user.id == '' && step == 'password'" class="DivSenha">
-                        <div>
-                            <label for="senha">Senha</label>
-                            <input :disabled="!EstadoForm" v-model="senha.senha1" type="password" name="password" id="senha">
-                        </div>
-                        <div>
-                            <label for="senha">Confima Senha</label>
-                            <input :disabled="!EstadoForm" v-model="senha.senha2" type="password" name="password" id="senha">
-                        </div>
+                    <div v-if="user.email == null && step == 'password'" class="DivSenha">
                         <div class="regras-senha">
                             <ul>
                                 <li>A senha deve ter no minimo 6 digitos</li>
@@ -84,6 +76,17 @@
                                 <li>A Senha deve conter número e letra</li>
                             </ul>
                         </div>
+                        <div>
+                            <span>
+                                <label for="senha">Senha</label>
+                                <input :disabled="!EstadoForm" v-model="senha.senha1" type="password" name="password" id="senha">
+                            </span>
+                            <span>
+                                <label for="senha1">Confima Senha</label>
+                                <input :disabled="!EstadoForm" v-model="senha.senha2" type="password" name="password" id="senha1">
+                            </span>
+                        </div>
+
                     </div>
                     <KeepAlive>
                         <info-user @changeInput="handleInputs" v-if="step === 'info'" :data="user"/>
@@ -158,20 +161,20 @@ const SaveUser = (()=>{
             if (senha.senha1.length <=5) {
                 emits('message','A senha deve ser mair do que 5 digitos','info')
             } else {
-                const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%*()_+^&}{:;?.])(?:([0-9a-zA-Z!@#$%;*(){}_+^&])(?!\1)){6,}$/;
-                if (regex.test(senha.senha1)) {
-                    user.value.password = senha.senha1;
-                    return InsertUser(`SaveUser`,user.value)
-                } else {
-                    emits('message','Formato de senha invalida','info')
-                }
+                // const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%*()_+^&}{:;?.])(?:([0-9a-zA-Z!@#$%;*(){}_+^&])(?!\1)){6,}$/;
+                // if (regex.test(senha.senha1)) {
+                //     user.value.password = senha.senha1;
+                // } else {
+                //     emits('message','Formato de senha invalida','info')
+                // }
+                return InsertUser(`SaveUser`,user.value)
             }
         }
     }
 })
 
 const InsertUser = ((route,User)=>{
-    axios.post(route,{...User})
+    axios.post(route,{...User,...senha})
     .then((response) => {
         if (response.data.type == "success") {
             user.value = response.data.data

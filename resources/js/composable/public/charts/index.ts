@@ -123,6 +123,7 @@ export const analisOrders = ((route:string) => {
     };
 
     async function getOrder():Promise<void>{
+
         chartType.value = ''
        await axios.get(route)
         .then((response) => {

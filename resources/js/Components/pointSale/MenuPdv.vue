@@ -88,20 +88,14 @@ const emits = defineEmits([
     'AbrirCaixa',
     'message'
 ]);
-
 const modalSingle = ref({
   state: false,
   id: "",
 });
-
 const user = computed(()=> store.state.publico.user);
-
-
 const form = useForm({
   id_da_caixa: null,
 });
-
-
 
 onMounted(() => {
     getCaixas();
@@ -143,11 +137,14 @@ const showCash = (Cash) => {
     emits("AbrirCaixa", Cash);
 };
 const getCaixas = async() => {
+    store.state.pos.StateProgress = true;
    await axios.get('caixa/buscar')
     .then((Response) => {
         Points.value = Response.data
     }).catch((err) => {
         console.log(err);
+    }).finally(()=>{
+        store.state.pos.StateProgress = false;
     });
 }
 </script>

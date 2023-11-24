@@ -78,7 +78,6 @@ class productsController extends Controller
            $type_movements = $product->type_movement()->first()->with(['movements' => function($query) use ($product){
                 $query->where('produtos_id',$product->id);
             }])->get();
-
         }else{
             $type_movements = movement_type::all();
         }
@@ -100,12 +99,12 @@ class productsController extends Controller
     public function update(produtos $product, Request $request)
     {
         $image = new uploadImage();
-        $data = $request->produtos;
+        $data = $request->data;
         unset($data['id'], $data['category'], $data['movement_stock'], $data['fornecedor'], $data['updated_at'], $data['created_at']);
         if (Auth::user()->nivel == 'admin') {
 
-            if ($request->imagem != null) {
-                $data['image'] = $image->Upload("/produtos/image/", $request->imagem, $product);
+            if ($data['imagem'] != null) {
+                $data['image'] = $image->Upload("/produtos/image/", $data['imagem'], $product);
             }
             if ($product->update($data)) {
                 $this->registerActivity("Atualizou os dados do produto $product->nome");
@@ -114,8 +113,8 @@ class productsController extends Controller
                 return $this->RespondError('Erro ao Adicionar o produto');
             }
         }else{
-            if ($request->imagem != null) {
-                $product->image = $image->Upload("/produtos/image/", $request->imagem, $product);
+            if ($data['imagem'] != null) {
+                $product->image = $image->Upload("/produtos/image/", $data['imagem'], $product);
                 $product->save();
                 return $this->RespondSuccess('Imagem Atualizada com Sucesso',$product->fresh());
             }else{
@@ -134,7 +133,7 @@ class productsController extends Controller
                 'category_product_id' => $create->id
             ]);
 
-            return $this->RespondSuccess('Categoria adicionada com successo');
+            return $this->RespondSuccess('Categoria adicionada com successo',$create);
         }
     }
 

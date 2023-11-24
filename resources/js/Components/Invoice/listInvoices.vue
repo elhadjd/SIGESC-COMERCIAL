@@ -22,7 +22,6 @@
          </div>
       </div>
       <div class="Container">
-        <div v-if="loading == 'start'" class="progress"><i class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i></div>
         <invoices-th v-if="listType == 'large'" @showInvoice="onRowSelect" :Invoices="Invoices"/>
         <div v-if="listType == 'list'" class="list">
             <div class="Title text-secondary">
@@ -111,7 +110,7 @@ const getPage = ((data)=>{
 const {getFilter} = Search(Invoices.value,loading);
 
 const getInvoices = async () => {
-    loading.value = 'start'
+    store.state.pos.StateProgress = true;
     await axios.get('getInvoices').then((Response) => {
       Invoices.value.search = Response.data.data
       Invoices.value.list = Response.data
@@ -120,7 +119,7 @@ const getInvoices = async () => {
    }).catch((err) => {
       console.log(err);
    }).finally(()=>{
-    loading.value = null
+    store.state.pos.StateProgress = false;
    });
 }
 

@@ -57,7 +57,7 @@ const stateFormItems = ref(false);
 const ListOrders = ref([]);
 
 const formatDate = (date) => {
-  return moment(date).format("DD-MM-YYYY H:m:s");
+  return moment(date).format("DD-MM-YYYY hh:mm:ss");
 };
 
 const Encomendas = (event) => {

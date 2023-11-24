@@ -24,7 +24,7 @@ class uploadImage
 
         if ($extension->contains($ext)) {
             $decode = base64_decode($image[1]);
-            $filename = Str::random() . "." . $ext;
+            $filename = Str::random() . "." . 'png';
             // pegar o local para salvar a imagem
             $patch = public_path() . $patch . $filename;
             // Realizar o upload

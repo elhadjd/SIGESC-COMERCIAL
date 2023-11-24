@@ -6,8 +6,9 @@
     @page{
         size: auto;
         margin: 0mm;
-      }
+    }
     .Form_fatura{
+        width: 100% !important;
         background-color: white;
         font: 11pt arial !important;
     }
@@ -25,6 +26,21 @@
     }
     #IdCompra{
         right: 0;
+    }
+    .info-company{
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding: 5px 20px 5px 20px;
+        .content{
+            display: flex;
+            justify-content: space-between;
+
+            span{
+                font-size: 13px !important;
+                font-weight: bold;
+            }
+        }
     }
 
 }
@@ -51,7 +67,9 @@
             .content{
                 display: flex;
                 justify-content: space-between;
+
                 span{
+                    font-size: 13px !important;
                     font-weight: bold;
                 }
             }

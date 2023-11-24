@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('workers_departments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->foreign('company_id')->references('id')->on('companies');
             $table->string('name');
             $table->timestamps();
         });

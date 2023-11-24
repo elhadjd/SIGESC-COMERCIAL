@@ -3,6 +3,8 @@
     height: 100vh;
     padding: 0 !important;
     margin:  0 !important;
+    display: flex;
+    flex-direction: column !important;
     .fatura{
         z-index: 1080 !important;
     }
@@ -180,7 +182,7 @@
                         font-weight: bold;
                         padding: 7px;
                         color: #555;
-                        z-index: 1080;
+                        z-index: 1060;
                         transition: 0.2s;
                         div{
                             width: 25%;

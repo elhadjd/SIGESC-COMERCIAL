@@ -1,23 +1,22 @@
 <template>
-  <div class="ManuPosGeral">
-    <Index
-      v-if="!$store.state.pos.Controlo.state"
-      :session="props.session"
-      @message="messages"
-      @login="teste"
+<Index
+    v-if="!$store.state.pos.Controlo.state"
+    :session="props.session"
+    @message="messages"
+    @login="teste"
+/>
+<Toast />
+<Transition>
+    <EntradaSaida
+    v-if="entradaSaida"
+    @message="messages"
+    @fechar="entradaSaida = false"
     />
-    <Toast />
-    <Transition>
-      <EntradaSaida
-        v-if="entradaSaida"
-        @message="messages"
-        @fechar="entradaSaida = false"
-      />
-    </Transition>
-    <div v-if="fatura" class="fatura">
-      <Fatura :dadosFatura="dadosFatura" @closePrint="closePrint"/>
-    </div>
-
+</Transition>
+<div v-if="fatura" class="fatura">
+    <Fatura :dadosFatura="dadosFatura" @closePrint="closePrint"/>
+</div>
+  <div v-else class="ManuPosGeral">
     <section id="headerPos">
         <button type="button" class="header-One">
             <li>
@@ -499,8 +498,8 @@ const Remover = () => {
 const CalcularTotal = () => {
   // aqui vai a lógica do total
   Pedido.value.total = 0;
-  var ss = Pedido.value.items.filter((novo) => novo.total);
-  ss.forEach((novo) => {
+  var items = Pedido.value.items.filter((novo) => novo.total);
+  items.forEach((novo) => {
     Pedido.value.total += Number(novo.total);
   });
   return Pedido.value.total;

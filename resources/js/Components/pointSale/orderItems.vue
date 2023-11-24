@@ -77,15 +77,14 @@
 import { onMounted, reactive, ref } from "@vue/runtime-core";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
+import { useStore } from "vuex";
 
 const props = defineProps({
   order: Object
 });
-
+const store = useStore()
 const order = ref(props.order);
-
 const amountPaid = ref(0)
-
 const emits = defineEmits(['fechar','message']);
 const change = ref(0)
 const toast = useToast();
@@ -104,7 +103,6 @@ const changes = (()=>{
     props.order.payments.forEach((amount)=>{
         amountPaid.value += Number(amount.amountPaid)
     })
-
     change.value = FormatDinheiro.format(Number(amountPaid.value) - Number(props.order.total))
 })
 
@@ -113,6 +111,7 @@ const DevolverFatura = () => {
     emits('message','error','Essa Fatura já foi Anulada')
     return false;
   } else {
+    store.state.pos.StateProgress = true;
     axios
       .put(`CancelInvoice/${props.order.id}`)
       .then((response) => {
@@ -121,6 +120,8 @@ const DevolverFatura = () => {
       })
       .catch((err) => {
         console.log(err);
+      }).finally(()=>{
+        store.state.pos.StateProgress = false;
       });
   }
 };

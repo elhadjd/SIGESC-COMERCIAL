@@ -2,13 +2,13 @@
   <div class="fornecedore">
     <div class="addFornecedor">
       <button
-        @click="fornecedores.state = !fornecedores.state"
+        @click="provider.state = !provider.state"
         type="button"
         class="dropdown-toggle"
       >
         Adicionar fornecedor
       </button>
-      <div v-if="fornecedores.state" class="list-items">
+      <div v-if="provider.state" class="list-items">
         <input
           type="text"
           autofocus
@@ -17,16 +17,16 @@
           placeholder="pesquisa..."
         />
         <div
-          v-for="item in fornecedores.data"
+          v-for="item in provider.data"
           :key="item.id"
-          @click="AdicionarFornecedor(item.id)"
+          @click="addProvider(item.id)"
         >
           {{ item.name }}
         </div>
       </div>
     </div>
     <div class="suppliers">
-      <div v-for="item in product.fornecedor" :key="item.id">
+      <div v-for="item in product.data.fornecedor" :key="item.id">
         <span>{{ item.name }}</span>
         <FontAwesomeIcon
           @click="deleteSupplier(item.id)"
@@ -38,21 +38,18 @@
 </template>
 
 <script setup>
+import { serviceMessage } from "@/composable/public/messages";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { onMounted, ref } from "vue";
-
-const fornecedores = ref({
+import { computed, onMounted, ref } from "vue";
+import { useStore } from "vuex";
+const store = useStore()
+const provider = ref({
   state: false,
   data: [],
   store: [],
 });
-
-const props = defineProps({
-  product: {
-    default: () => Object,
-  },
-});
-
+const product = computed(()=> store.getters['Product/product'])
+const {showMessage} = serviceMessage()
 onMounted(async () => {
   getSuppliers();
 });
@@ -61,24 +58,20 @@ async function getSuppliers() {
   await axios
     .get("/suppliers")
     .then((Response) => {
-      fornecedores.value.data = Response.data;
-      fornecedores.value.store = Response.data;
-      if (Response.data.ListPrice) {
-        ListPrice.value.preco = Response.data.ListPrice.preco_de_desconto;
-        ListPrice.value.quantidade = Response.data.ListPrice.quantidade;
-      }
+      provider.value.data = Response.data;
+      provider.value.store = Response.data;
     })
     .catch((err) => {
       console.log(err);
     });
 }
 
-function AdicionarFornecedor(fornecedor) {
-  axios
-    .post(`/AddProductSupplier/${props.product.id}/${fornecedor}`)
+async function addProvider(provider) {
+  await axios
+    .post(`/AddProductSupplier/${product.value.data.id}/${provider}`)
     .then((response) => {
-      if (response.data.message) return message(response.data);
-      props.product.fornecedor = response.data.fornecedor;
+      if (response.data.message) return showMessage(response.data.message,response.data.type);
+      product.value.data.fornecedor = response.data.fornecedor;
     })
     .catch((err) => {
       console.log(err);
@@ -86,7 +79,7 @@ function AdicionarFornecedor(fornecedor) {
 }
 
 function search(event) {
-  const filter = fornecedores.value.store.filter((item) => {
+  const filter = provider.value.store.filter((item) => {
     return (
       String(item.name)
         .toLowerCase()
@@ -97,14 +90,14 @@ function search(event) {
       String(item.nif).includes(event.target.value)
     );
   });
-  fornecedores.value.data = filter;
+  provider.value.data = filter;
 }
 
-const deleteSupplier = (supplier) => {
-  axios
-    .post(`/deleteSupplierProduct/${props.product.id}/${supplier}`)
+const deleteSupplier = async(supplier) => {
+  await axios
+    .post(`/deleteSupplierProduct/${product.value.data.id}/${supplier}`)
     .then((response) => {
-      props.product.fornecedor = response.data.fornecedor;
+      product.value.data.fornecedor = response.data.fornecedor;
     })
     .catch((err) => {
       console.log(err);

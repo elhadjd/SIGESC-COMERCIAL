@@ -96,7 +96,6 @@ Route::middleware('auth')->group(function () {
             Route::controller(PointSaleController::class)->group(function () {
                 Route::get('Pos/{caixa}', 'index')->name('pos');
                 Route::get('menuPos', 'menuPos');
-
                 Route::get('getTypeOperation', 'getTypeOperation');
                 Route::post('addOperation', 'addOperation');
                 Route::post('PasswordCash/{session}', 'PasswordCash');
@@ -111,6 +110,7 @@ Route::middleware('auth')->group(function () {
                 Route::put('CancelInvoice/{order}', 'CancelInvoice');
                 Route::get('printInvoice/{session}/{type}','printInvoice');
                 Route::get('groupBy/{event}/{column}','groupBy');
+                Route::post('/checkInvoice','checkInvoiceDupleDelete');
             });
 
             Route::controller(AnalisOrderController::class)->group(function () {

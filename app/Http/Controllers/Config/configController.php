@@ -64,6 +64,9 @@ class configController extends Controller
         if ($request->imagem && $request->imagem != $user->image) {
             $data['image'] = $image->Upload('/login/image/',$data['imagem'],$user);
         }
+        $password = Hash::make($data['senha1']);
+
+        $user->password = $password;
         if ($request->armagen) $data['armagen_id'] = $data['armagen']['id'];
         $user->update($data);
         $user->perfil()->update($data['perfil']);

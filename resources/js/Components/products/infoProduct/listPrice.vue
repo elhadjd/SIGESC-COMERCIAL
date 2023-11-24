@@ -48,18 +48,10 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import axios from "axios";
 import { computed, onMounted, reactive, ref } from "vue";
 import { useStore } from "vuex";
-
 const store = useStore();
-
 const company = computed(()=> store.state.publico.company);
 const user = computed(()=> store.state.publico.user);
-
-const props = defineProps({
-    product:{
-        default: () => Object
-    }
-});
-
+const product = computed(()=> store.getters['Product/product'])
 const list_price = ref([])
 
 const form = ref({
@@ -68,16 +60,15 @@ const form = ref({
   price_discount: null,
   user_id: user.value.id,
   company_id: company.value.id,
-  produtos_id: props.product.id
+  produtos_id: product.value.data.id
 });
-
 
 onMounted(()=>{
   getProduct()
 })
 
 function getProduct() {
-    axios.get(`/products/${props.product.id}`).then((response)=>{
+    axios.get(`/products/${product.value.data.id}`).then((response)=>{
         list_price.value = response.data.product.list_price
     });
 }
@@ -94,7 +85,7 @@ function AddListPrice() {
 }
 
 function updateListPrice() {
-    axios.post(`/updateListPrice/${form.value.id}/${props.product.id}`,{...form.value})
+    axios.post(`/updateListPrice/${form.value.id}/${product.value.data.id}`,{...form.value})
     .then((response) => {
         list_price.value = response.data.list_price
     }).catch((err) => {
@@ -102,9 +93,9 @@ function updateListPrice() {
     });
 }
 
-function deleteListPrice(id) {
- axios
-    .put(`/DeleteListPrice/${id}/${props.product.id}`)
+async function deleteListPrice(id) {
+ await axios
+    .put(`/DeleteListPrice/${id}/${product.value.data.id}`)
     .then((response) => {
       list_price.value = response.data.data.list_price
     })

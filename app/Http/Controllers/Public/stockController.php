@@ -8,6 +8,7 @@ use App\Models\armagen;
 use App\Models\category_product;
 use App\Models\company;
 use App\Models\fornecedore;
+use App\Models\movement_type;
 use App\Models\movement_type_produtos;
 use App\Models\operationCaixaType;
 use App\Models\productType;
@@ -129,6 +130,24 @@ class stockController extends Controller
             'price_sold' => $product->preçovenda,
             'motive' => $request->motive,
             'quantityAfter' => $quantityAfter
+        ]);
+
+        $prod = $product->withSum(['stock' => function($stock){
+            $stock->where('armagen_id',Auth::user()->armagen_id);
+        }],'quantity')->whereId($product->id)->first();
+
+        $type_movements = $product->type_movement()->first();
+        if ($type_movements !== null) {
+           $type_movements = $product->type_movement()->first()->with(['movements' => function($query) use ($product){
+                $query->where('produtos_id',$product->id);
+            }])->get();
+        }else{
+            $type_movements = movement_type::all();
+        }
+
+        return response()->json([
+            'product'=>$prod,
+            'movements'=>$type_movements
         ]);
     }
 

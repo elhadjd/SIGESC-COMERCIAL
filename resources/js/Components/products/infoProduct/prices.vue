@@ -13,33 +13,30 @@
           <input
             type="text"
             ref="inputRef"
-            :disabled="product.estado === 1"
-            v-model="product.preçocust"
-            @keyup="$emit('prices', 'preçocust', product.preçocust)"
+            :disabled="product.data.estado === 'inactive'"
+            v-model="product.data.preçocust"
             class="input_info"
-            placeholder="Preço de custo exemplo"
+            :placeholder="`Preço de custo exemplo ${formatMoney(1)}`"
           />
         </div>
         <div>
           <input
             type="text"
             ref="inputRef"
-            :disabled="product.estado === 1"
-            v-model="product.preco_medio"
-            @keyup="$emit('Precos', 'preco_medio', product.preco_medio)"
+            :disabled="product.data.estado === 'inactive'"
+            v-model="product.data.preco_medio"
             class="input_info"
-            placeholder="Preço medio exemplo "
+            :placeholder="`Preço medio exemplo ${formatMoney(1)}`"
           />
         </div>
         <div>
           <input
             type="text"
             ref="inputRef"
-            :disabled="product.estado === 1"
-            v-model="product.preçovenda"
-            @keyup="$emit('prices', 'preçovenda', product.preçovenda)"
+            :disabled="product.data.estado === 'inactive'"
+            v-model="product.data.preçovenda"
             class="input_info"
-            placeholder="Preço de venda exemplo"
+            :placeholder="`Preço de venda exemplo ${formatMoney(1)}`"
           />
         </div>
       </div>
@@ -47,16 +44,13 @@
   </div>
 </template>
 
-<script setup>
-import { onMounted, ref } from "vue"
+<script setup lang="ts">
+import { StoreProduct } from "@/types/product"
+import { computed, onMounted, ref } from "vue"
+import { useStore } from "vuex"
+const store = useStore()
+const product = computed<StoreProduct>(()=> store.getters['Product/product'])
 
-const props = defineProps({
-    product: {
-        default: ()=> Object
-    }
-})
-
-const product = ref(props.product);
 </script>
 
 <style scoped lang="scss">

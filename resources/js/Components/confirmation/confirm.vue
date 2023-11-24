@@ -2,11 +2,10 @@
   <div>
     <Modal :SmsConfirm="SmsConfirm" @Confirme="Arquivado" @descartou="StateModal = false" v-if="StateModal"/>
     <section class="agrupar">
-        <span @click="state = !state" class="dropdown-toggle">Ação</span>
+        <span @click="state = !state" class="dropdown-toggle w-20">Ação</span>
         <div>
             <div v-if="state" class="listGroup">
                 <span @click="deleteProduct">Apagar</span>
-                <!-- <span>Arquivar</span> -->
             </div>
         </div>
     </section>
@@ -19,35 +18,24 @@ import { ChevronDownIcon } from "@heroicons/vue/20/solid";
 import Toast from "primevue/toast";
 import axios from "axios";
 import Modal from '../confirmation/index.vue'
-import { ref } from "@vue/runtime-core";
+import { computed, ref } from "@vue/runtime-core";
 import { useToast } from "primevue/usetoast";
-const props = defineProps({
-    product: Object
-})
-const toast = useToast()
+import { useStore } from "vuex";
+import { serviceMessage } from "@/composable/public/messages";
+const store = useStore()
 const SmsConfirm = ref()
 const StateModal = ref(false)
-const Product = ref(props.product)
-const emits = defineEmits(['produto','message'])
+const product = computed(()=>store.getters['Product/product'])
+const emits = defineEmits(['Voltar'])
 const state = ref(false)
-
+const {showMessage} = serviceMessage()
 const deleteProduct = (()=>{
-    console.log(Product.value);
-    if (Product.value.qtd>0) {
-        message('Este produto não pode ser deletado','info');
+    if (product.value.data.qtd>0) {
+        showMessage('Este produto não pode ser deletado','info');
     } else {
         StateModal.value = true
         SmsConfirm.value = 'Apagar'
     }
-})
-
-const message = ((message,tipo)=>{
-    toast.add({
-        severity: tipo,
-        summary: 'Message',
-        detail: message,
-        life: 5000
-    })
 })
 
 const Arquivar = (()=>{
@@ -61,22 +49,21 @@ const Arquivado = (()=>{
             method: "PATCH",
             url: "/ArquivarProduto",
             data: {
-                id: Product.value.id,
+                id: product.value.data.id,
             },
         })
         .then((response) => {
-            Product.value = response.data.produto_arquivado
-            message('Produto arquivado com sucesso','info');
-            emits('produto',response.data.produto_arquivado);
+            product.value.data = response.data.produto_arquivado
+            showMessage('Produto arquivado com sucesso','info');
             StateModal.value = false
         })
         .catch((erro) => {
             console.log(erro);
         });
     } else {
-        axios.delete(`/deleteProduct/${Product.value.id}`)
+        axios.delete(`/deleteProduct/${product.value.data.id}`)
         .then((Response) => {
-            message('Deletado com successo','success')
+            showMessage('Deletado com successo','success')
             StateModal.value = false;
             emits('Voltar')
         })
@@ -87,5 +74,11 @@ const Arquivado = (()=>{
 
 <style lang="scss" scoped>
 @include dropList;
-
+.agrupar{
+    >span{
+        display: flex;
+        justify-content: center !important;
+        width: 100px !important;
+    }
+}
 </style>

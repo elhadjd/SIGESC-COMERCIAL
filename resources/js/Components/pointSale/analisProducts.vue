@@ -1,8 +1,8 @@
 <template>
 <Progress v-if="ShowPrecess" />
   <div class="FormPrincipal">
-    <div class="h-100" v-if="ModalProduct.state">
-      <Produto :product="ModalProduct.produto" @descartar="OnMounted" />
+    <div class="h-100" v-if="product.StateFormShow">
+      <ProductForm @closeForm="OnMounted" />
     </div>
     <div v-else class="Principal">
       <div class="Header">
@@ -60,7 +60,7 @@
           </div>
           <div class="list_items">
             <div
-              @click="MostrarProduct(item)"
+              @click="showProduct(item)"
               v-for="item in listItems?.data"
               :key="item.id"
               :class="
@@ -118,12 +118,13 @@
 
 <script setup>
 import html2pdf from "html2pdf.js";
-import { onMounted, reactive, ref } from "@vue/runtime-core";
+import { computed, onMounted, reactive, ref } from "@vue/runtime-core";
 import axios from "axios";
 import { useStore } from "vuex";
-import Produto from "../products/product.vue";
+import ProductForm from "../products/product/product.vue";
 import Progress from "../confirmation/progress.vue";
 import pagination from '@/Layouts/paginations/paginate.vue'
+const product = computed(()=> store.getters['Product/product'])
 
 const inputSearch = ref("");
 const store = useStore();
@@ -132,10 +133,6 @@ const valores = ref([]);
 const StoreProduct = ref([]);
 const ShowPrecess = ref(true);
 const loading = ref(null)
-const ModalProduct = reactive({
-  state: false,
-  produto: [],
-});
 
 const agroup = ref({
   state: false,
@@ -151,13 +148,13 @@ const getPage = ((data)=>{
     StoreProduct.value = data.data
 })
 
-const MostrarProduct = (event) => {
-  ModalProduct.state = true;
-  ModalProduct.produto = event;
+const showProduct = (productShow) => {
+  product.value.data = productShow
+  product.value.StateFormShow = true
 };
 
-const confirmar = (id) => {
-  axios
+const confirmar = async(id) => {
+    await axios
     .post(`/confirmProd/${id}`)
     .then((response) => {
       OnMounted();
@@ -172,11 +169,11 @@ const FormatDinheiro = new Intl.NumberFormat("pt-AO", {
   currency: "AOA",
 });
 const OnMounted = onMounted(async() => {
-    await getProduct();
+    await getProducts();
     await getAgrupate();
 });
 
-const getProduct = async() => {
+const getProducts = async() => {
     loading.value = 'start'
     await axios
         .get("/products/1500/1")
@@ -191,7 +188,6 @@ const getProduct = async() => {
       ShowPrecess.value = false;
     }).finally(() => {
         loading.value = null
-      ModalProduct.state = false;
     });
 }
 

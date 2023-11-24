@@ -26,7 +26,6 @@ class PointSaleController extends Controller
             ->where('state', 'Aberto')
             ->orderBy('id', 'DESC')
             ->first();
-
         if (!$data) {
             return Redirect::route('pontodevenda');
         }

@@ -5,7 +5,6 @@
     <formPayment @close="statePayment = false" v-if="statePayment" @message="message" @invoice="OnMounted" :order="order" :general="general"/>
     <orders :general="general" :order="Purchase"/>
 </div>
-
 </template>
 
 <script setup>

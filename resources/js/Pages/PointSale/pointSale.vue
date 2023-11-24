@@ -9,6 +9,8 @@
       <Operation @message="message" v-if="modul == 'Operações'" />
       <analisProducts v-if="modul == 'Avaliação de Stock'" />
       <Order @message="message" v-if="modul == 'Orden de Venda'" />
+
+        <Progress v-if="store.state.pos.StateProgress"/>
       <MenuPdv
         @definicaoCaixa="definicaoCaixa"
         @Caixa="EmitsMenu"
@@ -44,6 +46,7 @@ import MenuPdv from "@/Components/pointSale/MenuPdv.vue";
 import Order from "@/Components/pointSale/orders.vue";
 import Operation from "@/Components/pointSale/Operation.vue";
 import { useStore } from "vuex";
+import Progress from '@/Components/confirmation/progress.vue'
 import analisProducts from '@/Components/pointSale/analisProducts.vue'
 import Relatorio from "@/components/pointSale/relatorio/index.vue";
 import Caixa from "@/Components/pointSale/caixa.vue";

@@ -19,7 +19,6 @@ const _numDias = () => {
 		numDias = new Date(numAno, numMes, 0).getDate();
 	var dia = String(objData.getDate()).padStart("0");
 	const dias = numDias - dia - numDias + Number(dia) + Number(dia);
-
 	return dias;
 };
 const Agrup = computed(() => {

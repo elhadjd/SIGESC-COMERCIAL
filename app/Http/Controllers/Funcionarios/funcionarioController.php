@@ -44,7 +44,7 @@ class funcionarioController extends Controller
         $register = new ActivityRegister;
         $register->Activity("Criou um funcionario");
         $create = Workers::create([
-            "company_id"=> Auth::user()->company_id
+            "company_id"=> $this->companyUser()->id
         ]);
 
         return $this->show($create->id);
@@ -59,7 +59,7 @@ class funcionarioController extends Controller
     {
         if ($request->id == null) {
             $create = WorkersDepartment::create([
-                'company_id'=>$this->companyUser()->company_id,
+                'company_id'=>$this->companyUser()->id,
                 'name'=> $request->name
             ]);
         } else{

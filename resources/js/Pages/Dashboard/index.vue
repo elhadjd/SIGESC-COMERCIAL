@@ -29,17 +29,18 @@
         </Link>
       </div>
     </div>
-    <canvas ref="canvas" id="canvas"></canvas>
+    <newsMessagesVue/>
+    <!-- <canvas ref="canvas" id="canvas"></canvas> -->
   </div>
 </template>
 <script setup>
-
 import { useStore } from "vuex";
 import Index from '../../Layouts/index.vue'
 import { Link } from "@inertiajs/vue3";
 import { Inertia } from "@inertiajs/inertia";
 import {getImages} from '@/composable/public/getImages'
 import { ref, onMounted ,reactive} from 'vue';
+import newsMessagesVue from "@/Layouts/news/newsMessages.vue";
 const store = useStore();
 const MostrarDrop = ref(false);
 const props = defineProps({

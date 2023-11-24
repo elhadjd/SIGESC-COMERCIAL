@@ -5,7 +5,7 @@
         </div>
       <div class="NewProduct" v-if="modalProduct.state">
          <div class="Modal">
-            <product :product="modalProduct.product" @descartar="modalProduct.state = false" @saved="addItem"/>
+            <ProductVue @closeForm="modalProduct.state = false" @saved="addItem"/>
          </div>
       </div>
       <Addbox
@@ -102,16 +102,19 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import formSelect from './form-select.vue'
 import axios from "axios";
-import { onMounted, reactive, ref, watch } from "vue"
+import { computed, onMounted, reactive, ref, watch } from "vue"
 import Addbox from './Caixa/index.vue'
 import Caixa from 'vue-material-design-icons/PackageVariantClosedPlus.vue'
-import product from '@/Components/products/product.vue'
+import ProductVue from '@/Components/products/product/product.vue'
 import useEventsBus from "@/Eventbus";
+import { useStore } from "vuex";
 const AddBox = ref({
     state: false,
     spent: false,
     product: []
 })
+const store = useStore()
+const product = computed(()=> store.getters['Product/product'])
 const {bus} = useEventsBus()
 const loading = ref(null)
 const stores = ref([])
@@ -123,7 +126,6 @@ const props = defineProps({
     order:Object
 })
 const modalProduct = ref({
-    product: [],
     state: false,
     type: null
 })
@@ -135,8 +137,8 @@ onMounted(async()=>{
     await getStores()
 })
 
-const editProduct = ((product)=>{
-    modalProduct.value.product = product
+const editProduct = ((productShow)=>{
+    product.value.data = productShow
     modalProduct.value.state = true
     modalProduct.value.type = 'edit'
 })
@@ -245,7 +247,7 @@ const newProduct = ((name,event)=>{
     axios.post(`/new_product/${name}`)
     .then((response) => {
         if (event == 'create') return addItem(response.data.product)
-        modalProduct.value.product = response.data.product
+        product.value.data = response.data.product
         modalProduct.value.state = true
         modalProduct.value.type = 'create'
     }).catch((err) => {

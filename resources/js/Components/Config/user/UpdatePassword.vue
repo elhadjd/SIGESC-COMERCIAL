@@ -25,9 +25,7 @@
 <script setup>
 import { ref } from "@vue/runtime-core";
 import axios from "axios";
-
 const emits = defineEmits(['message','FecharModal'])
-
 const props = defineProps({
     user: Object
 })
@@ -38,32 +36,27 @@ const password = ref({
 })
 
 const Atualizar = (() => {
-   if (password.value.SenhaAtual == "" || password.value.SenhaAtual == null || password.value.NovaSenha == "" || password.value.NovaSenha == null) {
-      emits('message', 'Os campos não podem ser vázios', 'info')
-   } else {
-      if (password.value.NovaSenha.length <= 5) {
-         emits('message', 'A senha deve ser mair do que 5 digitos', 'info')
-      } else {
-         const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%*()_+^&}{:;?.])(?:([0-9a-zA-Z!@#$%;*(){}_+^&])(?!\1)){6,}$/;
-         if (regex.test(password.value.NovaSenha)) {
+    if (password.value.SenhaAtual == "" || password.value.SenhaAtual == null || password.value.NovaSenha == "" || password.value.NovaSenha == null) {
+        emits('message', 'Os campos não podem ser vázios', 'info')
+    } else {
+        if (password.value.NovaSenha.length <= 5) {
+            emits('message','A senha deve ser mair do que 5 digitos', 'info')
+        } else {
             return UpdatePassword(password.value)
-         } else {
-            emits('message', 'Formato de senha invalida', 'info')
-         }
-      }
-   }
+        }
+    }
 })
 
 const UpdatePassword = ((password) => {
-   axios.post(`/UpdatePassword/${props.user.id}`, password)
-      .then((Response) => {
-         if (Response.data.tipo == 'success') {
+    axios.post(`/UpdatePassword/${props.user.id}`, password)
+    .then((Response) => {
+        if (Response.data.type == 'success') {
             emits('FecharModal');
-         }
-         emits('message', Response.data.message, Response.data.tipo)
-      }).catch((err) => {
-         console.log(err);
-      });
+        }
+        emits('message', Response.data.data, Response.data.type)
+    }).catch((err) => {
+        console.log(err);
+    });
 })
 </script>
 

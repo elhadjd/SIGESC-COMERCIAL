@@ -10,10 +10,12 @@
             <button @click="stateForm = 'new'">Nova empresa</button>
             <button @click="stateForm = 'payment'">Pagar licença</button>
             <button @click="stateForm = 'license'">Ativar licença</button>
-            <button @click="stateForm = 'renew'">Renovar licença</button>
+        </div>
+        <div class="h-72 w-96 max-[600px]:w-96 max-[600px]h-64" v-if="stateForm == null">
+            <iframe class="w-full h-full" src="https://www.youtube.com/embed/mIIWEDIv2Cg?si=MnaN85AEVHwAUeH9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
         <Counts :data="accountClient.data" v-if="stateForm == 'counts'"/>
-        <form v-if="stateForm == 'license'" class="mini-form">
+        <form @submit.prevent.stop="activeLicense" v-if="stateForm == 'license'" class="mini-form">
             <div>
                 <div class="Form-control">
                     <label for="nif">Nif:</label>
@@ -25,7 +27,7 @@
                 </div>
             </div>
             <div>
-                <button @submit.prevent.stop="activeLicense">
+                <button type="submit">
                     Validar
                     <i v-if="license.state == 0" class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
                     <font-awesome-icon
@@ -76,6 +78,7 @@
                 <License v-else/>
             </div>
             <div class="Footer">
+                <a href="#" @click="stateForm = null" class="text-blue-500 p-1 text-base font-base">ver o video</a>
                 <button type="button" v-if="start.step > 0" @click="back" class="Descartar">Voltar</button>
                 <button type="submit"  :disabled="inSubmit.state">
                     {{start.step > 1 ? 'Concluir' : 'Avançar'}}
@@ -153,16 +156,16 @@ async function SaveCompany() {
     if (!response.data) return message(response.message,'error');
 }
 
+
 async function saveData(accounts = null) {
     store.state.Start.start.accounts = accounts
-    const form = useForm(store.state.Start.start)
     inSubmit.state = true
     await axios.post('/saveCompany',{...store.state.Start.start})
     .then((Response) => {
         message(Response.message,Response.data.type)
         router.get(`/welcome/${Response.data.data.id}`)
     }).catch((err) => {
-        message(err.response.message,'warn')
+        message(err.response.data.message,'warn')
         console.log(err);
     }).finally(()=>{
         inSubmit.state = false

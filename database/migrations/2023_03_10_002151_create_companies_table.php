@@ -9,12 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
     public function up(): void
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('image')->nullable();
             $table->string('name')->nullable();
+            $table->string('description')->nullable();
             $table->string('nif')->nullable()->unique();
             $table->string('phone')->nullable();
             $table->string('email')->nullable()->unique();

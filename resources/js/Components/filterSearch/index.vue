@@ -15,6 +15,7 @@
             <filter-search @Filtro="filtro"/>
             <group-by @ListaDefault="PassarLista"/>
         </div>
+
   </div>
 </template>
 
@@ -35,12 +36,15 @@ const NumeroOrden = ref();
 const store = useStore();
 
 onMounted(()=>{
+    store.state.pos.StateProgress = true
     axios.get('/PDV/getOrders')
     .then((Response) => {
         ListaDefault.value = Response.data
         PassarLista(ListaDefault.value)
     }).catch((err) => {
         console.log(err);
+    }).finally(()=>{
+        store.state.pos.StateProgress = false
     });
 })
 

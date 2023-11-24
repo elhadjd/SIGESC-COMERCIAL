@@ -50,6 +50,7 @@
                 :general="general" :order="Invoice"/>
         </div>
     </div>
+    
   </div>
 </template>
 

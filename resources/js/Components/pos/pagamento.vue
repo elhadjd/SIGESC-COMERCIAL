@@ -4,7 +4,10 @@
     <Toast/>
     <form @submit.prevent="Validar_Pagamento" class="formulario-content">
         <div class="sessao-one">
-            <i class="fa fa-refresh fa-spin fa-3x fa-fw" aria-hidden="true"></i>
+            <div>
+                <span>{{formatMoney(TotalEncomenda)}}</span>
+                <FontAwesomeIcon icon="fa-solid fa-money-check-dollar" />
+            </div>
         </div>
 
         <div class="sessao-two">
@@ -43,22 +46,22 @@
                     <div class="two">
                         <div class="container-thee">
                             <div id="totalEncomendaPagamento">
-                                <h1 class="TotalEncomendas" v-if="mostraTotal==true">{{FormatarDineiro.format(TotalEncomenda)}}</h1>
+                                <h1 class="TotalEncomendas" v-if="mostraTotal==true">{{formatMoney(TotalEncomenda)}}</h1>
                                 <div class="CalculoTotal" v-else>
                                     <div class="TotalCompra">
                                         <h3 class="Restante">
                                             <strong>Restante : </strong>
-                                            <span >{{FormatarDineiro.format(RestoPagar)}}</span>
+                                            <span >{{formatMoney(RestoPagar)}}</span>
                                         </h3>
                                         <h5 class="div5">
                                             <span>Toatal da compra</span>
-                                            <span id="TotalCompra">: {{FormatarDineiro.format(TotalEncomenda)}}</span>
+                                            <span id="TotalCompra">: {{formatMoney(TotalEncomenda)}}</span>
                                         </h5>
                                     </div>
                                     <div class="troco">
                                         <span >
                                             <strong>Troco : </strong>
-                                            <strong id="TrocoCliente">{{FormatarDineiro.format(Troco)}} </strong>
+                                            <strong id="TrocoCliente">{{formatMoney(Troco)}} </strong>
                                         </span>
                                     </div>
                                 </div>
@@ -72,18 +75,18 @@
                                     <div id="TiraNumeros" @click="reduzir_pagamento"><strong><i class="fa fa-eraser" aria-hidden="true"></i></strong></div>
                                 </div>
                                 <div class="Valores">
-                                    <div @click="numero(100)">{{FormatarDineiro.format(100)}}</div>
-                                    <div @click="numero(200)">{{FormatarDineiro.format(200)}}</div>
-                                    <div @click="numero(500)">{{FormatarDineiro.format(500)}}</div>
-                                    <div @click="numero(1000)">{{FormatarDineiro.format(1000)}}</div>
-                                    <div @click="numero(2000)">{{FormatarDineiro.format(2000)}}</div>
-                                    <div @click="numero(8000)">{{FormatarDineiro.format(8000)}}</div>
-                                    <div @click="numero(3000)">{{FormatarDineiro.format(3000)}}</div>
-                                    <div @click="numero(4000)">{{FormatarDineiro.format(4000)}}</div>
-                                    <div @click="numero(5000)">{{FormatarDineiro.format(5000)}}</div>
-                                    <div @click="numero(6000)">{{FormatarDineiro.format(6000)}}</div>
-                                    <div @click="numero(7000)">{{FormatarDineiro.format(7000)}}</div>
-                                    <div @click="numero(10000)">{{FormatarDineiro.format(10000)}}</div>
+                                    <div @click="numero(100)">{{formatMoney(100)}}</div>
+                                    <div @click="numero(200)">{{formatMoney(200)}}</div>
+                                    <div @click="numero(500)">{{formatMoney(500)}}</div>
+                                    <div @click="numero(1000)">{{formatMoney(1000)}}</div>
+                                    <div @click="numero(2000)">{{formatMoney(2000)}}</div>
+                                    <div @click="numero(8000)">{{formatMoney(8000)}}</div>
+                                    <div @click="numero(3000)">{{formatMoney(3000)}}</div>
+                                    <div @click="numero(4000)">{{formatMoney(4000)}}</div>
+                                    <div @click="numero(5000)">{{formatMoney(5000)}}</div>
+                                    <div @click="numero(6000)">{{formatMoney(6000)}}</div>
+                                    <div @click="numero(7000)">{{formatMoney(7000)}}</div>
+                                    <div @click="numero(10000)">{{formatMoney(10000)}}</div>
                                 </div>
                             </div>
                         </div>
@@ -101,6 +104,7 @@ import { mapMutations, mapState, useStore } from "vuex";
 import Progress from '../confirmation/progress.vue'
 import Toast from 'primevue/toast'
 import { Inertia } from "@inertiajs/inertia";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const props = defineProps({
     method: Object,
@@ -213,15 +217,10 @@ const methods = (event)=> {
 }
 
 const reduzir_pagamento = ()=>{
-
     entregue.value = entregue.value.substring(0,entregue.value.length - 1);
-
     const existProduct = props.method.find(o => o.name === methodo.value)
-
     if (existProduct) {
-
         var num = existProduct.valor.substring(0, existProduct.valor.length - 1);
-
         existProduct.valor = num
         BUSCAR_RESTO();
         if (RestoPagar.value <= 0) {
@@ -233,7 +232,6 @@ const reduzir_pagamento = ()=>{
             Validar.value = false;
         }
     }
-
 }
 
 const BUSCAR_RESTO = () =>{
@@ -253,20 +251,14 @@ const BUSCAR_RESTO = () =>{
     if (RestoPagar.value <= 0) {
     axios.post("/PDV/ValidatePayment",Lista.value)
         .then((Response) => {
-        if (!Response.data.message) {
-            session.value = localStorage.getItem('session')
-            Encomendas.value = JSON.parse(localStorage.getItem('Encomendas'+session.value));
-
-            Lista.value = Response.data
-
-            Encomendas.value[number] = Lista.value
-            localStorage.setItem('Encomendas'+session.value,JSON.stringify(Encomendas.value))
-            emits("fatura",Response.data);
-        } else {
-            emits('message',Response.data.type,Response.data.message)
-        }
+            if (!Response.data.message) {
+                return print(Response,number)
+            } else {
+                emits('message',Response.data.type,Response.data.message)
+            }
         })
         .catch(function (error) {
+            axios.post('/PDV/checkInvoice',Lista.value)
             console.log(error);
         })
         .finally(()=>{
@@ -277,6 +269,15 @@ const BUSCAR_RESTO = () =>{
         emits('message','Info','Valor insuficiente ')
     }
 }
+
+const print = ((Response,number)=>{
+    session.value = localStorage.getItem('session')
+    Encomendas.value = JSON.parse(localStorage.getItem('Encomendas'+session.value));
+    Lista.value = Response.data
+    Encomendas.value[number] = Lista.value
+    localStorage.setItem('Encomendas'+session.value,JSON.stringify(Encomendas.value))
+    emits("fatura",Response.data);
+})
 </script>
 
 <style scoped lang="scss">

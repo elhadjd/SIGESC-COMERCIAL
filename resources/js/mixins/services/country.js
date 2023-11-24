@@ -8,8 +8,6 @@ export const country = ()=> {
         }).catch((err) => {
             console.log(err);
         });
-    
-
     return {list}
 }
 

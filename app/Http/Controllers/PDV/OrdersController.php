@@ -141,7 +141,7 @@ class OrdersController extends Controller
 
     public function VerificarEncomenda($order)
     {
-        return orderPos::where('number', $order->number)
+        return orderPos::where('number', "$order->session-$order->number")
             ->where('session_id', $order->session)
             ->where('total', $order->total)->first();
     }
@@ -170,6 +170,24 @@ class OrdersController extends Controller
             'troco' => $encomeda['troco'],
             'total_costs' => $encomeda['TotalCosts']
         ];
+    }
+
+    public function checkInvoiceDupleDelete(Request $request) {
+        $order = $this->VerificarEncomenda($request);
+        if ($order) {
+            foreach ($order->items as $item) {
+                $stock = $request->user()->armagen()->first()
+                    ->stock()->where('produtos_id', $item['produtos_id'])->first();
+                $quantity = $item->quantity + $stock->quantity;
+                $stock->quantity = $quantity;
+                $stock->save();
+            }
+            movement_type_produtos::where('order_pos_id',$order->id)->delete();
+            paymentPDV::where('order_pos_id',$order->id)->delete();
+            ItemOrder::where('order_id',$order->id)->delete();
+            return $order->delete();
+        };
+        return 'true';
     }
 
     public function printInvoice(session $session,$type)
@@ -217,7 +235,6 @@ class OrdersController extends Controller
 
     public function CancelInvoice(orderPos $order)
     {
-
         $user = User::find($order->user_id);
         DB::transaction(function () use ($order, &$user) {
 
@@ -262,7 +279,7 @@ class OrdersController extends Controller
                 $orderPos = $order;
                 $orders = $this->getAllOrders($orderPos, $column);
             }
-            
+
             return $orders;
         }
     }
