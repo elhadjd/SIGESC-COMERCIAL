@@ -16,8 +16,19 @@
       <form class="FormNewProd">
         <div class="guard_descart">
           <div  v-if="user.nivel == 'admin'" class="p-1 border-bottom">
-            <div class="guardar_descartar" v-if="product.data.estado != 1">
-              <div v-for="item in movementsStockProduct.TypesMovements" :key="item.id" @click="moveProductStock(item)">{{item.name+" de stock"}}</div>
+            <div class="bannerButtons" v-if="product.data.estado != 1">
+                <MessagesToast v-if="news.state" @closeMessage="news.state = false" :message="news"/>
+                <div>
+                    <ButtonVue v-for="item in movementsStockProduct.TypesMovements" :className="''" :type="'button'" :key="item.id" @click="moveProductStock(item)">
+                        {{item.name+" de stock"}}
+                    </ButtonVue>
+                </div>
+                <ButtonVue :className="'publish'" @click="publishProductOnline" :type="'button'">
+                    Divulgar
+                    <FontAwesomeIcon v-if="stateDrop == 'shopOnline'" icon="fa-solid fa-spinner" shake />
+                    <FontAwesomeIcon icon="fa-solid fa-shop" v-else beat-fade />
+                    <FontAwesomeIcon icon="fa-solid fa-check" class="check" />
+                </ButtonVue>
             </div>
           </div>
         </div>
@@ -99,8 +110,10 @@ import {serviceMessage} from '../../../composable/public/messages'
 import {ProductServices} from '../services/product/productServices';
 import {ProductsServices} from '../services/productsServices';
 import bannerProductVue from './bannerProduct.vue';
-import buttonsVue from './buttons.vue';
+import ButtonVue from '@/ui/button.vue'
+import buttonsVue from './buttons.vue'
 import { BannerProductServices } from '../services/product/bannerProductServices';
+import MessagesToast from '@/Layouts/news/messagesToast.vue';
 const {createProduct,showProduct} = ProductsServices()
 const store = useStore();
 const toast = useToast()
@@ -115,7 +128,9 @@ const {
     stateDrop,
     moveProductStock,
     ShowMovements ,
-    changePrices
+    changePrices,
+    publishProductOnline,
+    news
 } = ProductServices(emits)
 const {
     categories

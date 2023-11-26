@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Public;
 
 use App\classes\ActivityRegister;
+use App\classes\DeleteFile;
 use App\classes\uploadImage;
+use App\classes\UploadImageCatalog;
 use App\Http\Controllers\Controller;
 use App\Models\category_product;
 use App\Models\company;
 use App\Models\fornecedore;
 use App\Models\movement_type;
+use App\Models\product_picture;
 use App\Models\productType;
-use Illuminate\Support\Str;
 use App\Models\produtos;
-use App\Models\stock;
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+
 
 class productsController extends Controller
 {
@@ -82,7 +82,9 @@ class productsController extends Controller
             $type_movements = movement_type::all();
         }
 
-        $prod = $product->withSum(['stock' => function($stock){
+        $prod = $product
+        ->with('catalogProduct')
+        ->withSum(['stock' => function($stock){
             $stock->where('armagen_id',Auth::user()->armagen_id);
         }],'quantity')->whereId($product->id)->first();
 
@@ -146,5 +148,44 @@ class productsController extends Controller
     {
         $product->estado = 'inactive';
         $product->save();
+    }
+
+    public function uploadImageCatalog(Request $request,produtos $product){
+        $request->validate([
+            'image' => 'required',
+        ]);
+        if (Auth::user()->nivel != 'admin') {
+            return $this->RespondInfo('Usuário sem acesso');
+        }
+
+        $countImage = $product->catalogProduct->count();
+        if ($countImage>=5) return $this->RespondInfo('Um produto so pode ter no maximo 5 image !!!',$product->load('catalogProduct'));
+        $imageUploader = new UploadImageCatalog();
+        $nameImage = $imageUploader->upload($product->id, $request->image);
+
+        product_picture::create([
+            'product_id'=>$product->id,
+            'image'=>$nameImage
+        ]);
+
+        $product->fresh();
+
+        $product->load('catalogProduct');
+
+        return $product;
+    }
+
+    public function deleteImageInCatalog(product_picture $image){
+        if (!$image) return $this->RespondError('Image ja não existe');
+        $product = produtos::find($image->product_id);
+
+        $deleteFile = new DeleteFile();
+        
+        $deleteFile->delete("/produtos/image/$product->id/$image->image");
+
+        $image->delete();
+
+        return $product->load('catalogProduct');
+
     }
 }

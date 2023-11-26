@@ -28,7 +28,7 @@ export const moveProductStockServices = ((props: {data: modalMovementsStockTs},e
     });
 
     const changeStore = ((e:string)=>{
-        let types = stores.value.find((item) => item.name.trim() == e.trim() );        
+        let types = stores.value.find((item) => item.name.trim() == e.trim() );
         if (types) {
             return sumQuantity(types)
         }

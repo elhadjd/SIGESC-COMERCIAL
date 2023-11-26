@@ -32,7 +32,7 @@
         </div>
     </div>
     <div class="form-content">
-
+        <CatalogImagesVue/>
     </div>
 </div>
 </template>
@@ -43,6 +43,7 @@ import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { ProductServices } from "../services/product/productServices";
 import {BannerProductServices} from '../services/product/bannerProductServices'
+import CatalogImagesVue from './catalogImages.vue'
 const store = useStore()
 const product = computed(()=> store.getters['Product/product'])
 const emits = defineEmits([ "saved"]);

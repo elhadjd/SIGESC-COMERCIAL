@@ -11,6 +11,5 @@ const props = defineProps({
     className: String,
     type: String
 })
-onMounted(()=>{
-})
+
 </script>

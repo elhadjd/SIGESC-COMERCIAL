@@ -30,7 +30,7 @@
       </div>
     </div>
     <newsMessagesVue/>
-    <!-- <canvas ref="canvas" id="canvas"></canvas> -->
+    <canvas ref="canvas" id="canvas"></canvas>
   </div>
 </template>
 <script setup>

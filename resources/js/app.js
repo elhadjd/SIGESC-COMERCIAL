@@ -62,11 +62,14 @@ import {
     faChevronLeft,
     faChartColumn,
     faChartPie,
-    faChartArea
+    faChartArea,
+    faShop,
+    faSpinner,
+    faFileCirclePlus
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import general from "./mixins/general.js";
-import {faBuilding, faUser} from "@fortawesome/free-regular-svg-icons";
+import {faBuilding, faFile, faUser} from "@fortawesome/free-regular-svg-icons";
 library.add(
     faChevronLeft,
     faChevronRight,
@@ -110,7 +113,10 @@ library.add(
     faChartColumn,
     faChartPie,
     faChartArea,
-    faChartGantt
+    faChartGantt,
+    faShop,
+    faSpinner,
+    faFileCirclePlus
 );
 
 

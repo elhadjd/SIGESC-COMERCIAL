@@ -80,5 +80,10 @@ const Arquivado = (()=>{
         justify-content: center !important;
         width: 100px !important;
     }
+    @media screen and (max-width: 500px) {
+        position: absolute;
+        left: 50%;
+        right: 50%;
+    }
 }
 </style>
