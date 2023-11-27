@@ -11,7 +11,6 @@
         <div v-if="user.nivel == 'admin'">
           <button @click="$emit('CriarCaixa')">Criar caixa</button>
         </div>
-
       </div>
       <div class="Header-right"></div>
     </div>
@@ -88,10 +87,12 @@ const emits = defineEmits([
     'AbrirCaixa',
     'message'
 ]);
+
 const modalSingle = ref({
   state: false,
   id: "",
 });
+
 const user = computed(()=> store.state.publico.user);
 const form = useForm({
   id_da_caixa: null,

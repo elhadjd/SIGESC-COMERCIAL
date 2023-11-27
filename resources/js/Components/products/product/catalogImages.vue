@@ -18,9 +18,9 @@
                 <input :type="StateModalConfirm.state || progress ? 'text' : 'file'" @change="onImageChange" id="imageCAtegory">
             </div>
             <div class="flex h-48 flex-row space-x-2 p-3 overflow-x-auto ">
-                <span class="relative images border rounded border-gray-100" v-for="image in product.data.catalog_product" :key="image.id">
+                <span class="relative images border rounded p-1 border-gray-100" v-for="image in product.data.catalog_product" :key="image.id">
                     <span class="absolute ml-2 rounded-full flex justify-center items-center" @click="()=>confirmDelete(image.id)">x</span>
-                    <img class="flex h-full" :src="`/produtos/image/${image.product_id}/${image.image}`">
+                    <img class="flex h-full rounded" :src="`/produtos/image/${image.product_id}/${image.image}`">
                 </span>
                 <Modal :SmsConfirm="SmsConfirm" @Confirme="deleteImage" @descartou="StateModalConfirm.state = false" v-if="StateModalConfirm.state"/>
             </div>

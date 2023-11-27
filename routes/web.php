@@ -90,6 +90,7 @@ Route::middleware('auth')->group(function () {
                     Route::post('/clossSession/{session}', 'clossSession');
                     Route::post('updateSession/{session}', 'updateSession');
                     Route::post('savePoint/{caixa?}','savePoint');
+                    Route::delete('/deleteCash/{caixa}','deleteCash');
                 });
             });
 

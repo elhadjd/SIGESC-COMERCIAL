@@ -63,10 +63,8 @@ export const useUploadCatalogProduct = (()=>{
                 if(response.data.message) {
                     showMessage(response.data.message,response.data.type)
                     product.value.data.catalog_product = response.data.data.catalog_product
-
                     return
                 }
-                
                 product.value.data.catalog_product = response.data.catalog_product
             }).catch((err) => {
                 console.log(err);

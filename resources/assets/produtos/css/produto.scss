@@ -153,6 +153,10 @@
             }
             .Main{
                 height: 50% !important;
+                .info-basic{
+                    align-items: center;
+                    margin-bottom: 15px;
+                }
             }
         }
     }
@@ -190,9 +194,19 @@
 }
 @media screen and (max-width: 1000px) {
     .FormNewProd{
-        height: 800px !important;
-        .info-basic{
-            height: 100% !important;
+        height: auto !important;
+        .Main{
+            margin-bottom: 10px;
+            .info-basic{
+                height: 100% !important;
+            }
         }
+    }
+}
+@media screen and (max-width: 750px) {
+    .info-basic{
+        display: flex;
+        margin-bottom: 10px;
+        flex-direction: column !important;
     }
 }
