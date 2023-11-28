@@ -1,8 +1,22 @@
 @include components;
-@include listForm(100%,140px,3,2,2,1,1);
-.principal{
-    .buttons{
+@include listForm(100%, 140px, 3, 2, 2, 1, 1);
+
+.principal {
+    .buttons {
         display: flex;
-        gap: .5rem;
+        gap: 0.5rem;
+    }
+    .Main {
+        > div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-left: 4px solid var(--bgButtons);
+
+            span:not(:nth-child(2)) {
+                font-weight: 600;
+                font-size: 22px;
+            }
+        }
     }
 }

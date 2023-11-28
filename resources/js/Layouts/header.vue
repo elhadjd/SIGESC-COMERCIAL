@@ -15,7 +15,7 @@
                             {{ menu.menu }}
                         </li>
                         <div v-show="Mostrar == menu.menu">
-                            <div v-if="user.nivel == 'admin'" class="ListRelatorios">
+                            <div v-if="user?.nivel == 'admin'" class="ListRelatorios">
                                 <div
                                     v-for="subMenu, index in menu.subMenu"
                                     :key="index"
@@ -29,7 +29,7 @@
                 <div class="user_conectado">
                     <div class="User dropdown-toggle" @click="stateLogout = !stateLogout">
                         <img :src="element.img" alt="user" />
-                        <div>{{ user.surname }}</div>
+                        <div>{{ user?.surname }}</div>
                     </div>
                     <div v-if="stateLogout" class="user">
                         <div @click="Sair" class="Sair" :class="!stateMenu ? 'text-white' : ''">
@@ -59,10 +59,10 @@ const stateMenu = ref(false)
 const emits = defineEmits(["modulos"]);
 const Mostrar = ref(null);
 const store = useStore();
-const user = ref(store.state.publico.user);
+const user = ref(store.state.publico?.user);
 const stateLogout = ref(false);
 const element = reactive({
-    img: '/login/image/' + user.value.image
+    img: '/login/image/' + user?.value?.image
 })
 const {getImage} = getImages(element);
 const modulos = (event) => {
@@ -100,10 +100,4 @@ const showDown = (event) => {
 //   });
 // });
 
-
-
 </script>
-
-<style>
-
-</style>

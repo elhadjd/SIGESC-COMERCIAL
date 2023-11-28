@@ -25,15 +25,9 @@
 
       <div class="Container">
          <div v-if="!formArmagen.state" class="Main">
-            <div v-for="armagen in formArmagen.armagens" :key="armagen.id" class="form-Content">
-               <div @click="showFormArmagen(armagen)">
-                  <span>{{armagen.name}}</span>
-               </div>
-               <div>
-                  <button>
-                  {{armagen.neighborhood}}
-                  </button>
-               </div>
+            <div v-for="armagen in formArmagen.armagens" :key="armagen.id" @click="showFormArmagen(armagen)" class="form-Content">
+               <span>{{armagen.name}}</span>
+               <span>Quantidade em stock +(1.000.000)</span>
             </div>
          </div>
          <NovoArmagen v-else @closeForm="OnMounted" @message="message" :armagen="formArmagen.armagen[0]"/>
