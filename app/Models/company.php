@@ -11,7 +11,7 @@ class company extends Model
 {
     use HasFactory;
 
-    protected $with = ['armagens','license','activity','manager','users'];
+    protected $with = ['armagens','license','activity','manager','users','emailVerify'];
 
     protected $fillable = [
         'city',
@@ -23,7 +23,10 @@ class company extends Model
         'phone',
         'sede',
         'country',
-        'activity_type_id'
+        'activity_type_id',
+        'manager',
+        'latitude',
+        'longitude'
     ];
 
     public function users()
@@ -91,6 +94,10 @@ class company extends Model
 
     public function DepartmentWorkers() : HasMany {
         return $this->hasMany(WorkersDepartment::class,'company_id');
+    }
+
+    function emailVerify() {
+        return $this->hasOne(emailVerify::class,'company_id');
     }
 
 }

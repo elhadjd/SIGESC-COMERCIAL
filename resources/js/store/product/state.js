@@ -70,7 +70,7 @@ export default {
             updated_at:''
         }
     },
-    stateModalCatalog: true,
+    stateModalCatalog: false,
     productComponentKey: 0,
     StateFormShow:false,
     stateDisableButtons: false,

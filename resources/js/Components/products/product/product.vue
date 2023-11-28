@@ -23,12 +23,7 @@
                         {{item.name+" de stock"}}
                     </ButtonVue>
                 </div>
-                <ButtonVue :className="'publish'" @click="publishProductOnline" :type="'button'">
-                    Divulgar
-                    <FontAwesomeIcon v-if="stateDrop == 'shopOnline'" icon="fa-solid fa-spinner" shake />
-                    <FontAwesomeIcon icon="fa-solid fa-shop" v-else beat-fade />
-                    <FontAwesomeIcon icon="fa-solid fa-check" class="check" />
-                </ButtonVue>
+                <publishProductVue/>
             </div>
           </div>
         </div>
@@ -114,6 +109,7 @@ import ButtonVue from '@/ui/button.vue'
 import buttonsVue from './buttons.vue'
 import { BannerProductServices } from '../services/product/bannerProductServices';
 import MessagesToast from '@/Layouts/news/messagesToast.vue';
+import publishProductVue from './publishProduct.vue';
 const {createProduct,showProduct} = ProductsServices()
 const store = useStore();
 const toast = useToast()

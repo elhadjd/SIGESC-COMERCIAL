@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+use App\Models\EmailVerify;
+
 
 class configController extends Controller
 {
@@ -99,6 +101,12 @@ class configController extends Controller
             $image = $request->image;
         }
 
+        if($request->email != $request->user()->company()->first()->email) {
+            if (EmailVerify::where('company_id',$request->id)) {
+                EmailVerify::where('company_id',$request->id)->delete();
+            };
+        }
+
         $request->user()->company()->update([
             'city' => $request->city,
             'email' => $request->email,
@@ -107,7 +115,10 @@ class configController extends Controller
             'name' => $request->name,
             'nif' => $request->nif,
             'phone' => $request->phone,
-            'sede' => $request->sede
+            'sede' => $request->sede,
+            'manager'=>$request->manager['id'],
+            'longitude'=>$request->longitude,
+            'latitude'=>$request->latitude
         ]);
 
         $this->registerActivity("Atualizou dados da empresa");
@@ -118,4 +129,5 @@ class configController extends Controller
     {
         return activity_type::all();
     }
+
 }

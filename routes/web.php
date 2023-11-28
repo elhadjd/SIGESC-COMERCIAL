@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Compra\chartPurchase;
 use App\Http\Controllers\Compra\compraController;
 use App\Http\Controllers\Config\configController;
+use App\Http\Controllers\Config\emailVerifyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Faturacao\chartInvoice;
 use App\Http\Controllers\Faturacao\faturacaoController;
@@ -170,6 +171,12 @@ Route::middleware('auth')->group(function () {
                 Route::post('saveCompany', 'saveCompany');
                 Route::get('getLoginRegister','getLoginRegister');
             });
+
+        });
+
+        Route::controller(emailVerifyController::class)->group(function(){
+            Route::post('sendCodeVerifyEmail/{model}','sendCodeVerifyEmail');
+            Route::post('validateCode/{company}/{code}','validateCode');
         });
 
         Route::controller(configController::class)->group(function () {

@@ -9,7 +9,9 @@
                <button @click="saveCompany">
                   <FontAwesomeIcon icon="fa-solid fa-floppy-disk" />
                   Guardar
+                  <FontAwesomeIcon v-if="progress" icon="fa-solid fa-spinner" shake />
                </button>
+               <button class="botao_descartar" @click="$emit('close')">Fechar</button>
             </div>
          </div>
       </div>
@@ -18,13 +20,13 @@
          <div class="Form">
             <div class="form-container">
                <div class="Header">
-                  <button>*</button>
+                  <VerifyEmailVue :company="company"/>
                </div>
                <div class="Main">
                   <div class="Name-Img-control">
                      <div class="form-nome">
-                        <input type="text" v-model="company.name" placeholder="Nome de empresa" name="company-name">
-                        <input type="text" v-model="company.nif" placeholder="Nif de empresa" name="nif-company">
+                        <input type="text" id="name" v-model="company.name" placeholder="Nome de empresa" name="company-name">
+                        <input type="text" id="nif" v-model="company.nif" placeholder="Nif de empresa" name="nif-company">
                      </div>
                      <div class="form-image">
                         <div>
@@ -78,6 +80,10 @@
                      <label for="hour">Tipo de atividade comercial: </label>
                      <input type="text" disabled v-model="company.activity.name">
                   </div>
+                  <div class="form-Control">
+                     <label for="location">Localisação: </label>
+                     <button type="button" @click="localisation">{{company?.longitude+company?.latitude}}</button>
+                  </div>
                </div>
             </div>
          </div>
@@ -86,29 +92,48 @@
 </template>
 
 <script setup>
+import VerifyEmailVue from './verifyEmail.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { onMounted, ref } from '@vue/runtime-core'
+import { onMounted, reactive, ref } from '@vue/runtime-core'
 import axios from 'axios'
 import {useUploadImage} from '@/composable/public/UploadImage'
+import { getImages } from '@/composable/public/getImages'
 
 const props = defineProps({
     company: Object
 })
-
+const progress = ref(false)
 const showDrop = ref("")
 const company = ref(props.company)
 const managers = ref([])
-
-const image = ref({
+const image = reactive({
     img:'/company/image/'+company.value.image
 })
 
 const emits = defineEmits(['message','close'])
 
-const {onFileChange,createImg} = useUploadImage(company.value,image.value)
+const {onFileChange,createImg} = useUploadImage(company.value,image)
+const {getImage,RemoveImage} = getImages(image);
+onMounted(async()=>{
+    await getImage()
+    await getUser();
+})
 
-onMounted(()=>{
-    getUser();
+const localisation = (()=>{
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          company.value.latitude = position.coords.latitude;
+          company.value.longitude = position.coords.longitude;
+        //   const googleMapsLink = `https://www.google.com/maps/@${latitude},${longitude},15z`;
+        },
+        (error) => {
+          console.error(`Erro ao obter localização: ${error.message}`);
+        }
+      );
+    } else {
+      console.log("Geolocalização não suportada pelo navegador");
+    }
 })
 
 async function getUser() {
@@ -138,18 +163,17 @@ const DropShow = ((drop)=>{
     showDrop.value = drop
 })
 
-const RemoveImage = () => {
-    image.value.img = '/login/image/logo.png';
-    company.value.image = 'logo.png'
-}
-
 const saveCompany = (()=>{
+    if(progress.value) return
+    progress.value = true
     axios.post('saveCompany',{...company.value})
     .then((response) => {
         emits('message',response.data.message,response.data.type)
         emits('close')
     }).catch((err) => {
         console.log(err);
+    }).finally(()=>{
+        progress.value = false
     });
 })
 </script>

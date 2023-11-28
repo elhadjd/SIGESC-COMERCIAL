@@ -21,7 +21,7 @@
             >
           </div>
           <div class="d-flex">
-            <div class="w-50 p-1">{{ product.nome }}</div>
+            <div class="w-50 p-1">{{ product.data.nome }}</div>
             <textarea
               class="InputMotif"
               v-if="form.tipoOper != 'Entrada'"
@@ -90,7 +90,6 @@ const {
     ShowModal,
     stores
 } = moveProductStockServices(props,emits)
-
  onMounted(async() => {
     displayPosition.value = true;
     modalPosition.value = "top";

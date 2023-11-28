@@ -538,7 +538,7 @@
 @mixin formulary{
     .form-container {
         width: 90%;
-        height: 90%;
+        height: auto;
         min-height: 500px !important;
         margin: 0 auto;
         background-color: white;
@@ -595,7 +595,7 @@
 
         .Main{
             width: 100%;
-            height: 60%;
+            height: auto;
             border-bottom: 1.5px solid #ebebebf9;
             display: flex;
             flex-direction: column;
@@ -610,10 +610,10 @@
                 .form-nome{
                     display: flex;
                     flex-direction: column;
-                    justify-content: space-between;
-                    padding: 15px;
+                    padding: 10px;
                     input{
                         @include InputPrincipal;
+                        margin: 10px;
                         width: 100%;
                         border: unset !important;
                         color: #000000aa;
