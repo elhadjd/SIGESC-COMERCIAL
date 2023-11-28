@@ -25,7 +25,9 @@ class MethodsPaymentController extends Controller
     {
         return $paymentMethod->with(['payments'=>function($payments)
         {
-            $payments->with('invoice');
+            $payments->with(['invoice'=>function($invoice){
+                $invoice->where('company_id',$this->companyUser()->id);
+            }]);
         }])->get();
     }
 }

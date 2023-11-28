@@ -15,6 +15,12 @@ export const ProductServices = ((emits?:any)=>{
     const {showMessage} = serviceMessage()
     const product = computed<StoreProduct>(()=> store.getters['Product/product'])
     const stateDrop = ref<string>('')
+    const news = ref({
+        message: 'Fica calma, não se apresa,as novidades estão chegando ',
+        type: 'great',
+        title: 'Novidade',
+        state: false
+    })
     const element = reactive<{img:string}>({
         img: "/produtos/image/" + product.value.data.image,
     });
@@ -49,7 +55,7 @@ export const ProductServices = ((emits?:any)=>{
                     element.count += item.quantity;
                 });
             }
-        });        
+        });
         store.commit('Product/loadMovementsProduct',event)
     };
 
@@ -77,6 +83,18 @@ export const ProductServices = ((emits?:any)=>{
         product.value.movementsProduct.state = true
     };
 
+    async function publishProductOnline ():Promise<void> {
+        stateDrop.value = 'shopOnline'
+        const promise = new Promise<void>(resolve=>{
+            setTimeout(()=>{
+                news.value.state = true
+                stateDrop.value = ''
+                resolve()
+            },3000)
+        })
+        return promise
+    }
+
     return {
         loadProduct,
         element,
@@ -87,6 +105,8 @@ export const ProductServices = ((emits?:any)=>{
         stateDrop,
         moveProductStock,
         ShowMovements,
-        changePrices
+        changePrices,
+        publishProductOnline,
+        news
     }
 })

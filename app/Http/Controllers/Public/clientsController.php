@@ -17,7 +17,7 @@ class clientsController extends Controller
 
     public function getClientsCredit(cliente $clients)
     {
-        return $clients->with('invoices')->withSum('invoices','TotalInvoice')->withSum('invoices','RestPayable')->get();
+        return $clients->where('company_id',$this->companyUser()->id)->with('invoices')->withSum('invoices','TotalInvoice')->withSum('invoices','RestPayable')->get();
     }
 
     public function clientOrders(cliente $client)

@@ -66,4 +66,8 @@ class produtos extends Model
     {
         return $this->hasMany(price_list::class);
     }
+
+    public function catalogProduct(){
+        return $this->hasMany(product_picture::class,'product_id');
+    }
 }

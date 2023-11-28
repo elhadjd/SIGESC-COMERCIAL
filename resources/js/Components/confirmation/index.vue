@@ -8,8 +8,8 @@
             {{'Deseja realmente '+message+' ?'}}
         </div>
         <div class="Footer">
-            <button @click="$emit('Confirme',message,'confirmou')">Confirmar</button>
-            <button class="Descartar" @click="$emit('descartou')">Fechar</button>
+            <button @click.prevent.stop="$emit('Confirme',message,'confirmou')" type="button">Confirmar</button>
+            <button type="button" class="Descartar" @click="$emit('descartou')">Fechar</button>
         </div>
     </div>
   </div>
@@ -30,6 +30,10 @@ onMounted(()=>{
 
 <style lang="scss" scoped>
 .Principal{
-    @include modal
+    z-index: 1080 !important;
+    @include modal;
+    .Modal{
+        z-index: 1080 !important;
+    }
 }
 </style>

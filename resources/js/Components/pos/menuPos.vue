@@ -20,7 +20,7 @@
     <section id="headerPos">
         <button type="button" class="header-One">
             <li>
-                <strong> SISGESC </strong>
+                <strong> SIGESC </strong>
                 <i class="fa fa-chevron-down openMenu" aria-hidden="true"></i>
             </li>
             <div class="menu">

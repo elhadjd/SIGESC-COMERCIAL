@@ -29,7 +29,7 @@
         </Link>
       </div>
     </div>
-    <newsMessagesVue/>
+    <!-- <newsMessagesVue/> -->
     <!-- <canvas ref="canvas" id="canvas"></canvas> -->
   </div>
 </template>

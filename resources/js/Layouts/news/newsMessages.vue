@@ -16,14 +16,14 @@
     height: auto;
     display: flex;
     justify-content: center;
-    
+
     >span{
-        background-color: rgba(1, 85, 74, 0.24);
+        background-color: rgba(8, 84, 74, 0.934);
         width: 350px;
         padding: 15px;
         border-radius: 10px;
         margin-bottom: 10px;
-        color: rgb(1, 85, 74);
+        color: white;
     }
 }
 </style>

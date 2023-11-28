@@ -27,7 +27,8 @@ export interface Product{
     stock:Stock[],
     stock_sum_quantity:number,
     total_cust:number,
-    updated_at: string
+    updated_at: string,
+    catalog_product: Product_catalog[],
 }
 
 export interface category{
@@ -97,4 +98,13 @@ export interface StoreProduct{
     StateFormShow: boolean,
     stateDisableButtons: boolean,
     movementsProduct: {data:MovementProductTs[],state:boolean,movement: MovementProductTs}
+    stateModalCatalog: boolean
+}
+
+export interface Product_catalog{
+    id:number,
+    image: string,
+    product_id: number,
+    createdAt: string,
+    updatedAt: string
 }

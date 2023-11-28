@@ -145,4 +145,12 @@ class CaixaController extends Controller
         ]);
         return $this->RespondSuccess('Caixa adicionada com sucesso');
     }
+
+    public function deleteCash(Request $request,caixa $caixa){
+        $session = $caixa->session->count();
+        if ($session > 0) return $this->RespondError('Não é posivel eliminar esta caixa, pois ele posui um ou mais sesões');
+
+        $caixa->delete();
+        
+    }
 }

@@ -37,7 +37,7 @@
                             :key="method"
                             @click="methods(method.name)"
                             >
-                                <strong>{{ method.name + " : " + FormatarDineiro.format(method.valor) }}</strong>
+                                <strong>{{ method.name + " : " + formatMoney(method.valor) }}</strong>
                                 <strong class="ValorEntregue"></strong>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                                 <div class="CalculoTotal" v-else>
                                     <div class="TotalCompra">
                                         <h3 class="Restante">
-                                            <strong>Restante : </strong>
+                                            <strong>Em falta : </strong>
                                             <span >{{formatMoney(RestoPagar)}}</span>
                                         </h3>
                                         <h5 class="div5">

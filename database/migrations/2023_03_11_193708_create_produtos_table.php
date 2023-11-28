@@ -28,6 +28,7 @@ return new class extends Migration
             $table->integer('qtd')->nullable()->default(0);
             $table->float('total_cust')->default(0);
             $table->enum('inventory',['true','false'])->default('false');
+            $table->boolean('shop_online')->default('false');
             $table->timestamp('datafab')->nullable()->default(NULL);
             $table->timestamp('dataexp')->nullable()->default(NULL);
             $table->enum('estado',['active','inactive'])->default('active');

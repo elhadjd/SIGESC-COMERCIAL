@@ -55,7 +55,8 @@ export default {
         stock: [],
         stock_sum_quantity: 0,
         total_cust: 0,
-        updated_at: ''
+        updated_at: '',
+        catalog_product: [],
     },
     movementsProduct: {
         data: [],
@@ -69,6 +70,7 @@ export default {
             updated_at:''
         }
     },
+    stateModalCatalog: true,
     productComponentKey: 0,
     StateFormShow:false,
     stateDisableButtons: false,

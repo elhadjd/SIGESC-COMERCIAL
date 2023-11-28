@@ -1,11 +1,16 @@
 <template>
   <div class="principal">
+    <ConfirmVue @descartou="SmsConfirm.state = false" :SmsConfirm="SmsConfirm.sms" @Confirme="deleteCash" v-if="SmsConfirm.state"/>
     <div class="Header">
         <div class="Header-left">
             <h2>Nova caixa</h2>
             <span>
                 <button @click="savePoint">Guardar</button>
                 <button class="botao_descartar" @click="$emit('close')">Fechar</button>
+                <buttonVue :class="'botao_descartar'" @click="SmsConfirm.state = true">
+                    Eliminar
+                    <font-awesome-icon icon="fa-solid fa-xmark" style="color: #881111;" />
+                </buttonVue>
             </span>
         </div>
     </div>
@@ -51,14 +56,23 @@
 </template>
 
 <script setup>
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import ConfirmVue from '@/Components/confirmation/index.vue'
 import axios from "axios";
+import buttonVue from '@/ui/button.vue'
 import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
+import { serviceMessage } from '@/composable/public/messages';
 
 const store = useStore()
 const stateDrop = ref(null)
 const pointSale = ref([])
 const emits = defineEmits(['message','close'])
+const {showMessage} = serviceMessage()
+const SmsConfirm = ref({
+    sms: 'apagar esta caixa',
+    state: false
+})
 
 const props = defineProps({
     point: Object
@@ -83,7 +97,21 @@ const selectUser = ((user)=>{
     return stateDrop.value = null
 })
 
+async function deleteCash() {
+    await axios.delete(`caixa/deleteCash/${pointSale.value.id}`)
+    .then((response) => {
+        if(response.data.message) return showMessage(response.data.message,response.data.type)
+        emits('close')
+        console.log(response.data);
+    }).catch((err) => {
+        console.log(err);
+    }).finally(()=>{
+        SmsConfirm.value.state = false
+    });
+}
+
 async function savePoint() {
+    store.state.pos.StateProgress = true;
     axios.post(`caixa/savePoint${pointSale.value.id ? '/' +pointSale.value.id : ''}`,{...pointSale.value})
     .then((response) => {
         emits('message',response.data.type,response.data.message)
@@ -91,6 +119,8 @@ async function savePoint() {
     }).catch((err) => {
         console.log(err);
         emits('message','warning','Aconteceu um erro ao salvar os dados')
+    }).finally(()=>{
+        store.state.pos.StateProgress = false;
     });
 }
 
