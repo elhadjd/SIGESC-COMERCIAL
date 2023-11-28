@@ -62,7 +62,7 @@ const Sair = () => {
 
 
 onMounted(() => {
-    // canvas.value = canvas.value; // Assign the DOM element directly
+    // canvas.value = canvas.value; 
     // ctx.value = canvas.value.getContext('2d');
     // canvas.value.width = window.innerWidth;
     // canvas.value.height = window.innerHeight;

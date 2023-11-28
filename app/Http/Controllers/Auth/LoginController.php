@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\HistoricLogin;
 use Jenssegers\Agent\Agent;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -21,7 +19,6 @@ class LoginController extends Controller
     }
     public function login(Request $request)
     {
-        // return Crypt::encrypt('2024-02-14');
         $request->validate([
             'email' => 'required|email',
             'password' => 'required'

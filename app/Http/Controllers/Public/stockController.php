@@ -202,18 +202,17 @@ class stockController extends Controller
     public function saveStore(Request $request)
     {
         $request->validate([
-            'city' =>  'required',
-            'name' => 'required'
+            'city' =>  'required|string',
+            'name' => 'required|string'
         ]);
 
         armagen::updateOrCreate(
-            ['name' => $request->name,'company_id' => $request->user()->company_id],
-            [
-                'name' => $request->name,
-                'company_id' => $request->user()->company_id,
-                'city' => $request->city,
-                'house_number' => $request->house_number,
-                'neighborhood' => $request->neighborhood
+            ['id' => $request->id],
+            ['name' => $request->name,
+            'company_id' => $request->user()->company_id,
+            'city' => $request->city,
+            'house_number' => $request->house_number,
+            'neighborhood' => $request->neighborhood
             ],
         );
 
