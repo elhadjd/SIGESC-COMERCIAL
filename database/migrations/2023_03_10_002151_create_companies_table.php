@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('name')->nullable();
             $table->string('description')->nullable();
+            $table->boolean('shopOnline')->default(false);
             $table->string('nif')->nullable()->unique();
             $table->string('phone')->nullable();
             $table->string('email')->nullable()->unique();

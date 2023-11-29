@@ -66,7 +66,9 @@ import {
     faShop,
     faSpinner,
     faFileCirclePlus,
-    faEnvelopeCircleCheck
+    faEnvelopeCircleCheck,
+    faCircleInfo,
+    faBagShopping
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import general from "./mixins/general.js";
@@ -119,7 +121,9 @@ library.add(
     faSpinner,
     faFileCirclePlus,
     faEnvelope,
-    faEnvelopeCircleCheck
+    faEnvelopeCircleCheck,
+    faCircleInfo,
+    faBagShopping
 );
 
 

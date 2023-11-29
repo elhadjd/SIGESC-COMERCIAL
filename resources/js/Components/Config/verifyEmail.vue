@@ -47,9 +47,6 @@ const props = defineProps({
 const code = ref<string>('')
 const {showMessage } = serviceMessage()
 const stateProgress = ref<number>(0)
-onMounted(()=>{
-    console.log(props.company);
-})
 
 const verifyEmail = async()=>{
     if(props.company.email == null||props.company.email == '') return showMessage('O campo email esta vazio por favor preenche e tenta novamente ','info')
@@ -60,12 +57,12 @@ const verifyEmail = async()=>{
         if(response.data.message) {
             return showMessage(response.data.message,response.data.type)
         }
+        stateProgress.value = 2
     }).catch((err) => {
+        stateProgress.value = 0
         console.log();
         showMessage('Erro de servidor ','error')
-    }).finally(()=>{
-        stateProgress.value = 2
-    });
+    })
 }
 
 async function validateCode(code: string) {

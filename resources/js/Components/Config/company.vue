@@ -82,7 +82,7 @@
                   </div>
                   <div class="form-Control">
                      <label for="location">Localisação: </label>
-                     <button type="button" @click="localisation">{{company?.longitude+company?.latitude}}</button>
+                     <button type="button" @click="localisation">{{String(company.longitude)+String(company.latitude)}}</button>
                   </div>
                </div>
             </div>

@@ -125,7 +125,6 @@ const {
     moveProductStock,
     ShowMovements ,
     changePrices,
-    publishProductOnline,
     news
 } = ProductServices(emits)
 const {

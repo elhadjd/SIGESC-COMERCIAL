@@ -68,6 +68,7 @@ export const ProductServices = ((emits?:any)=>{
         .then((Response) => {
             showMessage(Response.data.message,Response.data.type)
         }).catch((err) => {
+            showMessage(err.response.data.message,'error')
             console.log(err);
         }).finally(()=>{
             emits('saved')
@@ -83,17 +84,7 @@ export const ProductServices = ((emits?:any)=>{
         product.value.movementsProduct.state = true
     };
 
-    async function publishProductOnline ():Promise<void> {
-        stateDrop.value = 'shopOnline'
-        const promise = new Promise<void>(resolve=>{
-            setTimeout(()=>{
-                news.value.state = true
-                stateDrop.value = ''
-                resolve()
-            },3000)
-        })
-        return promise
-    }
+
 
     return {
         loadProduct,
@@ -106,7 +97,7 @@ export const ProductServices = ((emits?:any)=>{
         moveProductStock,
         ShowMovements,
         changePrices,
-        publishProductOnline,
-        news
+        news,
+        product
     }
 })

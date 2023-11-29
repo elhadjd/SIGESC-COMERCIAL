@@ -23,7 +23,6 @@ export const getImages = ((image)=>{
         var ctx = canvas.getContext("2d");
         ctx.font = "30px Arial";
         ctx.fillStyle = 'red';
-        
         ctx.fillText("Sigesc", 2, 50);
     })
 

@@ -276,6 +276,7 @@ Route::middleware('auth')->group(function () {
             Route::delete('/deleteProduct/{product}', 'deleteProduct');
             Route::post('/uploadImageCatalog/{product}','uploadImageCatalog');
             Route::delete('/deleteImageInCatalogProduct/{image}','deleteImageInCatalog');
+            Route::post('/publishProduct/{product}','publishProduct');
         });
 
         Route::controller(clientsController::class)->group(function () {

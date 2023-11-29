@@ -62,14 +62,14 @@ const Sair = () => {
 
 
 onMounted(() => {
-    // canvas.value = canvas.value; 
+    // canvas.value = canvas.value;
     // ctx.value = canvas.value.getContext('2d');
     // canvas.value.width = window.innerWidth;
     // canvas.value.height = window.innerHeight;
 
     // canvas.value.addEventListener('mousemove', handleMouseMove);
     // window.addEventListener('resize', handleWindowResize);
-    // store.commit("publico/saveCompany", props);
+    store.commit("publico/saveCompany", props);
     // animate();
 });
 

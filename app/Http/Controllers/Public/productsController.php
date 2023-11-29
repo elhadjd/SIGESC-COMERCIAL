@@ -7,6 +7,7 @@ use App\classes\DeleteFile;
 use App\classes\uploadImage;
 use App\classes\UploadImageCatalog;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\public\verifyInfoModelsController;
 use App\Models\category_product;
 use App\Models\company;
 use App\Models\fornecedore;
@@ -101,6 +102,11 @@ class productsController extends Controller
     public function update(produtos $product, Request $request)
     {
         $image = new uploadImage();
+        $request->validate([
+            'data.preçocust'=> "required",
+            'data.preçovenda'=> "required",
+            'data.nome'=> "required|string",
+        ]);
         $data = $request->data;
         unset($data['id'], $data['category'], $data['movement_stock'], $data['fornecedor'], $data['updated_at'], $data['created_at']);
         if (Auth::user()->nivel == 'admin') {
@@ -180,12 +186,33 @@ class productsController extends Controller
         $product = produtos::find($image->product_id);
 
         $deleteFile = new DeleteFile();
-        
+
         $deleteFile->delete("/produtos/image/$product->id/$image->image");
 
         $image->delete();
 
         return $product->load('catalogProduct');
+    }
 
+    public function publishProduct(produtos $product) {
+        $company = company::find($product->company_id);
+        $connected = @fsockopen("www.example.com", 80);
+        //website, port  (try 80 or 443)
+        if ($connected){
+            $verifyInfoModel = new verifyInfoModelsController();
+            $check = $verifyInfoModel->checkInfoCompany($company);
+            if (!$check) return $this->RespondError('Por favor completa as estapas do formulario de empresa');
+            if (!$company->emailVerify()->first()) return $this->RespondError('Para publicar seus produtos online tensque verificar seu email. vai para modulo configuração clica no perfil de empresa em seguida clica em verificar email !!!');
+
+            $checkProduct = $verifyInfoModel->checkProductInfo($product);
+            if ($checkProduct) {
+                $product->shop_online = true;
+                $product->save();
+                return $this->RespondSuccess('Seu produto ja esta disponivel na loja online',$product->fresh());
+            }
+            return $this->RespondError('Por favor preenche os campos vazio e tenta novamente ');
+        }else{
+            return $this->RespondError('Parece que não tens internet ativo, por favor verifique e tenta novamente');
+        }
     }
 }
