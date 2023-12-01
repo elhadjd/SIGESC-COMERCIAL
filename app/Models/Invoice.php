@@ -17,7 +17,7 @@ class Invoice extends Model
         'tax'
     ];
 
-    protected $with = ['client','user'];
+    protected $with = ['client','user','delivery'];
 
     public function client()
     {
@@ -35,5 +35,9 @@ class Invoice extends Model
     public function payments()
     {
         return $this->hasMany(PaymentInvoice::class);
+    }
+
+    function delivery() {
+        return $this->belongsTo(delivery::class,'delivery_id');
     }
 }

@@ -30,7 +30,8 @@ class faturacaoController extends Controller
     public function getInvoices($invoice = null)
     {
         if (!$invoice) return $this->companyUser()->invoice()->orderBy('id','desc')->paginate(50);
-        $select = $this->companyUser()->invoice()->with(['items' => function ($items) {
+        $select = $this->companyUser()->invoice()
+        ->with(['items' => function ($items) {
             $items->orderBy('id', 'desc');
         }]);
         return $select->where('id',$invoice)->first();

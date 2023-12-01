@@ -206,6 +206,8 @@ class productsController extends Controller
 
             $checkProduct = $verifyInfoModel->checkProductInfo($product);
             if ($checkProduct) {
+                $countImage = $product->catalogProduct->count();
+                if($countImage<3) return  $this->RespondInfo('Por favor adiciona no minimo 3 fotografias do produto, de preferencia fundo branco e image bem limpa para melhor destaque do produto');
                 $product->shop_online = true;
                 $product->save();
                 return $this->RespondSuccess('Seu produto ja esta disponivel na loja online',$product->fresh());

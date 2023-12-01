@@ -32,7 +32,8 @@ class verifyInfoModelsController extends Controller
             $product->preçovenda != null &&
             $product->image != null&&
             $product->estado != null&&
-            $product->estado != 'inactive'
+            $product->estado != 'inactive'&&
+            $product->image != 'produto-sem-imagem.png'
             ) {
             $category = $product->category()->first();
             $itemType = $product->product_type()->first();
