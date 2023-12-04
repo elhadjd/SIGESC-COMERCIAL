@@ -31,7 +31,7 @@
                         <div class="nameProduct"><strong>{{product.nome}}</strong></div>
                         <div class="d-flex">
                             <div class="preco_qtd">
-                                <div><strong>Preço :</strong> {{FormetDineiro.format(product.preçovenda)}} </div>
+                                <div><strong>Preço :</strong> {{formatMoney(product.preçovenda)}} </div>
                                 <div><strong>Stock :</strong> {{product.stock_sum_quantity != null ?product.stock_sum_quantity  +',00Un(s)':0 +',00Un(s)'}}</div>
                             </div>
                         </div>
@@ -58,7 +58,7 @@ import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 
 import {ProductsServices} from './services/productsServices';
-const FormetDineiro = new Intl.NumberFormat('pt-AO', { style: 'currency', currency: 'AOA',})
+
 const store = useStore()
 const {
     SearchProduct,

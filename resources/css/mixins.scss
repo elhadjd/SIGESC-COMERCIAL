@@ -672,11 +672,32 @@
             }
         }
         .Footer{
-            height: 28%;
+            height: auto !important;
             padding: 10px;
-            overflow-y: auto;
-            @include scroll();
+            @media screen and (max-width: 500px) {
+                display: flex !important;
+                align-items: flex-start !important;
+                flex-direction: column !important;
+                gap: 1rem !important;
+                .form-content {
+                    width: 100%;
+                    .drop{
+                        margin-left: 0 !important;
+                        width: 100% !important;
+                        input{
+                            width: 100% !important;
+                        }
+                    }
+                }
+            }
             .form-Control{
+                .drop{
+                    margin-left: 0 !important;
+                    width: 100% !important;
+                    input{
+                        width: 100% !important;
+                    }
+                }
                 #salary{
                     font-size: 14px;
                     font-weight: bold;

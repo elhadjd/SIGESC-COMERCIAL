@@ -25,7 +25,7 @@
                     <div class="NomeProduto"><strong>{{item.nome}}</strong></div>
                     <div class="d-flex">
                         <div class="preco_qtd">
-                            <div><strong>Preço :</strong> {{FormetDineiro.format(item.preçovenda)}} </div>
+                            <div><strong>Preço :</strong> {{formatMoney(item.preçovenda)}} </div>
                             <div><strong>Stock :</strong> {{item.stock_sum_quantity+',00Un(s)'}}</div>
                         </div>
                     </div>

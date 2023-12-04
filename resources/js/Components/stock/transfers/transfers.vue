@@ -35,7 +35,7 @@
                   <div>{{item.user.surname}}</div>
                   <div>{{item.store_to?.name}}</div>
                   <div>{{FormatDate(item.created_at)}}</div>
-                  <div>{{formatDinheiro.format(item.total)}}</div>
+                  <div>{{formatMoney(item.total)}}</div>
                   <div :class="item.state">
                      <span>{{item.state}}</span>
                   </div>

@@ -11,7 +11,7 @@ class company extends Model
 {
     use HasFactory;
 
-    protected $with = ['armagens','license','activity','manager','users','emailVerify'];
+    protected $with = ['armagens','license','activity','manager','users','emailVerify','currencyCompany'];
 
     protected $fillable = [
         'city',
@@ -98,6 +98,10 @@ class company extends Model
 
     function emailVerify() {
         return $this->hasOne(emailVerify::class,'company_id');
+    }
+
+    function currencyCompany() {
+        return $this->hasOne(currencyCompany::class,'company_id');
     }
 
 }

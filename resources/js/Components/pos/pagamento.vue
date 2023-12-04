@@ -205,7 +205,7 @@ const methods = (event)=> {
     methodo.value = event
     BUSCAR_RESTO()
     // Verificar qual foi a metodo clicado
-    if (event == "Multicaixa") {
+    if (event == "Multicaixa" || 'Transferencia') {
         const existProduct = props.method.find(o => o.name === methodo.value)
         if (existProduct) {
             RestoPagar.value = TotalEncomenda.value - total_pago.value;

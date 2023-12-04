@@ -11,7 +11,7 @@
                     <h4>{{dados.nome}}</h4>
                 </div>
                 <div>
-                    <h4 class="Money">{{FormatarDineiro.format(dados.preçovenda)}}</h4>
+                    <h4 class="Money">{{formatMoney(dados.preçovenda)}}</h4>
                     <span>isento de IVA-Resumo de exclusão</span>
                 </div>
             </div>
@@ -30,9 +30,9 @@
                             <span>Margin</span>
                         </div>
                         <div>
-                            <span>{{FormatarDineiro.format(dados.preçovenda)}}</span>
-                            <span>{{FormatarDineiro.format(dados.preçocust)}}</span>
-                            <span>{{FormatarDineiro.format(dados.preçovenda - dados.preçocust)}}</span>
+                            <span>{{formatMoney(dados.preçovenda)}}</span>
+                            <span>{{formatMoney(dados.preçocust)}}</span>
+                            <span>{{formatMoney(dados.preçovenda - dados.preçocust)}}</span>
                         </div>
                     </div>
                     <div class="Finanças-Two">
@@ -66,7 +66,7 @@
                     <strong>Lista de preço</strong>
                     <div v-for="item in dados.list_price" :key="item.id">
                         <span>{{"Na compra de >="+item.quantity+',00Unidade(s)'}}</span>
-                        <span>{{FormatarDineiro.format(item.price_discount)}}</span>
+                        <span>{{formatMoney(item.price_discount)}}</span>
                     </div>
                 </div>
             </div>

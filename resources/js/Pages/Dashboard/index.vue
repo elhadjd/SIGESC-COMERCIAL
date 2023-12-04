@@ -29,7 +29,9 @@
         </Link>
       </div>
     </div>
-    <!-- <newsMessagesVue/> -->
+    <newsMessagesVue v-if="news.type != ''" :message="news">
+        <Link :href="`/config/Home`"> clica aqui para atualizar</Link>
+    </newsMessagesVue>
     <!-- <canvas ref="canvas" id="canvas"></canvas> -->
   </div>
 </template>
@@ -52,6 +54,10 @@ const ctx = ref(null);
 const mouse = { x: 0, y: 0 };
 const spots = ref([]);
 let hue = 0;
+const news = ref({
+    message: '',
+    type: ''
+})
 const element = reactive({
     img: '/login/image/' + props.user.image
 })
@@ -62,6 +68,17 @@ const Sair = () => {
 
 
 onMounted(() => {
+    if (!props.data.currency_company) {
+        news.value = {
+            message: `Prezado ${props.data.name} ,Esperamos que esta mensagem o encontre bem. Informamos que realizamos uma atualização em nosso sistema para aprimorar a experiência do usuário. 
+                por favor, verifique e atualize o tipo de moeda no formulário da sua empresa.
+                Agradecemos pela sua colaboração e compreensão. Se tiver alguma dúvida ou precisar de assistência, não hesite em entrar em contato conosco.
+                Atenciosamente,
+                Leonardo
+                Administrador SIGESC`,
+            type: 'currency',
+        }
+    }
     // canvas.value = canvas.value;
     // ctx.value = canvas.value.getContext('2d');
     // canvas.value.width = window.innerWidth;

@@ -64,14 +64,14 @@
                   <div class="mr-3 w-auto">
                     {{ Pedido.quantidade + "Un(s)" }}
                   </div>
-                  <div>{{ FormatarDineiro.format(Pedido.preco_pedido) }}</div>
+                  <div>{{ formatMoney(Pedido.preco_pedido) }}</div>
                   <div class="totalEncomeda">
-                    {{ FormatarDineiro.format(Pedido.total) }}
+                    {{ formatMoney(Pedido.total) }}
                   </div>
                 </li>
                 <div v-if="Pedido.items.length > 0">
                     <strong class="mr-2">Total:</strong>
-                    <span>{{ FormatarDineiro.format(Pedido.total) }}</span>
+                    <span>{{ formatMoney(Pedido.total) }}</span>
                 </div>
             </div>
           </div>

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('country')->nullable()->default(null);
             $table->string('rua')->nullable()->default(null);
             $table->integer('state')->nullable()->default(null);
+            $table->string('currency')->default(null);
             $table->string('password')->default(null);
             $table->timestamps();
         });

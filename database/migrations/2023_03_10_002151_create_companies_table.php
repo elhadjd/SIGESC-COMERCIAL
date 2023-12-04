@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('description')->nullable();
             $table->boolean('shopOnline')->default(false);
+            $table->string('currency')->default('AOA');
             $table->string('nif')->nullable()->unique();
             $table->string('phone')->nullable();
             $table->string('email')->nullable()->unique();

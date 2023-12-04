@@ -7,6 +7,7 @@ use App\Models\ItemOrder;
 use App\Models\movement_type;
 use App\Models\movement_type_produtos;
 use App\Models\orderPos;
+use App\Models\paymentMethod;
 use App\Models\paymentPDV;
 use App\Models\produtos;
 use App\Models\session;
@@ -120,10 +121,11 @@ class OrdersController extends Controller
                                     'order_pos_id' => $order->id,
                                     'payment_method_id' => $method['id'],
                                     'amountPaid' => $method['valor'],
-                                    'change' => 0,
+                                    'change' => $method['name'] == 'Numerario' ? $VerificarPagamento['ValorPago'] - $request->total : 0,
                                 ]);
                             }
                         }
+
                         $idOrder = $order->id;
                     }
                 });

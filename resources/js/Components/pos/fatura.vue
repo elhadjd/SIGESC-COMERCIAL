@@ -102,14 +102,14 @@ const invoice = ref(props.dadosFatura)
 const emits = defineEmits(['closePrint'])
 
 const company = ref(store.state.publico.company)
-const FormetDineiro = new Intl.NumberFormat('pt-AO', { style: 'currency', currency: 'AOA',})
+''
 
 const changes = (()=>{
     let amountPaid = 0
     invoice.value.payments.forEach((amount)=>{
         amountPaid += Number(amount.amountPaid)
     })
-    return FormetDineiro.format(Number(amountPaid) - Number(invoice.value.total))
+    return formatMoney(Number(amountPaid) - Number(invoice.value.total))
 })
 
 

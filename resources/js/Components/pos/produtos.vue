@@ -25,7 +25,7 @@
               <i class="fa fa-info-circle" @click="ShwInfo(product)"></i>
             </div>
             <div id="ProdutoPreco">
-              {{ FormatarDineiro.format(product.preçovenda) }}
+              {{ formatMoney(product.preçovenda) }}
             </div>
           </div>
         <div>
@@ -58,11 +58,6 @@ const idProd = ref();
 const OpenInfo = ref();
 const store = useStore();
 const emits = defineEmits(["AddProds", "message"]);
-
-const FormatarDineiro = Intl.NumberFormat("PT-AO", {
-  style: "currency",
-  currency: "AOA",
-});
 
 const PesquisarProduto = computed(() => {
   return store.state.PesquisarProduto;
