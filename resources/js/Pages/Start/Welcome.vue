@@ -12,7 +12,6 @@
 </template>
 
 <script setup>
-import { hrefToUrl } from "@inertiajs/inertia";
 import { Link } from "@inertiajs/vue3"
 import { onMounted } from "vue";
 import { useStore } from "vuex";

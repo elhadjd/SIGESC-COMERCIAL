@@ -14,7 +14,6 @@ class pontoVendaController extends Controller
 {
     public function index()
     {
-        // return Crypt::encrypt('2024-02-14');
         return Inertia::render('PointSale/pointSale', [
             'user' => Auth::user(),
             'data' => caixa::all()->where('company_id',Auth::user()->company_id)
