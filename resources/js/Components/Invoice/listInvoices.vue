@@ -47,11 +47,11 @@
                 <div>{{item.client?.surname}} </div>
                 <div>{{ item.DateOrder != null ? formateDate(item.DateOrder) : formateDate(item.created_at) }} </div>
                 <div>{{item.DateDue != null ? formateDate(item.DateDue) : 'Não definido'}} </div>
-                <div class="text-end">{{FrmatDinheiro.format(item.TotalMerchandise)}} </div>
-                <div class="text-end">{{FrmatDinheiro.format(item.TotalInvoice)}}</div>
+                <div class="text-end">{{formatMoney(item.TotalMerchandise)}} </div>
+                <div class="text-end">{{formatMoney(item.TotalInvoice)}}</div>
                 <div>
                     <span>
-                    {{item.RestPayable >=1 ? FrmatDinheiro.format(item.RestPayable): FrmatDinheiro.format(0)}}
+                    {{item.RestPayable >=1 ? formatMoney(item.RestPayable): formatMoney(0)}}
                     </span>
                 </div>
                 <div :class="item.state">
@@ -67,11 +67,11 @@
             <div class="Totals">
                <div>
                   <label for="">Total de faturas</label>
-                  <span>{{FrmatDinheiro.format(Invoices.TotalFaturas)}}</span>
+                  <span>{{formatMoney(Invoices.TotalFaturas)}}</span>
                </div>
                <div>
                   <label for="">Resto a pagar</label>
-                  <span>{{FrmatDinheiro.format(Invoices.RestoALiquidar)}}</span>
+                  <span>{{formatMoney(Invoices.RestoALiquidar)}}</span>
                </div>
             </div>
          </div>
@@ -127,14 +127,7 @@ const formateDate = ((data) => {
    return moment(data).format('DD-MM-YYYY')
 })
 
-
-let FrmatDinheiro = ref(new Intl.NumberFormat('pt-AO', {
-   style: 'currency',
-   currency: 'AOA'
-}))
 const store = useStore();
-
-
 const onRowSelect = (event) => {
    emits('fatura', event);
 };

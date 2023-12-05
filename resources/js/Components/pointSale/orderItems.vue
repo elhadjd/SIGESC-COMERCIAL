@@ -43,9 +43,9 @@
                             <div class="w-25">{{ item.product?.nome }}</div>
                             <div class="text-end">{{ item.quantity + "Un(s)" }}</div>
                             <div class="text-end">
-                            {{ FormatDinheiro.format(item.price_sold) }}
+                            {{ formatMoney(item.price_sold) }}
                             </div>
-                            <div class="text-end">{{ FormatDinheiro.format(item.total) }}</div>
+                            <div class="text-end">{{ formatMoney(item.total) }}</div>
                         </div>
                     </div>
                     <div class="w-100 form-control-sm text-secondary">
@@ -58,11 +58,11 @@
                             </div>
                             <div class="Totaies w-50">
                                 <div>
-                                    {{ FormatDinheiro.format(order.total) }}
+                                    {{ formatMoney(order.total) }}
                                 </div>
                                 <div v-for="payment in order.payments" :key="payment.id">{{formatMoney(payment.amountPaid)}}</div>
                                 <div>{{change}}</div>
-                                <div>{{ FormatDinheiro.format(order.total - order.total_costs ) }}</div>
+                                <div>{{ formatMoney(order.total - order.total_costs ) }}</div>
                             </div>
                         </div>
                     </div>
@@ -103,7 +103,7 @@ const changes = (()=>{
     props.order.payments.forEach((amount)=>{
         amountPaid.value += Number(amount.amountPaid)
     })
-    change.value = FormatDinheiro.format(Number(amountPaid.value) - Number(props.order.total))
+    change.value = formatMoney(Number(amountPaid.value) - Number(props.order.total))
 })
 
 const DevolverFatura = () => {

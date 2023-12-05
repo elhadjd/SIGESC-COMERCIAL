@@ -123,8 +123,8 @@
                         <span>{{formatMoney(DadosCaixa.orders.opening)}}</span>
                     </div>
                     <div class="informacoes" v-for="method in DadosCaixa.methods" :key="method.id">
-                            <span>{{method.name+':'}}</span>
-                            <span>{{formatMoney(method.payments_pdv_sum_amount_paid)}}</span>
+                        <span>{{method.name+':'}}</span>
+                        <span>{{formatMoney(method.payments_pdv_sum_amount_paid-method.payments_pdv_sum_change)}}</span>
                     </div>
                 </div>
               </div>

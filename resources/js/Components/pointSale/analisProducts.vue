@@ -96,19 +96,19 @@
           <div>
             <span>Total custo</span>
             <strong>{{
-              FormatDinheiro.format(valores.totalCusto_geral)
+              formatMoney(valores.totalCusto_geral)
             }}</strong>
           </div>
           <div>
             <span>Total de Venda</span>
             <strong>{{
-              FormatDinheiro.format(valores.totalVenda_geral)
+              formatMoney(valores.totalVenda_geral)
             }}</strong>
           </div>
           <div>
             <span>Total de lucro</span>
             <strong>{{
-              FormatDinheiro.format(valores.totalLucro_geral)
+              formatMoney(valores.totalLucro_geral)
             }}</strong>
           </div>
         </div>

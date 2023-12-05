@@ -7,6 +7,7 @@ use App\classes\uploadImage;
 use App\Http\Controllers\Controller;
 use App\Models\activity_type;
 use App\Models\company;
+use App\Models\currencyCompany;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -119,6 +120,16 @@ class configController extends Controller
             'manager'=>$request->manager['id'],
             'longitude'=>$request->longitude,
             'latitude'=>$request->latitude
+        ]);
+
+        currencyCompany::updateOrCreate(['company_id'=>$request->id],[
+            'code'=>$request->currency_company['code'],
+            'digits'=>$request->currency_company['digits'],
+            'number'=>$request->currency_company['number'],
+            'currency'=>$request->currency_company['currency'],
+            'company_id'=>$request->id,
+            'createdAt'=>now(),
+            'updatedAt'=>now()
         ]);
 
         $this->registerActivity("Atualizou dados da empresa");

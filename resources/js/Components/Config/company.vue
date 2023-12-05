@@ -75,7 +75,8 @@
                      </div>
                   </div>
                </div>
-               <div class="Footer">
+               <div class="Footer h-full flex flex-row">
+                <div class="form-content w-1/2">
                   <div class="form-Control">
                      <label for="hour">Tipo de atividade comercial: </label>
                      <input type="text" disabled v-model="company.activity.name">
@@ -84,6 +85,17 @@
                      <label for="location">Localisação: </label>
                      <button type="button" @click="localisation">{{String(company.longitude)+String(company.latitude)}}</button>
                   </div>
+                </div>
+                <div class="form-content w-1/2">
+                  <div class="form-Control">
+                     <label for="manager">Moeda: </label>
+                    <button type="button" @click="showDrop = 'currency'" id="currency">{{company.currency_company?.code||'Tipo de moeda'}}</button>
+                    <div class="drop"  v-if="showDrop == 'currency'">
+                        <input type="text" @keyup="(e)=>SearchCurrency(e.target.value)" placeholder="Pesquisa a sua moeda aqui">
+                        <span v-for="currency in currencyAll" :key="currency.code" @click="changeCurrency(currency)">{{currency.currency}}</span>
+                    </div>
+                  </div>
+                </div>
                </div>
             </div>
          </div>
@@ -98,19 +110,24 @@ import { onMounted, reactive, ref } from '@vue/runtime-core'
 import axios from 'axios'
 import {useUploadImage} from '@/composable/public/UploadImage'
 import { getImages } from '@/composable/public/getImages'
-
+import {useCompanyService} from './services/companyService'
 const props = defineProps({
     company: Object
 })
-const progress = ref(false)
-const showDrop = ref("")
-const company = ref(props.company)
+const emits = defineEmits(['message','close'])
+const {
+    currencyAll,
+    changeCurrency,
+    company,
+    showDrop,
+    SearchCurrency,
+    progress,
+    saveCompany
+    } = useCompanyService(props,emits)
 const managers = ref([])
 const image = reactive({
     img:'/company/image/'+company.value.image
 })
-
-const emits = defineEmits(['message','close'])
 
 const {onFileChange,createImg} = useUploadImage(company.value,image)
 const {getImage,RemoveImage} = getImages(image);
@@ -163,19 +180,6 @@ const DropShow = ((drop)=>{
     showDrop.value = drop
 })
 
-const saveCompany = (()=>{
-    if(progress.value) return
-    progress.value = true
-    axios.post('saveCompany',{...company.value})
-    .then((response) => {
-        emits('message',response.data.message,response.data.type)
-        emits('close')
-    }).catch((err) => {
-        console.log(err);
-    }).finally(()=>{
-        progress.value = false
-    });
-})
 </script>
 
 <style scoped lang="scss">

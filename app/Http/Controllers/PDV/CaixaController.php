@@ -39,9 +39,13 @@ class CaixaController extends Controller
 
     public function sumData($session)
     {
-        $methods = paymentMethod::withSum(['paymentsPdv'=>function($payments) use ($session) {
+        $methods = PaymentMethod::withSum(['paymentsPdv' => function($payments) use ($session) {
             $payments->where('session_id', $session->id);
-        }], 'amountPaid')->get();
+        }], 'amountPaid')
+        ->withSum(['paymentsPdv' => function($payments) use ($session) {
+            $payments->where('session_id', $session->id);
+        }], 'change')
+        ->get();
 
         $orders = session::withSum(['orders' => function($session){
             $session->where('state','Pago');
@@ -151,6 +155,6 @@ class CaixaController extends Controller
         if ($session > 0) return $this->RespondError('Não é posivel eliminar esta caixa, pois ele posui um ou mais sesões');
 
         $caixa->delete();
-        
+
     }
 }
