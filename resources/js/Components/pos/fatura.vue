@@ -61,7 +61,7 @@
                 <div class="totais">
                     <div id="TotalFatura">{{formatMoney(invoice.total)}}</div>
                     <div id="transferencia" v-for="payment in invoice.payments" :key="payment.id">{{formatMoney(payment.amountPaid)}}</div>
-                    <div id="troco">{{changes()}}</div>
+                    <div id="troco">{{formatMoney(changes())}}</div>
                     <div id="operador">{{invoice.user.surname}}</div>
                 </div>
             </div>
@@ -102,14 +102,13 @@ const invoice = ref(props.dadosFatura)
 const emits = defineEmits(['closePrint'])
 
 const company = ref(store.state.publico.company)
-''
 
 const changes = (()=>{
     let amountPaid = 0
     invoice.value.payments.forEach((amount)=>{
         amountPaid += Number(amount.amountPaid)
     })
-    return formatMoney(Number(amountPaid) - Number(invoice.value.total))
+    return Number(amountPaid) - Number(invoice.value.total)
 })
 
 

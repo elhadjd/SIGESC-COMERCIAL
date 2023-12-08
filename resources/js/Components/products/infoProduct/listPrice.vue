@@ -3,29 +3,29 @@
     <div class="AddListPrice">
       <form @submit.prevent.stop="form.id ? updateListPrice() : AddListPrice()">
         <div class="formPrice">
-          <label for="qtd">Quantidade:</label>
+          <label for="qtd">{{$t('words.quantity')}}:</label>
           <input
             v-model="form.quantity"
             type="text"
             name=""
             id="qtd"
-            placeholder="quantidade"
+            :placeholder="$t('words.quantity')"
           />
         </div>
         <div class="formPrice">
-          <label for="price">Preço:</label>
+          <label for="price">{{$t('words.price')}}:</label>
           <input
             v-model="form.price_discount"
             type="text"
             name=""
             id="price"
-            placeholder="preço"
+            :placeholder="$t('words.price')"
           />
         </div>
 
         <div class="buttton">
             <FontAwesomeIcon @click="form = list_price" v-if="form.id" icon="fa-solid fa-rotate-right" />
-            <button type="submit">{{form.id ? "Atualizar" :"Adicionar"}}</button>
+            <button type="submit">{{form.id ? $t('words.update') :$t('words.added')}}</button>
         </div>
 
       </form>

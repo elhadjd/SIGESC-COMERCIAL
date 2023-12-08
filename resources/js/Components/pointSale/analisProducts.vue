@@ -7,7 +7,7 @@
     <div v-else class="Principal">
       <div class="Header">
         <div class="Header-left">
-          <h4 class="text-secondary ms-4">Avaliação de stock</h4>
+          <h4 class="text-secondary ms-4">{{`${$t('words.evaluation')} ${$t('words.of')} stock`}}</h4>
         </div>
         <div class="Header-right">
           <span class="p-input-icon-right w-100">
@@ -17,17 +17,17 @@
               v-model="inputSearch"
               @keyup="SearchProd"
               class="SearchProduct"
-              placeholder="Pesquisar..."
+              :placeholder="$t('words.search')+'...'"
             />
           </span>
           <div class="Prints">
             <section class="agrupar">
-              <span @click="agroup.state = !agroup.state" class="dropdown-toggle">Agrupar</span>
+              <span @click="agroup.state = !agroup.state" class="dropdown-toggle">{{$t('words.groupe')}}</span>
               <div v-if="agroup.state">
                 <div class="listGroup">
-                  <span @click="showAgroup('supplier')">Fornecedore</span>
-                  <span @click="showAgroup('category')">Categoria</span>
-                  <span @click="showAgroup('type_product')">Tipo de artigo</span>
+                  <span @click="showAgroup('supplier')">{{$t('words.provider')}}</span>
+                  <span @click="showAgroup('category')">{{$t('words.category')}}</span>
+                  <span @click="showAgroup('type_product')">{{`${$t('words.type')} ${$t('words.of')} ${$t('words.article')}`}}</span>
                 </div>
                   <div v-if="agroup.data?.length" class="subListGroup">
                     <span
@@ -42,21 +42,21 @@
             </section>
             <button @click="exportToPDF" class="print">
               <i class="fa fa-file"></i>
-              Imprimir
+              {{$t('words.print')}}
             </button>
           </div>
         </div>
       </div>
       <div id="OrdenCima" class="Container">
           <div class="Title">
-            <div class="item-name">Nome do artigo</div>
-            <div>Quantidade</div>
-            <div>Preço de custo</div>
-            <div>Preço de venda</div>
-            <div>Total de custo</div>
-            <div>Total de venda</div>
-            <div>Lucro unitario</div>
-            <div class="TotalOrden">Total de lucro</div>
+            <div class="item-name">{{`${$t('words.name')} ${$t('words.of')} ${$t('words.article')}`}}</div>
+            <div>{{$t('words.quantity')}}</div>
+            <div>{{$t('phrases.costPrice')}}</div>
+            <div>{{$t('phrases.salePrice')}}</div>
+            <div>{{$t('phrases.totalCost')}}</div>
+            <div>{{$t('phrases.totalSale')}}</div>
+            <div>{{$t('phrases.unitProfit')}}</div>
+            <div class="TotalOrden">{{$t('phrases.totalProfit')}}</div>
           </div>
           <div class="list_items">
             <div
@@ -94,19 +94,19 @@
       </div>
       <div class="Footer">
           <div>
-            <span>Total custo</span>
+            <span>{{$t('phrases.totalCost')}}</span>
             <strong>{{
               formatMoney(valores.totalCusto_geral)
             }}</strong>
           </div>
           <div>
-            <span>Total de Venda</span>
+            <span>{{$t('phrases.totalSale')}}</span>
             <strong>{{
               formatMoney(valores.totalVenda_geral)
             }}</strong>
           </div>
           <div>
-            <span>Total de lucro</span>
+            <span>{{$t('phrases.totalProfit')}}</span>
             <strong>{{
               formatMoney(valores.totalLucro_geral)
             }}</strong>

@@ -14,9 +14,9 @@
                 <span class="w-50" v-show="product.movementsProduct.movement.name == 'Muvementos'">
                     <select class="w-50" v-model="Select">
                         <option >{{Select}}</option>
-                        <option v-if="Select != 'Muvementos'">Muvementos</option>
-                        <option v-if="Select != 'Entrada'">Entrada</option>
-                        <option v-if="Select != 'Saida'">Saida</option>
+                        <option v-if="Select != 'Muvementos'">{{$t('words.movement')}}</option>
+                        <option v-if="Select != 'Entrada'">{{$t('words.entry')}}</option>
+                        <option v-if="Select != 'Saida'">{{$t('words.output')}}</option>
                         <option v-if="Select != 'Entrada&Saida'">Entrada&Saida</option>
                     </select>
                 </span>
@@ -25,19 +25,19 @@
         <div class="ListaMuvemento">
             <div class="d-flex titleOrden border-bottom w-100">
                 <strong class="d-flex w-100">
-                    <div class="w-20">Artigos</div>
+                    <div class="w-20">{{$t('words.article')}}</div>
                     <div>Ref Da Orden</div>
-                    <div>Funcionario</div>
-                    <div>Tipo de operação</div>
-                    <div>Motivo</div>
-                    <div class="text-end px-3">Quantidade</div>
+                    <div>{{$t('words.employee')}}</div>
+                    <div>{{$t('words.typeOperation')}}</div>
+                    <div>{{$t('words.reason')}}</div> 
+                    <div class="text-end px-3">{{$t('words.quantity')}}</div>
                 </strong>
             </div>
             <div class="overflow-auto ListaOrden">
                 <div v-for="data in movements" :key="data.id" class="MostrarLista">
                     <div @click="showMovement(data[0].dia)" class="ListData">
                         <span>{{data[0].dia}}</span>
-                        <span v-html="data[0].movement_type.name + ' : '+ sumQuantity(data)"></span>
+                        <span v-html="data[0].movement_type.movement_translate[0].translate + ' : '+ sumQuantity(data)"></span>
                     </div>
                     <div v-if="showItem == data[0].dia && state == true" class="h-25 LinhaMostrar">
                         <div v-for="item in data" :key="item.id" class="Esconder border-bottom">
@@ -45,7 +45,7 @@
                                 <div class="w-25">{{item.product.nome}} </div>
                                 <div>{{item.quantityAfter+".00Un(s)"}}</div>
                                 <div>{{item.surname}}</div>
-                                <div>{{item.movement_type.name}}</div>
+                                <div>{{item.movement_type.movement_translate[0].translate}}</div>
                                 <div>{{item.motive}}</div>
                                 <div class="text-end px-3">
                                     <i :class="item.movement_type.name == 'Saida' ? 'fa fa-arrow-down Saidas':item.movement_type.name == 'Entrada' ? 'fa fa-arrow-up text-success Entradas': 'fa fa-cart-arrow-down text-warning'"></i>

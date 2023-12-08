@@ -24,4 +24,8 @@ class paymentMethod extends Model
     {
         return $this->hasMany(paymentPurchase::class);
     }
+
+    function methodTranslate() {
+        return $this->hasMany(methodsPaymentTranslate::class,'methods_id');
+    }
 }

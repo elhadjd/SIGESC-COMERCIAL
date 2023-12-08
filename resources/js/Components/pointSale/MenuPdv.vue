@@ -7,9 +7,9 @@
   <div class="principal">
     <div class="Header">
       <div class="Header-left">
-        <div><h2>Ponto de venda</h2></div>
+        <div><h2>{{$t('apps.pdvName')}}</h2></div>
         <div v-if="user.nivel == 'admin'">
-          <button @click="$emit('CriarCaixa')">Criar caixa</button>
+          <button @click="$emit('CriarCaixa')">{{$t('words.new')+" PDV"}}</button>
         </div>
       </div>
       <div class="Header-right"></div>
@@ -28,32 +28,32 @@
                         <div v-if="OptionCaixa == item.id" class="options">
                             <div @click="user.nivel == 'admin'
                                     ? showOrders(item.session[0].id) : $emit('message', 'info', 'Usuario sem acesso')">
-                                Ordens
+                                {{$t('words.order')+'s'}}
                             </div>
-                            <div @click="$emit('sessao', item.id)">Sessões</div>
+                            <div @click="$emit('sessao', item.id)">{{$t('words.sessions')}}</div>
                             <div
                                 @click="
                                 user.nivel == 'admin'
                                     ? $emit('definicaoCaixa', item)
-                                    : $emit('message', 'info', 'Usuario sem acesso')">Definições</div>
+                                    : $emit('message', 'info', 'Usuario sem acesso')">{{$t('words.definition')}}</div>
                         </div>
                     </div>
                 </div>
                 <div class="cash-container">
                     <div v-if="item.state != 'Aberto'">
                         <button @click="openControl(item.id)">
-                        Abrir
+                        {{$t('words.open')}}
                         </button>
                     </div>
 
                     <div v-if="item.state == 'Aberto'">
-                        <button @click="submit(item.id)" type="submit">Continuar</button>
+                        <button @click="submit(item.id)" type="submit">{{$t('words.continue')}}</button>
                     </div>
                     <div v-if="item.state == 'Aberto'">
                         <button
                             @click=" user.nivel == 'admin' ? showCash(item.session[0].id)
                                 : $emit('message', 'info', 'Usuario sem acesso')" class="showCash" type="button">
-                            Ver
+                            {{$t('words.see')}}
                             <FontAwesomeIcon icon="fa fa-eye" />
                         </button>
                     </div>

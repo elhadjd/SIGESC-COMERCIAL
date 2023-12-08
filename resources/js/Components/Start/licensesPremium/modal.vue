@@ -6,7 +6,7 @@
                 <span @click="addApp(app)">
                     <font-awesome-icon  v-if="checkApp(app.id)" icon="fa-solid fa-check" />
                     <font-awesome-icon class="add" v-else icon="fa-solid fa-plus" />
-                    <div class="price">{{formatMoney(app.price)}}</div>
+                    <div class="price">{{dineiro.format(app.price)}}</div>
                     <img :src="`https://bosgc.sisgesc.net/app/image/${app.image}`">
                     <div class="appName">{{app.label}}</div>
                 </span>
@@ -16,15 +16,15 @@
             <div>
                 <div>
                     <label>Total</label>
-                    <strong>{{formatMoney(totals.total + totals.discount)}}</strong>
+                    <strong>{{dineiro.format(totals.total + totals.discount)}}</strong>
                 </div>
                 <div>
                     <label>Disconto</label>
-                    <strong>{{formatMoney(totals.discount)}}</strong>
+                    <strong>{{dineiro.format(totals.discount)}}</strong>
                 </div>
                 <div>
                     <label>A pagar</label>
-                    <strong>{{formatMoney(totals.total)}}</strong>
+                    <strong>{{dineiro.format(totals.total)}}</strong>
                 </div>
             </div>
             <div>
@@ -46,7 +46,11 @@ onMounted(async () => {
     addAppDefault()
     sum()
 })
-
+const dineiro = Intl.NumberFormat("PT-AO", {
+            style: 'currency',
+            currency: 'AOA',
+            minimumIntegerDigits: 2
+            });
 const {ReqGet} = Request()
 const plansState = ref(false)
 const store = useStore()

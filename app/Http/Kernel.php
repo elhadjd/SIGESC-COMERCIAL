@@ -40,6 +40,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+            \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,
         ],
 
         'api' => [
@@ -69,6 +70,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'license' => \App\Http\Middleware\License::class,
-        'currencyCompany'=> \App\Http\Middleware\currencyCompanyMiddleware::class
+        'currencyCompany'=> \App\Http\Middleware\currencyCompanyMiddleware::class,
+        'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
     ];
 }

@@ -9,7 +9,7 @@
             <div class="card">
                 <div>
                     <strong>Plano Premium</strong>
-                    <span>{{formatMoney(3500)}}</span>
+                    <span>{{dineiro.format(3500)}}</span>
                     <span>/Mensal</span>
                     <button type="button" @click="OpenLicensePremium = true">Aderir</button>
                 </div>
@@ -25,7 +25,7 @@
             <!-- <div class="card" :class="choose.plano == 'free' ? 'active' : ''">
                 <div>
                 <strong>Plano Free</strong>
-                <span>{{formatMoney(0)}}</span>
+                <span>{{dineiro(0)}}</span>
                 <span>/15 DIAS</span>
                 <button type="button" @click="AddFree('free')">Começar</button>
                 </div>
@@ -52,7 +52,11 @@ const store = useStore()
 const choose = ref({
     plano: store.state.Start.start.license,
 })
-
+const dineiro = Intl.NumberFormat("PT-AO", {
+            style: 'currency',
+            currency: 'AOA',
+            minimumIntegerDigits: 2
+            });
 const OpenLicensePremium = ref(false);
 
 const AddFree = ((plan)=>{

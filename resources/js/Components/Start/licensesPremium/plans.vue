@@ -8,9 +8,9 @@
                 </div>
                 <div>
                     <ul>
-                        <li>Preço: <strong>{{formatMoney(plan.total)}}</strong></li>
-                        <li>Disconto: <strong>{{formatMoney(plan.discount)}}</strong></li>
-                        <li>A pagar: <strong>{{formatMoney(plan.total - plan.discount)}}</strong></li>
+                        <li>Preço: <strong>{{dineiro.format(plan.total)}}</strong></li>
+                        <li>Disconto: <strong>{{dineiro.format(plan.discount)}}</strong></li>
+                        <li>A pagar: <strong>{{dineiro.format(plan.total - plan.discount)}}</strong></li>
                     </ul>
                 </div>
             </div>
@@ -45,7 +45,11 @@ const plans = reactive([
         month: 12
     }
 ])
-
+const dineiro = Intl.NumberFormat("PT-AO", {
+            style: 'currency',
+            currency: 'AOA',
+            minimumIntegerDigits: 2
+            });
 </script>
 
 <style lang="scss" scoped>

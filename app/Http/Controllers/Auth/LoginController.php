@@ -7,6 +7,7 @@ use Jenssegers\Agent\Agent;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -17,7 +18,7 @@ class LoginController extends Controller
     {
         return Inertia::render('Auth/Login');
     }
-    public function login(Request $request)
+    public function login(Request $request,$locale = null)
     {
         $request->validate([
             'email' => 'required|email',
@@ -27,6 +28,8 @@ class LoginController extends Controller
             'email' => $request->email,
             "password" => $request->password,
         ];
+
+        // return Hash::make($request->password);
 
         if (Auth::attempt($credential)) {
 
@@ -42,7 +45,7 @@ class LoginController extends Controller
                 'browser' => $browser,
             ]);
 
-            return $this->UrlGuard($request);
+            return $this->UrlGuard($request,$locale);
 
         } else {
             return Inertia::render('Auth/Login', [
@@ -51,14 +54,14 @@ class LoginController extends Controller
         }
     }
 
-    public function UrlGuard(Request $request)
+    public function UrlGuard(Request $request,$locale = null)
     {
         $rota = str_replace('/','',$request->path);
 
         if ($rota != "" && $rota != "authlogin") {
-            return Redirect::route($rota);
+            return Redirect::route($rota, [$locale == null? 'en' : $locale]);
         } else {
-          return Redirect::route('dashboard');
+            return to_route('dashboard',[$locale == null? 'en' : $locale]);
         }
     }
 

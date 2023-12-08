@@ -16,4 +16,8 @@ class operationCaixaType extends Model
     {
         return $this->hasMany(operation_caixa_type_session::class,'operation_caixa_type_id');
     }
+
+    function operationTranslate() : HasMany {
+        return $this->hasMany(operationCaixaTranslate::class,'operation_id');
+    }
 }

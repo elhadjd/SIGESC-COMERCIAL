@@ -106,7 +106,9 @@ const chooseCountry = ((item)=>{
             @include form-control;
             @include dopDown;
         }
-
+    }
+    @media screen and (max-width: 650px) {
+        flex-direction: column !important;
     }
 }
 </style>

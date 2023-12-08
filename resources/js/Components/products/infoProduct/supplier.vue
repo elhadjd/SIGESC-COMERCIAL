@@ -6,7 +6,7 @@
         type="button"
         class="dropdown-toggle"
       >
-        Adicionar fornecedor
+        {{`${$t('words.added')} ${$t('words.provider')}`}}
       </button>
       <div v-if="provider.state" class="list-items">
         <input
@@ -14,7 +14,7 @@
           autofocus
           @keyup="search"
           class="form-control"
-          placeholder="pesquisa..."
+          :placeholder="$t('words.search') + '...'"
         />
         <div
           v-for="item in provider.data"

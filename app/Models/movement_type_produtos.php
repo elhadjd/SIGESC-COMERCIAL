@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class movement_type_produtos extends Model
 {
@@ -44,5 +45,8 @@ class movement_type_produtos extends Model
     public function armagen()
     {
         return $this->belongsTo(armagen::class);
+    }
+    function movementTranslate() : HasMany {
+        return $this->hasMany(typeMovementTranslate::class,'type_movement_id');
     }
 }

@@ -20,12 +20,12 @@
         class="box"
           v-for="app,i in props.data.license.app_license"
           :key="i"
-          :href="route(app.apps.name)"
+          :href="route(app.apps.href)"
         >
           <span :style="`--i:${i};`">
             <img :src="'/app/image/' + app.apps.image" alt="" />
           </span>
-          <span class="name_app">{{ app.apps.name }}</span>
+          <span class="name_app flex-0 truncate text-center">{{ app.apps.app_translate[0]?.translate }}</span>
         </Link>
       </div>
     </div>
@@ -45,10 +45,12 @@ import { ref, onMounted ,reactive} from 'vue';
 import newsMessagesVue from "@/Layouts/news/newsMessages.vue";
 const store = useStore();
 const MostrarDrop = ref(false);
+
 const props = defineProps({
   data: Object,
   user: Object,
 });
+
 const canvas = ref(null);
 const ctx = ref(null);
 const mouse = { x: 0, y: 0 };
@@ -65,8 +67,6 @@ const {getImage} = getImages(element);
 const Sair = () => {
   Inertia.post("/auth/logout");
 };
-
-
 onMounted(() => {
     if (!props.data.currency_company) {
         news.value = {

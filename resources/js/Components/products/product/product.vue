@@ -1,9 +1,9 @@
 <template>
   <Muvementos v-if="product.movementsProduct.state"/>
-  <div class="principal">
+  <div class="principal" v-else>
     <div class="Header">
       <div class="Header-left">
-        <strong>Novo produto</strong>
+        <strong>{{$t('words.new') + ' ' + $t('words.article')}} </strong>
         <div class="guardar_descartar">
             <buttonsVue @closeForm="$emit('closeForm')" @saved="$emit('saved',product.data)"/>
         </div>
@@ -20,7 +20,7 @@
                 <MessagesToast v-if="news.state" @closeMessage="news.state = false" :message="news"/>
                 <div>
                     <ButtonVue v-for="item in movementsStockProduct.TypesMovements" :className="''" :type="'button'" :key="item.id" @click="moveProductStock(item)">
-                        {{item.name+" de stock"}}
+                        {{item.movement_translate[0].translate + ' ' + $t('words.of') + ' stock'}}
                     </ButtonVue>
                 </div>
                 <publishProductVue/>
@@ -42,7 +42,7 @@
                             <i :class="item.icon"></i>
                             <div class="w-100">
                                 <div>{{ item.count + ",00Un(s)" }}</div>
-                                <strong class="TipoMuv">{{ item.name }}</strong>
+                                <strong class="TipoMuv">{{ item.movement_translate[0].translate }}</strong>
                             </div>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
             <div class="Main">
                 <div class="Name-Img-control">
                     <div class="form-nome">
-                        <input type="text" :disabled="product.data.estado === 1" v-model="product.data.nome" placeholder="Digite nome do produto">
+                        <input type="text" :disabled="product.data.estado === 1"  v-model="product.data.nome" :placeholder="$t('phrases.typeProductName')">
                     </div>
                     <div class="form-image">
                         <div>

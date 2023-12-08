@@ -16,7 +16,7 @@
          <div class="Header-right">
             <span v-if="!formDepartment.state" class="p-input-icon-right w-100">
             <i class="pi pi-search" />
-            <input type="search" @keyup="search" placeholder="Digite nome ou preço do artigo">
+            <input type="search" @keyup="search" placeholder="Digite nome do departamento">
             </span>
          </div>
       </div>

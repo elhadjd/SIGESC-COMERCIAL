@@ -25,26 +25,28 @@ class CaixaController extends Controller
         }])->where('company_id',Auth::user()->company_id)->get();
 
     }
-    public function show(session $session)
+    public function show($local,session $session)
     {
         $session->load('orders');
-        return $this->sumData($session);
+        return $this->sumData($session,$local);
     }
 
 
-        public function sessions(caixa $caixa)
-        {
-        return $caixa->session()->orderBy('id','desc')->limit(100)->get();
-        }
+    public function sessions(caixa $caixa)
+    {
+    return $caixa->session()->orderBy('id','desc')->limit(100)->get();
+    }
 
-    public function sumData($session)
+    public function sumData($session,$local)
     {
         $methods = PaymentMethod::withSum(['paymentsPdv' => function($payments) use ($session) {
             $payments->where('session_id', $session->id);
         }], 'amountPaid')
         ->withSum(['paymentsPdv' => function($payments) use ($session) {
             $payments->where('session_id', $session->id);
-        }], 'change')
+        }], 'change')->with(['methodTranslate'=>function($translate) use ($local){
+            $translate->where('local',$local);
+        }])
         ->get();
 
         $orders = session::withSum(['orders' => function($session){
@@ -53,7 +55,11 @@ class CaixaController extends Controller
 
         $operations = operationCaixaType::withSum(['operations'=>function($operations)use ($session){
             $operations->where('session_id',$session->id);
-        }],'amount')->get();
+        }],'amount')
+        ->with(['operationTranslate'=>function($translate) use ($local){
+            $translate->where('local',$local);
+        }])
+        ->get();
 
         return response()->json([
             'operations'=> $operations,
@@ -98,7 +104,7 @@ class CaixaController extends Controller
         return Redirect::route('pos',$request->id);
     }
 
-    public function clossSession(Request $request , session $session)
+    public function clossSession(Request $request ,$local,session $session)
     {
         $session->cash = $request->informado;
         $session->orders_values = $request->total;
@@ -109,10 +115,10 @@ class CaixaController extends Controller
         ]);
 
         $session->load('orders');
-        return $this->sumData($session);
+        return $this->sumData($session,$local);
     }
 
-    public function updateSession(session $session)
+    public function updateSession($local,session $session)
     {
         $session->state = "Aberto";
         $session->cash = 0;
@@ -121,7 +127,7 @@ class CaixaController extends Controller
             'state'=>"Aberto"
         ]);
         $session->load('orders');
-        return $this->sumData($session);
+        return $this->sumData($session,$local);
     }
 
     public function savePoint(Request $request, $caixa = null)

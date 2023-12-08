@@ -8,8 +8,8 @@
     <div v-else class="principal">
         <div class="Header">
             <div class="Header-left">
-                <span><h2>Lista de artigos</h2></span>
-                <button @click="createProduct">Novo produto
+                <span><h2>{{`${$t('words.list')} ${$t('words.of') + 's'} ${$t('words.article')+'s'}`}}</h2></span>
+                <button @click="createProduct">{{`${$t('words.new')} ${$t('words.article')}`}}
                     <i v-if="loading=='newP'" class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
                 </button>
             </div>
@@ -17,7 +17,7 @@
                 <span class="p-input-icon-right w-100">
                     <i class="pi pi-search" />
                     <input type="search" v-model="form.nome"
-                    placeholder="Digite nome ou preço do artigo" @keyup="SearchProduct">
+                    :placeholder="`${$t('phrases.typeProductName')} ${$t('words.or')} ${$t('phrases.priceProduct')}`" @keyup="SearchProduct">
                 </span>
                 <pagination v-if="loading != 'start'" @page="getPage" :object="Products.list"/>
             </div>

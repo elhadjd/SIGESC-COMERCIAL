@@ -74,14 +74,34 @@ class productsController extends Controller
 
     public function show(produtos $product)
     {
-        $type_movements = $product->type_movement()->first();
-        if ($type_movements !== null) {
-           $type_movements = $product->type_movement()->first()->with(['movements' => function($query) use ($product){
-                $query->where('produtos_id',$product->id);
-            }])->get();
+        $language = Auth::user()->userLanguage;
+        if ($language) {
+            $locale = $language->code;
         }else{
-            $type_movements = movement_type::all();
+            $locale = 'en';
         }
+        $type_movements = $product->type_movement()->with(['movementTranslate'=>function($translate) use ($locale){
+            $translate->where('local', $locale);
+        }])->first();
+        if ($type_movements !== null) {
+
+            $type_movements = $product->type_movement()->first()
+            ->with(['movementTranslate'=>function($translate) use ($locale){
+                $translate->where('local', $locale);
+            }])
+            ->with(['movements' => function($movement) use ($product,$locale){
+                $movement->where('produtos_id',$product->id)
+                ->with(['movementTranslate'=>function($translate) use ($locale){
+                    $translate->where('local', $locale);
+                }]);
+            }])->get();
+
+        }else{
+            $type_movements = movement_type::with(['movementTranslate'=>function($translate) use($locale){
+                $translate->where('local', $locale);
+            }])->get();
+        }
+        
 
         $prod = $product
         ->with('catalogProduct')

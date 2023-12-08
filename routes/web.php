@@ -26,10 +26,11 @@ use App\Http\Controllers\Public\suppliersController;
 use App\Http\Controllers\Public\TransferController;
 use App\Http\Controllers\StartController;
 use App\Models\company;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,8 +52,17 @@ Route::controller(StartController::class)->group(function () {
 Route::prefix('auth')->group(function () {
     Route::post('/saveCompany', [LoginController::class, 'saveCompany']);
     Route::get('/login', [LoginController::class, 'index'])->name('login');
-    Route::post('/logar', [LoginController::class, 'login'])->name('logar');
+    Route::post('/logar/{locale?}', [LoginController::class, 'login'])->name('logar');
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+    Route::get('logout',function(){
+        return redirect('auth/login');
+    });
+    Route::get('logar',function(){
+        return redirect('auth/login');
+    });
+    Route::post('/setLocal',function(Request $request){
+        Cookie::queue('locale', $request->locale);
+    });
 });
 
 Route::get('/databases', function () {
@@ -67,7 +77,17 @@ Route::middleware('auth')->group(function () {
     })->name('LicenseBlocked');
 
     Route::middleware('license')->group(function () {
-        Route::get('/', [DashboardController::class, 'Dashboard'])->name('dashboard');
+        Route::get('/', function (Request $request) {
+            $language = $request->user()->userLanguage;
+            if ($language) {
+                $locale = $language->code;
+            }else{
+                $locale = 'en';
+            }
+            return redirect('/' . $locale);
+        });
+
+        Route::get('/{locale?}', [DashboardController::class, 'Dashboard'])->name('dashboard');
         Route::controller(searchController::class)->group(function () {
             Route::get('search/{table}/{column}/{tex}', 'filter');
         });
@@ -96,10 +116,10 @@ Route::middleware('auth')->group(function () {
                     Route::controller(CaixaController::class)->group(function () {
                         Route::get('buscar', 'get');
                         Route::get('getSessions/{caixa}', 'sessions');
-                        Route::get('getCaixa/{session}', 'show');
+                        Route::get('getCaixa/{local}/{session}', 'show');
                         Route::post('opiningControl/{session?}', 'opiningControl');
-                        Route::post('/clossSession/{session}', 'clossSession');
-                        Route::post('updateSession/{session}', 'updateSession');
+                        Route::post('/clossSession/{local}/{session}', 'clossSession');
+                        Route::post('updateSession/{local}/{session}', 'updateSession');
                         Route::post('savePoint/{caixa?}','savePoint');
                         Route::delete('/deleteCash/{caixa}','deleteCash');
                     });
@@ -290,7 +310,7 @@ Route::middleware('auth')->group(function () {
             });
 
             Route::controller(stockController::class)->group(function () {
-                Route::get('getArmagens', 'get');
+                Route::get('/getArmagens', 'get');
                 Route::post('updateQuantity/{product}', 'update');
             });
 

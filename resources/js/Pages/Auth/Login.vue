@@ -1,31 +1,17 @@
 <template>
 <Toast />
 <div class='principal'>
-    <header>
+    <header class="flex">
         <h1><span>S</span>IGESC</h1>
     </header>
     <div class='container'>
         <div class="info">
             <div class='content'>
-                <div>
-                    <div><AiOutlineCheckCircle/></div>
+                <div v-for="(infoItem, index) in $tm('login.info')" :key="index">
+                    <div><font-awesome-icon icon="fa-solid fa-circle-check" /></div>
                     <div>
-                        <span>Sistema de PDV Avançado</span>
-                        <span>Melhore a eficiência das suas vendas com o nosso Módulo de PDV de última geração.</span>
-                    </div>
-                </div>
-                <div>
-                    <div><AiOutlineCheckCircle/></div>
-                    <div>
-                        <span>Emissão de Faturas e Controle Financeiro</span>
-                        <span>Simplifique a emissão de faturas e controle as finanças da sua empresa com o nosso Módulo de Faturamento.</span>
-                    </div>
-                </div>
-                <div>
-                    <div><AiOutlineCheckCircle/></div>
-                    <div>
-                        <span>Gestão de Compras Simplificada</span>
-                        <span>Otimize o seu processo de compra com o nosso Módulo de Compras.</span>
+                        <span>{{infoItem.title}}</span>
+                        <span>{{infoItem.description}}</span>
                     </div>
                 </div>
             </div>
@@ -34,7 +20,7 @@
             <form @submit.prevent="submit">
 
                 <header>
-                    <span>Identifique-se</span>
+                    <span>{{$t('login.title')}}</span>
                 </header>
 
                 <div class='box'>
@@ -43,7 +29,7 @@
                 </div>
 
                 <div class='box'>
-                    <label htmlFor="password">Senha:</label>
+                    <label htmlFor="password">{{ $t('login.password') }}:</label>
                     <input type="password" v-model="form.password" id='password' />
                 </div>
 
@@ -51,11 +37,16 @@
                     <input type="checkbox" name="checkbox" id="checkbox" />
                     <label htmlFor="checkbox">Permanece connectado por uma semana</label>
                 </div>
-
                 <div class='buttons'>
-                    <button type='submit'>Entrar</button>
+                    <button type='submit'>{{$t('words.enter')}}</button>
                 </div>
-                <Link :href="route('startCompany')">Iniciar uma empresa</Link>
+                <Link :href="route('startCompany')">{{$t('words.start')}} {{$t('words.one')}} {{$t('words.company')}}</Link>
+                <div class="relative w-full mt-3 flex justify-center selectLocale">
+                    <button type="button" @click="languages.state = !languages.state">Languages</button>
+                    <div v-if="languages.state" class="drop w-full">
+                        <span v-for="language,index in languages.data" @click="()=>selectLanguage(language)" :key="index">{{language.name}}</span>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -63,21 +54,52 @@
 </template>
 
 <script setup>
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useForm,Link } from "@inertiajs/vue3";
 import { onMounted, ref } from "@vue/runtime-core";
+import axios from 'axios';
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
+import { useCookies } from '@vueuse/integrations/useCookies'
+import { useI18n } from 'vue-i18n';
+const { t,te,tm,locale } = useI18n();
+
 const form = useForm({
     email: null,
     password: null,
     path: window.location.pathname,
 });
-
 const toast = useToast();
-
 const connection = ref({
   state: false,
 });
+
+const cookie = useCookies(['locale'])
+
+const languages = ref({
+    state: false,
+    data: [
+        {
+            local: 'fr',
+            name: 'Francé'
+        },
+        {
+            local: 'pt',
+            name: 'Portugaise'
+        },
+        {
+            local: 'en',
+            name: 'Ingles'
+        }
+    ]
+})
+
+const selectLanguage = ((language)=>{
+    locale.value = language.local
+    localStorage.setItem('local',language.local)
+    cookie.set('locale',language.local)
+    languages.value.state = false
+})
 
 const submit = () => {
   if (form.email == null || form.email == '') {
@@ -85,29 +107,36 @@ const submit = () => {
   } else if (form.password == null || form.password == '') {
     document.querySelector("#password").style.borderBottom = "1px solid red";
   } else {
-    form.post("/auth/logar", {
+    form.post(`/auth/logar/${cookie.get('locale') || ''}`, {
         onSuccess: (Response) => {
             toast.add({
                 severity: "error",
                 summary: "menssagem de erro",
-                detail: Response.props.erro,
+                detail: Response.props.erro || 'Erro ao fazer login, por favor contacta o administrador',
                 life: 5000,
             });
         },
     });
   }
 };
-
-
 </script>
 
 <style scoped lang="scss">
 @import '../../../assets/login/css/login';
 .form{
-    height: 150px !important;
+    height: auto !important;
+    max-height: 500px;
     .box{
         margin-bottom: 10px !important;
 
+    }
+}
+.selectLocale{
+    @include form-control;
+    @include dopDown;
+    .drop{
+        margin-left: unset;
+        margin-top: 3px;
     }
 }
 </style>

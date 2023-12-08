@@ -1,6 +1,6 @@
 <template>
     <Link
-        :href="route('dashboard')"
+        :href="route(`dashboard`,[locale || 'en'])"
         @mouseenter="state = true"
         @mouseout="state = false"
         class="Container"
@@ -26,6 +26,8 @@
 <script setup>
 import { ref } from "@vue/runtime-core";
 import { Link } from "@inertiajs/vue3";
+import { useI18n } from 'vue-i18n';
+const {locale} = useI18n()
 const state = ref(false);
 
 </script>

@@ -8,17 +8,17 @@
         <button @click="AbrirControlo"
           v-if="DadosCaixa.orders.state == 'A abrir'"
           class="botoesCaixa">
-          Abrir controlo
+          {{$t('words.open')}} control
         </button>
         <button @click="ContinuarVenda"
           v-if="DadosCaixa.orders.state == 'Aberto'"
           class="BtnColor Continuar botoesCaixa" >
-          Continuar
+          {{$t('words.continue')}}
         </button>
         <button @click="CloseCash"
           v-if="DadosCaixa.orders.state == 'Aberto'"
           class="mx-1 botoesCaixa">
-          Fechar
+          {{$t('words.close')}}
         </button>
         <button
           @click="updateSession"
@@ -36,41 +36,41 @@
                 <cash class="mt-2" :size="25" />
                 <div class="TotalPorCima">
                   <div class="text-center">
-                    {{ FormatrDinheiro.format(item.operations_sum_amount) }}
+                    {{ formatMoney(item.operations_sum_amount) }}
                   </div>
-                  <div>{{item.name}}</div>
+                  <div>{{item.operation_translate[0].translate}}</div>
                 </div>
               </div>
               <div class="d-flex">
                 <cash class="mt-2" :size="25" />
                 <div class="TotalPorCima">
                   <div class="text-center">
-                    {{ FormatrDinheiro.format(DadosCaixa.orders.cash)}}
+                    {{ formatMoney(DadosCaixa.orders.cash)}}
                   </div>
-                  <div>Valor informado</div>
+                  <div>Total {{$t('words.reported')}}</div>
                 </div>
               </div>
               <div class="d-flex">
                 <cash class="mt-2" :size="25" />
                 <div class="TotalPorCima">
-                  <div>{{ FormatrDinheiro.format(DadosCaixa.orders.cash - Number(DadosCaixa.orders.orders_values)) }}</div>
-                  <div>Diferencia</div>
+                  <div>{{ formatMoney(DadosCaixa.orders.cash - Number(DadosCaixa.orders.orders_values)) }}</div>
+                  <div>{{$t('words.difference')}}</div>
                 </div>
               </div>
               <div class="d-flex">
                 <shopping class="mt-2" :size="25" />
                 <div class="TotalPorCima">
                   <div>{{ DadosCaixa.length }}</div>
-                  <div>Pedidos</div>
+                  <div>{{$t('words.order') + 's'}}</div>
                 </div>
               </div>
               <div class="d-flex">
                 <Coin class="mt-2" :size="25" />
                 <div class="TotalPorCima">
                   <div class="text-center">
-                    {{ FormatrDinheiro.format(Number(DadosCaixa.orders.orders_sum_total) + operations.entrada + Number(DadosCaixa.orders.opening) - operations.saida - operations.gasto) }}
+                    {{ formatMoney(Number(DadosCaixa.orders.orders_sum_total) + operations.entrada + Number(DadosCaixa.orders.opening) - operations.saida - operations.gasto) }}
                   </div>
-                  <div>Pagamentos</div>
+                  <div>{{$t('words.payment') + 's'}}</div>
                 </div>
               </div>
             </div>
@@ -101,10 +101,10 @@
               <div class="content-two">
                 <div class="info">
                   <div>
-                    <span>Aberto por:</span>
-                    <span>Ponto de Venda:</span>
-                    <span>Data de Abertura:</span>
-                    <span v-if="DadosCaixa.orders.state == 'Fechado'">Data de Fecho:</span>
+                    <span>{{$t('pdv.openingBy')}} :</span>
+                    <span>{{$t('apps.pdvName')}}:</span>
+                    <span>{{$t('pdv.openingDate')}}:</span>
+                    <span v-if="DadosCaixa.orders.state == 'Fechado'">{{$t('words.date')}} de {{$t('words.close')}}:</span>
                   </div>
 
                   <div>
@@ -119,11 +119,11 @@
 
                 <div v-if="DadosCaixa.orders.state != 'A abrir'" class="abertura">
                     <div class="informacoes">
-                        <span>Abertura:</span>
+                        <span>{{$t('words.opening')}}:</span>
                         <span>{{formatMoney(DadosCaixa.orders.opening)}}</span>
                     </div>
                     <div class="informacoes" v-for="method in DadosCaixa.methods" :key="method.id">
-                        <span>{{method.name+':'}}</span>
+                        <span>{{method.method_translate[0]?.translate+':'}}</span>
                         <span>{{formatMoney(method.payments_pdv_sum_amount_paid-method.payments_pdv_sum_change)}}</span>
                     </div>
                 </div>
@@ -143,6 +143,9 @@ import cash from "vue-material-design-icons/CashMultiple.vue";
 import shopping from "vue-material-design-icons/Shopping.vue";
 import Coin from "vue-material-design-icons/HandCoinOutline.vue";
 import Progress from "../confirmation/progress.vue";
+import { useI18n } from "vue-i18n";
+const { t,te,tm,locale } = useI18n();
+
 import {
   onMounted,
   reactive,
@@ -223,7 +226,7 @@ const AbrirControlo = () => {
 
 const updateSession = () => {
   ShowModal.value = true;
-  axios.post(`caixa/updateSession/${DadosCaixa.value.orders.id}`)
+  axios.post(`caixa/updateSession/${locale.value}/${DadosCaixa.value.orders.id}`)
     .then((response) => {
         DadosCaixa.value = response.data;
         DadosCaixa.value.caixa = response.data.orders.caixa
@@ -249,7 +252,7 @@ const CloseCash = () => {
     let totals = Number(DadosCaixa.value.orders.orders_sum_total) + Number(operations.value.entrada) + Number(DadosCaixa.value.orders.opening)
     let discont = Number(operations.value.saida) + Number(operations.value.gasto)
     const totalValue = totals - discont
-    axios.post(`caixa/clossSession/${DadosCaixa.value.orders.id}`, {informado:Input.value,total:totalValue})
+    axios.post(`caixa/clossSession/${locale.value}/${DadosCaixa.value.orders.id}`, {informado:Input.value,total:totalValue})
       .then((response) => {
         DadosCaixa.value = response.data;
         DadosCaixa.value.caixa = response.data.orders.caixa
@@ -265,7 +268,7 @@ const CloseCash = () => {
 };
 
 onMounted(() => {
-   axios.get(`caixa/getCaixa/${props.caixaId}`)
+   axios.get(`caixa/getCaixa/${locale.value}/${props.caixaId}`)
     .then((Response) => {
       DadosCaixa.value = Response.data;
       DadosCaixa.value.caixa = Response.data.orders.caixa

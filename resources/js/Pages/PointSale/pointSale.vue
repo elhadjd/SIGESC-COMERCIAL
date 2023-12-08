@@ -4,11 +4,11 @@
     <Toast />
     <Cabacalho @modulos="modulos" :menus="menus" />
     <div class="Container">
-      <Caixa v-if="modul == 'caixa'" :caixaId="session" @message="message" />
-      <Relatorio v-if="modul == 'Relatório'" />
-      <Operation @message="message" v-if="modul == 'Operações'" />
-      <analisProducts v-if="modul == 'Avaliação de Stock'" />
-      <Order @message="message" v-if="modul == 'Orden de Venda'" />
+      <Caixa v-if="modul == $t('words.box')" :caixaId="session" @message="message" />
+      <Relatorio v-if="modul == $t('words.report')" />
+      <Operation @message="message" v-if="modul == $t('words.operation')" />
+      <analisProducts v-if="modul == 'Stock '+ $t('words.evaluation')" />
+      <Order @message="message" v-if="modul == $t('words.order') + ' Pdv' " />
 
         <Progress v-if="store.state.pos.StateProgress"/>
       <MenuPdv
@@ -18,10 +18,10 @@
         @CriarCaixa="CriarCaixa"
         @AbrirCaixa="AbrirCaixa"
         @message="message"
-        v-if="modul == 'Ponto de venda'"
+        v-if="modul == $t('apps.pdvName')"
         :dados="data.dados"
       />
-      <Products v-if="modul == 'Artigos'" />
+      <Products v-if="modul == $t('words.article')" />
       <Sections
         v-if="modul == 'sessao'"
         :dados_caixa="dados_caixa"
@@ -30,9 +30,9 @@
       />
       <new-point
         @message="message"
-        @close="modulos('Ponto de venda')"
+        @close="modulos($t('apps.pdvName'))"
         :point="DadosCaixa"
-        v-if="modul == 'NovaCaixa'"/>
+        v-if="modul ==  $t('words.new')+$t('words.box')"/>
     </div>
   </div>
 </template>
@@ -55,19 +55,20 @@ import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 import axios from "axios";
 import { Inertia } from "@inertiajs/inertia";
-
+import { useI18n } from "vue-i18n";
+const { t,te,tm } = useI18n();
 const menus = ref([
-  { menu: "Ponto de venda" },
+  { menu: t('apps.pdvName')},
   {
-    menu: "Relatório",
+    menu: t('words.report'),
     subMenu: [
-      { name: "Orden de Venda" },
-      { name: "Relatório" },
-      { name: "Operações" },
-      { name: "Avaliação de Stock" },
+      { name: t('words.order') + " Pdv" },
+      { name: t('words.report') },
+      { name: t('words.operation')},
+      { name: "Stock "+t("words.evaluation") },
     ],
   },
-  { menu: "Artigos" },
+  { menu: t('words.article') },
 ]);
 
 const props = defineProps({
@@ -75,7 +76,7 @@ const props = defineProps({
   user: Object
 });
 const toast = useToast();
-const modul = ref("Ponto de venda");
+const modul = ref(t('apps.pdvName'));
 const store = useStore();
 const session = ref();
 
@@ -92,7 +93,7 @@ const DadosCaixa = ref();
 
 const definicaoCaixa = (payload) => {
   DadosCaixa.value = payload;
-  modul.value = "NovaCaixa";
+  modul.value = t('words.new')+t('words.box');
 };
 
 const modulos = (event) => {
@@ -154,7 +155,7 @@ const AbrirSessao = (payload) => {
 };
 
 const AbrirCaixa = (payload) => {
-  modul.value = "caixa";
+  modul.value = t('words.box');
   session.value = payload;
 };
 </script>

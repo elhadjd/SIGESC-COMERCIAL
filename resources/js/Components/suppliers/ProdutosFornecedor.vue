@@ -44,7 +44,7 @@
 import Confirmation from '../confirmation/index.vue'
 import { onMounted, ref,reactive } from "@vue/runtime-core";
 import axios from "axios";
-import Produtos from '../products/products.vue'
+import Produtos from '../products/Products.vue'
 const StringPesquisa = ref()
 
 const FormetDineiro = Intl.NumberFormat('PT-AO',{style: 'currency',currency: 'AOA'})

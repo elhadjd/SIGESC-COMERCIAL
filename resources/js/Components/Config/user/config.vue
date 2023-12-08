@@ -21,12 +21,19 @@
         </div>
         <div class="Content-right">
             <div class="Form-control">
-                <label for="infoCompany">Imprimir informação completa no PDV:</label>
+                <label for="infoCompany" class="truncate">Imprimir informação completa no PDV:</label>
                 <input type="checkbox" @change="(e)=>$emit('changeInput',e)" :value="data?.config?.infoCompany" id="infoCompany">
             </div>
             <div class="Form-control">
                 <label for="print">Reimprimir recibo PDV:</label>
                 <input type="checkbox" @change="(e)=>$emit('changeInput',e)" :value="data?.config?.infoCompany" id="print">
+            </div>
+             <div class="Form-control">
+                <label for="language">Idioma:</label>
+                <button id="language" @click="languages.state = !languages.state">{{data.user_language ? data?.user_language.language : 'selecionar Idioma'}}</button>
+                <div class="drop" v-if="languages.state">
+                    <span v-for="language in languages.data" :key="language.code" @click="chooseLanguage(language)">{{language.language}}</span>
+                </div>
             </div>
         </div>
     </div>
@@ -35,7 +42,7 @@
 <script setup>
 import axios, { all } from "axios";
 import { onMounted, ref } from "vue";
-const emits = defineEmits(['chooseArmagen','changeInput'])
+const emits = defineEmits(['chooseArmagen','changeInput','language'])
 const armagens = ref({
     armagens:[],
     state: false,
@@ -43,14 +50,35 @@ const armagens = ref({
     data: []
 })
 
+const languages = ref({
+    state: false,
+    data:[
+        {
+            language: 'Francé',
+            code: 'fr'
+        },
+        {
+            language: 'Portugais',
+            code: 'pt'
+        }
+    ]
+})
+
 const props = defineProps({
     data: Object
 })
 
 onMounted(async()=>{
+    console.log(props.data);
     Promise.all([
        await getUsers(),
     ])
+})
+
+const chooseLanguage = ((language)=>{
+    emits('language',language)
+    props.data.user_language = language
+    languages.value.state = false
 })
 
 async function getUsers() {
@@ -79,17 +107,26 @@ const chooseArmagen = ((item)=>{
     box-sizing: border-box !important;
     background-color: white !important;
     padding: 10px;
+    overflow: unset !important;
     >div{
         width: 100%;
         height: 100%;
         gap: .5rem;padding: 10px;
         .Form-control{
-
             position: relative;
             @include form-control;
             @include dopDown;
+            input[type=checkbox]{
+                width: 30px !important;
+            }
+            .drop{
+                margin-left: 0 !important;
+                width: 95%;
+            }
         }
-
+    }
+    @media screen and (max-width: 650px) {
+        flex-direction: column !important;
     }
 }
 </style>

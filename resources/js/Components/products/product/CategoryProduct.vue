@@ -2,18 +2,18 @@
   <div class="Principal">
     <form @submit.prevent.stop="saveData" class="Modal">
         <div class="Header">
-            <h2>NOVA CATEGORIA</h2>
+            <h2>{{$t('words.new')+ ' ' +$t('words.category')}}</h2>
             <div class="ProductsSingleCategoria">
                 <i class="fa fa-product-hunt"></i>
-                <span>Produtos</span>
+                <span>{{$t('words.article')}}</span>
             </div>
         </div>
         <div class="Container">
-            <input type="text" v-model="data.name" placeholder="Novo Categoria">
+            <input type="text" v-model="data.name" :placeholder="`${$t('words.name')} ${$t('words.of')} ${$t('words.category')}`">
         </div>
         <div class="Footer">
-            <button type="button" @click.prevent.stop="$emit('closeModal')" class="Descartar">Fechar</button>
-            <button type="submit">Guardar</button>
+            <button type="button" @click.prevent.stop="$emit('closeModal')" class="Descartar">{{$t('words.close')}}</button>
+            <button type="submit">{{$t('words.save')}}</button>
         </div>
     </form>
   </div>

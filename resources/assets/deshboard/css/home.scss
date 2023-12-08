@@ -143,7 +143,7 @@
                     height: 72px;
                 }
             }
-            > span {
+            > span:nth-child(1) {
                 display: flex;
                 justify-content: center;
                 img {
@@ -154,10 +154,8 @@
                 }
             }
             span {
-                display: flex;
                 font-size: 15px;
                 font-weight: bold;
-                justify-content: center;
                 text-shadow: 0 1px 1px rgba(0, 0, 0, 0.356);
             }
         }

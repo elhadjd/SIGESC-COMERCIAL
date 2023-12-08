@@ -54,6 +54,10 @@ class configController extends Controller
         ]);
         $user->config()->create();
         $user->perfil()->create();
+        $user->userLanguage()->create([
+            'language'=>'Portugaise',
+            'code'=>'pt',
+        ]);
         return $user->fresh();
     }
 
@@ -75,8 +79,9 @@ class configController extends Controller
         $user->perfil()->update($data['perfil']);
         $user->config()->update($data['config']);
         $user->fresh();
+        $user->userLanguage()->updateOrCreate(['user_id'=>$request->id],$data['user_language']);
         $this->registerActivity("Atualizou dados do usuario $user->name");
-        return $this->RespondSuccess('Usuario atualizado com success !!!',$user);
+        return $this->RespondSuccess('Usuario atualizado com success !!!',$user->fresh());
     }
 
     public function UpdatePassword(Request $request,User $user)

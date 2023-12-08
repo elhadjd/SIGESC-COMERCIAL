@@ -10,7 +10,7 @@
          <div class="Header-right">
             <span class="p-input-icon-right w-100">
                 <i class="pi pi-search" />
-                <input type="search" @keyup="(e)=>filterWorker(e.target.value)" placeholder="Digite nome ou preço do artigo">
+                <input type="search" @keyup="(e)=>filterWorker(e.target.value)" placeholder="Digite nome do funcionario">
             </span>
             <section class="agrupar">
                 <span @click="data.date.state = !data.date.state" class="dropdown-toggle">Filtrar</span>

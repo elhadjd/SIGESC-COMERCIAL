@@ -39,15 +39,15 @@
             <div>
                 <div>
                     <label>Total:</label>
-                    <span>{{formatMoney(data.client.account_client[0].total)}}</span>
+                    <span>{{dineiro.format(data.client.account_client[0].total)}}</span>
                 </div>
                 <div>
                     <label>Disconto:</label>
-                    <span>{{formatMoney(data.client.account_client[0].discount)}}</span>
+                    <span>{{dineiro.format(data.client.account_client[0].discount)}}</span>
                 </div>
                 <div>
                     <label>A pagar:</label>
-                    <span>{{formatMoney(data.client.account_client[0].total - data.client.account_client[0].discount)}}</span>
+                    <span>{{dineiro.format(data.client.account_client[0].total - data.client.account_client[0].discount)}}</span>
                 </div>
             </div>
         </div>
@@ -78,7 +78,11 @@ const pdfPreview = ref("");
 const { onFileChange } = useUploadImage(props.data.client,image);
 
 const { onFileChangePdf } = usePreviewPdf(element,props.data.client);
-
+const dineiro = Intl.NumberFormat("PT-AO", {
+            style: 'currency',
+            currency: 'AOA',
+            minimumIntegerDigits: 2
+            });
 const handleUpload = (e) => {
   var files = e.target.files || e.dataTransfer.files;
   let arquivo = files[0].name;

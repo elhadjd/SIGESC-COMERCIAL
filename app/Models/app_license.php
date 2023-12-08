@@ -28,4 +28,8 @@ class app_license extends Model
     {
         return $this->belongsTo(app::class,'app_id');
     }
+
+    function FunctionName() {
+        
+    }
 }

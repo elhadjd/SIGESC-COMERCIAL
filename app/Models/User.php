@@ -27,7 +27,7 @@ class User extends Authenticatable
         'surname',
     ];
 
-    protected $with = ['config','armagen','perfil'];
+    protected $with = ['config','armagen','perfil','userLanguage'];
 
     protected $hidden = [
         'password',
@@ -61,6 +61,10 @@ class User extends Authenticatable
     public function invoice():HasMany
     {
         return $this->hasMany(Invoice::class,'user_id');
+    }
+
+    function userLanguage() {
+        return $this->hasOne(userLanguage::class,'user_id');
     }
 
 }

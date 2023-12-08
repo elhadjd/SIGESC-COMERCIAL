@@ -3,13 +3,13 @@
     <Progress v-if="$store.state.StateProgress" />
     <div class="botoes_do_meio">
       <div :class="steps == 0 && 'core'" @click="changeStep(0)">
-        Informação
+        {{$t('words.notice')}}
       </div>
       <div :class="steps == 1 && 'core'" @click="changeStep(1)">
-        Fornecedore
+        {{$t('words.provider')}}
       </div>
       <div :class="steps == 2 && 'core'" @click="changeStep(2)">
-        Lista de preço
+        {{`${$t('words.list')} ${$t('words.of')} ${$t('words.price')}`}}
       </div>
     </div>
     <div class="information_prod">

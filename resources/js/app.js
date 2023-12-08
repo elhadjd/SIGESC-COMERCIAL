@@ -22,6 +22,7 @@ import primevue from "primevue/config";
 import ToastService from "primevue/toastservice";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import store from "./store";
+import i18n from './translates';
 import { faProductHunt, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import {
     faArrowDown,
@@ -49,9 +50,7 @@ import {
     faTags,
     faTrash,
     faUpLong,
-    faUserGear,
     faUsers,
-    faUsersGear,
     faForward,
     faXmark,
     faCheck,
@@ -69,8 +68,8 @@ import {
     faEnvelopeCircleCheck,
     faCircleInfo,
     faBagShopping,
-    faTruck,
-    faTruckArrowRight
+    faTruckArrowRight,
+    faCircleCheck
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import general from "./mixins/general.js";
@@ -126,7 +125,8 @@ library.add(
     faEnvelopeCircleCheck,
     faCircleInfo,
     faBagShopping,
-    faTruckArrowRight
+    faTruckArrowRight,
+    faCircleCheck
 );
 
 
@@ -150,6 +150,7 @@ createInertiaApp({
             .use(ToastService)
             .use(store)
             .use(Swal)
+            .use(i18n)
             .mixin(general)
             .mount(el);
     },

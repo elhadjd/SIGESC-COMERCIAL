@@ -12,7 +12,7 @@
       <form @submit.prevent.stop="moveStock">
         <div class="p-2">
           <div class="w-100 p-1 d-flex text-secondary h5">
-            <label for="" class="w-50"><strong>Artigo</strong></label>
+            <label for="" class="w-50"><strong>{{$t('words.article')}}</strong></label>
             <label
               v-if="form.tipoOper != 'Entrada'"
               for=""
@@ -44,20 +44,20 @@
               </div>
             </div>
             <div class="w-50 armagens">
-                <label for="armagen">Armagens: </label>
+                <label for="armagen">{{$t('words.store')}}: </label>
                 <select @change="(e)=>changeStore(e.target.value)" id="armagen">
                     <option v-for="item in stores" :selected="form.armagen_id == item.id" :key="item.id">{{item.name}}</option>
                 </select>
             </div>
           </div>
           <div class="d-flex w-100 mt-2">
-            <div @click="$emit('closeModal')" class="ms-1 fechar">Fechar</div>
+            <div @click="$emit('closeModal')" class="ms-1 fechar">{{$t('words.close')}}</div>
             <div class="ms-1 ConfirmarStock">
               <div v-if="ShowModal">
                 <i class="fa fa-refresh fa-spin fa-3x fa-fw"
                   aria-hidden="true"></i>
               </div>
-              <button v-else>Confirmar</button>
+              <button v-else>{{$t('words.save')}}</button>
             </div>
           </div>
         </div>

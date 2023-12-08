@@ -23,7 +23,6 @@
                     <div class="Name-Img-control">
                         <div class="form-nome">
                             <input :disabled="!EstadoForm" type="text" placeholder="Nome" v-model="user.name" id="nome">
-                            <input :disabled="!EstadoForm" type="text" placeholder="Apelido" v-model="user.surname" id="surname">
                         </div>
                         <div class="form-image">
                             <div>
@@ -68,7 +67,7 @@
                         <span :class="step === 'config'?'active':''"
                         @click="step = 'config'">Configuração</span>
                     </div>
-                    <div v-if="user.email == null && step == 'password'" class="DivSenha">
+                    <div v-if="step == 'password'" class="DivSenha">
                         <div class="regras-senha">
                             <ul>
                                 <li>A senha deve ter no minimo 6 digitos</li>
@@ -92,7 +91,7 @@
                         <info-user @changeInput="handleInputs" v-if="step === 'info'" :data="user"/>
                     </KeepAlive>
                     <KeepAlive>
-                        <config v-if="step === 'config'" @changeInput="handleInputConfig" :data="user"/>
+                        <config v-if="step === 'config'" @changeInput="handleInputConfig" @translate="user.user_language = $event" :data="user"/>
                     </KeepAlive>
                 </div>
             </div>
@@ -109,9 +108,11 @@ import config from './config.vue'
 import {ref,reactive, onMounted} from 'vue';
 import { getImages } from '@/composable/public/getImages';
 import {useUploadImage} from '@/composable/public/UploadImage'
+import { serviceMessage } from '@/composable/public/messages';
 const props = defineProps({
     SingleUser: Object
 })
+const {showMessage} = serviceMessage()
 const user = ref(props.SingleUser);
 const emits = defineEmits(['message','ListUsers']);
 const step = ref('password')
@@ -174,6 +175,9 @@ const SaveUser = (()=>{
 })
 
 const InsertUser = ((route,User)=>{
+    if(user.value.surname == null||user.value.email == null || user.value.name == null) return showMessage('Por favor Preenche todos os campos','info')
+    // if(senha.senha1 == null||senha.senha2 == null) return showMessage('Por favor cria uma senha para guardar usuario','info')
+    if (user.value.user_language == null) return showMessage('Por favor seleciona a idioma do usuario','info')
     axios.post(route,{...User,...senha})
     .then((response) => {
         if (response.data.type == "success") {

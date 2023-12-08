@@ -61,8 +61,8 @@
                         flex-direction: column;
                         gap: .5rem;
                         color: var(--textColor);
-                        >svg{
-                            color: var(--buttonsColor);
+                        svg{
+                            color: var(--bgButtons);
                         }
                         >span:nth-child(1){
                             width: 100%;

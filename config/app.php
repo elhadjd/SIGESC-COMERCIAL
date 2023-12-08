@@ -184,7 +184,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-
+        Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
         /*
          * Package Service Providers...
          */

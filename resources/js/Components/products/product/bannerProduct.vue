@@ -7,27 +7,27 @@
     />
     <div class="form-content">
         <div class="form-Control">
-            <label for="category">Categoria:</label>
+            <label for="category">{{$t('words.category')}}:</label>
             <button @click="changeStateDrop('category')" type="button" id="category">
-                {{product.data.category != null ? product.data.category.name : 'Seleciona a categoria do produto'}}
+                {{product.data.category != null ? product.data.category.name : `${$t('words.select')} ${$t('words.the')} ${$t('words.category')} ${$t('words.of')} ${$t('words.article')}`}}
             </button>
             <div v-if="stateDrop == 'category'" class="drop">
                 <span v-for="item in categories.listCategories" :key="item.id" @click="AddCategoryObject(item)">{{item.name}}</span>
-                <button type="button" @click="createCategory(product.data.id)">Criar nova categoria</button>
+                <button type="button" @click="createCategory(product.data.id)">{{`${$t('words.create')} ${$t('words.a')} ${$t('words.new')} ${$t('words.category')}`}}</button>
             </div>
         </div>
         <div class="form-Control">
-            <label for="productType">Tipo de artigo:</label>
+            <label for="productType">{{`${$t('words.type')} ${$t('words.of')} ${$t('words.category')}`}}:</label>
             <button @click="changeStateDrop('type')" type="button" id="productType"
             :disabled="product.data.estado === 1">
-                {{product.data.product_type != null ? product.data.product_type.name : 'Seleciona o tipo de artigo'}}
+                {{product.data.product_type != null ? product.data.product_type.name : `${$t('words.select')} ${$t('words.the')} ${$t('words.type')} ${$t('words.article')}`}}
             </button>
             <div v-if="stateDrop == 'type'" class="drop">
                 <span v-for="item in itemType" :key="item.id" @click="addTypeProduct(item)">{{item.name}}</span>
             </div>
         </div>
         <div class="form-Control">
-            <label for="bare">Codego de barro:</label>
+            <label for="bare">{{`${$t('words.code')} ${$t('words.of')} ${$t('words.barre')}`}}:</label>
             <input type="text" v-model="product.data.codego" :disabled="product.data.estado === 1" id="bare" placeholder="bare code">
         </div>
     </div>
