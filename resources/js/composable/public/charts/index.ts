@@ -5,6 +5,7 @@ export const analisOrders = ((route:string) => {
     const Response = ref([])
     const chartType = ref(null)
     const stateOptions: Ref<number> = ref(0);
+    
     const chartData = ref({
         labels: [],
         datasets:[
@@ -129,6 +130,7 @@ export const analisOrders = ((route:string) => {
         .then((response) => {
             Response.value = response.data
             chartData.value.datasets[0].label = 'Este mes'
+            console.log(Response.value)
             forData()
         }).catch((err) => {
             console.log(err);

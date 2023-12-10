@@ -48,7 +48,7 @@ class faturacaoController extends Controller
         ]);
 
         $register = new ActivityRegister;
-        $register->Activity("Criou uma fatura no module faturação");
+        $register->Activity("Criou uma fatura no modulo faturação");
         return $this->getInvoices($create->id);
     }
 
@@ -124,18 +124,23 @@ class faturacaoController extends Controller
     {
         $order = Invoice::withSum('items', 'TotalSold')->withSum('items', 'TotalDiscount')
         ->withSum('items', 'totalTax')
+        ->withSum('items', 'TotalCost')
         ->where('id',$invoice)->first();
+
         if ($order->items_sum_total_sold == null) {
             $order->items_sum_total_discount = 0;
             $order->items_sum_total_sold = 0;
             $order->items_sum_total_tax = 0;
-        };
+            $order->items_sum_total_cost = 0;
+        }
+
         $invoice = Invoice::find($invoice);
         $sum = $order->items_sum_total_sold - $order->items_sum_total_tax + $order->items_sum_total_discount;
         $invoice->discount = $order->items_sum_total_discount;
         $invoice->TotalMerchandise = $sum;
         $invoice->TotalInvoice = $order->items_sum_total_sold;
         $invoice->tax = $order->items_sum_total_tax;
+        $invoice->TotalCusto = $order->items_sum_total_cost;
         $invoice->save();
         return $this->getInvoices($invoice->id);
     }
