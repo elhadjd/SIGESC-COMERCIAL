@@ -86,7 +86,7 @@ const selectType = ((type)=>{
         invoices.value.state = false
         return
     }
-    axios.get('/PDV/getOrders')
+    axios.get(`/PDV/getOrders${localStorage.getItem('locale') || 'en'}`)
     .then((response) => {
         invoices.value.data = response.data.data
         invoices.value.storeData = response.data.data

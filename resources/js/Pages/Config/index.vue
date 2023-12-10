@@ -7,7 +7,7 @@
 				@modulos="modulos"
 				@showCompany="showCompany"
 				@ShowSingleUser="ShowSingleUser"
-				v-if="modul.active == 'Configurações'"
+				v-if="modul.active == $t('apps.configName')"
 			/>
 			<users
 				@ShowSingleUser="ShowSingleUser"
@@ -42,7 +42,8 @@ import newUser from '@/Components/Config/user/NewUser.vue'
 import { useToast } from 'primevue/usetoast';
 import { Inertia } from '@inertiajs/inertia';
 import Headers from '../../Layouts/header.vue'
-
+import { useI18n } from 'vue-i18n';
+const {t} = useI18n()
 const toast = useToast();
 
 const SingleUser = ref(Object);
@@ -52,7 +53,7 @@ const MostrarDrop = ref(null);
 const company = ref([]);
 
 const menus = ref([
-    { menu: "Configurações" },
+    { menu: t('apps.configName')},
     { menu: "Logins" }
 ]);
 
@@ -66,7 +67,7 @@ const message = (message, tipo) => {
 };
 
 const modul = ref({
-	active: "Configurações",
+	active: t('apps.configName'),
 	story: "",
 });
 

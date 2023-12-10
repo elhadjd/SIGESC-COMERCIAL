@@ -52,7 +52,7 @@ Route::controller(StartController::class)->group(function () {
 Route::prefix('auth')->group(function () {
     Route::post('/saveCompany', [LoginController::class, 'saveCompany']);
     Route::get('/login', [LoginController::class, 'index'])->name('login');
-    Route::post('/logar/{locale?}', [LoginController::class, 'login'])->name('logar');
+    Route::post('/logar', [LoginController::class, 'login'])->name('logar');
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
     Route::get('logout',function(){
         return redirect('auth/login');
@@ -87,7 +87,7 @@ Route::middleware('auth')->group(function () {
             return redirect('/' . $locale);
         });
 
-        Route::get('/{locale?}', [DashboardController::class, 'Dashboard'])->name('dashboard');
+        Route::get('/', [DashboardController::class, 'Dashboard'])->name('dashboard');
         Route::controller(searchController::class)->group(function () {
             Route::get('search/{table}/{column}/{tex}', 'filter');
         });
@@ -95,7 +95,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('config')->group(function () {
             Route::controller(configController::class)->group(function () {
                 Route::get('Home', 'Index')->name('configuracoes');
-                Route::get('getConfig', 'getConfig');
+                Route::get('getConfig/{locale}', 'getConfig');
                 Route::post('newUser', 'newUser');
                 Route::get('users', 'users');
                 Route::post('SaveUser/{user?}', 'SaveUser');
@@ -127,8 +127,8 @@ Route::middleware('auth')->group(function () {
 
                 Route::controller(PointSaleController::class)->group(function () {
                     Route::get('Pos/{caixa}', 'index')->name('pos');
-                    Route::get('menuPos', 'menuPos');
-                    Route::get('getTypeOperation', 'getTypeOperation');
+                    Route::get('menuPos/{locale}', 'menuPos');
+                    Route::get('getTypeOperation/{locale}', 'getTypeOperation');
                     Route::post('addOperation', 'addOperation');
                     Route::post('PasswordCash/{session}', 'PasswordCash');
                     Route::post('get/CancelInvoice/{user}/{invoice}', 'CancelInvoice');
@@ -136,9 +136,9 @@ Route::middleware('auth')->group(function () {
                 });
 
                 Route::controller(OrdersController::class)->group(function () {
-                    Route::get('getOrderSingleUser/{session}', 'getOrderSingleUser');
+                    Route::get('getOrderSingleUser/{locale}/{session}', 'getOrderSingleUser');
                     Route::post('ValidatePayment', 'ValidatePayment');
-                    Route::get('getOrders/{order?}/{column?}', 'getOrders');
+                    Route::get('getOrders/{locale}/{order?}/{column?}', 'getOrders');
                     Route::put('CancelInvoice/{order}', 'CancelInvoice');
                     Route::get('printInvoice/{session}/{type}','printInvoice');
                     Route::get('groupBy/{event}/{column}','groupBy');
@@ -310,7 +310,7 @@ Route::middleware('auth')->group(function () {
             });
 
             Route::controller(stockController::class)->group(function () {
-                Route::get('/getArmagens', 'get');
+                Route::get('getArmagens', 'get');
                 Route::post('updateQuantity/{product}', 'update');
             });
 

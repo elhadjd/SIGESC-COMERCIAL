@@ -3,7 +3,7 @@
       <div class="Header">
          <div class="Header-left">
             <span>
-               <h2>Stock</h2>
+               <h2>{{$t('apps.stock')}}</h2>
             </span>
          </div>
          <div class="Header-right">
@@ -17,17 +17,17 @@
             <div class="carde">
                <p>{{dados.totalRequest}}</p>
                <i class="fa fa-shopping-bag shop" aria-hidden="true"></i>
-               <span>Total de quantidade solicitadas</span>
+               <span>{{$t('words.stockObj.qtdRequested')}}</span>
             </div>
             <div class="carde">
                <p>{{dados.totalReject}}</p>
                <i class="fa fa-ban text-danger shop" aria-hidden="true"></i>
-               <span>Total de quantidade devolvidos</span>
+               <span>{{$t('words.stockObj.qtdCanseled')}}</span>
             </div>
             <div class="carde">
                <p>{{dados.totalConcluded}}</p>
                <i class="fa fa-check concluida" aria-hidden="true"></i>
-               <span>Total de quantidade comprados</span>
+               <span>{{$t('words.stockObj.qtdConq')}}</span>
             </div>
          </div>
          <div class="Container-cards">
@@ -37,7 +37,7 @@
                      <div class="TotalVenda">
                         <span></span>
                         <div>
-                           <h2>Produto mais vendido</h2>
+                           <h2>{{$t('words.stockObj.prodMxSale')}}</h2>
                            <div class="product">
                               <font-awesome-icon icon="fa-solid fa-star" />
                               <strong>{{dados.bestSeller?.quantity}}</strong>
@@ -51,7 +51,7 @@
                      <div class="TotalGasto">
                         <span></span>
                         <div>
-                           <h2>Produto mais vendido</h2>
+                           <h2>{{$t('words.stockObj.prodMinSale')}}</h2>
                            <div class="product">
                               <strong>{{dados.lessSold?.quantity}}</strong>
                               <img :src="'/produtos/image/'+dados.lessSold?.image" alt="">
@@ -64,7 +64,7 @@
                      <div class="TotalCusto">
                         <span></span>
                         <div>
-                           <h2>Produto com mais lucro</h2>
+                           <h2>{{$t('words.stockObj.prodMxProfit')}}</h2>
                            <div class="product">
                               <font-awesome-icon icon="fa-solid fa-chart-line" />
                               <strong>{{dados.productWithMoreProfit?.gain+"%"}}</strong>
@@ -78,7 +78,7 @@
                      <div class="TotalLucro">
                         <span></span>
                         <div>
-                           <h2>Produto com menos lucro</h2>
+                           <h2>{{$t('words.stockObj.prodMinProfit')}}</h2>
                            <div class="product">
                               <font-awesome-icon icon="fa-solid fa-chart-gantt" />
                               <strong>{{dados.productWithLessProfit?.gain+"%"}}</strong>
@@ -97,15 +97,16 @@
                         <input type="text" @keyup="FilterOrder" placeholder="Pesquisar...">
                         </span>
                         <div v-if="modalList">
-                           <button @click="filterProduct('buy')">Produtos Vendidos</button>
+                           <button @click="filterProduct('buy')" class="truncate">{{$t('words.stockObj.itemsSold')}}</button>
                            <font-awesome-icon @click="filterProduct('all')" icon="fa-solid fa-rotate-right" />
                         </div>
                         <font-awesome-icon v-if="modalList" @click="showList(false)" icon="fa-solid fa-arrows-split-up-and-left" />
                         <font-awesome-icon v-else @click="showList(true)" icon="fa-solid fa-arrow-up-right-from-square" />
                      </div>
                      <list-out-product id="PrintList"/>
-                     <div v-if="modalList" class="buttons">
-                        <button @click="exportToPDF">Imprimir</button>
+                     <div v-if="modalList" class="buttons space-x-2">
+                        <button @click="exportToPDF">{{$t('words.print')}}</button>
+                        <button @click="showList(false)" class="botao_descartar">{{$t('words.close')}}</button>
                      </div>
                   </div>
                </div>

@@ -2,19 +2,19 @@
   <div class="principal">
     <div class="Header">
         <div class="Header-left">
-            <h2>Lista de Sessões</h2> 
+            <h2>{{`${$t('words.list')} ${$t('words.of')} ${$t('words.sessions')}`}}</h2>
         </div>
     </div>
     <div class="Container">
         <div class="Title">
-            <div>Id da sessão</div>
-            <div>Ponto de venda</div>
-            <div>Responsavel</div>
-            <div>Data de abertura</div>
-            <div>Valor enformado</div>
-            <div>Diferencia</div>
-            <div>Data de fecho</div>
-            <div>Estado</div>
+            <div class="truncate">Id {{`${$t('words.of')} ${$t('words.sessions')}`}}</div>
+            <div class="truncate">{{$t('apps.pdvName')}}</div>
+            <div class="truncate">{{$t('words.responsible')}}</div>
+            <div class="truncate">{{`${$t('words.date')} ${$t('words.of')} ${$t('words.opening')}`}}</div>
+            <div class="truncate">{{$t('pdv.formedMoney')}}</div>
+            <div class="truncate">{{$t('words.difference')}}</div>
+            <div class="truncate">{{$t('pdv.closeDate')}}</div>
+            <div class="truncate">{{$t('words.state')}}</div>
         </div>
 
         <div class="list_items">

@@ -4,18 +4,18 @@
     <div class="Modal">
         <div class="Header">
             <div class="Botoes">
-                <button v-for="item in typeOperation" :key="item.id" :class="TipoButton.operation_caixa_type_id == item.id ? 'style' : ''" @click="TipoOperacao(item)">{{item.name}}</button>
+                <button v-for="item in typeOperation" :key="item.id" :class="TipoButton.operation_caixa_type_id == item.id ? 'style' : ''" @click="TipoOperacao(item)">{{item.operation_translate[0].translate}}</button>
             </div>
             <div class="Input">
-                <input type="text" id="inputRef" ref="inputRef" v-model="TipoButton.amount" placeholder="Digite valor">
+                <input type="text" id="inputRef" ref="inputRef" v-model="TipoButton.amount" :placeholder="$t('words.amount')">
             </div>
         </div>
         <div class="Container">
             <textarea v-model="TipoButton.subject" cols="30" rows="10"></textarea>
         </div>
         <div class="Footer">
-            <button @click="$emit('fechar')" class="Fechar">Fechar</button>
-            <button @click="Save" class="Guardar">Guardar</button>
+            <button @click="$emit('fechar')" class="Fechar">{{$t('words.close')}}</button>
+            <button @click="Save" class="Guardar">{{$t('words.save')}}</button>
         </div>
     </div>
 </div>
@@ -27,7 +27,6 @@ import { onMounted,ref } from '@vue/runtime-core'
 import axios from 'axios'
 import { useCurrencyInput } from 'vue-currency-input'
 const FormatarDineiro = Intl.NumberFormat('PT-AO',{style: 'currency',currency: 'AOA'})
-
 const emits = defineEmits(['message','fechar'])
 const session = ref(localStorage.getItem('session'));
 const { inputRef } = useCurrencyInput({currency: 'AOA' })
@@ -46,7 +45,7 @@ const TipoOperacao = ((event)=>{
 })
 
 onMounted(()=>{
-    axios.get('/PDV/getTypeOperation')
+    axios.get(`/PDV/getTypeOperation/${localStorage.getItem('locale') || 'en'}`)
     .then((response) => {
         typeOperation.value = response.data
     }).catch((err) => {

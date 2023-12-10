@@ -4,19 +4,19 @@
          <div class="Header-left">
             <span @click="formDepartment.state ? formDepartment.state = false:''" :class="formDepartment.state?'Voltar':''">
                <FontAwesomeIcon v-if="formDepartment.state" icon="fa-solid fa-outdent" />
-               <h2>Departamentos</h2>
+               <h2>{{$t('words.department')}}</h2>
             </span>
             <span>
                <button @click="!formDepartment.state ? showFormDepartment():saveDepartment()">
                   <FontAwesomeIcon :icon="!formDepartment.state ? 'fa-solid fa-plus':'fa-solid fa-floppy-disk'"/>
-                  {{!formDepartment.state ? "Novo departamento": "Guardar"}}
+                  {{!formDepartment.state ? `${$t('words.new')} ${$t('words.department')}`: $t('words.save')}}
                </button>
             </span>
          </div>
          <div class="Header-right">
             <span v-if="!formDepartment.state" class="p-input-icon-right w-100">
             <i class="pi pi-search" />
-            <input type="search" @keyup="search" placeholder="Digite nome do departamento">
+            <input type="search" @keyup="search" :placeholder="$t('words.search')">
             </span>
          </div>
       </div>
@@ -29,7 +29,7 @@
                <div>
                   <button>
                   {{department.workers?.length}}
-                  Funcionarios
+                  {{$t('words.employee')}}
                   </button>
                </div>
             </div>

@@ -3,10 +3,10 @@
 <div class="principal">
     <div class="Header">
         <div class="Header-left">
-            <h2> Relatorio </h2>
+            <h2> {{$t('words.report')}} </h2>
             <span>
-                <button @click="$emit('change')">Calendario</button>
-                <button @click="$emit('change')">Painel</button>
+                <button @click="$emit('change')">{{$t('words.calendar')}}</button>
+                <button @click="$emit('change')">{{$t('words.panel')}}</button>
             </span>
         </div>
         <div class="Header-right">
@@ -18,20 +18,20 @@
     <div class="Container">
         <div class="Principal">
             <div class="Header-Cards">
-                <div class="carde">
+                <div class="carde truncate">
                     <p>{{ cards.ListOrder.list.length }}</p>
                     <i class="fa fa-shopping-bag shop" aria-hidden="true"></i>
-                    <span>Total de encomendas solicitadas</span>
+                    <span class="truncate">{{`${$t('words.order')} ${$t('words.requested')}`}}</span>
                 </div>
-                <div class="carde">
+                <div class="carde truncate">
                     <p>{{ cards.ListOrder.canceladas }}</p>
                     <i class="fa fa-ban text-danger shop" aria-hidden="true"></i>
-                    <span>Total de fatura canceladas</span>
+                    <span class="truncate">{{`${$t('words.order')} ${$t('words.canceled')}`}}</span>
                 </div>
-                <div class="carde">
+                <div class="carde truncate">
                     <p>{{ cards.ListOrder.list.length - cards.ListOrder.canceladas }}</p>
                     <i class="fa fa-check concluida" aria-hidden="true"></i>
-                    <span>Total de encomendas concluidas</span>
+                    <span class="truncate">{{`${$t('words.order')} ${$t('words.completed')}`}}</span>
                 </div>
             </div>
             <div class="Container-cards">
@@ -40,7 +40,7 @@
                         <div class="card">
                             <div class="TotalVenda">
                                 <span></span>
-                                <div>Tota de Venda</div>
+                                <div>{{$t('phrases.totalSale')}}</div>
                                 <strong>{{
                                     FormatCurrency.format(cards.relat.TotalVenda)
                                 }}</strong>
@@ -49,7 +49,7 @@
                         <div class="card">
                             <div class="TotalGasto">
                                 <span></span>
-                                <div>Tota de Gastos</div>
+                                <div>{{$t('words.expenses')}}</div>
                                 <strong>{{
                                     FormatCurrency.format(cards.relat.TotalGasto)
                                 }}</strong>
@@ -58,7 +58,7 @@
                         <div class="card">
                             <div class="TotalCusto">
                                 <span></span>
-                                <div>Tota de custo dos produtos</div>
+                                <div>{{$t('phrases.totalCost')}}</div>
                                 <strong>{{
                                     FormatCurrency.format(cards.relat.CustoProd)
                                 }}</strong>
@@ -67,7 +67,7 @@
                         <div class="card">
                             <div class="TotalLucro">
                                 <span></span>
-                                <div>Tota de lucro</div>
+                                <div>{{$t('phrases.totalProfit')}}</div>
                                 <strong>{{
                                     FormatCurrency.format(cards.relat.TotalLucro)
                                 }}</strong>
@@ -81,7 +81,7 @@
                                 <input
                                     type="text"
                                     @keyup="FilterOrder"
-                                    placeholder="Pesquisar..."
+                                    :placeholder="$t('words.search')"
                                 />
                             </span>
                         </div>

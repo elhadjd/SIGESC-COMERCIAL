@@ -6,23 +6,24 @@
         </div>
 
         <div class="QtdPrcImpr">
-            <div @click="print">Imprimir</div>
-            <div @click="$emit('tipo','preco')">Preço</div>
-            <div >Desconto</div>
-            <div @click="$emit('tipo','quantidade')">Quantidade</div>
+            <div @click="print">{{$t('words.print')}}</div>
+            <div @click="$emit('tipo','preco')">{{$t('words.price')}}</div>
+            <div >{{$t('words.discount')}}</div>
+            <div @click="$emit('tipo','quantidade')">{{$t('words.quantity')}}</div>
         </div>
         <div v-if="printOrder" class="print">
             <div class="Modal">
                 <div class="Header">
-                    <h2>Reimprimir a fatura</h2>
+                    <h2>{{`${$t('words.print')} ${$t('words.order')}`}}</h2>
                 </div>
                 <div class="Container">
-                    <label for="number">Numero de fatura:</label>
-                    <input type="text" v-model="invoice.number" id="number" placeholder="Numero da fatura ">
+                    <label for="number">{{`${$t('words.number')} ${$t('words.of')} ${$t('words.order')}`}}:</label>
+                    <input type="text" class="normal-case" v-model="invoice.number" id="number" :placeholder="`${$t('words.number')} ${$t('words.of')} ${$t('words.order')}`">
                 </div>
                 <div class="Footer">
-                    <button class="Descartar" @click="printInvoice('last')">Ultima fatura</button>
-                    <button @click="printInvoice()">Imprimir</button>
+                    <button class="Descartar normal-case" @click="printInvoice('last')">{{`${$t('words.last')} ${$t('words.order')}`}}</button>
+                    <button @click="printInvoice()">{{$t('words.print')}}</button>
+                    <button class="Descartar normal-case" @click="printOrder = false">{{$t('words.close')}}</button>
                 </div>
             </div>
         </div>
@@ -30,14 +31,14 @@
     <div class="FormPagamentoBaixo">
         <div class="PagamentoEsquerda" @click="$emit('payment',true)">
             <i class="fa fa-credit-card-alt"></i>
-            <div>Pagamento</div>
+            <div>{{$t('words.payment')}}</div>
         </div>
         <div class="PagamentoDireita">
             <div v-for="(i, index) in 9"
                 class="nomeros" id="numero" :key="index" @click="numero(i)">
                 {{ i }}
             </div>
-            
+
             <div class="nomeros" @click="numero(0)" id="numero">{{ 0 }}</div>
             <div class="nomeros" @click="numero('.')" id="numero">.</div>
             <div id="numeros" @click="$emit('remover')">

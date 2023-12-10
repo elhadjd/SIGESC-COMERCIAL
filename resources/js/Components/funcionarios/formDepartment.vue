@@ -4,7 +4,7 @@
             <div class="Main">
                 <div class="Name-Img-control">
                     <div class="form-nome">
-                        <input type="text" v-model="department.name" placeholder="Nome de departamento">
+                        <input type="text" v-model="department.name" :placeholder="$t('words.department')">
                     </div>
                 </div>
             </div>

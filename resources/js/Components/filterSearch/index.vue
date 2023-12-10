@@ -37,7 +37,7 @@ const store = useStore();
 
 onMounted(()=>{
     store.state.pos.StateProgress = true
-    axios.get('/PDV/getOrders')
+    axios.get(`/PDV/getOrders/${localStorage.getItem('locale') || 'en'}`)
     .then((Response) => {
         ListaDefault.value = Response.data
         PassarLista(ListaDefault.value)
@@ -74,7 +74,7 @@ const filtro = ((event)=>{
 })
 
 const PesquisarOrden = (()=>{
-    axios.get(`/PDV/getOrders/${NumeroOrden.value}/${searchType.value.column}`)
+    axios.get(`/PDV/getOrders/${localStorage.getItem('locale') || 'en'}/${NumeroOrden.value}/${searchType.value.column}`)
     .then((Response) => {
         ListaDefault.value = Response.data
         PassarLista(ListaDefault.value)

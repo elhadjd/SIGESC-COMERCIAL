@@ -2,7 +2,7 @@
     <div class="Container">
         <div class="form-content">
             <div class="Form-control">
-                <label for="phone">Telefone:</label>
+                <label for="phone">{{$t('words.phone')}}:</label>
                 <input type="text" id="phone" @keyup="(e)=>$emit('changeInput',e)" :value="data.perfil?.phone" placeholder="+244">
             </div>
             <div class="Form-control">
@@ -10,28 +10,28 @@
                 <input type="celular" id="celular" @keyup="(e)=>$emit('changeInput',e)" :value="data.perfil?.celular" placeholder="244">
             </div>
             <div class="Form-control">
-                <label for="address">Morada:</label>
+                <label for="address">{{$t('words.city')}}:</label>
                 <input type="text" :value="data.perfil?.address" @keyup="(e)=>$emit('changeInput',e)" id="address" placeholder="Luanda">
             </div>
         </div>
         <div class="form-content">
             <div class="Form-control">
-                <label for="country">Pais de naicimento:</label>
+                <label for="country">{{$t('words.country')}}:</label>
                 <input type="text" id="country" @keyup="searchCountry" :value="data.perfil?.country" @click="country.state = !country.state"  placeholder="Angola">
                 <div class="drop" v-if="country.state">
                     <span v-for="country in country.list" :key="country" @click="chooseCountry(country)">{{country.name}}</span>
                 </div>
             </div>
             <div class="Form-control">
-                <label for="gender">Genero:</label>
+                <label for="gender">{{$t('words.gender')}}:</label>
                 <input type="text" :value="data.perfil?.gender" @change="(e)=>$emit('changeInput',e)" @click="genero.state = !genero.state" id="gender" placeholder="H">
                 <div class="drop" v-if="genero.state">
-                    <span @click="handleGender('Feminino')">Feminino</span>
-                    <span @click="handleGender('Masculino')">Masculino</span>
+                    <span @click="handleGender('Feminino')">F</span>
+                    <span @click="handleGender('Masculino')">M</span>
                 </div>
             </div>
             <div class="Form-control">
-                <label for="birthday">Data de naicimento:</label>
+                <label for="birthday">{{$t('words.birthday')}}:</label>
                 <input type="date" @change="(e)=>$emit('changeInput',e)" :value="data.perfil?.birthday" id="birthday">
             </div>
         </div>

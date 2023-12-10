@@ -1,0 +1,109 @@
+@include components;
+.Container{
+      height: 100% !important;
+      overflow-x: auto;
+        .filter-product{
+            height: 100%;
+            display: flex;
+            align-items: center;
+            border: 1.5px solid #017e840e;
+            button{
+                @include botao_normal
+            }
+            .filter{
+                width: 100px;
+                display: flex;
+                position: relative;
+                justify-content: center;
+                flex-direction: row;
+                span{
+                    font-size: 14px;
+                    font-weight: bold;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 75%;
+                    padding:  4px 10px 4px 10px;
+                    border-radius: 2px;
+                    &:hover{
+                        background-color: rgba(5, 108, 212, 0.341);
+                        color: rgba(5, 108, 212, 0.698);
+                        cursor: pointer;
+                    }
+                }
+                .drop{
+                    position: absolute;
+                    display: flex;
+                    flex-direction: column;
+                    background-color: white !important;
+                    z-index: 1;
+                    margin-top: 30px;
+                    margin-left: 77%;
+                    width: 180%;
+                    border: 1px solid #ebebebf9;
+                    border-top: 0px;
+                    border-bottom-left-radius: 3px;
+                    border-bottom-right-radius: 3px;
+                    max-height: 100px;
+                    overflow-y: auto;
+                    .drop-item{
+                        width: 100% !important;
+                        padding: 2px 3px 2px 3px;
+                        font-size: 14px;
+                        transition: 0.3s;
+                        &:nth-child(even){
+                            background-color: #00000008;
+                        }
+                        &:hover{
+                            cursor: pointer;
+                            background-color: #00000010;
+                        }
+                    }
+                }
+            }
+        }
+    .list{
+        @include form_lists;
+        width: 100%;
+        height: 90%;
+        min-width: 1100px;
+        .title-item{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 10px 5px 10px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #000000ae;
+            border-left: 1px solid #00000008;
+        }
+        .content-item{
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            padding: 2px 10px 2px 10px;
+            font-size: 14px;
+            .image-product{
+                width: 90px;
+                height: 100%;
+                border-radius: 3px;
+            }
+            i{
+                font-size: 10px;
+                font-weight: bold;
+            }
+        }
+        .currency{
+            font-weight: bold;
+            color: rgba(0, 0, 0, 0.697);
+        }
+        .unavailable{
+            color: rgba(255, 0, 0, 0.617);
+        }
+        .available{
+            color: #017e84;
+        }
+    }
+}

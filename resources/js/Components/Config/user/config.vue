@@ -2,7 +2,7 @@
     <div class="Container">
         <div class="Content-left">
             <div class="Form-control">
-                <label for="armagen">Armagen:</label>
+                <label for="armagen">{{$t('words.store')}}:</label>
                 <input type="text" :value="data?.armagen?.name" @click="armagens.state = !armagens.state" id="armagen" placeholder="Luanda">
                 <div class="drop" v-if="armagens.state">
                     <span v-for="item in armagens.armagens" :key="item.id" @click="chooseArmagen(item)">{{item.name}}</span>
@@ -10,26 +10,26 @@
             </div>
 
             <div class="Form-control">
-                <label for="price">Acesso aos preços:</label>
+                <label for="price">{{$t('words.userConfig.accesPrice')}}:</label>
                 <input type="checkbox" @change="(e)=>$emit('changeInput',e)" :value="data?.config?.price" id="price">
             </div>
 
             <div class="Form-control">
-                <label for="quantity">Pode fazer entrada de produto:</label>
+                <label for="quantity">{{$t('words.userConfig.stockMovement')}}:</label>
                 <input type="checkbox" @change="(e)=>$emit('changeInput',e)" :value="data?.config?.quantity" id="quantity">
             </div>
         </div>
         <div class="Content-right">
             <div class="Form-control">
-                <label for="infoCompany" class="truncate">Imprimir informação completa no PDV:</label>
+                <label for="infoCompany" class="truncate">{{$t('words.userConfig.print')}}:</label>
                 <input type="checkbox" @change="(e)=>$emit('changeInput',e)" :value="data?.config?.infoCompany" id="infoCompany">
             </div>
             <div class="Form-control">
-                <label for="print">Reimprimir recibo PDV:</label>
+                <label for="print">{{$t('words.userConfig.reprint')}}:</label>
                 <input type="checkbox" @change="(e)=>$emit('changeInput',e)" :value="data?.config?.infoCompany" id="print">
             </div>
              <div class="Form-control">
-                <label for="language">Idioma:</label>
+                <label for="language">{{$t('words.userConfig.languase')}}:</label>
                 <button id="language" @click="languages.state = !languages.state">{{data.user_language ? data?.user_language.language : 'selecionar Idioma'}}</button>
                 <div class="drop" v-if="languages.state">
                     <span v-for="language in languages.data" :key="language.code" @click="chooseLanguage(language)">{{language.language}}</span>
@@ -69,13 +69,13 @@ const props = defineProps({
 })
 
 onMounted(async()=>{
-    console.log(props.data);
     Promise.all([
        await getUsers(),
     ])
 })
 
 const chooseLanguage = ((language)=>{
+    localStorage.setItem('locale',language.code)
     emits('language',language)
     props.data.user_language = language
     languages.value.state = false

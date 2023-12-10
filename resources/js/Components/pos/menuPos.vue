@@ -26,12 +26,12 @@
             <div class="menu">
                 <div class="EntradaSaida" @click="entradaSaida = true">
                     <cash />
-                    <span>Entrada & Saida & gastos</span>
+                    <span>{{`${$t('words.entry')}&${$t('words.output')}&${$t('words.expenses')}`}}</span>
                 </div>
                 <div @click="ListePedidos = true,showProducts = !showProducts" id="pos">
                     <i class="fa fa-ticket" aria-hidden="true"></i>
                     <strong>{{ Pedido.number }}</strong>
-                    <span>Pedido</span>
+                    <span>{{$t('words.order')}}</span>
                 </div>
             </div>
         </button>
@@ -41,7 +41,7 @@
             <img :src="image.img"/>
             <div class="closePos">
                 <span>{{ $store.state.publico.user.surname }}</span>
-                <div @click="close">Sair <i class="fa fa-sign-out"></i></div>
+                <div @click="close">{{$t('words.goOut')}} <i class="fa fa-sign-out"></i></div>
             </div>
         </button>
       </div>
@@ -258,7 +258,7 @@ const tipo = (event) => {
 
 const OnMounted = onMounted(async () => {
     await getImage();
-    await axios.get("/PDV/menuPos").then((Response) => {
+    await axios.get(`/PDV/menuPos/${localStorage.getItem('locale') || 'en'}`).then((Response) => {
         method.value = Response.data.methods;
         Pedido.value.user = store.state.publico.user;
     });

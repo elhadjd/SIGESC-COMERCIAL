@@ -1,4 +1,4 @@
-import { computed } from "vue"
+import { computed, ref } from "vue"
 import { ProductsServices } from "../productsServices"
 import { ProductServices } from "./productServices"
 import { useStore } from "vuex"
@@ -15,7 +15,10 @@ export const ButtonsServices = (emits)=>{
     const {createProduct,showProduct} = ProductsServices()
     const store = useStore()
     const product = computed(()=> store.getters['Product/product'])
-    const {t} = useI18n()
+    const loading = ref<number>(10)
+    const {t,locale} = useI18n()
+    console.log(locale.value);
+
     const {
         submit,
     } = ProductServices(emits)
@@ -23,14 +26,22 @@ export const ButtonsServices = (emits)=>{
         {
             name: t('words.new') + ' ' + t('words.article'),
             className: '',
-            ClickFunction: (async()=> await createProduct()),
+            ClickFunction: (async()=> {
+                loading.value = 1
+                await createProduct()
+                loading.value = 10
+            }),
             type: 'button',
             condition: false
         },
         {
             name: t('words.save'),
             className: '',
-            ClickFunction: async()=> await submit(),
+            ClickFunction: async()=>{
+                loading.value = 1
+                await submit()
+                loading.value = 10
+            } ,
             type: 'submit',
             condition: product.value.data.estado == 'active' ? true: false
         },
@@ -46,5 +57,5 @@ export const ButtonsServices = (emits)=>{
         showProduct(false)
         emits('closeForm')
     })
-    return {buttonsData}
+    return {buttonsData,loading}
 }

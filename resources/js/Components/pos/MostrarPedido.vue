@@ -18,9 +18,9 @@
 
             <div class="Total">
                 <div class="title">
-                    <div>Toatal</div>
-                    <div v-for="method in data.payments" :key="method.id">{{method.method.name}}</div>
-                    <div>Troco</div>
+                    <div>{{$t('words.total')}}</div>
+                    <div v-for="method in data.payments" :key="method.id">{{method.method.method_translate[0].translate}}</div>
+                    <div>{{$t('words.change')}}</div>
                 </div>
                 <div class="valores">
                     <div>{{formatMoney(data.total)}}</div>
@@ -31,7 +31,7 @@
         </div>
         <div class="Footer">
             <button class="PedirReembolso" @click="invoice.state = true">Pedir devolução</button>
-            <button @click="$emit('close')" class="Fechar">Fechar</button>
+            <button @click="$emit('close')" class="Fechar">{{$t('words.close')}}</button>
         </div>
     </div>
 

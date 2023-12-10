@@ -35,7 +35,7 @@ export default defineConfig({
         }),
         laravel({
             input: 'resources/js/app.js',
-            ssr: 'resources/js/ssr.js',
+            // ssr: 'resources/js/ssr.js',
             refresh: true,
         }),
         vue({

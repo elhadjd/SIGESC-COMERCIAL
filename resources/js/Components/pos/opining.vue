@@ -3,11 +3,11 @@
     <form @submit.prevent="opining">
         <div class="opining">
             <header>
-                <h3>Abertura de controlo da caixa</h3>
+                <h3>{{$t('phrases.opSessionContr')}}</h3>
             </header>
             <main>
                 <div>
-                    <label for="amount">Valor de abertura: </label>
+                    <label for="amount">{{$t('phrases.amountOpining')}}: </label>
                     <input type="text" v-model="form.amount" placeholder="1,02 AOA" id="amount" ref="inputRef">
                 </div>
                 <div>
@@ -15,7 +15,10 @@
                 </div>
             </main>
             <footer>
-                <button type="submit">Abrir</button>
+                <button type="button">
+                    <Link :href="route('pontodevenda')" class="sair">{{$t('words.close')}}</Link>
+                </button>
+                <button type="submit">{{$t('words.open')}}</button>
             </footer>
         </div>
     </form>
@@ -24,6 +27,7 @@
 
 <script setup>
 import axios from "axios";
+import { Link } from "@inertiajs/vue3"
 import { ref } from "vue";
 import { useCurrencyInput } from "vue-currency-input";
 const { inputRef } = useCurrencyInput({currency: 'AOA' })

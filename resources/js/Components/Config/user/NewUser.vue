@@ -5,12 +5,12 @@
    <div class="principal">
       <div class="Header">
          <div class="Header-left">
-            <h2 @click="$emit('ListUsers','users')">Usuario</h2>
+            <h2 class="cursor-pointer" @click="$emit('ListUsers','users')">{{$t('words.user')}}</h2>
             <div>
-               <button v-if="EstadoForm" @click="SaveUser">Guardar</button>
-               <button @click="EstadoForm = false" v-if="EstadoForm" class="Descartar">Descartar</button>
-               <button v-if="!EstadoForm" @click="EstadoForm = true">Editar</button>
-               <button @click="StateUpdatePwd = true" class="AtualizarSenha">Atualizar Senha</button>
+               <button v-if="EstadoForm" @click="SaveUser">{{$t('words.save')}}</button>
+               <button @click="EstadoForm = false" v-if="EstadoForm" class="Descartar">{{$t('words.close')}}</button>
+               <button v-if="!EstadoForm" @click="EstadoForm = true">{{$t('words.edit')}}</button>
+               <button @click="StateUpdatePwd = true" class="AtualizarSenha">{{$t('phrases.securityUpdate') }}</button>
             </div>
          </div>
          <div class="Header-right">
@@ -44,15 +44,15 @@
                                 <input :disabled="!EstadoForm" type="email" v-model="user.email" id="email"/>
                             </div>
                             <div class="form-Control">
-                                <label for="apelido">Apelido</label>
+                                <label for="apelido">{{$t('words.surname')}}</label>
                                 <input :disabled="!EstadoForm" type="text" v-model="user.surname" id="apelido"/>
                             </div>
                             <div class="form-Control">
-                                <label for="level">Nivel</label>
+                                <label for="level">{{$t('words.level')}}</label>
                                 <select :disabled="!EstadoForm" id="level" v-model="user.nivel">
                                     <option v-if="user.nivel == '' || user.nivel == null" value="">Seleciona o nivel de acesso</option>
-                                    <option :selected="user.nivel == 'admin'" value="admin">Administrador</option>
-                                    <option :selected="user.nivel == 'user'" value="user">Usuario</option>
+                                    <option :selected="user.nivel == 'admin'" value="admin">{{$t('words.admin')}}</option>
+                                    <option :selected="user.nivel == 'user'" value="user">{{$t('words.user')}}</option>
                                 </select>
                             </div>
                         </div>
@@ -61,11 +61,11 @@
                 <div class="ContainerFooter">
                     <div class="TituloFooter">
                         <span :class="step === 'password'?'active':''"
-                        @click="step = 'password'">Segurança</span>
+                        @click="step = 'password'">{{$t('words.security')}}</span>
                         <span :class="step === 'info'?'active':''"
-                        @click="step = 'info'">Informação do usuario</span>
+                        @click="step = 'info'">{{$t('phrases.userInfo')}}</span>
                         <span :class="step === 'config'?'active':''"
-                        @click="step = 'config'">Configuração</span>
+                        @click="step = 'config'">{{$t('words.definition')}}</span>
                     </div>
                     <div v-if="step == 'password'" class="DivSenha">
                         <div class="regras-senha">
@@ -77,11 +77,11 @@
                         </div>
                         <div>
                             <span>
-                                <label for="senha">Senha</label>
+                                <label for="senha">{{$t('login.password')}}</label>
                                 <input :disabled="!EstadoForm" v-model="senha.senha1" type="password" name="password" id="senha">
                             </span>
                             <span>
-                                <label for="senha1">Confima Senha</label>
+                                <label for="senha1">{{$t('phrases.confirmPassword')}}</label>
                                 <input :disabled="!EstadoForm" v-model="senha.senha2" type="password" name="password" id="senha1">
                             </span>
                         </div>
@@ -142,7 +142,6 @@ onMounted(async ()=>{
 
 function handleInputs(e) {
     user.value.perfil[e.target.id] = e.target.value
-    console.log(user.value);
 }
 
 function handleInputConfig(e) {

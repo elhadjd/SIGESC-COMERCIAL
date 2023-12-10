@@ -4,16 +4,16 @@
          <div class="Header-left">
             <span>
                <!-- <FontAwesomeIcon v-if="FormNewWorker.state" icon="fa-solid fa-outdent" /> -->
-               <h2>Relatorio</h2>
+               <h2>{{$t('words.report')}}</h2>
             </span>
          </div>
          <div class="Header-right">
             <span class="p-input-icon-right w-100">
                 <i class="pi pi-search" />
-                <input type="search" @keyup="(e)=>filterWorker(e.target.value)" placeholder="Digite nome do funcionario">
+                <input type="search" @keyup="(e)=>filterWorker(e.target.value)" :placeholder="$t('words.search')">
             </span>
             <section class="agrupar">
-                <span @click="data.date.state = !data.date.state" class="dropdown-toggle">Filtrar</span>
+                <span @click="data.date.state = !data.date.state" class="dropdown-toggle">{{$t('words.filter')}}</span>
                 <div>
                     <div v-if="data.date.state" class="listGroup">
                         <span v-for="item in months" @click="getSalaryByMonth(item.month)" :key="item">{{item.name}}</span>
@@ -27,44 +27,44 @@
             <span><img :src="`/worker/image/${worker.image}`" alt=""></span>
             <span>{{worker.name}}</span>
             <span>{{worker.cargo}}</span>
-            <span><strong>{{currencyFormat.format(worker.salary)}}</strong></span>
+            <span><strong>{{formatMoney(worker.salary)}}</strong></span>
             <span class="dailyExpense">
-               <h3>Dispesa diaria</h3>
+               <h3>{{$t('words.employeeObj.dialyExpen')}}</h3>
                <div :class="Number(worker.dailyExpense) > 0 ? 'existExpense':''">
-                  <strong>{{currencyFormat.format(worker.dailyExpense)}}</strong>
+                  <strong>{{formatMoney(worker.dailyExpense)}}</strong>
                   <FontAwesomeIcon icon="fa-solid fa-receipt" />
                </div>
             </span>
             <span class="discount">
                <div>
-                  <h3>Desconto</h3>
+                  <h3>{{$t('words.discount')}}</h3>
                   <FontAwesomeIcon icon="fa-solid fa-tags" />
                </div>
                <div :class="Number(worker.dailyExpense) > 0 ? 'existExpense':''" >
-                  <strong>{{currencyFormat.format(worker.totalDispenses)}}</strong>
+                  <strong>{{formatMoney(worker.totalDispenses)}}</strong>
                   <FontAwesomeIcon @mouseenter="drop = worker.id" icon="fa-solid fa-receipt" />
                   <div v-if="drop == worker.id" class="drop">
-                     <span @click="AddExpense(worker,'solicitar')">Adicionar</span>
-                     <span @click="AddExpense(worker,'show')">Folha de salario</span>
+                     <span @click="AddExpense(worker,'solicitar')">{{$t('words.added')}}</span>
+                     <span @click="AddExpense(worker,'show')">{{$t('words.reportSalary')}}</span>
                   </div>
                </div>
                <div :class="Number(worker.totalExpense) > 0 ? 'existDiscount':''" >
-                  <strong>{{currencyFormat.format(worker.totalExpense)}}</strong>
+                  <strong>{{formatMoney(worker.totalExpense)}}</strong>
                   <FontAwesomeIcon icon="fa-solid fa-arrow-down" />
                </div>
             </span>
             <span class="to-receive">
                <div :class="Number(worker.dailyExpense) > 0 ? 'existExpense':''">
                   <FontAwesomeIcon icon="fa-solid fa-tags" />
-                  <strong>{{currencyFormat.format(worker.totalDispenses)}}</strong>
+                  <strong>{{formatMoney(worker.totalDispenses)}}</strong>
                </div>
                <div :class="Number(worker.dailyExpense) > 0 ? 'existDiscount':''" >
                   <FontAwesomeIcon icon="fa-solid fa-arrow-down" />
-                  <strong>{{currencyFormat.format(worker.totalExpense)}}</strong>
+                  <strong>{{formatMoney(worker.totalExpense)}}</strong>
                </div>
                <div>
-                  <h3>A receber</h3>
-                  <strong>{{currencyFormat.format(worker.totalToReceive)}}</strong>
+                  <h3>{{$t('words.total')}}</h3>
+                  <strong>{{formatMoney(worker.totalToReceive)}}</strong>
                </div>
             </span>
          </div>

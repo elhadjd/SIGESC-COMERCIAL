@@ -15,11 +15,11 @@
                 <div class="buttons">
                     <div>
                         <div>
-                            <button @click="$emit('closePaymentForm')"><i class="fa fa-angle-double-left"></i> Cancelar</button>
+                            <button @click="$emit('closePaymentForm')"><i class="fa fa-angle-double-left"></i> {{$t('words.canceled')}}</button>
                         </div>
 
                         <div>
-                            <h2>Pagamento</h2>
+                            <h2>{{$t('words.payment')}}</h2>
                         </div>
 
                         <div>
@@ -37,7 +37,7 @@
                             :key="method"
                             @click="methods(method.name)"
                             >
-                                <strong>{{ method.name + " : " + formatMoney(method.valor) }}</strong>
+                                <strong>{{ method.method_translate[0].translate + " : " + formatMoney(method.valor) }}</strong>
                                 <strong class="ValorEntregue"></strong>
                             </div>
                         </div>
@@ -50,17 +50,17 @@
                                 <div class="CalculoTotal" v-else>
                                     <div class="TotalCompra">
                                         <h3 class="Restante">
-                                            <strong>Em falta : </strong>
+                                            <strong class="capitalize">{{$t('words.missing')}} : </strong>
                                             <span >{{formatMoney(RestoPagar)}}</span>
                                         </h3>
                                         <h5 class="div5">
-                                            <span>Toatal da compra</span>
+                                            <span>{{`${$t('words.total')}`}}</span>
                                             <span id="TotalCompra">: {{formatMoney(TotalEncomenda)}}</span>
                                         </h5>
                                     </div>
                                     <div class="troco">
                                         <span >
-                                            <strong>Troco : </strong>
+                                            <strong class="capitalize">{{$t('words.change')}} : </strong>
                                             <strong id="TrocoCliente">{{formatMoney(Troco)}} </strong>
                                         </span>
                                     </div>

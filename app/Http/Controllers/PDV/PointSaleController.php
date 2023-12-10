@@ -37,9 +37,11 @@ class PointSaleController extends Controller
         ]);
     }
 
-    public function getTypeOperation(operationCaixaType $operationCaixaType)
+    public function getTypeOperation(operationCaixaType $operationCaixaType,$locale)
     {
-        return $operationCaixaType::all();
+        return $operationCaixaType::with(['operationTranslate'=>function($translate) use ($locale){
+            $translate->where('local',$locale);
+        }])->get();
     }
 
     public function addOperation(Request $request)
@@ -52,11 +54,14 @@ class PointSaleController extends Controller
         }
     }
 
-    public function menuPos()
+    public function menuPos($locale)
     {
+        $methods = paymentMethod::with(['methodTranslate'=>function($translate) use ($locale){
+            $translate->where('local',$locale);
+        }])->get();
         return response()->json([
             'User' => Auth::user(),
-            'methods' => paymentMethod::all()
+            'methods' => $methods
         ]);
     }
 

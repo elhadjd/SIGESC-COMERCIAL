@@ -65,8 +65,8 @@
             </div>
          </div>
          <div class="Footer">
-            <button @click="$emit('close')" class="descartar">Fechar</button>
-            <button @click="exportToPDF">imprimir</button>
+            <button @click="$emit('close')" class="descartar">{{$t('words.close')}}</button>
+            <button @click="exportToPDF">{{$t('words.print')}}</button>
          </div>
       </div>
    </div>

@@ -262,7 +262,7 @@ class OrdersController extends Controller
         );
     }
 
-    public function getOrders($order=null, $column=null)
+    public function getOrders($locale,$order=null, $column=null)
     {
         if (Auth::user()->nivel != 'admin') {
             return false;
@@ -279,28 +279,49 @@ class OrdersController extends Controller
                     ->paginate(100);
             } else {
                 $orderPos = $order;
-                $orders = $this->getAllOrders($orderPos, $column);
+                $orders = $this->getAllOrders($locale,$orderPos, $column);
             }
 
             return $orders;
         }
     }
 
-    public function getOrderSingleUser($caixa)
+    public function getOrderSingleUser($locale,$caixa)
     {
-        return orderPos::where('session_id', $caixa)->with('session')->orderBy('id', 'ASC')->paginate(500);
+        return orderPos::where('session_id', $caixa)
+        ->with(['payments'=>function($payments) use ($locale){
+            $payments->with(['method'=>function($method) use ($locale){
+                $method->with(['methodTranslate'=>function($methodTranslate) use ($locale){
+                    $methodTranslate->where('local',$locale);
+                }]);
+            }]);
+        }])
+        ->with('session')->orderBy('id', 'ASC')->paginate(500);
     }
 
-    public function getAllOrders($order = null, $colun = null)
+    public function getAllOrders($locale,$order = null, $colun = null)
     {
         if ($order != '') {
             return orderPos::where($colun, 'LIKE', '%' . $order . '%')
             ->where('company_id',Auth::user()->company_id)
+            ->with(['payments'=>function($payments) use ($locale){
+                $payments->with(['method'=>function($method) use ($locale){
+                    $method->with(['methodTranslate'=>function($methodTranslate) use ($locale){
+                        $methodTranslate->where('local',$locale);
+                    }]);
+                }]);
+            }])
             ->orderBy('id', 'DESC')->with('session')->paginate(100);
         } else {
-
             return orderPos::with('session')->orderBy('id', 'DESC')
             ->where('company_id',Auth::user()->company_id)
+            ->with(['payments'=>function($payments) use ($locale){
+                $payments->with(['method'=>function($method) use ($locale){
+                    $method->with(['methodTranslate'=>function($methodTranslate) use ($locale){
+                        $methodTranslate->where('local',$locale);
+                    }]);
+                }]);
+            }])
             ->paginate(100);
         }
     }

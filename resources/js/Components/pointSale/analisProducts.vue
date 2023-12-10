@@ -22,7 +22,7 @@
           </span>
           <div class="Prints">
             <section class="agrupar">
-              <span @click="agroup.state = !agroup.state" class="dropdown-toggle">{{$t('words.groupe')}}</span>
+              <span @click="agroup.state = !agroup.state" class="dropdown-toggle">{{$t('words.group')}}</span>
               <div v-if="agroup.state">
                 <div class="listGroup">
                   <span @click="showAgroup('supplier')">{{$t('words.provider')}}</span>

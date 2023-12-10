@@ -25,7 +25,7 @@
                >
                {{title.label}}
             </div>
-            <div v-if="order.state =='Cotação' || stateFormOrder == 'Cotação'">Ação</div>
+            <div v-if="order.state =='Cotação' || stateFormOrder == 'Cotação'">{{$t('words.action')}}</div>
          </div>
          <div class="list-items">
             <div

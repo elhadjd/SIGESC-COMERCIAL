@@ -2,7 +2,7 @@
 <div class="mt-0" style="height:100vh;width: 100vw">
     <Toast/>
     <Headers @modulos="showModule" :menus="menus"/>
-    <div class="Container">
+    <div class="Containere">
         <products @message="message" v-if="modulo == 'Artigos'" />
         <new-order @fechar="modulo = 'Compras'" @message="message"
          v-if="modulo == 'compra'" :Purchase="Purchase"/>

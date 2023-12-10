@@ -6,29 +6,29 @@
                <FontAwesomeIcon icon="fa-solid fa-users"/>
                <div>
                   <span></span>
-                  <span>Produtos</span>
+                  <span>{{$t('words.article')}}</span>
                </div>
             </button>
          </div>
          <div class="Main">
             <div class="Name-Img-control">
                <div class="form-nome">
-                  <input type="text" v-model="form.name" placeholder="Nome do armagen">
+                  <input type="text" v-model="form.name" :placeholder="$t('words.store')">
                </div>
             </div>
             <div class="info-basic">
                <div class="form-content">
                   <div class="form-Control">
-                     <label for="city">Cidade:</label>
-                     <input type="text" v-model="form.city" placeholder="Informe a sua cidade" id="city">
+                     <label for="city">{{$t('words.city')}}:</label>
+                     <input type="text" v-model="form.city" :placeholder="$t('words.city')" id="city">
                   </div>
                   <div class="form-Control">
-                     <label for="bairo">Bairo:</label>
-                     <input type="text" v-model="form.neighborhood" placeholder="Informe o seu bairo" id="bairo">
+                     <label for="bairo">{{$t('words.neighborhood')}}:</label>
+                     <input type="text" v-model="form.neighborhood" :placeholder="$t('words.neighborhood')" id="bairo">
                   </div>
                   <div class="form-Control">
-                     <label for="numCasa">Numero de casa:</label>
-                     <input type="text" v-model="form.house_number" placeholder="Numero de casa" id="numCasa">
+                     <label for="numCasa">{{$t('words.houseNumber')}}:</label>
+                     <input type="text" v-model="form.house_number" :placeholder="$t('words.houseNumber')" id="numCasa">
                   </div>
                </div>
             </div>
@@ -95,9 +95,6 @@ const message = ((message,type)=>{
     background-color: #f9f9f9f9;
     width: 100% !important;
     height: 100% !important;
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
     overflow-y: auto;
     @include scroll;
     @include formulary

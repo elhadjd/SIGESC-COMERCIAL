@@ -2,13 +2,13 @@
    <div class="Principal">
       <div class="form-container">
          <div class="Header">
-            <button>Contactos</button>
+            <!-- <button>Contactos</button> -->
          </div>
          <div class="Main">
             <div class="Name-Img-control">
                <div class="form-nome">
-                  <input type="text" v-model="form.name" placeholder="Nome completo" id="name">
-                  <input type="text" v-model="form.cargo" placeholder="Cargo" id="cargo">
+                  <input type="text" v-model="form.name" :placeholder="$t('words.name')" id="name">
+                  <input type="text" v-model="form.cargo" :placeholder="$t('words.title')" id="cargo">
                </div>
                <div class="form-image">
                   <div>
@@ -30,7 +30,7 @@
                      <input type="email" name="email" id="email" v-model="form.email" >
                   </div>
                   <div class="form-Control">
-                     <label for="phone">Telefone: </label>
+                     <label for="phone">{{$t('words.phone')}}: </label>
                      <input type="text" name="phone" id="phone" v-model="form.phone" >
                   </div>
                   <div class="form-Control">
@@ -40,7 +40,7 @@
                </div>
                <div class="form-content">
                   <div class="form-Control">
-                     <label for="department">Dapartamento: </label>
+                     <label for="department">{{$t('words.department')}}: </label>
                      <input @click="DropShow('department')" type="text" name="department" id="department" :value="form.workers_department_id?.name" >
                      <div v-if="drop == 'department'" class="drop">
                         <span @click="selectDepartment(department)" v-for="department in departments" :key="department.id">
@@ -49,7 +49,7 @@
                      </div>
                   </div>
                   <div class="form-Control">
-                     <label for="manager">Gerente: </label>
+                     <label for="manager">{{$t('words.manager')}}: </label>
                      <input @click="DropShow('manager')" type="text" name="manager" id="manager" :value="form.manager?.surname" >
                      <div v-if="drop == 'manager'" class="drop">
                         <span @click="selectManager(manager)" v-for="manager in users" :key="manager.id">
@@ -58,7 +58,7 @@
                      </div>
                   </div>
                   <div class="form-Control">
-                     <label for="train">Trenador: </label>
+                     <label for="train">{{$t('words.trainer')}}: </label>
                      <input @click="DropShow('trainer')" type="text" name="train" id="train" :value="form.trainer?.surname" >
                      <div v-if="drop == 'trainer'" class="drop">
                         <span @click="selectTrainer(trainer)" v-for="trainer in users" :key="trainer.id">
@@ -69,12 +69,12 @@
                </div>
             </div>
             <div class="buttons">
-               <button>Atividades</button>
+               <button>{{$t('words.activity')}}</button>
             </div>
          </div>
          <div class="Footer">
             <div class="form-Control">
-               <label for="hour">Horario de trabalho: </label>
+               <label for="hour">{{$t('words.employeeObj.times')}}: </label>
                <input type="text" @click="DropShow('hours')" name="hour" id="hour" v-model="form.hourWork" >
                <div v-if="drop == 'hours'" class="drop">
                   <span @click="selectHours(hour)" v-for="hour,index in hours" :key="index">
@@ -83,16 +83,16 @@
                </div>
             </div>
             <div class="form-Control">
-               <label for="salary">Salario: </label>
+               <label for="salary">{{$t('words.salary')}}: </label>
                <input name="salary" id="salary" :type="type" :value="numberStr"
                @input="onInput" @blur="onBlur" @focus="onFocus">
             </div>
             <div class="form-Control">
-               <label for="dailyExpense">Dispesa diaria: </label>
+               <label for="dailyExpense">{{$t('words.employeeObj.dialyExpen')}}: </label>
                <input name="dailyExpense" v-model="form.dailyExpense" id="dailyExpense" >
             </div>
             <div class="form-Control">
-               <label for="users_id">Usuario correspondente: </label>
+               <label for="users_id">{{$t('words.employeeObj.user')}}: </label>
                <input name="users_id"  @click="DropShow('users_id')" :value="form.user?.surname" id="users_id" >
                <div v-if="drop == 'users_id'" class="drop">
                   <span @click="selectUser(user)" v-for="user in users" :key="user.id">
@@ -144,8 +144,9 @@ const {getImage,RemoveImage} = getImages(image.value);
 
 onMounted(async()=>{
     await getImage();
+    const locale = localStorage.getItem('locale')
     store.state.StateProgress = true
-    axios.get('/config/getConfig')
+    axios.get(`/config/getConfig/${locale || 'en'}`)
     .then((response) => {
         users.value = response.data.users
         store.state.StateProgress = false

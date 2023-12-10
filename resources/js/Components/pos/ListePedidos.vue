@@ -5,22 +5,22 @@
     </TransitionGroup>
     <section class="Header">
         <div>
-            <button @click="$emit('NovoPedido')" class="NovoPedido">Nova encomenda</button>
-            <button @click="$emit('close')" class="Voltar">Voltar</button>
+            <button @click="$emit('NovoPedido')" class="NovoPedido">{{`${$t('words.new')} ${$t('words.order')}`}}</button>
+            <button @click="$emit('close')" class="Voltar">{{$t('words.close')}}</button>
         </div>
         <div>
-            <input type="text" @keyup="search" placeholder="Pesquisar...">
+            <input type="text" @keyup="search" :placeholder="$t('words.search')">
         </div>
     </section>
     <section class="Container">
         <div class="Titles">
-            <div>Data</div>
-            <div>Pedido</div>
-            <div>Cliente</div>
-            <div>Responsavel</div>
-            <div class="text-right">Total</div>
-            <div>Estado</div>
-            <div>Açoes</div>
+            <div>{{$t('words.date')}}</div>
+            <div>{{$t('words.order')}}</div>
+            <div>{{$t('words.client')}}</div>
+            <div>{{$t('words.user')}}</div>
+            <div class="text-right">{{$t('words.total')}}</div>
+            <div>{{$t('words.state')}}</div>
+            <div>{{$t('words.action')}}</div>
         </div>
         <div class="List">
             <div v-for="item in ListaOrdens.slice(0,100)" :key="item.id" @mouseover="ViewPedido(item.number)" class="Items" @click="viewOrder(item)" >
@@ -31,9 +31,10 @@
                 <div class="text-right">{{formatMoney(item.total)}}</div>
                 <div>{{item.state}}</div>
                 <div class="ViewPedido">
-                    <span v-if="item.state == 'Pago'" @click="edit(item)" class="edit">Editar</span>
+
+                    <span v-if="item.state == 'Pago'" @click="edit(item)" class="edit">{{$t('words.edit')}}</span>
                     <Transition>
-                        <span  @click="ShowList(item)" v-if="Mostra == item.number && item.state == 'Pago'">Mostrar</span>
+                        <span  @click="ShowList(item)" v-if="Mostra == item.number && item.state == 'Pago'">{{$t('words.show')}}</span>
                     </Transition>
                 </div>
             </div>
@@ -55,7 +56,6 @@ import moment from 'moment'
 import InvoiceCancel from './invoiceCancel.vue';
 import axios from "axios";
 const FormatarDineiro = Intl.NumberFormat('PT-AO',{style: 'currency',currency: 'AOA'})
-
 const props = defineProps({session: Number})
 const emits = defineEmits(['AlterarPedido','close']);
 const Encomendas = ref()
@@ -114,7 +114,7 @@ const edit = ((item)=>{
 })
 
 const OnMounted = onMounted(async() => {
-    await axios.get(`/PDV/getOrderSingleUser/${props.session}`)
+    await axios.get(`/PDV/getOrderSingleUser/${localStorage.getItem('locale') || 'en'}/${props.session}`)
     .then((response) => {
         ListaOrdens.value = response.data.data
         ordersStore.value = response.data.data

@@ -26,9 +26,9 @@
                     <div>Orden</div>
                     <div>fornecedor</div>
                     <div>Responsavel</div>
-                    <div>Data da encomenda</div>
-                    <div>Data de vencimento</div>
-                    <div class="text-right">Total de mercadoria</div>
+                    <div class=" truncate">Data da encomenda</div>
+                    <div class=" truncate">Data de vencimento</div>
+                    <div class="text-right truncate">Total de mercadoria</div>
                     <div class="text-right">Total da fatura</div>
                     <div>Resto a pagar</div>
                     <div>Estado da fatura</div>

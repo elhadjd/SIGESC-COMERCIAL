@@ -3,27 +3,27 @@
       <div class="Header">
          <div class="Header-left">
             <h2>
-               Configurações
+               {{$t('apps.configName')}}
             </h2>
          </div>
       </div>
-      <div class="Container">
+      <div class="Container space-y-1">
          <div class="CardApps">
             <div class="Apps">
                <div class="App" v-for="app in company?.license?.app_license" :key="app.id">
                   <div class="Imagem">
                      <img :src="'/app/image/'+app.apps.image" >
                   </div>
-                  <div class="AppName">
-                     {{app.apps.name}}
+                  <div class="AppName truncate">
+                     {{app.apps.app_translate[0].translate}}
                   </div>
                </div>
             </div>
             <div class="Footer">
-               <span class="TotalApps">
-               {{company.license?.app_license.length+' Modulos Instalados'}}
+               <span class="TotalApps normal-case">
+               {{company.license?.app_license.length+ ` ${$t('words.module')} ${$t('words.installed')}`}}
                </span>
-               <span class="AddApp">Adicionar Modulo</span>
+               <!-- <span class="AddApp">Adicionar Modulo</span> -->
             </div>
          </div>
          <div class="CardApps">
@@ -32,16 +32,16 @@
                   <div class="Imagem">
                      <img :src="'/login/image/'+user.image">
                   </div>
-                  <div class="AppName">
+                  <div class="AppName truncate">
                      {{user.surname}}
                   </div>
                </div>
             </div>
             <div class="Footer">
                <span class="TotalApps">
-               {{company.users?.length + ' Usuario Conectado'}}
+               {{company.users?.length + ` ${$t('words.user')} ${$t('words.connected')}`}}
                </span>
-               <span @click="$emit('modulos','users')" class="AddApp">Lista de Usuarios</span>
+               <span @click="$emit('modulos','users')" class="AddApp normal-case">{{` ${$t('words.list')} ${$t('words.of')}s ${$t('words.user')}`}}</span>
             </div>
          </div>
          <div class="CardApps">
@@ -99,7 +99,8 @@ async function expiration() {
     }, 1000);
 }
 const getConfig = async () => {
-     await axios.get('getConfig')
+    const locale = localStorage.getItem('locale');
+     await axios.get(`getConfig/${locale || 'en'}`)
     .then((response) => {
         company.value = response.data
     }).catch((err) => {

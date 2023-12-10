@@ -2,25 +2,25 @@
    <div class="principal">
       <div class="Header">
          <div class="Header-left">
-            <h2>Lista de Usuario</h2>
-            <button @click="CreateUser">Adicionar Usuario</button>
+            <h2>{{$t('words.user')}}s</h2>
+            <button @click="CreateUser">{{`${$t('words.added')} ${$t('words.user')}`}}</button>
          </div>
          <div class="Header-right">
             <span class="p-input-icon-right d-flex w-100">
                 <i class="pi pi-search" />
-                <input @keyup="Pesquisar" type="text" placeholder="Pesquisar..." class="Pesquisar"/>
+                <input @keyup="Pesquisar" type="text" :placeholder="$t('words.search')" class="Pesquisar"/>
             </span>
          </div>
       </div>
       <div class="Container">
          <div class="FormList">
             <div class="Titulos">
-               <strong>Imagem</strong>
+               <strong>{{$t('words.image')}}</strong>
                <strong>Email</strong>
-               <strong>Nome</strong>
-               <strong>Apelido</strong>
-               <strong>Nivel Acesso</strong>
-               <strong>Estado</strong>
+               <strong>{{$t('words.name')}}</strong>
+               <strong>{{$t('words.surname')}}</strong>
+               <strong>{{$t('words.level')}}</strong>
+               <strong>{{$t('words.state')}}</strong>
             </div>
             <div class="ListUsers">
                <div v-for="user in users" @click="ShowUserSingle(user)" :key="user.id" class="Users">
@@ -48,8 +48,9 @@ const users = ref([])
 
 const emits = defineEmits(['message','ShowSingleUser'])
 
-const Onmounted = onMounted(()=>{
-    axios.get('getConfig')
+const Onmounted = onMounted(async()=>{
+    const locale = localStorage.getItem('locale');
+    await axios.get(`getConfig/${locale || 'en'}`)
     .then((Response) => {
         StoreUsers.value = Response.data.users
         users.value = Response.data.users
@@ -84,7 +85,7 @@ const CreateUser = (()=>{
     }).catch((err) => {
         console.log();
     });
-    
+
 })
 
 const Pesquisar = ((event)=>{

@@ -5,7 +5,7 @@
             @keyup="cliente"
             type="text"
             name="NomeCliente"
-            placeholder="Pesqise pelo nome do cliente"
+            :placeholder="`${$t('words.name')} ${$t('words.of')} ${$t('words.client')}`"
             class="clientName" />
     </span>
 </template>

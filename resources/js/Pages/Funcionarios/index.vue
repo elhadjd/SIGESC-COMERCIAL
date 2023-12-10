@@ -4,9 +4,9 @@
     <div class="mt-0" style="height:100vh;width: 100vw">
         <Headers @modulos="modulos" :menus="menus"/>
         <div class="Containers">
-            <home v-if="modul == 'Funcionarios'" @message="message"/>
-            <salarySum v-if="modul == 'Relatório'" @message="message"/>
-            <department v-if="modul == 'Departamentos'" @message="message"/>
+            <home v-if="modul == $t('apps.employeeName')" @message="message"/>
+            <salarySum v-if="modul == $t('words.report')" @message="message"/>
+            <department v-if="modul == $t('words.department')" @message="message"/>
         </div>
     </div>
 </template>
@@ -22,13 +22,15 @@ import { useToast } from 'primevue/usetoast';
 import Progress from '../../components/confirmation/progress.vue'
 import Toast from 'primevue/toast'
 import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n'
+const {t} = useI18n()
 const store = useStore()
-const modul = ref('Funcionarios')
+const modul = ref(t('apps.employeeName'))
 const toast = useToast()
 const menus = ref([
-    {"menu": "Funcionarios"},
-    {"menu": "Departamentos"},
-    {"menu": "Relatório"},
+    {"menu": t('apps.employeeName')},
+    {"menu": t('words.department')},
+    {"menu": t('words.report')},
 ])
 
 const message = ((message,type)=>{

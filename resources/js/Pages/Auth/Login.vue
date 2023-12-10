@@ -42,7 +42,7 @@
                 </div>
                 <Link :href="route('startCompany')">{{$t('words.start')}} {{$t('words.one')}} {{$t('words.company')}}</Link>
                 <div class="relative w-full mt-3 flex justify-center selectLocale">
-                    <button type="button" @click="languages.state = !languages.state">Languages</button>
+                    <button type="button" @click="languages.state = !languages.state">{{form.locale.name || 'Languages'}}</button>
                     <div v-if="languages.state" class="drop w-full">
                         <span v-for="language,index in languages.data" @click="()=>selectLanguage(language)" :key="index">{{language.name}}</span>
                     </div>
@@ -60,7 +60,6 @@ import { onMounted, ref } from "@vue/runtime-core";
 import axios from 'axios';
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
-import { useCookies } from '@vueuse/integrations/useCookies'
 import { useI18n } from 'vue-i18n';
 const { t,te,tm,locale } = useI18n();
 
@@ -68,13 +67,13 @@ const form = useForm({
     email: null,
     password: null,
     path: window.location.pathname,
+    locale: []
 });
 const toast = useToast();
 const connection = ref({
   state: false,
 });
 
-const cookie = useCookies(['locale'])
 
 const languages = ref({
     state: false,
@@ -96,8 +95,8 @@ const languages = ref({
 
 const selectLanguage = ((language)=>{
     locale.value = language.local
-    localStorage.setItem('local',language.local)
-    cookie.set('locale',language.local)
+    form.locale = language
+    localStorage.setItem('locale',language.local)
     languages.value.state = false
 })
 
@@ -107,7 +106,7 @@ const submit = () => {
   } else if (form.password == null || form.password == '') {
     document.querySelector("#password").style.borderBottom = "1px solid red";
   } else {
-    form.post(`/auth/logar/${cookie.get('locale') || ''}`, {
+    form.post(`/auth/logar`, {
         onSuccess: (Response) => {
             toast.add({
                 severity: "error",

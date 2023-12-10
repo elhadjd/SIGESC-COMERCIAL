@@ -41,8 +41,7 @@
                             : 'day'
                     "
                     v-for="(dia, index) in Data.days"
-                    :key="index"
-                >
+                    :key="index">
                     <span>{{ dia }}</span>
                     <strong></strong>
                 </div>

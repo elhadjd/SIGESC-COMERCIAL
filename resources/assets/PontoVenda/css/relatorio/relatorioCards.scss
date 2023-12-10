@@ -37,7 +37,7 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.042);
     .Header-Cards{
-        height: 10%;
+        height: auto;
         background-color: white;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -47,11 +47,10 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
             padding: 3px;
             font: 10pt arial;
-            font-weight: 600;
+            font-weight: 500;
             p{
                 background-color: rgb(238, 170, 52);
                 color: white;

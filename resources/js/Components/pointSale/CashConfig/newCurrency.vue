@@ -2,7 +2,7 @@
   <div class="Principal">
     <div class="Modal">
         <div class="Header">
-            <h1>Moeda</h1>
+            <h1>{{$t('words.currency')}}</h1>
         </div>
         <div class="Container">
             <input type="text" v-model="currency.nome" placeholder="Exteção Exemplo AOA" >
@@ -15,8 +15,8 @@
             </div> -->
         </div>
         <div class="Footer">
-            <button @click="$emit('close')" class="Descartar">Fechar</button>
-            <button @click="SaveCurrency">Guardar</button>
+            <button @click="$emit('close')" class="Descartar">{{$t('words.close')}}</button>
+            <button @click="SaveCurrency">{{$t('words.save')}}</button>
         </div>
     </div>
   </div>

@@ -1,7 +1,7 @@
 <template>
     <div class="principal">
         <div class="Header">
-            <div class="Header-left"><h2 @click="$emit('fechar')">Ordens</h2></div>
+            <div class="Header-left"><h2 @click="$emit('fechar')">{{$t('words.order')}}</h2></div>
         </div>
         <div class="Container">
             <div class="d-flex bg-white botoes rounded-0">
@@ -17,10 +17,10 @@
                     <div class="mt-4 text-secondary">
                         <div class="d-flex">
                             <div class="font-weight-600 InformacoesEncomenda">
-                                <div>Ref da Orden</div>
-                                <div>Sessão</div>
-                                <div>Caixa</div>
-                                <div>Cliente</div>
+                                <div>Ref {{$t('words.order')}}</div>
+                                <div>{{$t('words.sessions')}}</div>
+                                <div>{{$t('words.box')}}</div>
+                                <div>{{$t('words.client')}}</div>
                             </div>
                             <div class="border ms-5 mt-1"></div>
                             <div class="Infos ms-4">
@@ -33,10 +33,10 @@
                     </div>
                     <div class="BorderBottom mt-3">
                         <div class="d-flex titloListPedidos text-secondary border-0 bg-light rounded-0" >
-                            <div class="w-25 boder-left">Artigos</div>
-                            <div class="boder-left text-end">Quantidade</div>
-                            <div class="boder-left text-end">Preço Unitario</div>
-                            <div class="boder-left text-end">Total</div>
+                            <div class="w-25 boder-left">{{$t('words.article')}}</div>
+                            <div class="boder-left text-end">{{$t('words.quantity')}}</div>
+                            <div class="boder-left text-end">{{$t('words.price')}}</div>
+                            <div class="boder-left text-end">{{$t('words.total')}}</div>
                         </div>
                         <div v-for="item in order.items" :key="item.id"
                             class="d-flex ListPedidos text-secondary">
@@ -51,17 +51,17 @@
                     <div class="w-100 form-control-sm text-secondary">
                         <div class="d-flex Totaless w-25">
                             <div class="TitleTotaies w-50">
-                                <div>Total :</div>
-                                <div v-for="item in order.payments" :key="item.id">{{item.method?.name}} :</div>
-                                <div>Troco :</div>
-                                <div>Margin :</div>
+                                <div>{{$t('words.total')}} :</div>
+                                <div v-for="item in order.payments" :key="item.id">{{item.method?.method_translate[0].translate}} :</div>
+                                <div>{{$t('words.change')}} :</div>
+                                <div>{{$t('words.profit')}} :</div>
                             </div>
                             <div class="Totaies w-50">
                                 <div>
                                     {{ formatMoney(order.total) }}
                                 </div>
                                 <div v-for="payment in order.payments" :key="payment.id">{{formatMoney(payment.amountPaid)}}</div>
-                                <div>{{change}}</div>
+                                <div>{{formatMoney(change)}}</div>
                                 <div>{{ formatMoney(order.total - order.total_costs ) }}</div>
                             </div>
                         </div>
@@ -103,7 +103,7 @@ const changes = (()=>{
     props.order.payments.forEach((amount)=>{
         amountPaid.value += Number(amount.amountPaid)
     })
-    change.value = formatMoney(Number(amountPaid.value) - Number(props.order.total))
+    change.value = Number(amountPaid.value) - Number(props.order.total)
 })
 
 const DevolverFatura = () => {

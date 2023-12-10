@@ -4,16 +4,16 @@
         <div class="Header-left">
             <span @click="FormNewWorker.state ? getWorkers() : ''" :class="FormNewWorker.state ? 'Voltar' : ''">
                 <FontAwesomeIcon v-if="FormNewWorker.state" icon="fa-solid fa-outdent" />
-                <h2>Funcionarios</h2>
+                <h2>{{$t('words.employee')}}</h2>
             </span>
             <span v-if="!FormNewWorker.state">
-                <button @click="NewWorker">Novo Funcionario</button>
+                <button @click="NewWorker">{{`${$t('words.new')} ${$t('words.employee')}`}}</button>
             </span>
             <span v-else>
 
                 <button @click="SaveWorker">
                     <FontAwesomeIcon icon="fa-solid fa-floppy-disk" />
-                    Guardar
+                    {{$t('words.save')}}
                 </button>
             </span>
         </div>
@@ -21,7 +21,7 @@
         <div class="Header-right">
             <span v-if="!FormNewWorker.state" class="p-input-icon-right w-100">
                 <i class="pi pi-search" />
-                <input type="search" @keydown="(e)=>filterWorker(e.target.value)" placeholder="Digite nome do funcionario">
+                <input type="search" @keydown="(e)=>filterWorker(e.target.value)" :placeholder="$t('words.search')">
             </span>
         </div>
     </div>
@@ -31,7 +31,7 @@
             <div class="Types-content">
                 <div class="department">
                     <img src="/app/image/funcionarios.png" alt="">
-                    <h3>DEPARTAMENTO</h3>
+                    <h3>{{$t('words.department')}}</h3>
                 </div>
                 <div class="list-department">
                     <div v-for="department in workers.departments" :key="department.id" @click="filterWorker(String(department.id))">

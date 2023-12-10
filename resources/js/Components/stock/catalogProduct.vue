@@ -4,65 +4,67 @@
          <div class="Header-left">
             <span class="title">
                <h2>
-                  Catalogo dos produtos
+                  {{$t('words.catalog')}}
                </h2>
             </span>
          </div>
          <div class="Header-right">
             <span class="p-input-icon-right w-100">
             <i class="pi pi-search" />
-            <input type="search" @keyup="filterSearch((e)=>e.target.value)" class="search" placeholder="Digite nome ou preço do artigo">
+            <input type="search" @keyup="filterSearch((e)=>e.target.value)" class="search" :placeholder="$t('words.search')">
             </span>
-            <div class="filter-product">
+            <div class="filter-product flex space-x-2">
                <div class="filter">
-                  <span @click="dropdown.state == true ? dropdown.state = false :  dropdown.state = true" class="dropdown-toggle">Filtrar</span>
+                  <span @click="dropdown.state == true ? dropdown.state = false :  dropdown.state = true" class="dropdown-toggle">{{$t('words.filter')}}</span>
                   <div v-if="dropdown.state" class="drop">
-                     <span @click="filterSearch('stock_sum_quantity','>')" class="drop-item">Stock insuficiente</span>
-                     <span @click="filterSearch('stock_sum_quantity')" class="drop-item">Stock Disponivel</span>
-                     <span @click="filterSearch('quantidade')" class="drop-item">Produtos com desconto</span>
+                     <span @click="filterSearch('stock_sum_quantity','>')" class="drop-item">{{$t('words.stockObj.stockUnevailable')}}</span>
+                     <span @click="filterSearch('stock_sum_quantity')" class="drop-item">{{$t('words.stockObj.stockAvailable')}}</span>
+                     <span @click="filterSearch('quantidade')" class="drop-item">{{$t('words.stockObj.itemDiscount')}}</span>
                   </div>
                </div>
-               <button @click="exportToPDF">Imprimir</button>
+               <button @click="exportToPDF">{{$t('words.print')}}</button>
             </div>
          </div>
       </div>
       <div id="Container" class="Container">
-         <div class="Title-list">
-            <div class="title-item">Imagem</div>
-            <div class="title-item">Nome do produto</div>
-            <div class="title-item">
-               Preço Unitario
-               <span @click="Order('preçovenda')">
-                  <font-awesome-icon icon="fa-solid fa-up-long" />
-                  <font-awesome-icon icon="fa-solid fa-down-long" />
-               </span>
+        <div class="list">
+            <div class="Title">
+                <div class="title-item">{{$t('words.image')}}</div>
+                <div class="title-item">{{$t('words.name')}}</div>
+                <div class="title-item">
+                    {{$t('words.price')}}
+                    <span @click="Order('preçovenda')">
+                        <font-awesome-icon icon="fa-solid fa-up-long" />
+                        <font-awesome-icon icon="fa-solid fa-down-long" />
+                    </span>
+                </div>
+                <div class="title-item">{{$t('words.discount')}}</div>
+                <div class="title-item">{{`${$t('words.state')} ${$t('words.of')} stock`}}</div>
+                <div class="title-item">
+                    stock
+                    <span @click="Order('stock_sum_quantity')">
+                        <font-awesome-icon icon="fa-solid fa-up-long" />
+                        <font-awesome-icon icon="fa-solid fa-down-long" />
+                    </span>
+                </div>
+                <div class="title-item">{{$t('words.state')}}</div>
             </div>
-            <div class="title-item">Preço de disconto</div>
-            <div class="title-item">Estado do stock</div>
-            <div class="title-item">
-               stock
-               <span @click="Order('stock_sum_quantity')">
-                  <font-awesome-icon icon="fa-solid fa-up-long" />
-                  <font-awesome-icon icon="fa-solid fa-down-long" />
-               </span>
+            <div class="list_items">
+                <div v-for="product in products.list" :key="product.id" class="rows">
+                <div class="content-item">
+                    <img class="image-product" :src="'/produtos/image/'+product.image" alt="">
+                </div>
+                <div class="content-item">{{product.nome}}</div>
+                <div class="content-item currency">{{formatMoney(product.preçovenda)}}</div>
+                <div class="content-item currency">
+                    <i v-if="product.list_price.length <= 0 ">{{$t('words.stockObj.hasDiscount')}}</i>
+                </div>
+                <div :class="product.stock_sum_quantity > 0 ? 'available' : 'unavailable'" class="content-item currency">{{product.stock_sum_quantity > 0 ? "Stock disponivel" : "Stock não disponivel"}}</div>
+                <div :class="product.stock_sum_quantity > 0 ? 'available' : 'unavailable'" class="content-item currency">{{formatMoney(product.stock_sum_quantity)}}</div>
+                <div :class="product.estado == 'active' ? 'available' : 'unavailable'" class="content-item currency">{{product.estado == 0 ? "inactive" : 'Não disponivel'}}</div>
+                </div>
             </div>
-            <div class="title-item">Estado</div>
-         </div>
-         <div class="list_items">
-            <div v-for="product in products.list" :key="product.id" class="rows">
-               <div class="content-item">
-                  <img class="image-product" :src="'/produtos/image/'+product.image" alt="">
-               </div>
-               <div class="content-item">{{product.nome}}</div>
-               <div class="content-item currency">{{currencyFormat.format(product.preçovenda)}}</div>
-               <div class="content-item currency">
-                  <i v-if="product.list_price.length <= 0 "> Este produto não tem disconto</i>
-               </div>
-               <div :class="product.stock_sum_quantity > 0 ? 'available' : 'unavailable'" class="content-item currency">{{product.stock_sum_quantity > 0 ? "Stock disponivel" : "Stock não disponivel"}}</div>
-               <div :class="product.stock_sum_quantity > 0 ? 'available' : 'unavailable'" class="content-item currency">{{formatMoney(product.stock_sum_quantity)}}</div>
-               <div :class="product.estado == 'active' ? 'available' : 'unavailable'" class="content-item currency">{{product.estado == 0 ? "inactive" : 'Não disponivel'}}</div>
-            </div>
-         </div>
+        </div>
       </div>
    </div>
 </template>
@@ -164,6 +166,6 @@ const exportToPDF = (()=> {
 })
 </script>
 
-<style scoped>
-@import '../../../assets/stock/scss/catalogProduct.css';
+<style scoped lang="scss">
+@import '../../../assets/stock/scss/catalogProduct';
 </style>

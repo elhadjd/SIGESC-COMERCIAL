@@ -3,7 +3,7 @@
   <div class="Principal">
     <div class="Form">
         <div class="Header">
-            <h3>Informação do produto</h3>
+            <h3>{{`${$t('words.notice')} ${$t('words.of')} ${$t('words.article')}`}}</h3>
         </div>
         <div class="Container">
             <div class="Info-One">
@@ -25,9 +25,9 @@
                 <div class="Finanças">
                     <div class="Finanças-One">
                         <div>
-                            <span>Venda</span>
-                            <span>Custo</span>
-                            <span>Margin</span>
+                            <span>{{$t('words.sale')}}</span>
+                            <span>{{$t('words.cost')}}</span>
+                            <span>{{$t('words.profit')}}</span>
                         </div>
                         <div>
                             <span>{{formatMoney(dados.preçovenda)}}</span>
@@ -43,7 +43,7 @@
             <div class="Info-tree">
                 <div>
                     <div class="Title">
-                        <h4>Inventario</h4>
+                        <h4>{{$t('words.inventory')}}</h4>
                         <hr WIDTH=100%/>
                     </div>
                 </div>
@@ -58,12 +58,12 @@
             <div class="Info-for">
                 <div>
                     <div class="Title">
-                        <h4>Desconto</h4>
+                        <h4>{{$t('words.discount')}}</h4>
                         <hr WIDTH=100%/>
                     </div>
                 </div>
                 <div class="prices">
-                    <strong>Lista de preço</strong>
+                    <strong>{{$t('phrases.priceProduct')}}</strong>
                     <div v-for="item in dados.list_price" :key="item.id">
                         <span>{{"Na compra de >="+item.quantity+',00Unidade(s)'}}</span>
                         <span>{{formatMoney(item.price_discount)}}</span>
@@ -72,7 +72,7 @@
             </div>
         </div>
         <div class="Footer">
-            <button @click="$emit('CloseInfo')">Fechar</button>
+            <button @click="$emit('CloseInfo')">{{$t('words.close')}}</button>
         </div>
     </div>
   </div>

@@ -2,7 +2,7 @@
   <div class="principal">
     <div class="Modal">
       <div class="Header">
-        <h3>NOVO GASTO</h3>
+        <h3>{{`${$t('words.new')} ${$t('words.expenses')}`}}</h3>
       </div>
      <form @submit.prevent="SaveOperation">
       <div class="Container">
@@ -16,15 +16,15 @@
           </div>
 
           <div>
-            <input ref="inputRef" v-model="form.amount" type="text" placeholder="digita o valor a gastar" />
+            <input ref="inputRef" v-model="form.amount" type="text" :placeholder="$t('words.amount')" />
           </div>
         </div>
       </div>
 
       <div class="Footer">
         <div class="buttons">
-          <button @click="$emit('close')" class="Descartar">Fechar</button>
-          <button type="submit" class="save">Confirmar</button>
+          <button @click="$emit('close')" class="Descartar">{{$t('words.close')}}</button>
+          <button type="submit" class="save">{{$t('words.save')}}</button>
         </div>
       </div>
       </form>
@@ -78,7 +78,11 @@ onMounted(() => {
 <style lang="scss" scoped>
 .principal {
   @include modal;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   .Modal {
+    margin-top: 0px !important;
     border-radius: 6px;
     height: 300px !important;
         .Header {

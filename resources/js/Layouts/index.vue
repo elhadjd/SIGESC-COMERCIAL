@@ -1,6 +1,6 @@
 <template>
     <Link
-        :href="route(`dashboard`,[locale || 'en'])"
+        :href="route(`dashboard`)"
         @mouseenter="state = true"
         @mouseout="state = false"
         class="Container"
@@ -24,11 +24,13 @@
     </Link>
 </template>
 <script setup>
-import { ref } from "@vue/runtime-core";
+import { onMounted, ref } from "@vue/runtime-core";
 import { Link } from "@inertiajs/vue3";
 import { useI18n } from 'vue-i18n';
+import { useStore } from "vuex";
 const {locale} = useI18n()
 const state = ref(false);
+const store = useStore()
 
 </script>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Config\configController;
 use App\Http\Controllers\Controller;
 use Jenssegers\Agent\Agent;
 use App\Models\User;
@@ -54,17 +55,24 @@ class LoginController extends Controller
         }
     }
 
-    public function UrlGuard(Request $request,$locale = null)
+    public function UrlGuard(Request $request)
     {
         $rota = str_replace('/','',$request->path);
+        if ($request->locale) {
+            $insertLang = new configController;
+            $locale = [
+                'code'=>$request->locale['local'],
+                'language'=>$request->locale['name']
+            ];
+            $insertLang->insertLangUser(Auth::user(),$locale);
+        }
 
         if ($rota != "" && $rota != "authlogin") {
-            return Redirect::route($rota, [$locale == null? 'en' : $locale]);
+            return Redirect::route($rota);
         } else {
-            return to_route('dashboard',[$locale == null? 'en' : $locale]);
+            return to_route('dashboard');
         }
     }
-
 
     public function saveCompany(Request $request)
     {

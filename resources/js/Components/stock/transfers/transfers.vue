@@ -3,7 +3,7 @@
       <div class="Header">
          <div class="Header-left">
             <span>
-               <h2>Transferencias</h2>
+               <h2>{{$t('words.transfer')}}</h2>
             </span>
             <div class="buttons">
                <button @click="newTransfer">
@@ -14,7 +14,7 @@
          </div>
          <div class="Header-right">
             <span>
-                <input @keyup="(e)=>searchTransfer(e.target.value)" type="text" placeholder="pesquisar">
+                <input @keyup="(e)=>searchTransfer(e.target.value)" type="text" :placeholder="$t('words.search')">
             </span>
             <pagination v-if="loading != 'start'" @page="getPage" :object="transfers.list"/>
          </div>
@@ -22,12 +22,12 @@
       <div class="Container">
          <div class="list">
             <div class="Title">
-               <div>Numero de pedido</div>
-               <div>Responsavel</div>
-               <div>Armagen de destino</div>
-               <div>Data da transferencia</div>
-               <div>Total</div>
-               <div>Estado</div>
+               <div>{{$t('words.number')}}</div>
+               <div>{{$t('words.user')}}</div>
+               <div>{{$t('words.stockObj.storeDestination')}}</div>
+               <div>{{$t('words.date')}}</div>
+               <div>{{$t('words.total')}}</div>
+               <div>{{$t('words.state')}}</div>
             </div>
             <div class="list_items">
                <div @click="showTransfer(item)" v-for="item in transfers.list.data" :key="item.id" class="rows">

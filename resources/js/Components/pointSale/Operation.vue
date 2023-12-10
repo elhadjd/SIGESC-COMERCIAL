@@ -3,9 +3,9 @@
     <div class="Container">
       <div class="OrdenCima">
         <div class="GastosCimaEsquerda">
-          <h4>GASTOS</h4>
+          <h4>{{$t('words.expenses')}}</h4>
           <button @click="AddOperation" class="AdicionarGastos">
-            Adicionar
+            {{$t('words.added')}}
           </button>
         </div>
         <div class="GastosCimaDireita">
@@ -14,7 +14,7 @@
             <input
               type="text"
               name="PesquuisarGasto"
-              placeholder="Pesquisar por data , Exemplo(01-01-2001)"
+              :placeholder="`${$t('words.search')} ${$t('words.by')} ${$t('words.date')} Exemplo(01-01-2001)`"
               id="PesquuisarGasto"
               class="w-100 p-2 form-control"
             />
@@ -23,11 +23,11 @@
       </div>
       <div class="list-content">
         <div class="titleGastos">
-          <div>Id de muvemento</div>
-          <div>Assunto</div>
-          <div>Funcionario</div>
-          <div>Data</div>
-          <div class="TotalOrden">Total</div>
+          <div>Id {{`${$t('words.of')} ${$t('words.movement')}`}}</div>
+          <div>{{$t('words.subject')}}</div>
+          <div>{{$t('words.employee')}}</div>
+          <div>{{$t('words.date')}}</div>
+          <div class="TotalOrden">{{$t('words.total')}}</div>
         </div>
         <div class="ListaOrden">
           <div>

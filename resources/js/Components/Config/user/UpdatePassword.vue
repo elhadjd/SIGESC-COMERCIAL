@@ -6,17 +6,17 @@
          </div>
          <div class="Container">
             <div>
-               <label for="SenhaAtiga">Senha Atual</label>
+               <label for="SenhaAtiga">{{$t('login.password')}}</label>
                <input v-model="password.SenhaAtual" type="password" id="SenhaAtiga">
             </div>
             <div class="ms-2">
-               <label for="NovaSenha">Nova Senha</label>
+               <label for="NovaSenha">{{`${$t('words.new')} ${$t('login.password')}`}}</label>
                <input v-model="password.NovaSenha" type="password" id="NovaSenha">
             </div>
          </div>
          <div class="Footer">
-            <button @click="$emit('FecharModal')" class="Descartar">Fechar</button>
-            <button @click="Atualizar">Atualizar</button>
+            <button @click="$emit('FecharModal')" class="Descartar">{{$t('words.close')}}</button>
+            <button @click="Atualizar">{{$t('words.update')}}</button>
          </div>
       </div>
    </div>

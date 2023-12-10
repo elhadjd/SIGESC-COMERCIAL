@@ -5,7 +5,7 @@
             <div class="Header">
                 <div class="Header-left">
                     <span @click="$emit('closeModal')" class="Voltar">
-                        <h2>Fechar</h2>
+                        <h2>{{$t('words.close')}}</h2>
                     </span>
                 </div>
                 <div class="Header-right">
@@ -15,20 +15,20 @@
                     <span class="p-input-icon-right w-100">
                         <i class="pi pi-search" />
                         <input @keyup="search" type="search" name="pesqusar_prod" id="pesqusar_prod"
-                        placeholder="Digite id da orden">
+                        :placeholder="$t('words.search')">
                     </span>
                 </div>
             </div>
             <div class="Container">
                 <div class="Title">
-                    <div>Ref Da Orden</div>
-                    <div>Ponto De Venda</div>
-                    <div>Sessão</div>
-                    <div>Cliente</div>
-                    <div>Data</div>
-                    <div>Funcionario</div>
-                    <div class="TotalOrden">Total</div>
-                    <div class="px-3">Estado</div>
+                    <div>Ref {{$t('words.order')}}</div>
+                    <div>{{$t('apps.pdvName')}}</div>
+                    <div>{{$t('words.sessions')}}</div>
+                    <div>{{$t('words.client')}}</div>
+                    <div>{{$t('words.date')}}</div>
+                    <div>{{$t('words.employee')}}</div>
+                    <div class="TotalOrden">{{$t('words.total')}}</div>
+                    <div class="px-3">{{$t('words.state')}}</div>
                 </div>
                 <div class="list_items">
                     <div class="rows" @click="showOrder(order)" v-for="order in orders" :key="order.id">
@@ -57,7 +57,6 @@ import Encomendas from './orderItems.vue'
 const props = defineProps({
     idCaixa: String
 })
-
 const formatCurrency = Intl.NumberFormat('PT-AO',{style:"currency",currency: "AOA"})
 
 const orders = ref([])
@@ -75,7 +74,7 @@ const storeOrder = ref([])
 })
 
 const getOrderSingleUser = (()=>{
-    axios.get(`getOrderSingleUser/${props.idCaixa}`)
+    axios.get(`getOrderSingleUser/${localStorage.getItem('locale') || 'en'}/${props.idCaixa}`)
     .then((response) => {
         storeOrder.value = response.data.data
         orders.value = response.data.data

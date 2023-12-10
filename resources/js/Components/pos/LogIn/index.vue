@@ -9,11 +9,11 @@
 
         </div>
         <div class="Container">
-            <input @keypress.enter="Entrar" type="password" placeholder="Digite seu codigo secreto" v-model="EnviarCaixa.password">
+            <input @keypress.enter="Entrar" type="password" :placeholder="$t('login.password')" v-model="EnviarCaixa.password">
         </div>
         <div class="Footer">
-            <Link :href="route('pontodevenda')" class="sair">Voltar</Link>
-            <button class="entrar" @click="Entrar">Entrar</button>
+            <Link :href="route('pontodevenda')" class="sair">{{$t('words.close')}}</Link>
+            <button class="entrar" @click="Entrar">{{$t('words.enter')}}</button>
         </div>
     </div>
 </div>

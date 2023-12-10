@@ -13,14 +13,14 @@
         </div>
         <div class="Container">
             <div class="Title">
-                <div>Ref Da Orden</div>
-                <div>Ponto De Venda</div>
-                <div>Sessão</div>
-                <div>Cliente</div>
-                <div>Data</div>
-                <div>Funcionario</div>
-                <div class="TotalOrden">Total</div>
-                <div class="px-3">Estado</div>
+                <div>Ref {{$t('words.order')}}</div>
+                <div>{{$t('apps.pdvName')}}</div>
+                <div>{{$t('words.sessions')}}</div>
+                <div>{{$t('words.client')}}</div>
+                <div>{{$t('words.date')}}</div>
+                <div>{{$t('words.employee')}}</div>
+                <div class="TotalOrden">{{$t('words.total')}}</div>
+                <div class="px-3">{{$t('words.state')}}</div>
             </div>
             <div class="list_items">
                 <div v-for="order in ListOrders.slice(0, 100)"

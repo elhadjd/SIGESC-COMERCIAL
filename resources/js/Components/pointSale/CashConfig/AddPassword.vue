@@ -2,14 +2,14 @@
     <div class="principal-modal">
         <div class="Modal">
             <div class="Header">
-                <h1>Senha</h1>
+                <h1>{{$t('words.password')}}</h1>
             </div>
             <div class="Container">
                 <input type="password" v-model="senha" placeholder="Digite a senha">
             </div>
             <div class="Footer">
-                <button class="Descartar" @click="$emit('fecharModal')">Descartar</button>
-                <button @click="guardar">Guardar</button>
+                <button class="Descartar" @click="$emit('fecharModal')">{{$t('words.close')}}</button>
+                <button @click="guardar">{{$t('words.save')}}</button>
             </div>
         </div>
     </div>

@@ -8,7 +8,7 @@
             @mouseenter="$store.state.PesquisarProduto = '',AutoFocus()"
             ref="PesquisarProduto"
             name="PesquisarProduto"
-            placeholder="Pesquisar produto"
+            :placeholder="$t('words.search')"
             id="PesquisarProduto"
             class="w-100 p-0"/>
         </span>

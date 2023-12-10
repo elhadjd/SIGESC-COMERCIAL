@@ -9,15 +9,16 @@ use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-    public function Dashboard(Request $request,$local)
+    public function Dashboard(Request $request)
     {
+        $locale = $request->user()->userLanguage->code ? $request->user()->userLanguage->code : 'en';
         return Inertia::render('Dashboard/index',[
             'data' => $request->user()->company()
-            ->with(['license'=>function($license) use ($local){
-                $license->with(['app_license'=>function($app_license) use ($local){
-                    $app_license->with(['apps'=>function($apps) use ($local){
-                        $apps->with(['appTranslate'=>function($translate) use ($local){
-                            $translate->where('local',$local);
+            ->with(['license'=>function($license) use ($locale){
+                $license->with(['app_license'=>function($app_license) use ($locale){
+                    $app_license->with(['apps'=>function($apps) use ($locale){
+                        $apps->with(['appTranslate'=>function($translate) use ($locale){
+                            $translate->where('local',$locale);
                         }]);
                     }]);
                 }]);

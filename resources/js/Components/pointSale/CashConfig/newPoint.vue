@@ -3,12 +3,12 @@
     <ConfirmVue @descartou="SmsConfirm.state = false" :SmsConfirm="SmsConfirm.sms" @Confirme="deleteCash" v-if="SmsConfirm.state"/>
     <div class="Header">
         <div class="Header-left">
-            <h2>Nova caixa</h2>
+            <h2>{{`${$t('words.save')} ${$t('words.box')}`}} caixa</h2>
             <span>
-                <button @click="savePoint">Guardar</button>
-                <button class="botao_descartar" @click="$emit('close')">Fechar</button>
+                <button @click="savePoint">{{$t('words.save')}}</button>
+                <button class="botao_descartar" @click="$emit('close')">{{$t('words.close')}}</button>
                 <buttonVue :class="'botao_descartar'" @click="SmsConfirm.state = true">
-                    Eliminar
+                    {{$t('words.delete')}}
                     <font-awesome-icon icon="fa-solid fa-xmark" style="color: #881111;" />
                 </buttonVue>
             </span>
@@ -25,7 +25,7 @@
                 <div class="info-basic">
                     <div class="form-content">
                         <div class="form-Control">
-                            <label for="userRelation">Usuario relacionado:</label>
+                            <label for="userRelation">{{`${$t('words.user')} ${$t('words.related')}`}}:</label>
                             <button @click="openDrop('users')" id="userRelation">{{!pointSale.user ? 'Seleciona usuario' : pointSale.user.name}}</button>
                             <div v-if="stateDrop == 'users'" class="drop">
                                 <span v-for="user in company.users" :key="user.id" @click="selectUser(user)">{{user.name}}</span>
@@ -39,14 +39,14 @@
                     </div>
                 </div>
                 <div class="buttons">
-                    <button>Senha</button>
+                    <button>{{$t('login.password')}}</button>
                 </div>
             </div>
             <div class="Footer">
                 <div class="form-content">
                     <div class="form-Control">
-                        <label for="password">Senha:</label>
-                        <input type="password" v-model="pointSale.password" id="password" placeholder="Digita a sua senha">
+                        <label for="password">{{$t('login.password')}}:</label>
+                        <input type="password" v-model="pointSale.password" id="password" :placeholder="$t('login.password')">
                     </div>
                 </div>
             </div>

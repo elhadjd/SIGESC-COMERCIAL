@@ -2,36 +2,36 @@
     <div class="list">
         <div class="title" v-if="modalList">
             <span>Code</span>
-            <span>Nome</span>
-            <span class="text-end">Preço de Custo</span>
-            <span class="text-end">Preço de Venda</span>
-            <span class="text-end">Quantidade disponivel</span>
-            <strong>Quantidade Vendido</strong>
+            <span>{{$t('words.name')}}</span>
+            <span class="text-end">{{$t('words.cost')}}</span>
+            <span class="text-end">{{$t('words.price')}}</span>
+            <span class="text-end">{{$t('words.stockObj.qtdAvailable')}}</span>
+            <strong>{{$t('words.stockObj.qtdSold')}}</strong>
         </div>
         <div v-for="product in dados.products" :key="product.id" :class="!modalList?'Itemse':'item'">
             <span class="Items">{{product.id}}</span>
             <span class="Items">{{product.nome}}</span>
-            <span class="text-end Items" v-if="modalList">{{currencyFormat.format(product.preçocust)}}</span>
-            <span class="text-end Items" v-if="modalList">{{currencyFormat.format(product.preçovenda)}}</span>
+            <span class="text-end Items" v-if="modalList">{{formatMoney(product.preçocust)}}</span>
+            <span class="text-end Items" v-if="modalList">{{formatMoney(product.preçovenda)}}</span>
             <span class="text-end Items">{{product.stock_sum_quantity+",00Un(s)"}}</span>
             <strong class="Items">{{product.quantity+",00Un(s)"}}</strong>
         </div>
         <div  v-if="modalList" class="footer">
             <div>
-                <span>Total custo</span>
-                <strong>{{currencyFormat.format(totals.totalCost)}}</strong>
+                <span>{{$t('phrases.totalCost')}}</span>
+                <strong>{{formatMoney(totals.totalCost)}}</strong>
             </div>
             <div>
-                <span>Total de Venda</span>
-                <strong>{{currencyFormat.format(totals.totalSold)}}</strong>
+                <span>{{$t('phrases.totalSale')}}</span>
+                <strong>{{formatMoney(totals.totalSold)}}</strong>
             </div>
             <div>
-                <span>Total de Gastos</span>
-                <strong>{{currencyFormat.format(totals.totalSpent)}}</strong>
+                <span>{{$t('words.expenses')}}</span>
+                <strong>{{formatMoney(totals.totalSpent)}}</strong>
             </div>
             <div>
-                <span>Total de lucro</span>
-                <strong>{{currencyFormat.format(totals.totalProfit - totals.totalSpent)}}</strong>
+                <span>{{$t('phrases.totalProfit')}}</span>
+                <strong>{{formatMoney(totals.totalProfit - totals.totalSpent)}}</strong>
             </div>
         </div>
     </div>

@@ -3,15 +3,15 @@
       <div class="Header">
          <div class="Header-left">
             <div>
-               <h2>Empresa</h2>
+               <h2>{{$t('words.company')}}</h2>
             </div>
             <div>
                <button @click="saveCompany">
                   <FontAwesomeIcon icon="fa-solid fa-floppy-disk" />
-                  Guardar
+                  {{$t('words.save')}}
                   <FontAwesomeIcon v-if="progress" icon="fa-solid fa-spinner" shake />
                </button>
-               <button class="botao_descartar" @click="$emit('close')">Fechar</button>
+               <button class="botao_descartar" @click="$emit('close')">{{$t('words.close')}}</button>
             </div>
          </div>
       </div>
@@ -25,8 +25,8 @@
                <div class="Main">
                   <div class="Name-Img-control">
                      <div class="form-nome">
-                        <input type="text" id="name" v-model="company.name" placeholder="Nome de empresa" name="company-name">
-                        <input type="text" id="nif" v-model="company.nif" placeholder="Nif de empresa" name="nif-company">
+                        <input type="text" id="name" v-model="company.name" :placeholder="$t('phrases.companyName')" name="company-name normal-case">
+                        <input type="text" id="nif" v-model="company.nif" :placeholder="$t('phrases.nifCompany')" name="nif-company normal-case">
                      </div>
                      <div class="form-image">
                         <div>
@@ -48,11 +48,11 @@
                            <input type="email" v-model="company.email" name="email" id="email">
                         </div>
                         <div class="form-Control">
-                           <label for="phone">Telefone: </label>
+                           <label for="phone">{{$t('words.phone')}}: </label>
                            <input type="text" v-model="company.phone" name="phone" id="phone">
                         </div>
                         <div class="form-Control">
-                           <label for="manager">Gerente: </label>
+                           <label for="manager">{{$t('words.manager')}}: </label>
                            <button type="button" @click="DropShow('manager')" id="manager">{{company.manager?.name}}</button>
                            <div class="drop"  v-if="showDrop == 'manager'">
                               <span v-for="manager in managers" :key="manager.id" @click="selectManager(manager)">{{manager.surname}}</span>
@@ -61,15 +61,15 @@
                      </div>
                      <div class="form-content">
                         <div class="form-Control">
-                           <label for="city">Cidade: </label>
+                           <label for="city">{{$t('words.city')}}: </label>
                            <input type="text" v-model="company.city" name="city" id="city">
                         </div>
                         <div class="form-Control">
-                           <label for="cede">Cede: </label>
+                           <label for="cede">{{$t('words.neighborhood')}}: </label>
                            <input type="text" v-model="company.sede" name="cede" id="cede">
                         </div>
                         <div class="form-Control">
-                           <label for="NumHouse">Numero de casa: </label>
+                           <label for="NumHouse">{{$t('words.houseNumber')}}: </label>
                            <input type="text" v-model="company.house_number" name="NumHouse" id="NumHouse">
                         </div>
                      </div>
@@ -78,20 +78,20 @@
                <div class="Footer h-full flex flex-row">
                 <div class="form-content w-1/2">
                   <div class="form-Control">
-                     <label for="hour">Tipo de atividade comercial: </label>
+                     <label for="hour">{{$t('words.activityType')}}: </label>
                      <input type="text" disabled v-model="company.activity.name">
                   </div>
                   <div class="form-Control">
-                     <label for="location">Localisação: </label>
+                     <label for="location">{{$t('words.localisation')}}: </label>
                      <button type="button" @click="localisation">{{String(company.longitude)+String(company.latitude)}}</button>
                   </div>
                 </div>
                 <div class="form-content w-1/2">
                   <div class="form-Control">
-                    <label for="manager">Moeda: </label>
-                    <button type="button" @click="showDrop = 'currency'" id="currency">{{company.currency_company?.code||'Tipo de moeda'}}</button>
+                    <label for="manager">{{$t('words.currency')}}: </label>
+                    <button type="button" @click="showDrop = 'currency'" id="currency">{{company.currency_company?.code|| $t('words.currency')}}</button>
                     <div class="drop"  v-if="showDrop == 'currency'">
-                        <input type="text" @keyup="(e)=>SearchCurrency(e.target.value)" placeholder="Pesquisa a sua moeda aqui">
+                        <input type="text" @keyup="(e)=>SearchCurrency(e.target.value)" :placeholder="$t('words.search')">
                         <span v-for="currency in currencyAll" :key="currency.code" @click="changeCurrency(currency)">{{currency.currency}}</span>
                     </div>
                   </div>
@@ -154,7 +154,8 @@ const localisation = (()=>{
 })
 
 async function getUser() {
-    await axios.get('getConfig')
+    const locale = localStorage.getItem('locale');
+    await axios.get(`getConfig/${locale || 'en'}`)
     .then((response) => {
         filterUsersAdmin(response.data.users)
     }).catch((err) => {

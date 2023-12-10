@@ -3,11 +3,11 @@
         <Toast/>
         <Headers @modulos="modulos" :menus="menus"/>
         <div class="Container">
-            <products v-if="modul == 'Artigos'"/>
-            <index v-if="modul == 'Stock'"/>
-            <catalog-product v-if="modul == 'Catolologo'"/>
-            <store @message="message" v-if="modul == 'Armagens'"/>
-            <transfers  @message="message" @handleModule="modulos" v-if="modul == 'Transferencias'"/>
+            <products v-if="modul ==  $t('words.article')"/>
+            <index v-if="modul == $t('apps.stock')"/>
+            <catalog-product v-if="modul == $t('words.catalog')"/>
+            <store @message="message" v-if="modul == $t('words.store')"/>
+            <transfers  @message="message" @handleModule="modulos" v-if="modul == t('words.transfer')"/>
             <NewTransfer
                 @modulo="modulos"
                 :transfer="transfer"
@@ -29,20 +29,21 @@ import NewTransfer from '@/components/stock/transfers/index.vue';
 import Toast from 'primevue/toast'
 import { useToast } from 'primevue/usetoast';
 import transfers from '@/Components/stock/transfers/transfers.vue'
-const modul = ref("Stock")
+import { useI18n } from 'vue-i18n';
+const {t} = useI18n()
+const modul = ref(t('apps.stock'))
 const MostrarDrop = ref()
 const toast = useToast()
-
 const menus = ref([
-    {"menu": "Stock"},
-    {"menu":"Relatório",
+    {"menu": t('apps.stock')},
+    {"menu":t('words.report'),
         "subMenu": [
-            {"name":"Catolologo"},
-            {"name":"Transferencias"},
+            {"name":t('words.catalog')},
+            {"name":t('words.transfer')},
         ],
     },
-    {"menu": "Armagens"},
-    {"menu": "Artigos"},
+    {"menu": t('words.store')},
+    {"menu": t('words.article')},
 ])
 
 const transfer = ref([])

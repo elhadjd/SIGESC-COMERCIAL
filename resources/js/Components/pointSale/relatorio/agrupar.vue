@@ -3,7 +3,7 @@
         <div class=" mt-1">
             <button @click="AbrirForm">
                 <i class="fa fa-bars"></i>
-                <span>Agrupar</span>
+                <span>{{$t('words.group')}}</span>
             </button>
         </div>
         <div v-if="EstadoForm" class="Form1 shadow-lg">

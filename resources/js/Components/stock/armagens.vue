@@ -3,22 +3,22 @@
       <div class="Header">
          <div class="Header-left">
             <span>
-               <h2>Armagens</h2>
+               <h2>{{$t('words.store')}}</h2>
             </span>
             <div class="buttons">
                <button @click="!formArmagen.state ? showFormArmagen([]): saveArmagen()" type="button">
                   <FontAwesomeIcon :icon="!formArmagen.state ? 'fa-solid fa-plus':'fa-solid fa-floppy-disk'"/>
-                  {{!formArmagen.state ? "Novo armagen": "Guardar"}}
+                  {{!formArmagen.state ? $t('words.new'): $t('words.save')}}
                </button>
                <button v-if="formArmagen.state" @click="formArmagen.state = false" type="button">
                   <font-awesome-icon icon="fa-solid fa-xmark" />
-                  Fechar
+                  {{$t('words.close')}}
                </button>
             </div>
          </div>
          <div class="Header-right">
             <span>
-            <input type="text" @keyup="search" placeholder="Pesquisar...">
+            <input type="text" @keyup="search" :placeholder="$t('words.search')">
             </span>
          </div>
       </div>
@@ -27,7 +27,7 @@
          <div v-if="!formArmagen.state" class="Main">
             <div v-for="armagen in formArmagen.armagens" :key="armagen.id" @click="showFormArmagen(armagen)" class="form-Content">
                <span>{{armagen.name}}</span>
-               <span>Quantidade em stock +(1.000.000)</span>
+               <span>stock +(1.000.000)</span>
             </div>
          </div>
          <NovoArmagen v-else @closeForm="OnMounted" @message="message" :armagen="formArmagen.armagen[0]"/>
@@ -86,5 +86,5 @@ const search = ((event)=>{
 </script>
 
 <style scoped lang="scss">
-@import '../../../assets/stock/scss/armagens.scss';
+@import '../../../assets/stock/scss/armagens';
 </style>

@@ -6,16 +6,16 @@
         </div>
         <div class="Header-right">
             <span>
-                <input type="text" @keyup="search" placeholder="Pesquisar...">
+                <input type="text" @keyup="search" :placeholder="$t('words.search')">
             </span>
         </div>
     </div>
     <div class="Container">
         <div class="Title">
-            <div>Data</div>
-            <div>Usuario</div>
+            <div>Date</div>
+            <div>User</div>
             <div>Adress IP</div>
-            <div>Navegador Usado</div>
+            <div>Browser used</div>
         </div>
         <div class="list_items">
             <div v-for="item in data.list" :key="item.id">

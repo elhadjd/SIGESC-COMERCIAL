@@ -35,9 +35,19 @@ class configController extends Controller
         return $company->HistoricLogin()->get();
     }
 
-    public function getConfig(Request $request)
+
+    public function getConfig(Request $request,$locale)
     {
-        return $request->user()->company()->first();
+        return $request->user()->company()
+            ->with(['license'=>function($license) use ($locale){
+                $license->with(['app_license'=>function($app_license) use ($locale){
+                    $app_license->with(['apps'=>function($apps) use ($locale){
+                        $apps->with(['appTranslate'=>function($translate) use ($locale){
+                            $translate->where('local',$locale);
+                        }]);
+                    }]);
+                }]);
+        }])->first();
     }
 
     public function registerActivity($body)
@@ -79,9 +89,13 @@ class configController extends Controller
         $user->perfil()->update($data['perfil']);
         $user->config()->update($data['config']);
         $user->fresh();
-        $user->userLanguage()->updateOrCreate(['user_id'=>$request->id],$data['user_language']);
+        $this->insertLangUser($user,$data['user_language']);
         $this->registerActivity("Atualizou dados do usuario $user->name");
         return $this->RespondSuccess('Usuario atualizado com success !!!',$user->fresh());
+    }
+
+    function insertLangUser($user,$data)  {
+        $user->userLanguage()->updateOrCreate(['user_id'=>$user->id],$data);
     }
 
     public function UpdatePassword(Request $request,User $user)

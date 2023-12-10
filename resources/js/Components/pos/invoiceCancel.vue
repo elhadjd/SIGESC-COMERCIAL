@@ -3,11 +3,11 @@
       <div class="Modal">
          <form @submit.prevent.stop="InvoiceCancelPassword">
             <div class="Header">
-               <h2>Usuario autorizado</h2>
+               <h2>{{$t('words.user')}}</h2>
             </div>
             <div class="Container">
                <select @change="selectUser" class="users">
-                  <option selected>Seleciona o usuario</option>
+                  <option selected>{{`${$t('words.select')} ${$t('words.user') }`}}</option>
                   <option
                      v-for="item in user.data"
                      :key="item.id"
@@ -21,8 +21,8 @@
                </div>
             </div>
             <div class="Footer">
-               <button class="Descartar" type="button" @click="$emit('close',false)">Fechar</button>
-               <button type="submit">Confirmar</button>
+               <button class="Descartar" type="button" @click="$emit('close',false)">{{$t('words.close')}}</button>
+               <button type="submit">{{$t('words.save')}}</button>
             </div>
          </form>
       </div>

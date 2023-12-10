@@ -31,9 +31,10 @@ class stockController extends Controller
 
     public function get(Request $request)
     {
-        return $request->user()->company()->with(['armagens' => function ($armagen) {
+        $stores = $this->companyUser()->with(['armagens' => function ($armagen) {
             $armagen->with('stock')->get();
         }])->whereId(Auth::user()->company_id)->first();
+        return $stores;
     }
 
     public function GetAgroup()
