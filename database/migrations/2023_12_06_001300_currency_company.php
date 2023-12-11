@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('currency_companies', function (Blueprint $table) {
+        Schema::create('currencyCompanies', function (Blueprint $table) {
             $table->id();
             $table->string('currency');
             $table->integer('digits');

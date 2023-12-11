@@ -26,8 +26,8 @@ return new class extends Migration
             $table->string('sede')->nullable();
             $table->string('house_number')->nullable();
             $table->string('country')->nullable();
-            $table->string('longitude')->default(null);
-            $table->string('latitude')->default(null);
+            $table->string('longitude')->nullable();
+            $table->string('latitude')->nullable();
             $table->unsignedBigInteger('manager')->nullable();
             $table->unsignedBigInteger('activity_type_id')->nullable();
             $table->timestamps();
