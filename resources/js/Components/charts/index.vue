@@ -3,7 +3,7 @@
       <div class="Header">
          <div class="Header-left">
             <span>
-               <h2>Relatorio</h2>
+               <h2>{{$t('words.report')}}</h2>
             </span>
             <span>
                <font-awesome-icon @click="changeChart('bar')" icon="fa-solid fa-chart-column"/>

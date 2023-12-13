@@ -2,14 +2,14 @@
    <div class="Principal">
       <div class="Modal">
          <div class="Header">
-            <h2>Pagamento</h2>
+            <h2>{{$t('words.payment')}}</h2>
          </div>
          <form @submit.prevent="ConfirmPayment">
             <div class="Container">
                <div class="MethodosPagamento">
                   <div class="MethodosPagamento-titulos">
-                     <span>Metódos</span>
-                     <span>Fornecedor</span>
+                     <span>{{$t('words.method')}}</span>
+                     <span>{{$t('words.provider')}}</span>
                   </div>
                   <div class="MethodosPagamento-container">
                      <input @click="methodPayment.state = !methodPayment.state" type="text" v-model="methodPayment.title"/>
@@ -18,13 +18,13 @@
                         {{method.name}}
                         </span>
                      </div>
-                     <input disabled type="text" placeholder="digita o cliente" :value="invoice.client?.surname">
+                     <input disabled type="text" :placeholder="$t('words.client')" :value="invoice.client?.surname">
                   </div>
                </div>
                <div class="ValorPagamento">
                   <div class="ValorPagamento-titulos">
-                     <span>Montante</span>
-                     <span>Data de Pagamento</span>
+                     <span>{{$t('words.amount')}}</span>
+                     <span>{{$t('words.date')}}</span>
                   </div>
                   <div class="ValorPagamento-container">
                      <input placeholder="digita o metódo"
@@ -38,8 +38,8 @@
                </div>
             </div>
             <div class="Footer">
-               <button @click="$emit('close')" type="button" class="cancelar">Fechar</button>
-               <button type="submit">Salvar</button>
+               <button @click="$emit('close')" type="button" class="cancelar">{{$t('words.close')}}</button>
+               <button type="submit">{{$t('words.save')}}</button>
             </div>
          </form>
       </div>

@@ -69,11 +69,11 @@ class faturacaoController extends Controller
 
     public function AddItem(produtos $product, $invoice)
     {
-        if (!$this->checkQuantity($product)) return $this->RespondError('Este produto não tem quantidade suficiente em stock');
+        if (!$this->checkQuantity($product)) return $this->RespondError(__('This product does not have sufficient quantity in stock'));
         $result  = InvoiceItem::where('invoice_id', $invoice)
             ->where('produtos_id', $product->id)->exists();
 
-        if ($result) return $this->RespondError('Este produto já foi Adicionada nessa encomenda');
+        if ($result) return $this->RespondError(__('This product has already been added to this order.'));
 
         InvoiceItem::create([
             'invoice_id' => $invoice,
@@ -160,9 +160,9 @@ class faturacaoController extends Controller
         ];
 
         $items = $invoice->load('items');
-        if ($type == 'cancel' && $items->state == 'Anulado') return $this->RespondError('Esta fatura ja esta anulada',$items);
-        if ($type == 'cancel' && $items->state == 'Cotação') return $this->RespondInfo('Não é posivel anular uma ordem não confirmado',$items);
-        if ($items->items->count() <= 0) return $this->RespondInfo('É preciso adicionar no minimo um produto na fatura',$items);
+        if ($type == 'cancel' && $items->state == 'Anulado') return $this->RespondError(__('This purchase has already been canceled.'),$items);
+        if ($type == 'cancel' && $items->state == 'Cotação') return $this->RespondInfo(__('It is not possible to cancel an unconfirmed order'),$items);
+        if ($items->items->count() <= 0) return $this->RespondInfo(__('You must add at least one product to the order'),$items);
         DB::transaction(function () use ($request, &$invoice, &$items,&$type, &$info,&$TransferController) {
             if ($type == 'save') {
                 foreach ($items->items as $item) {
@@ -231,7 +231,7 @@ class faturacaoController extends Controller
         $data['TotalPayments'] = $RestPayable;
         $invoice->payments()->create($data);
 
-        return $this->RespondSuccess('Pagamento efectuado com sucesso',$this->getInvoices($invoice->id));
+        return $this->RespondSuccess(__('Payment Successful'),$this->getInvoices($invoice->id));
     }
 
     public function getPayments(Invoice $invoice)

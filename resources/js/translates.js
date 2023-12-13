@@ -21,6 +21,9 @@ const messages = {
             company: 'Empresa',
             start: 'Iniciar',
             close: 'Fechar',
+            goBack: 'Voltar',
+            next: 'Avançar',
+            conclude: 'Concluir',
             end: 'Terminar',
             enter: 'Entrar',
             one: 'Uma',
@@ -80,6 +83,7 @@ const messages = {
             informed: 'Informado',
             payment: 'Pagamento',
             continue: 'Continuar',
+            toPay: 'a pagar',
             goOut: 'Sair',
             cancel: 'Cancelar',
             credit: 'Crédito',
@@ -99,33 +103,41 @@ const messages = {
             country: 'País',
             city: 'Cidade',
             road: 'Rua',
+            confirm: 'Confirmar',
             delete: 'Eliminar',
             archive: 'Arquivar',
+            license: 'licensa',
             purchase: 'Compra',
             merchandise: 'Mercadoria',
             department: 'Departamento',
             store: 'Armazém',
             responsible: 'Responsável',
             of: 'de',
+            method: 'Metodo',
             amount: 'montante',
+            subTotal: 'Sub total',
             calendar: 'calendario',
             related: 'relacionado',
             last: 'ultima',
             inventory: 'inventário',
+            join: 'Aderir',
             validate: 'validar',
             missing: 'em falta',
             edit: 'editar',
             show: 'mostrar',
             box: 'caixa',
+            lessEqual: 'menor egual',
             or: 'ou',
             type: 'tipo',
             sessions: 'Sesão',
+            activate: 'ativar',
+            message: 'mensagem',
             manager: 'Gerente',
             neighborhood: 'Bairo',
             houseNumber: 'Numero de casa',
             activityType: "Tipo de atividades",
             currency: 'Moeda',
-            localisation: 'Localisação da empresa',
+            localisation: 'Localisação',
             level: "Nivel de acesso",
             image: 'Imagem',
             security: 'Segurança',
@@ -133,12 +145,13 @@ const messages = {
             update: 'Atualizar',
             gender: 'Genero',
             birthday: 'Aniversario',
+            greaterEqual: 'maior egual',
             userConfig: {
                 print: 'Imprimir informação completa no PDV',
                 reprint: 'Reimprimir recibo PDV',
                 stockMovement: 'Pode fazer entrada de stock',
                 accesPrice: 'Acesso aos preços',
-                languase: 'Idioma'
+                language: 'Idioma'
             },
             catalog: 'Catalogo',
             trainer: 'Trenadore',
@@ -170,6 +183,9 @@ const messages = {
                 itemDiscount: 'Itens com desconto'
             },
         },
+        message: {
+            serverError: "Erro do servidor",
+        },
         pdv: {
             openingDate: 'Data de Abertura',
             closeDate: 'Data de Fechamento',
@@ -196,8 +212,10 @@ const messages = {
             nifCompany: "Numero de identificação fiscal",
             companyName: "Nome da empresa",
             userInfo: 'Informações do usuário',
-            confirmPassword: 'Confirme sua senha'
-
+            confirmPassword: 'Confirme sua senha',
+            orderDate: 'Data do pedido',
+            dueDate: 'Data de vencimento',
+            restToPay: 'Resto a pagar'
         },
         login: {
             title: 'Identifique-se',
@@ -237,6 +255,7 @@ const messages = {
             invoicing: 'Facturation'
         },
         words: {
+            method: 'Méthode',
             department: 'Département',
             connected: 'connecté',
             installed: 'installée',
@@ -264,16 +283,23 @@ const messages = {
             output: 'Sortie',
             price: 'Prix',
             action: 'Action',
+            goBack: 'Retourner',
+            next: 'Avance',
+            conclude: 'Conclure',
             section: 'Section',
             number: 'Numéro',
             state: 'État',
             result: 'Résultat',
             client: 'Client',
             employee: 'Employé',
+            greaterEqual: 'supérieur égal',
+            lessEqual: 'moins égal',
             total: 'Total',
+            toPay: 'a payé',
             group: 'Groupe',
             filter: 'Filtrer',
             change: 'Changer',
+            subTotal: 'Sus-total',
             cash: 'Espèces',
             quantity: 'Quantité',
             requested: 'Demandée',
@@ -288,6 +314,7 @@ const messages = {
             added: 'Ajouté',
             expenses: 'Dépenses',
             print: 'Imprimer',
+            activate: 'activé',
             cost: 'Coût',
             profit: 'Profit',
             select: 'Sélectionner',
@@ -305,6 +332,7 @@ const messages = {
             informed: 'Informé',
             payment: 'Paiement',
             continue: 'Continuer',
+            join: 'Rejoins',
             goOut: 'Sortir',
             cancel: 'Annuler',
             credit: 'Crédit',
@@ -351,19 +379,22 @@ const messages = {
             houseNumber: 'Numéro de maison',
             activityType: "type d'activité",
             currency: 'Devise',
-            localisation: 'Emplacement de la société',
+            localisation: 'Emplacement',
+            license: 'license',
             level: "niveau d'accès",
             image: 'Image',
             security: 'Sécurité',
             definition: 'Définitions',
             gender: 'Genre',
             birthday: 'Anniversaire',
+            message: 'message',
+            confirm: 'Confirmer',
             userConfig: {
                 print: 'Imprimer des informations complètes sur le PDV',
                 reprint: 'Réimprimer le reçu du PDV',
                 stockMovement: 'Peut effectuer une entrée de stock',
                 accesPrice: 'Accès aux prix',
-                languase: 'Langue'
+                language: 'Langue'
             },
             catalog: 'Catalogue',
             reportSalary:'Feuille de paiement',
@@ -396,6 +427,9 @@ const messages = {
             }
 
         },
+        message: {
+            serverError: "Une erreur du serveur s'est produite",
+        },
         pdv: {
             openingDate: 'Date d\'ouverture',
             closeDate: 'Date de fermeture',
@@ -423,7 +457,9 @@ const messages = {
             companyName: "Nom de l'entreprise",
             userInfo: "Informations d'utilisateur",
             confirmPassword: 'Confirmer votre mot de passe',
-
+            orderDate: 'Date de commande',
+            dueDate: "Date d'échéance",
+            restToPay: 'Reste à payer'
         },
         login: {
             title: 'Identifiez-vous',
@@ -440,10 +476,6 @@ const messages = {
                 {
                     title: 'Gestion Simplifiée des Achats',
                     description: 'Optimisez votre processus d\'achat avec notre module d\'achats.'
-                },
-                {
-                    title: 'Nouvelle Fonctionnalité',
-                    description: 'Explorez notre dernière fonctionnalité qui améliore l\'expérience utilisateur.'
                 },
                 {
                     title: 'Mise à Jour de Sécurité',
@@ -464,6 +496,7 @@ const messages = {
             invoicing: 'Invoicing',
         },
         words: {
+            subTotal: 'Sub total',
             department: 'Departmente',
             connected: 'connected',
             installed: 'installed',
@@ -493,11 +526,16 @@ const messages = {
             action: 'Action',
             section: 'Section',
             number: 'Number',
+            method: 'Method',
+            greaterEqual: 'greater equal',
+            lessEqual: 'less equal',
             state: 'State',
             result: 'Result',
             client: 'Client',
             employee: 'Employee',
             total: 'Total',
+            toPay: 'to pay',
+            join: 'Join',
             group: 'Group',
             filter: 'Filter',
             change: 'Change',
@@ -510,8 +548,13 @@ const messages = {
             name: 'Name',
             panel: 'Panel',
             movement: 'Movement',
+            activate: 'activate',
             subject: 'Subject',
+            license: 'license',
             date: 'Date',
+            goBack: 'Go back',
+            next: 'Next',
+            conclude: 'Conclude',
             added: 'Added',
             expenses: 'Expenses',
             print: 'Print',
@@ -562,6 +605,7 @@ const messages = {
             sessions: 'Sessions',
             definition: 'Definitions',
             reported: 'Reported',
+            message: 'message',
             of: 'of',
             tape: 'Tape',
             type: 'type',
@@ -587,18 +631,19 @@ const messages = {
             houseNumber: 'House number',
             activityType: "Type of activity",
             currency: 'Currency',
-            localisation: 'Company location ',
+            localisation: 'Location ',
             level: "Access level",
             image: 'Image',
             security: 'Security',
             gender: 'Gender',
             birthday: 'Birthday',
+            confirm: 'Confirm',
             userConfig: {
                 print: 'Print complete information at the Point of Sale',
                 reprint: 'Reprint Point of Sale receipt',
                 stockMovement: 'Can make stock entry',
                 accesPrice: 'Access to prices',
-                languase: 'Language'
+                language: 'Language'
             },
             catalog: 'Catalog',
             reportSalary:'Payment sheet',
@@ -630,6 +675,9 @@ const messages = {
                 itemDiscount: 'Discounted items'
             }
         },
+        message: {
+            serverError: "Une erreur du serveur s'est produite",
+        },
         pdv: {
             openingDate: 'Opening date',
             closeDate: 'Closing date',
@@ -656,7 +704,11 @@ const messages = {
             companyName: "Company name",
             nifCompany: 'Identification Number',
             userInfo: 'User informations',
-            confirmPassword: 'Confirm your password'
+            confirmPassword: 'Confirm your password',
+            orderDate: 'Order date',
+            dueDate: 'Due date',
+            restToPay: 'Rest to pay'
+
         },
         login: {
             title: 'Identify Yourself',

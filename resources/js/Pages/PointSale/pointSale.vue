@@ -146,7 +146,7 @@ const EmitsMenu = (event, OutroEvento) => {
 
 const CriarCaixa = () => {
     DadosCaixa.value = ''
-  modul.value = "NovaCaixa";
+    modul.value = t('words.new')+t('words.box');
 };
 
 const AbrirSessao = (payload) => {

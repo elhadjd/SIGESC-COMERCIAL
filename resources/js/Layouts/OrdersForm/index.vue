@@ -36,9 +36,9 @@
             </div>
             <div class="Formulario">
                 <div class="Form">
-                <div class="HeaderFatura">
+                <div class="HeaderFatura space-y-2">
                     <div class="NumeroOrdem">
-                        <strong>Orden / {{props.order.orderNumber}}</strong>
+                        <strong>{{$t('words.order')}} / {{props.order.orderNumber}}</strong>
                     </div>
                     <div class="Informacao">
                         <div>

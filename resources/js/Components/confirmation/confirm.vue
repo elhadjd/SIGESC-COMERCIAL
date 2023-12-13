@@ -2,10 +2,10 @@
   <div>
     <Modal :SmsConfirm="SmsConfirm" @Confirme="Arquivado" @descartou="StateModal = false" v-if="StateModal"/>
     <section class="agrupar">
-        <span @click="state = !state" class="dropdown-toggle w-20">Ação</span>
+        <span @click="state = !state" class="dropdown-toggle w-20">{{$t('words.action')}}</span>
         <div>
             <div v-if="state" class="listGroup">
-                <span @click="deleteProduct">Apagar</span>
+                <span @click="deleteProduct">{{$t('words.delete')}}</span>
             </div>
         </div>
     </section>

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('codego')->nullable();
             $table->integer('category_product_id')->nullable();
             $table->integer('product_type_id')->nullable();
-            $table->unsignedBigInteger('sub_category_id');
+            $table->unsignedBigInteger('sub_category_id')->nullable();
             $table->foreign('sub_category_id')->references('id')->on('sub_categories');
             $table->string('fabricante')->nullable();
             $table->float('preçocust')->default(0);

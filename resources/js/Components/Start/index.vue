@@ -7,9 +7,9 @@
             <h1><span>S</span>IGESC</h1>
         </header>
         <div class="buttons">
-            <button @click="stateForm = 'new'">Nova empresa</button>
-            <button @click="stateForm = 'payment'">Pagar licença</button>
-            <button @click="stateForm = 'license'">Ativar licença</button>
+            <button class="capitalize" @click="stateForm = 'new'">{{`${$t('words.new')} ${$t('words.company')}`}}</button>
+            <button class="capitalize" @click="stateForm = 'payment'">{{`${$t('words.pay')} ${$t('words.license')}`}}</button>
+            <button class="capitalize" @click="stateForm = 'license'">{{`${$t('words.activate')} ${$t('words.license')}`}}</button>
         </div>
         <div class="h-72 w-96 max-[600px]:w-96 max-[600px]h-64" v-if="stateForm == null">
             <iframe class="w-full h-full" src="https://www.youtube.com/embed/mIIWEDIv2Cg?si=MnaN85AEVHwAUeH9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -22,13 +22,13 @@
                     <input type="text" required v-model="license.nif" placeholder="Digita seu nif" id="nif">
                 </div>
                 <div class="Form-control">
-                    <label for="license">Licença:</label>
+                    <label for="license">{{$t('words.license')}}:</label>
                     <input type="text" required v-model="license.hash" placeholder="Digita sua licensa" id="license">
                 </div>
             </div>
             <div>
                 <button type="submit">
-                    Validar
+                    {{$t('words.valid')}}
                     <i v-if="license.state == 0" class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
                     <font-awesome-icon
                     :icon="`fa-solid ${license.state == 1 ? 'fa-check' : license.state == 2 ? 'fa-xmark': ''}`" />
@@ -49,7 +49,7 @@
             </div>
             <div>
                 <button @click="RequestAmount">
-                    Validar
+                    {{$t('words.valid')}}
                     <i v-if="accountClient.state" class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
                 </button>
             </div>
@@ -58,17 +58,17 @@
             <div class="Header">
                 <div>
                     <font-awesome-icon icon="fa-regular fa-building" />
-                    <span>Empresa</span>
+                    <span>{{$t('words.company')}}</span>
                     <div class="step"></div>
                 </div>
                 <div>
                     <font-awesome-icon icon="fa-regular fa-user" />
-                    <span>Perfil</span>
+                    <span>{{$t('words.user')}}</span>
                     <div :class="start.step > 0 ? 'step' : ''"></div>
                 </div>
                 <div>
                     <font-awesome-icon icon="fa-solid fa-certificate" />
-                    <span>License</span>
+                    <span>{{$t('words.license')}}</span>
                     <div :class="start.step > 1 ? 'step' : ''"></div>
                 </div>
             </div>
@@ -78,10 +78,10 @@
                 <License v-else/>
             </div>
             <div class="Footer">
-                <a href="#" @click="stateForm = null" class="text-blue-500 p-1 text-base font-base">ver o video</a>
-                <button type="button" v-if="start.step > 0" @click="back" class="Descartar">Voltar</button>
+                <a href="#" @click="stateForm = null" class="text-blue-500 p-1 text-base font-base">watch video</a>
+                <button type="button" v-if="start.step > 0" @click="back" class="Descartar">{{$t('words.goBack')}}</button>
                 <button type="submit"  :disabled="inSubmit.state">
-                    {{start.step > 1 ? 'Concluir' : 'Avançar'}}
+                    {{start.step > 1 ? $t('words.conclude') : $t('words.next')}}
                     <i v-if="inSubmit.state && start.step > 1" class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
                 </button>
             </div>
@@ -156,17 +156,23 @@ async function SaveCompany() {
     if (!response.data) return message(response.message,'error');
 }
 
-
+const locale = localStorage.getItem('locale')
 async function saveData(accounts = null) {
     store.state.Start.start.accounts = accounts
     inSubmit.state = true
-    await axios.post('/saveCompany',{...store.state.Start.start})
+    await axios.post(`/saveCompany/${locale || 'en'}`,{...store.state.Start.start})
     .then((Response) => {
-        message(Response.message,Response.data.type)
+        message(Response.data.message,Response.data.type)
         router.get(`/welcome/${Response.data.data.id}`)
     }).catch((err) => {
-        message(err.response.data.message,'warn')
-        console.log(err);
+        if(err.response.data.errors){
+            for (let propriety in err.response.data.errors) {
+                message(err.response.data.errors[propriety][0],'warn')
+            }
+        }else{
+            message(err.response.data.message,'warn')
+        }
+        console.log(err.response.data.errors);
     }).finally(()=>{
         inSubmit.state = false
     });
@@ -187,7 +193,6 @@ async function activeLicense() {
     axios.post('activeLicense',{...license.value})
     .then((response) => {
         license.value.state = 1
-        console.log(response.data);
         return message(response.data.message,response.data.type)
     }).catch((err) => {
         console.log(err);
@@ -201,7 +206,7 @@ const message = ((message , type)=>{
         severity: type,
         summary: 'Informação',
         detail: message,
-        life: 3000
+        life: 10000
     })
 })
 

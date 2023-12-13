@@ -47,17 +47,17 @@ class suppliersController extends Controller
 
         if($data['images']!= null) $data['image'] = $image->Upload('/supplier/image/',$request->images);
 
-        if ($supplier->update($data)) return $this->RespondSuccess('Sucesso',$this->relations($supplier));
+        if ($supplier->update($data)) return $this->RespondSuccess(__('Data updated successfully'),$this->relations($supplier));
 
-        return $this->RespondError('Erro ao salvar fornecedore');
+        return $this->RespondError(__('A server error occurred'));
     }
 
     public function deleteSupplier(fornecedore $supplier)
     {
         $relation = $this->relations($supplier);
 
-        if ($relation->products->count() >0 || $relation->orders->count() >0) return $this->RespondError('Não é posivel apagar este fornecedor');
-        if ($relation->delete()) return $this->RespondSuccess('Fornecedor eliminado com sucesso');
+        if ($relation->products->count() >0 || $relation->orders->count() >0) return $this->RespondError(__('It is not possible to delete this supplier'));
+        if ($relation->delete()) return $this->RespondSuccess(__('Item deleted successfully'));
     }
 
     public function delete()
@@ -69,7 +69,7 @@ class suppliersController extends Controller
     {
         $validate = DB::table('fornecedore_produtos')->where('produtos_id',$product->id)
         ->where('fornecedore_id',$supplier->id)->get();
-        if ($validate->count() > 0) return $this->RespondError('Este fornecedore já foi adicionado neste produto');
+        if ($validate->count() > 0) return $this->RespondError(__('This supplier has already been added to this article'));
         fornecedore_produtos::create([
             'produtos_id' => $product->id,
             'fornecedore_id' => $supplier->id

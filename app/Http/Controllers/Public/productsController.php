@@ -63,7 +63,7 @@ class productsController extends Controller
             return $this->show(produtos::find($product->id));
         }
 
-        return $this->RespondWarn('Usuario sem acesso !!!');
+        return $this->RespondWarn(__('User without access'));
     }
 
     public function registerActivity($body)
@@ -136,17 +136,17 @@ class productsController extends Controller
             }
             if ($product->update($data)) {
                 $this->registerActivity("Atualizou os dados do produto $product->nome");
-                return $this->RespondSuccess('Produto Atualizado com Sucesso',$product->fresh());
+                return $this->RespondSuccess(__('Data updated successfully'),$product->fresh());
             } else {
-                return $this->RespondError('Erro ao Adicionar o produto');
+                return $this->RespondError(__('A server error occurred'));
             }
         }else{
             if ($data['imagem'] != null) {
                 $product->image = $image->Upload("/produtos/image/", $data['imagem'], $product);
                 $product->save();
-                return $this->RespondSuccess('Imagem Atualizada com Sucesso',$product->fresh());
+                return $this->RespondSuccess(__('Data updated successfully'),$product->fresh());
             }else{
-                return $this->RespondWarn('Usuario sem acesso');
+                return $this->RespondWarn(__('User without access'));
             }
         }
     }
@@ -161,7 +161,7 @@ class productsController extends Controller
                 'category_product_id' => $create->id
             ]);
 
-            return $this->RespondSuccess('Categoria adicionada com successo',$create);
+            return $this->RespondSuccess(__('Category added successfully'),$create);
         }
     }
 
@@ -181,11 +181,11 @@ class productsController extends Controller
             'image' => 'required',
         ]);
         if (Auth::user()->nivel != 'admin') {
-            return $this->RespondInfo('Usuário sem acesso');
+            return $this->RespondInfo(__('User without access'));
         }
 
         $countImage = $product->catalogProduct->count();
-        if ($countImage>=5) return $this->RespondInfo('Um produto so pode ter no maximo 5 image !!!',$product->load('catalogProduct'));
+        if ($countImage>=5) return $this->RespondInfo(__('A product can only have a maximum of 5 images'),$product->load('catalogProduct'));
         $imageUploader = new UploadImageCatalog();
         $nameImage = $imageUploader->upload($product->id, $request->image);
 
@@ -202,7 +202,7 @@ class productsController extends Controller
     }
 
     public function deleteImageInCatalog(product_picture $image){
-        if (!$image) return $this->RespondError('Image ja não existe');
+        if (!$image) return $this->RespondError('unavailable');
         $product = produtos::find($image->product_id);
 
         $deleteFile = new DeleteFile();
@@ -221,20 +221,20 @@ class productsController extends Controller
         if ($connected){
             $verifyInfoModel = new verifyInfoModelsController();
             $check = $verifyInfoModel->checkInfoCompany($company);
-            if (!$check) return $this->RespondError('Por favor completa as estapas do formulario de empresa');
-            if (!$company->emailVerify()->first()) return $this->RespondError('Para publicar seus produtos online tensque verificar seu email. vai para modulo configuração clica no perfil de empresa em seguida clica em verificar email !!!');
+            if (!$check) return $this->RespondError(__('Please complete the steps in the company form'));
+            if (!$company->emailVerify()->first()) return $this->RespondError(__('To publish your products online you must verify your email. Go to the configuration module, click on the company profile, then click on verify email'));
 
             $checkProduct = $verifyInfoModel->checkProductInfo($product);
             if ($checkProduct) {
                 $countImage = $product->catalogProduct->count();
-                if($countImage<3) return  $this->RespondInfo('Por favor adiciona no minimo 3 fotografias do produto, de preferencia fundo branco e image bem limpa para melhor destaque do produto');
+                if($countImage<3) return  $this->RespondInfo(__('Please add at least 3 photographs of the product, preferably a white background and a very clean image to better highlight the product'));
                 $product->shop_online = true;
                 $product->save();
-                return $this->RespondSuccess('Seu produto ja esta disponivel na loja online',$product->fresh());
+                return $this->RespondSuccess(__('Your product is now available in the online store'),$product->fresh());
             }
-            return $this->RespondError('Por favor preenche os campos vazio e tenta novamente ');
+            return $this->RespondError(__('Please fill in the empty fields and try again'));
         }else{
-            return $this->RespondError('Parece que não tens internet ativo, por favor verifique e tenta novamente');
+            return $this->RespondError(__('It appears that you do not have active internet, please check and try again'));
         }
     }
 }

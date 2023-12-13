@@ -30,7 +30,7 @@ class ListPriceController extends Controller
         $lista_price = produtos::find($request->produtos_id);
 
         return $this->RespondSuccess(
-            'lista de preço criada com sucesso',
+            __('Operation completed successfully'),
             $lista_price
         );
     }
@@ -49,7 +49,7 @@ class ListPriceController extends Controller
        price_list::find($id)->delete();
 
         return $this->RespondSuccess(
-            'Produto eliminado com sucesso',
+            __('Item deleted successfully'),
             $product->refresh()
         );
     }

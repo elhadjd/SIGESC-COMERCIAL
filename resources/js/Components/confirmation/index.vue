@@ -2,14 +2,14 @@
   <div class="Principal">
     <div class="Modal">
         <div class="Header">
-            <strong>Confirmação</strong>
+            <strong>Confirmation</strong>
         </div>
         <div class="Container">
             {{'Deseja realmente '+message+' ?'}}
         </div>
         <div class="Footer">
-            <button @click.prevent.stop="$emit('Confirme',message,'confirmou')" type="button">Confirmar</button>
-            <button type="button" class="Descartar" @click="$emit('descartou')">Fechar</button>
+            <button @click.prevent.stop="$emit('Confirme',message,'confirmou')" type="button">{{$t('words.confirm')}}</button>
+            <button type="button" class="Descartar" @click="$emit('descartou')">{{$t('words.close')}}</button>
         </div>
     </div>
   </div>

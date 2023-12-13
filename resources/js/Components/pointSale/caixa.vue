@@ -23,9 +23,9 @@
         <button
           @click="updateSession"
           v-if="DadosCaixa.orders.state == 'Fechado'"
-          class="mx-1 botoesCaixa"
+          class="mx-1 botoesCaixa capitalize"
         >
-          Editar
+          {{$t('words.edit')}}
         </button>
       </div>
       <div class="FormCaixaCompleta">
@@ -38,7 +38,7 @@
                   <div class="text-center">
                     {{ formatMoney(item.operations_sum_amount) }}
                   </div>
-                  <div>{{item.operation_translate[0].translate}}</div>
+                  <div class="truncate">{{item.operation_translate[0].translate}}</div>
                 </div>
               </div>
               <div class="d-flex">
@@ -47,21 +47,21 @@
                   <div class="text-center">
                     {{ formatMoney(DadosCaixa.orders.cash)}}
                   </div>
-                  <div>Total {{$t('words.reported')}}</div>
+                  <div class="truncate">Total {{$t('words.reported')}}</div>
                 </div>
               </div>
               <div class="d-flex">
                 <cash class="mt-2" :size="25" />
                 <div class="TotalPorCima">
                   <div>{{ formatMoney(DadosCaixa.orders.cash - Number(DadosCaixa.orders.orders_values)) }}</div>
-                  <div>{{$t('words.difference')}}</div>
+                  <div class="truncate">{{$t('words.difference')}}</div>
                 </div>
               </div>
               <div class="d-flex">
                 <shopping class="mt-2" :size="25" />
                 <div class="TotalPorCima">
                   <div>{{ DadosCaixa.length }}</div>
-                  <div>{{$t('words.order') + 's'}}</div>
+                  <div class="truncate">{{$t('words.order') + 's'}}</div>
                 </div>
               </div>
               <div class="d-flex">
@@ -70,7 +70,7 @@
                   <div class="text-center">
                     {{ formatMoney(Number(DadosCaixa.orders.orders_sum_total) + operations.entrada + Number(DadosCaixa.orders.opening) - operations.saida - operations.gasto) }}
                   </div>
-                  <div>{{$t('words.payment') + 's'}}</div>
+                  <div class="truncate">{{$t('words.payment') + 's'}}</div>
                 </div>
               </div>
             </div>

@@ -4,18 +4,18 @@
             <div v-for="plan in plans" :key="plan.id" class="card">
                 <div>
                     <strong>{{plan.name}}</strong>
-                    <button type="button" @click="$emit('addPlan',plan)">Aderir</button>
+                    <button type="button" @click="$emit('addPlan',plan)">{{$t('words.join')}}</button>
                 </div>
                 <div>
                     <ul>
-                        <li>Preço: <strong>{{dineiro.format(plan.total)}}</strong></li>
-                        <li>Disconto: <strong>{{dineiro.format(plan.discount)}}</strong></li>
-                        <li>A pagar: <strong>{{dineiro.format(plan.total - plan.discount)}}</strong></li>
+                        <li>{{$t('words.price')}}: <strong>{{dineiro.format(plan.total)}}</strong></li>
+                        <li>{{$t('words.discount')}}: <strong>{{dineiro.format(plan.discount)}}</strong></li>
+                        <li>toPay: <strong>{{dineiro.format(plan.total - plan.discount)}}</strong></li>
                     </ul>
                 </div>
             </div>
         </div>
-        
+
     </div>
 </template>
 
@@ -55,7 +55,7 @@ const dineiro = Intl.NumberFormat("PT-AO", {
 <style lang="scss" scoped>
 @import '../../../../assets/Start/cards';
 .principal{
-    
+
     overflow-y: auto;
     @include scroll;
     .card{
@@ -85,7 +85,7 @@ const dineiro = Intl.NumberFormat("PT-AO", {
             }
         }
     }
-    
+
 }
 
 @media screen and (max-width: 450px) {

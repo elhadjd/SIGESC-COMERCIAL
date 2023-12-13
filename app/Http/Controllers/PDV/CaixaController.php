@@ -142,9 +142,9 @@ class CaixaController extends Controller
         $caixa->user_id = $request->user['id'];
         if ($request->password) $caixa->password = Hash::make($request->password);
 
-        if ($caixa->save()) return $this->RespondSuccess('Dados atualizado com sucesso');
+        if ($caixa->save()) return $this->RespondSuccess(__('Data updated successfully'));
 
-        return $this->RespondError('Erro ao atualizar os dados');
+        return $this->RespondError(__('Error occurs when updating data'));
         }
 
         caixa::create([
@@ -153,12 +153,12 @@ class CaixaController extends Controller
             'user_id'=>$request->user['id'],
             'company_id'=>$request->user['company_id'],
         ]);
-        return $this->RespondSuccess('Caixa adicionada com sucesso');
+        return $this->RespondSuccess(__('Data updated successfully'));
     }
 
     public function deleteCash(Request $request,caixa $caixa){
         $session = $caixa->session->count();
-        if ($session > 0) return $this->RespondError('Não é posivel eliminar esta caixa, pois ele posui um ou mais sesões');
+        if ($session > 0) return $this->RespondError(__('It is not possible to delete this point of sale, as it has one or more sections'));
 
         $caixa->delete();
 

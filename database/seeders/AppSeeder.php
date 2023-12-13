@@ -20,7 +20,6 @@ class AppSeeder extends Seeder
                 'href'=>'faturacao',
                 'image' => 'faturation.png',
             ],
-
             [
                 'name' => 'Definiçoes',
                 'company_id'=> '1',
@@ -37,13 +36,13 @@ class AppSeeder extends Seeder
                 'name' => 'Compras',
                 'company_id'=> '1',
                 'href'=>'compra',
-                'image' => 'purchur.jpg',
+                'image' => 'purchase.svg',
             ],
             [
                 'name' => 'Ponto de venda',
                 'company_id'=> '1',
                 'href'=>'pontodevenda',
-                'image' => 'point-of-sale.png',
+                'image' => 'pdv.svg',
             ],
             [
                 'name' => 'Gerenciamento de stock',

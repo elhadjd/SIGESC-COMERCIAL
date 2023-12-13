@@ -11,35 +11,35 @@
                 </div>
                 <div class="infoDelivery border border-gray-100 border-dashed flex-auto justify-star">
                     <div class="flex p-2 flex-row">
-                        <span class="flex w-1/3">Cidade:</span>
+                        <span class="flex w-1/3">{{$t('words.city')}}:</span>
                         <span class="flex-auto">{{delivery.city}} </span>
                     </div>
                     <div class="flex p-2 flex-row">
-                        <span class="flex w-1/3">Municipio:</span>
+                        <span class="flex w-1/3">{{$t('words.dueDate')}}:</span>
                         <span class="flex-auto">{{delivery.county}} </span>
                     </div>
                     <div class="flex p-2 flex-row">
-                        <span class="flex w-1/3">Bairo:</span>
+                        <span class="flex w-1/3">{{$t('words.neighborhood')}}:</span>
                         <span class="flex-auto">{{delivery.neighborhood}} </span>
                     </div>
                     <div class="flex p-2 flex-row">
-                        <span class="flex w-1/3">Rua:</span>
+                        <span class="flex w-1/3">{{$t('words.road')}}:</span>
                         <span class="flex-auto">{{delivery.road}} </span>
                     </div>
                     <div class="flex p-2 flex-row">
-                        <span class="flex w-1/3">Numero de casa:</span>
+                        <span class="flex w-1/3">{{$t('words.houseNumber')}}:</span>
                         <span class="flex-auto">{{delivery.housNumber}} </span>
                     </div>
                     <div class="flex p-2 flex-row">
-                        <span class="flex w-1/3">Nº de telefone:</span>
+                        <span class="flex w-1/3">Nº {{$t('words.phone')}}:</span>
                         <span class="flex-auto">{{client.phone}} </span>
                     </div>
                     <div class="flex p-2 flex-row">
-                        <span class="flex w-1/3">Escrito por cliente:</span>
+                        <span class="flex w-1/3">{{$t('words.message')}}:</span>
                         <span class="flex-auto">{{delivery.comment}} </span>
                     </div>
                     <div class="flex p-2 flex-row">
-                        <span class="flex w-1/3">Localisação:</span>
+                        <span class="flex w-1/3">{{$t('words.localisation')}}:</span>
                         <a href="#" @click="goToLocation" class="flex-auto">{{'clica aqui para ver a localisação na mapa'}} </a>
                     </div>
                 </div>

@@ -3,12 +3,12 @@
         <div class="">
             <button @click="AbrirForm">
                 <i class="fa fa-bars"></i>
-                <span>Agrupar</span>
+                <span>{{$t('words.group')}}</span>
             </button>
         </div>
         <div v-if="stateForm" class="Form1 shadow-lg">
             <div>
-                <div class="Opcoes" @click="option('users')">Vendedor</div>
+                <div class="Opcoes" @click="option('users')">{{$t('words.user')}}</div>
                 <div class="SubOpcao shadow-lg" v-if="opcaos == 'users'">
                     <label v-for="item in lists" :key="item.id">
                         <input type="radio" class="InputRadio" :id="item.id" :value="item.id" v-model="user" @click="Select(item.id,'user_id')"/>
@@ -17,15 +17,15 @@
                 </div>
             </div>
             <div>
-                <div class="Opcoes" @click="option('Estado')">Estado</div>
+                <div class="Opcoes" @click="option('Estado')">{{$t('words.state')}}</div>
                 <div v-if="opcaos == 'Estado'" class="SubOpcao shadow-lg">
                     <label for="Pago">
                         <input type="radio" class="InputRadio" id="Pago" value="Pago" v-model="state" @click="Select('Pago','state')"/>
-                        <span>Pago</span>
+                        <span>{{$t('words.pay')}}</span>
                     </label>
                     <label>
                         <input type="radio" class="InputRadio" id="Anulado" value="Anulado" v-model="state" @click="Select('Anulado','state')"/>
-                        <span for="Anulado">Anulado</span>
+                        <span for="Anulado">{{$t('words.annul')}}</span>
                     </label>
                 </div>
             </div>

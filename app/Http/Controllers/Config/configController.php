@@ -60,7 +60,8 @@ class configController extends Controller
     {
         $this->registerActivity('Criou um novo usuario');
         $user = $users->create([
-            'company_id'=>Auth::user()->company_id
+            'company_id'=>Auth::user()->company_id,
+            'image'=>'user-286.png'
         ]);
         $user->config()->create();
         $user->perfil()->create();

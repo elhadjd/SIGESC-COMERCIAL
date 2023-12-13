@@ -7,7 +7,6 @@ use App\Models\ItemOrder;
 use App\Models\movement_type;
 use App\Models\movement_type_produtos;
 use App\Models\orderPos;
-use App\Models\paymentMethod;
 use App\Models\paymentPDV;
 use App\Models\produtos;
 use App\Models\session;
@@ -25,7 +24,7 @@ class OrdersController extends Controller
         $methods = $request->methods;
         $session = session::find($request->session);
 
-        if ($session->state != "Aberto") return $this->RespondSuccess('Erro a sessão desta Caixa esta fechar ');
+        if ($session->state != "Aberto") return $this->RespondSuccess(__('Error, the session for this point of sale is closing'));
         if ($listItems != null) {
 
             $VerificarPagamento = $this->VerificarValorPago($methods, $listItems);
@@ -134,10 +133,10 @@ class OrdersController extends Controller
 
                 if ($idOrder > 0)  return $this->Invoice($idOrder);
             } else {
-                return $this->RespondError('Valor insuficiente');
+                return $this->RespondError(__('Insufficient value'));
             }
         } else {
-            return $this->RespondError('Erro nesta encomenda');
+            return $this->RespondError(__('Error occurs when updating data'));
         }
     }
 
@@ -194,7 +193,7 @@ class OrdersController extends Controller
 
     public function printInvoice(session $session,$type)
     {
-        if (!$session) return $this->RespondError('Aconteceu um erro no sistema');
+        if (!$session) return $this->RespondError(__('A server error occurred'));
         if ($type == 'last') {
             $order = $session->orders()->orderBy('id','DESC')->first();
             $order->print = +1;
@@ -202,10 +201,10 @@ class OrdersController extends Controller
             return $this->returnInvoice($order);
         }
 
-        if($type == null || $type == "") return $this->RespondError('O campo numero de fatura não pode ser vazio');
+        if($type == null || $type == "") return $this->RespondError(__('The invoice number field cannot be empty'));
 
         $order = orderPos::where('number',$type)->first();
-        if (!$order) return $this->RespondWarn('Nenhuma fatura encontrada com este numero por favor verifique e tenta novamente');
+        if (!$order) return $this->RespondWarn(__('No orders found with this number, please check and try again'));
         $order->print = +1;
         $order->save();
         return $this->returnInvoice($order);
@@ -223,7 +222,7 @@ class OrdersController extends Controller
     public function Invoice($order)
     {
         $order = orderPos::find($order);
-        if ($order->print > 0) return $this->RespondInfo('Atenção esta fatura ja foi imprimida por favor contacte o administrador do sistema !!!');
+        if ($order->print > 0) return $this->RespondInfo(__('Attention, this invoice has already been printed, please contact the system administrator'));
         $order->print = 1;
         $order->save();
         return $this->returnInvoice($order);
@@ -257,7 +256,7 @@ class OrdersController extends Controller
         });
 
         return $this->RespondSuccess(
-            'Fatura Anulada com Sucesso',
+            __('Order canceled successfully'),
             $order->load('session')
         );
     }

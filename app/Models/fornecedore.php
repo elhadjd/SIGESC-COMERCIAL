@@ -18,7 +18,8 @@ class fornecedore extends Model
         'name',
         'nif',
         'phone',
-        'sede'
+        'sede',
+        'city'
     ];
 
     public function products()

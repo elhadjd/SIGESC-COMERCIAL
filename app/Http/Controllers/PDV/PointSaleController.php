@@ -50,7 +50,7 @@ class PointSaleController extends Controller
         $data['user_id'] = Auth::user()->id;
         $data['company_id'] = Auth::user()->company_id;
         if (operation_caixa_type_session::create($data)) {
-            return $this->RespondSuccess('Success');
+            return $this->RespondSuccess(__('Operation completed successfully'));
         }
     }
 
@@ -69,9 +69,9 @@ class PointSaleController extends Controller
     {
         $session->load('caixa');
         if (Hash::check($request->password['password'], $session->caixa->password)) {
-            return $this->RespondSuccess('Logado');
+            return $this->RespondSuccess('connected');
         }
-        return $this->RespondError('Dados encorretos');
+        return $this->RespondError(__('data incorrect.'));
     }
 
     public function getUsersAuthorized()
@@ -92,7 +92,7 @@ class PointSaleController extends Controller
         $user = Password_Invoice_Cancel::where('user_id', $user)->first();
 
         if (!Hash::check($request->password, $user->password))
-            return $this->RespondError('Senha incorreta');
+            return $this->RespondError(__('data incorrect.'));
         $order = $invoice->with(['items' => function ($query) {
             $query->with(['product' => function ($product) {
                 $product->withSum('stock', 'quantity');

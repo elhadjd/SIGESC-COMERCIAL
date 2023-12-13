@@ -7,7 +7,7 @@
     <div class='container'>
         <div class="info">
             <div class='content'>
-                <div v-for="(infoItem, index) in $tm('login.info')" :key="index">
+                <div class="text-sm font-sm" v-for="(infoItem, index) in $tm('login.info')" :key="index">
                     <div><font-awesome-icon icon="fa-solid fa-circle-check" /></div>
                     <div>
                         <span>{{infoItem.title}}</span>
@@ -106,7 +106,7 @@ const submit = () => {
   } else if (form.password == null || form.password == '') {
     document.querySelector("#password").style.borderBottom = "1px solid red";
   } else {
-    form.post(`/auth/logar`, {
+    form.post(`/auth/logar/${form.locale.local || 'en'}`, {
         onSuccess: (Response) => {
             toast.add({
                 severity: "error",

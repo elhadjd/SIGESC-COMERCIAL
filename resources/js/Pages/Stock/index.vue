@@ -12,7 +12,7 @@
                 @modulo="modulos"
                 :transfer="transfer"
                 @message="message"
-                v-if="modul == 'transfer'"
+                v-if="modul == 'newTransfer'"
             />
         </div>
     </div>
@@ -49,7 +49,7 @@ const menus = ref([
 const transfer = ref([])
 
 const modulos = ((event,Transfer=null)=>{
-    if (event == "transfer") {
+    if (event == 'newTransfer') {
         transfer.value = Transfer
     }
     MostrarDrop.value = null

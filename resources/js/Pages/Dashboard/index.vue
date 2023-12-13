@@ -70,13 +70,20 @@ const Sair = () => {
 onMounted(() => {
     if (!props.data.currency_company) {
         news.value = {
-            message: `Prezado ${props.data.name} ,Esperamos que esta mensagem o encontre bem. Informamos que realizamos uma atualização em nosso sistema para aprimorar a experiência do usuário. 
+            message: `Prezado ${props.data.name} ,Esperamos que esta mensagem o encontre bem. Informamos que realizamos uma atualização em nosso sistema para aprimorar a experiência do usuário.
                 por favor, verifique e atualize o tipo de moeda no formulário da sua empresa.
                 Agradecemos pela sua colaboração e compreensão. Se tiver alguma dúvida ou precisar de assistência, não hesite em entrar em contato conosco.
                 Atenciosamente,
                 Leonardo
                 Administrador SIGESC`,
             type: 'currency',
+        }
+    }
+    if(props.user.user_language.code) {
+        const locale = localStorage.getItem('locale');
+        if(locale && locale != props.user.user_language.code){
+           localStorage.setItem('locale',props.user.user_language.code)
+           location.reload()
         }
     }
     // canvas.value = canvas.value;

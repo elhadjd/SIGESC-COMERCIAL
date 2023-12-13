@@ -2,16 +2,16 @@
 <div class="principal">
     <div class="Header">
         <div class="Header-left">
-            <h2>Cliente</h2>
+            <h2>{{$t('words.client')}}</h2>
             <div class="buttons">
-                <button @click="saveClient">Guardar</button>
-                <button class="botao_descartar" @click="$emit('close')">Fechar</button>
+                <button @click="saveClient">{{$t('words.save')}}</button>
+                <button class="botao_descartar" @click="$emit('close')">{{$t('words.close')}}</button>
                 <button @click="deleteClient" class="botao_descartar delete">
-                    <span>Eliminar</span>
+                    <span>{{$t('words.delete')}}</span>
                     <i class="fa fa-trash"></i>
                 </button>
                 <button @click="archive" class="botao_descartar archive">
-                    <span>{{ClientData.state == 1 ? 'A':'Desa'}}rquivar</span>
+                    <span>{{ClientData.state == 1 ? 'A':'Desa'}}{{$t('words.archive')}}</span>
                     <i :class="ClientData.state == 1 ? 'fa fa-archive' : 'fa fa-refresh'"></i>
                 </button>
             </div>
@@ -27,7 +27,7 @@
                         <font-awesome-icon icon="fa-solid fa-cart-shopping" />
                         <span>
                             <strong>{{orders}}</strong>
-                            Pedidos
+                            {{$t('words.order')}}s
                         </span>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                 <div class="Main">
                     <div class="Name-Img-control">
                         <div class="form-nome">
-                            <input :disabled="ClientData.state == 0" type="text" v-model="ClientData.surname" placeholder="Apelido"/>
+                            <input :disabled="ClientData.state == 0" type="text" v-model="ClientData.surname" :placeholder="$t('words.surname')"/>
                         </div>
 
                         <div class="form-image">
@@ -61,13 +61,13 @@
 
                         <div class="form-content">
                             <div class="form-Control">
-                                <label for="name">Nome: </label>
-                                <input id="name" :disabled="ClientData.state === 0" type="text" v-model="ClientData.name" placeholder="Nome"/>
+                                <label for="name">{{$t('words.name')}}: </label>
+                                <input id="name" :disabled="ClientData.state === 0" type="text" v-model="ClientData.name" :placeholder="$t('words.name')"/>
                             </div>
 
                             <div class="form-Control">
-                                <label for="phone">Telefone: </label>
-                                <input id="phone" :disabled="ClientData.state == 0" type="text" v-model="ClientData.phone" placeholder="Telefone"/>
+                                <label for="phone">{{$t('words.phone')}}: </label>
+                                <input id="phone" :disabled="ClientData.state == 0" type="text" v-model="ClientData.phone" :placeholder="$t('words.phone')"/>
                             </div>
 
                             <div class="form-Control">
@@ -78,18 +78,18 @@
                         </div>
                          <div class="form-content">
                             <div class="form-Control">
-                                <label for="country">Nacionalidade: </label>
-                                <input id="country" :disabled="ClientData.state == 0" type="text" v-model="ClientData.country" placeholder="Pais"/>
+                                <label for="country">{{$t('words.country')}}: </label>
+                                <input id="country" :disabled="ClientData.state == 0" type="text" v-model="ClientData.country" :placeholder="$t('words.country')"/>
                             </div>
 
                             <div class="form-Control">
-                                <label for="city">cidade: </label>
-                                <input id="city" :disabled="ClientData.state == 0" type="text" v-model="ClientData.city" placeholder="Cidade"/>
+                                <label for="city">{{$t('words.city')}}: </label>
+                                <input id="city" :disabled="ClientData.state == 0" type="text" v-model="ClientData.city" :placeholder="$t('words.city')"/>
                             </div>
 
                             <div class="form-Control">
-                                <label for="sede">Rua: </label>
-                                <input class="sede" :disabled="ClientData.state == 0" type="text" v-model="ClientData.rua" placeholder="Rua"/>
+                                <label for="sede">{{$t('words.road')}}: </label>
+                                <input class="sede" :disabled="ClientData.state == 0" type="text" v-model="ClientData.rua" :placeholder="$t('words.road')"/>
                             </div>
                         </div>
                     </div>

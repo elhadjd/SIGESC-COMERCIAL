@@ -27,7 +27,7 @@
             #FormSession{
                 overflow-y: auto;
                 width: 80%;
-                height: 60%;
+                height: 65%;
                 z-index: 1060;
                 background-color: white;
                 border: 1px solid #ddd;
@@ -35,23 +35,21 @@
                 @include scroll;
                 .FormSessionCima{
                     min-width: 800px;
-                    background-color: white;
+                    background-color: var(--buttons-hover);
+                    color: #00686e;
                     border-bottom: 1px solid #ddd;
                     display: flex;
                     justify-content: flex-end;
                     i{
                         font-size: 20px;
                         font-weight: 100;
-                        color: #00686e;
                         display: flex;
                         align-items: center;
                     }
                     .d-flex{
                         width: 17%;
                         border: none;
-                        background-color: white;
                         border-left: 1px solid #ddd;
-                        color: #00686e;
                         display: flex;
                         justify-content: space-between;
                         padding: 5px;

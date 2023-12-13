@@ -50,7 +50,7 @@ class LoginController extends Controller
 
         } else {
             return Inertia::render('Auth/Login', [
-                'erro' => "dados do usuario incorrecto"
+                'erro' => __('data incorrect.'),
             ]);
         }
     }
@@ -58,7 +58,8 @@ class LoginController extends Controller
     public function UrlGuard(Request $request)
     {
         $rota = str_replace('/','',$request->path);
-        if ($request->locale) {
+        $userLanguage = $request->user()->userLanguage;
+        if ($request->locale && $userLanguage == null) {
             $insertLang = new configController;
             $locale = [
                 'code'=>$request->locale['local'],

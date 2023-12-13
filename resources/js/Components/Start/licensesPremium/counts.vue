@@ -2,9 +2,9 @@
     <div class="payment">
         <div class="banks">
             <header>
-                <span>Banco</span>
-                <span>Nome</span>
-                <span>Numero</span>
+                <span>Bank</span>
+                <span>{{$t('words.name')}}</span>
+                <span>{{$t('words.number')}}</span>
                 <span>Iban</span>
             </header>
             <main>
@@ -30,7 +30,7 @@
                         :disabled="loading == 2"
                         @click="uploadForm"
                     >
-                        <span v-if="loading ==0">Enviar</span>
+                        <span v-if="loading ==0">{{$t('words.send')}}</span>
                         <i v-if="loading ==1" class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
                         <font-awesome-icon v-if="loading ==2" icon="fa-solid fa-check" />
                     </button>
@@ -38,15 +38,15 @@
             </div>
             <div>
                 <div>
-                    <label>Total:</label>
+                    <label>{{$t('words.total')}}:</label>
                     <span>{{dineiro.format(data.client.account_client[0].total)}}</span>
                 </div>
                 <div>
-                    <label>Disconto:</label>
+                    <label>{{$t('words.discount')}}:</label>
                     <span>{{dineiro.format(data.client.account_client[0].discount)}}</span>
                 </div>
                 <div>
-                    <label>A pagar:</label>
+                    <label>{{$t('words.toPay')}}:</label>
                     <span>{{dineiro.format(data.client.account_client[0].total - data.client.account_client[0].discount)}}</span>
                 </div>
             </div>

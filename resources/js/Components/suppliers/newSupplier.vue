@@ -1,7 +1,7 @@
 <template>
   <div class="principal">
     <Toast/>
-    <Confirmation v-if="confirm" :SmsConfirm="SmsConfirm" @Confirme="Confirme"/>
+    <Confirmation v-if="confirm" :SmsConfirm="SmsConfirm" @descartou="confirm = false" @Confirme="Confirme"/>
     <div class="Container" v-if="PretedFornecedor != null">
         <ProdutosFornecedor class="Form" @Fechar="OnMounted" :IdFornecedor="singleSupplier.id" v-if="PretedFornecedor == 'produtos'"/>
     </div>
@@ -9,27 +9,26 @@
         <div class="Form">
             <div class="form-container">
                 <div class="Header">
-
                     <button class="card-header Action dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        Ação
+                        {{$t('words.action')}}
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li v-if="singleSupplier.state == 0" @click="Desarquivar"><a class="dropdown-item" href="#">Desarquivar</a></li>
-                        <li v-else @click="Arquivar"><a class="dropdown-item" href="#">Arquivar</a></li>
-                        <li @click="Apagar"><a class="dropdown-item" href="#">Apagar</a></li>
+                        <li v-else @click="Arquivar"><a class="dropdown-item" href="#">{{$t('words.archive')}}</a></li>
+                        <li @click="Apagar"><a class="dropdown-item" href="#">{{$t('words.delete')}}</a></li>
                     </ul>
                     <button class="card-header">
                         <font-awesome-icon icon="fa-solid fa-cart-shopping" />
                         <span>
                             <strong>{{PretendFornecedor.orders.length}}</strong>
-                            Encomendas
+                            {{$t('words.order')}}s
                         </span>
                     </button>
                     <button class="card-header" @click="produtos('produtos')">
                         <font-awesome-icon icon="fa-brands fa-product-hunt" />
                         <span>
                             <strong>{{PretendFornecedor.products.length}}</strong>
-                            Produtos
+                            {{$t('words.article')}}s
                         </span>
                     </button>
 
@@ -37,7 +36,7 @@
                 <div class="Main">
                     <div class="Name-Img-control">
                         <div class="form-nome">
-                            <input :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.name" placeholder="digita o nome do fornecedor"/>
+                            <input :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.name" :placeholder="$t('words.name')"/>
                         </div>
 
                         <div class="form-image">
@@ -46,13 +45,13 @@
                             </div>
                             <div >
                                 <div>
-                                <img :src="image.img" alt="">
+                                <img :src="element.img" alt="">
                                 <span>
                                     <label for="image">
                                         <FontAwesomeIcon icon="fa-solid fa-pen-to-square"/>
                                         <input type="file" id="image" @change="onFileChange">
                                     </label>
-                                    <FontAwesomeIcon @click="DeletarImagem" icon="fa-solid fa-trash"/>
+                                    <FontAwesomeIcon @click="RemoveImage" icon="fa-solid fa-trash"/>
                                 </span>
                                 </div>
                             </div>
@@ -61,16 +60,15 @@
                     </div>
 
                     <div class="info-basic">
-
                         <div class="form-content">
                             <div class="form-Control">
-                                <label for="nif">Nif: </label>
+                                <label for="nif">{{$t('phrases.nifCompany')}}: </label>
                                 <input id="nif" :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.nif" placeholder="NIF"/>
                             </div>
 
                             <div class="form-Control">
-                                <label for="phone">Telefone: </label>
-                                <input id="phone" :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.phone" placeholder="Telefone"/>
+                                <label for="phone">{{$t('words.phone')}}: </label>
+                                <input id="phone" :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.phone" :placeholder="$t('words.phone')"/>
                             </div>
 
                             <div class="form-Control">
@@ -82,18 +80,18 @@
 
                         <div class="form-content">
                             <div class="form-Control">
-                                <label for="country">Pais: </label>
-                                <input id="country" :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.country" placeholder="Pais"/>
+                                <label for="country">{{$t('words.country')}}: </label>
+                                <input id="country" :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.country" :placeholder="$t('words.country')"/>
                             </div>
 
                             <div class="form-Control">
-                                <label for="city">cidade: </label>
-                                <input id="city" :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.city" placeholder="Cidade"/>
+                                <label for="city">{{$t('words.city')}}: </label>
+                                <input id="city" :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.city" :placeholder="$t('words.city')"/>
                             </div>
 
                             <div class="form-Control">
-                                <label for="sede">Sede: </label>
-                                <input class="sede" :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.sede" placeholder="sede"/>
+                                <label for="sede">{{$t('words.neighborhood')}}: </label>
+                                <input class="sede" :disabled="singleSupplier.state == 0" type="text" v-model="singleSupplier.sede" :placeholder="$t('words.neighborhood')"/>
                             </div>
                         </div>
                     </div>
@@ -119,6 +117,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import axios from 'axios';
 
 import {useUploadImage} from '@/composable/public/UploadImage'
+import { getImages } from '@/composable/public/getImages';
 
 const PretedFornecedor = ref(null)
 
@@ -146,11 +145,11 @@ const PretendFornecedor = ref({
     products: [],
     orders: [],
 })
-const image = ref({
-  img: `/supplier/image/produto-sem-imagem.png`,
+const element = reactive({
+    img: "/produtos/image/" + props.supplier.image,
 });
 
-
+const {getImage,RemoveImage} = getImages(element);
 
 const Arquivar = (()=>{
     singleSupplier.value.state = 0;
@@ -164,17 +163,17 @@ const Apagar = (()=>{
 
 
 const OnMounted = onMounted(async ()=>{
+    await getImage()
     await axios.get(`/suppliers/relations/${props.supplier.id}`)
     .then((Response) => {
         singleSupplier.value = Response.data
-        image.value.img = `/supplier/image/${singleSupplier.value.image}`,
         PretendFornecedor.value = Response.data
         PretedFornecedor.value = null
     }).catch((err) => {
         console.log(err);
     });
 })
-const {createImg,onFileChange,object} = useUploadImage(singleSupplier.value,image.value)
+const {createImg,onFileChange,object} = useUploadImage(singleSupplier.value,element)
 const Desarquivar = (()=>{
     singleSupplier.value.state = 1;
 })
@@ -229,11 +228,6 @@ const message = ((message,type)=>{
     })
 })
 
-const DeletarImagem = (()=>{
-    image.value.img = '/supplier/image/produto-sem-imagem.png'
-    singleSupplier.value.image = 'produto-sem-imagem.png'
-})
-
 const guardar = computed(()=>{
     return store.state.GuardarCliente
 })
@@ -246,9 +240,9 @@ watch(guardar,(novo)=>{
 
 <style scoped lang="scss">
 .principal{
-    height: 100%;
+    height:auto;
     .Container{
-        height: 100%;
+        height: auto;
         justify-content: center;
         align-items: center;
         .Form{
@@ -256,7 +250,7 @@ watch(guardar,(novo)=>{
             width: 100%;
             height: 100%;
             .form-container{
-                height: 50% !important;
+                height: auto;
             }
             @include formulary;
         }
