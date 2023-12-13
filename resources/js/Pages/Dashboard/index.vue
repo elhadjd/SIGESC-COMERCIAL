@@ -51,6 +51,9 @@ const props = defineProps({
   user: Object,
 });
 
+
+console.log(props);
+
 const canvas = ref(null);
 const ctx = ref(null);
 const mouse = { x: 0, y: 0 };
