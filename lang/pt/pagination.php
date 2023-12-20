@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'previous' => 'Valtar',
-    'next' => 'Avançar',
+    'previous' => '',
+    'next' => '',
 
 ];

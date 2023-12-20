@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('produtos', function (Blueprint $table) {
             $table->id();
             $table->string('nome')->nullable();
+            $table->text('description')->nullable();
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('CASCADE');
             $table->string('image')->default('produto-sem-imagem.png');

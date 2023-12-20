@@ -41,5 +41,7 @@
     "Customer not found": "Client non trouvé",
     "This company has an active license": "Cette entreprise dispose d'une licence active",
     "Error activating license, contact administrator": "Erreur d'activation de la licence, contactez l'administrateur",
-    "Congratulations, your license has been successfully activated": "Félicitations, votre licence a été activée avec succès"
+    "Congratulations, your license has been successfully activated": "Félicitations, votre licence a été activée avec succès",
+    "The provided password does not match your current password.": "Le mot de passe fourni ne correspond pas à votre mot de passe actuel.",
+    "The new password cannot be the same as the current password": "Le nouveau mot de passe ne peut pas être le même que le mot de passe actuel"
 }

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Crypt;
 
 class LoginController extends Controller
 {
@@ -21,18 +22,19 @@ class LoginController extends Controller
     }
     public function login(Request $request,$locale = null)
     {
+        // return Crypt::encrypt('2024-12-14');
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
+            'email' => ['required','email'],
+            'password' => ['required']
         ]);
-        $credential = [
+        $credentials = [
             'email' => $request->email,
             "password" => $request->password,
         ];
 
         // return Hash::make($request->password);
 
-        if (Auth::attempt($credential)) {
+        if (Auth::attempt($credentials)) {
 
             $user = User::find(Auth::user()->id);
 
@@ -45,7 +47,7 @@ class LoginController extends Controller
                 'ip_address' => $request->ip(),
                 'browser' => $browser,
             ]);
-
+            $request->session()->regenerate();
             return $this->UrlGuard($request,$locale);
 
         } else {
@@ -71,7 +73,7 @@ class LoginController extends Controller
         if ($rota != "" && $rota != "authlogin") {
             return Redirect::route($rota);
         } else {
-            return to_route('dashboard');
+            return redirect()->intended('/');
         }
     }
 

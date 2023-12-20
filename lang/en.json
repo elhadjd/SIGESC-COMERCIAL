@@ -41,5 +41,7 @@
     "Customer not found": "Customer not found",
     "This company has an active license": "This company has an active license",
     "Error activating license, contact administrator": "Error activating license, contact administrator",
-    "Congratulations, your license has been successfully activated": "Congratulations, your license has been successfully activated"
+    "Congratulations, your license has been successfully activated": "Congratulations, your license has been successfully activated",
+    "The provided password does not match your current password.": "The provided password does not match your current password.",
+    "The new password cannot be the same as the current password": "The new password cannot be the same as the current password"
 }

@@ -16,13 +16,14 @@
       <form class="FormNewProd">
         <div class="guard_descart">
           <div  v-if="user.nivel == 'admin'" class="p-1 border-bottom">
-            <div class="bannerButtons" v-if="product.data.estado != 1">
+            <div class="bannerButtons justify-around" v-if="product.data.estado != 1">
                 <MessagesToast v-if="news.state" @closeMessage="news.state = false" :message="news"/>
                 <div>
                     <ButtonVue v-for="item in movementsStockProduct.TypesMovements" :className="''" :type="'button'" :key="item.id" @click="moveProductStock(item)">
                         {{item.movement_translate[0].translate + ' ' + $t('words.of') + ' stock'}}
                     </ButtonVue>
                 </div>
+                <descriptionVue/>
                 <publishProductVue/>
             </div>
           </div>
@@ -88,6 +89,7 @@
   <Toast/>
 </template>
 <script setup>
+import descriptionVue from './description.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { useForm } from "@inertiajs/inertia";
 import { computed, onMounted, reactive, ref, watch } from "@vue/runtime-core";

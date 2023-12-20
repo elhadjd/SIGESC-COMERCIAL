@@ -101,7 +101,7 @@ class productsController extends Controller
                 $translate->where('local', $locale);
             }])->get();
         }
-        
+
 
         $prod = $product
         ->with('catalogProduct')
@@ -155,6 +155,7 @@ class productsController extends Controller
     {
         if (!$category_product) {
             $create = category_product::create([
+                'image'=>'produto-sem-imagem.png',
                 'name' => $request->name
             ]);
             produtos::find($product->id)->update([
@@ -217,7 +218,6 @@ class productsController extends Controller
     public function publishProduct(produtos $product) {
         $company = company::find($product->company_id);
         $connected = @fsockopen("www.example.com", 80);
-        //website, port  (try 80 or 443)
         if ($connected){
             $verifyInfoModel = new verifyInfoModelsController();
             $check = $verifyInfoModel->checkInfoCompany($company);

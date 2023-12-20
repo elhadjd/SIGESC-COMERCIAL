@@ -18,7 +18,7 @@
         </div>
         <Toast/>
     </div>
-    <Confirmation v-if="confirm" :SmsConfirm="SmsConfirm" @descartou="confirm=!confirm" @Confirme="Confirme"/>
+    <Confirmation v-if="confirm" :SmsConfirm="SmsConfirm" @descartou="confirm=!confirm" @Confirme="deleteConfirm"/>
     <div class="Container">
         <div class="Form">
             <div class="form-container">
@@ -95,7 +95,7 @@
                     </div>
                 </div>
                 <div>
-                    
+
                 </div>
             </div>
         </div>

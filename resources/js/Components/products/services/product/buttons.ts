@@ -17,8 +17,6 @@ export const ButtonsServices = (emits)=>{
     const product = computed(()=> store.getters['Product/product'])
     const loading = ref<number>(10)
     const {t,locale} = useI18n()
-    console.log(locale.value);
-
     const {
         submit,
     } = ProductServices(emits)

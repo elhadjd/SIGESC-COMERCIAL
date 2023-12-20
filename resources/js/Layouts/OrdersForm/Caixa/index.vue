@@ -15,7 +15,7 @@
                   v-model="box.spent"
                   />
             </div>
-            <div class="Quantidades">
+            <div class="w-full flex space-x-2">
                <input type="number" v-model="box.total" :placeholder="$t('words.quantity')" />
                <input type="number" v-model="box.quantity" placeholder="Quantidade da caixa" />
             </div>
@@ -71,12 +71,16 @@ const FormSubmit = () => {
 <style lang="scss" scoped>
 .Principal {
 	@include modal;
+    .Modal{
+        height: 180px !important;
+    }
 	align-items: center;
 	.Header {
 		h1 {
 			font-size: 20px !important;
 		}
 	}
+
 	.Container {
 		flex-direction: column;
         gap: 1rem;
@@ -87,13 +91,8 @@ const FormSubmit = () => {
 			gap: 1rem;
 			input {
                 @include input_normal;
-                padding: 4px !important;
-				width: 92% !important;
+                padding: 5px !important;
 			}
-		}
-		.Quantidades {
-			display: flex;
-			justify-content: space-between;
 		}
 	}
 }

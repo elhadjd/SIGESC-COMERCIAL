@@ -38,6 +38,11 @@
                     <label htmlFor="checkbox">Permanece connectado por uma semana</label>
                 </div>
                 <div class='buttons'>
+                    <fb:login-button
+                        scope="public_profile,email"
+                        onlogin="checkLoginState();">
+                    </fb:login-button>
+                    <div class="fb-login-button" data-width="" data-size="" data-button-type="" data-layout="" data-auto-logout-link="true" data-use-continue-as="false"></div>
                     <button type='submit'>{{$t('words.enter')}}</button>
                 </div>
                 <Link :href="route('startCompany')">{{$t('words.start')}} {{$t('words.one')}} {{$t('words.company')}}</Link>
@@ -91,6 +96,13 @@ const languages = ref({
             name: 'Ingles'
         }
     ]
+})
+
+onMounted(()=>{
+    FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+        console.log(response);
+    });
 })
 
 const selectLanguage = ((language)=>{

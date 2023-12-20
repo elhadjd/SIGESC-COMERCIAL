@@ -33,8 +33,10 @@ class verifyInfoModelsController extends Controller
             $product->image != null&&
             $product->estado != null&&
             $product->estado != 'inactive'&&
-            $product->image != 'produto-sem-imagem.png'
-            ) {
+            $product->image != 'produto-sem-imagem.png' &&
+            $product->description != null
+            )
+        {
             $category = $product->category()->first();
             $itemType = $product->product_type()->first();
             if ($category && $itemType) {
@@ -42,7 +44,6 @@ class verifyInfoModelsController extends Controller
             }
             return false;
         }
-
-        return 'false';
+        return false;
     }
 }

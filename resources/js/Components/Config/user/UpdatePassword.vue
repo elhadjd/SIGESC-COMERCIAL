@@ -53,7 +53,7 @@ const UpdatePassword = ((password) => {
         if (Response.data.type == 'success') {
             emits('FecharModal');
         }
-        emits('message', Response.data.data, Response.data.type)
+        emits('message', Response.data.message, Response.data.type)
     }).catch((err) => {
         console.log(err);
     });

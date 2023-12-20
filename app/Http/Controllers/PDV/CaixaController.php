@@ -9,6 +9,7 @@ use App\Models\operationCaixaType;
 use App\Models\orderPos;
 use App\Models\paymentMethod;
 use App\Models\session;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -135,18 +136,19 @@ class CaixaController extends Controller
         $request->validate([
             'name'=>'required',
             'user'=>'required',
+            'user'=>'unique:caixas,user_id',
+            'password'=>['required','min:6']
         ]);
         if ($caixa!=null) {
-        $caixa = caixa::find($caixa);
-        $caixa->name = $request->name;
-        $caixa->user_id = $request->user['id'];
-        if ($request->password) $caixa->password = Hash::make($request->password);
+            $caixa = caixa::find($caixa);
+            $caixa->name = $request->name;
+            $caixa->user_id = $request->user['id'];
+            if ($request->password) $caixa->password = Hash::make($request->password);
 
-        if ($caixa->save()) return $this->RespondSuccess(__('Data updated successfully'));
+            if ($caixa->save()) return $this->RespondSuccess(__('Data updated successfully'));
 
-        return $this->RespondError(__('Error occurs when updating data'));
+            return $this->RespondError(__('Error occurs when updating data'));
         }
-
         caixa::create([
             'name'=>$request->name,
             'password'=>Hash::make($request->password),
@@ -159,7 +161,6 @@ class CaixaController extends Controller
     public function deleteCash(Request $request,caixa $caixa){
         $session = $caixa->session->count();
         if ($session > 0) return $this->RespondError(__('It is not possible to delete this point of sale, as it has one or more sections'));
-
         $caixa->delete();
 
     }

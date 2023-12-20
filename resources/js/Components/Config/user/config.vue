@@ -60,6 +60,10 @@ const languages = ref({
         {
             language: 'Portugais',
             code: 'pt'
+        },
+        {
+            language: 'Ingles',
+            code: 'en'
         }
     ]
 })

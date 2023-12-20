@@ -52,7 +52,6 @@ const props = defineProps({
 });
 
 
-console.log(props);
 
 const canvas = ref(null);
 const ctx = ref(null);
