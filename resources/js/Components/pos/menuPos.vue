@@ -40,7 +40,7 @@
         <button class="user">
             <img :src="image.img"/>
             <div class="closePos">
-                <span>{{ $store.state.publico.user.surname }}</span>
+                <span class="truncate w-40">{{ $store.state.publico.user.surname }}</span>
                 <div @click="close">{{$t('words.goOut')}} <i class="fa fa-sign-out"></i></div>
             </div>
         </button>
@@ -99,14 +99,9 @@
           :session="session.id"
           v-if="ListePedidos == true"
         />
-        <div v-else class="w-100 h-100">
-          <div class="direitaCima">
-            <i @click="showProducts = false" class="fa fa-close"></i>
-          </div>
           <div v-if="!fatura" class="direitaBaixo">
-            <Produtos @AddProds="AddProds" @message="messages" />
+            <Produtos @AddProds="AddProds" :categories="categories" @message="messages" />
           </div>
-        </div>
       </div>
       <Pagamento
         :method="method"
@@ -181,7 +176,7 @@ const close = ()=>{
     router.get('/PDV/Home')
 }
 const Encomendas = ref([]);
-
+const categories = ref([])
 const method = ref();
 
 const IdEncomenda = ref();
@@ -260,6 +255,7 @@ const OnMounted = onMounted(async () => {
     await getImage();
     await axios.get(`/PDV/menuPos/${localStorage.getItem('locale') || 'en'}`).then((Response) => {
         method.value = Response.data.methods;
+        categories.value = Response.data.categories
         Pedido.value.user = store.state.publico.user;
     });
     localStorage.setItem("session", props.session.id);

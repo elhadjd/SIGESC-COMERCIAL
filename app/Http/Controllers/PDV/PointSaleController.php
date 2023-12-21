@@ -4,6 +4,7 @@ namespace App\Http\Controllers\PDV;
 
 use App\Http\Controllers\Controller;
 use App\Models\caixa;
+use App\Models\category_product;
 use App\Models\operation_caixa_type_session;
 use App\Models\operationCaixaType;
 use App\Models\orderPos;
@@ -59,9 +60,11 @@ class PointSaleController extends Controller
         $methods = paymentMethod::with(['methodTranslate'=>function($translate) use ($locale){
             $translate->where('local',$locale);
         }])->get();
+        $category = category_product::all();
         return response()->json([
             'User' => Auth::user(),
-            'methods' => $methods
+            'methods' => $methods,
+            'categories'=>$category
         ]);
     }
 

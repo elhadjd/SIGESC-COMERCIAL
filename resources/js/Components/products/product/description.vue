@@ -1,7 +1,7 @@
 <template>
 <div class="buttonPublish">
     <ButtonVue :className="'publish truncate relative text-start'" @click="state=true" :type="'button'">
-        descrição
+        Add description
     </ButtonVue>
     <span class="rounded p-2 absolute bg-white text-gray-700" v-if="state">
         <textarea @blur="state = false" class="w-full border-0 outline-0 " v-model="product.data.description"></textarea>

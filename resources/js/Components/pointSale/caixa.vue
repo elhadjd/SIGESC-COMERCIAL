@@ -2,7 +2,17 @@
   <Toasts />
   <Progress v-if="ShowModal" />
   <div class="principal">
-    <div class="Header"></div>
+    <div class="Header">
+        <div class="Header-left">
+            <div @click="$emit('pointOfSale',$t('apps.pdvName'))" class="flex flex-row mt-2 cursor-pointer hover:text-[#00a5cf] p-3 items-center justify-start">
+                <FontAwesomeIcon class="mb-2" icon="fa-solid fa-arrow-left"/>
+                <h2>{{$t('apps.pdvName')}}</h2>
+            </div>
+        </div>
+        <div class="Header-right">
+
+        </div>
+    </div>
     <div class="Container">
       <div class="buttons">
         <button @click="AbrirControlo"
@@ -137,6 +147,7 @@
 </template>
 
 <script setup>
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import Toasts from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 import cash from "vue-material-design-icons/CashMultiple.vue";
@@ -160,7 +171,7 @@ import Message from "primevue/message";
 import moment from 'moment'
 import { useCurrencyInput } from "vue-currency-input";
 import { router } from "@inertiajs/vue3";
-const emits = defineEmits(["message"]);
+const emits = defineEmits(["message",'pointOfSale']);
 const ShowModal = ref(false);
 const props = defineProps(["caixaId"]);
 const operations = ref({

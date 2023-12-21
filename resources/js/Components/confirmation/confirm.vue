@@ -30,7 +30,7 @@ const emits = defineEmits(['Voltar'])
 const state = ref(false)
 const {showMessage} = serviceMessage()
 const deleteProduct = (()=>{
-    if (product.data.stock_sum_quantity>0) {
+    if (product.value.data.stock_sum_quantity>0) {
         showMessage('Este produto não pode ser deletado','info');
     } else {
         StateModal.value = true

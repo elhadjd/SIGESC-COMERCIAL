@@ -1,23 +1,26 @@
 <template>
 <Transition>
 <div class="principal">
-    <div class="Modal">
-        <div class="Header">
-            <div class="Botoes">
-                <button v-for="item in typeOperation" :key="item.id" :class="TipoButton.operation_caixa_type_id == item.id ? 'style' : ''" @click="TipoOperacao(item)">{{item.operation_translate[0].translate}}</button>
+    <div class="flex w-full h-auto justify-center">
+        <div class="Modal mt-0">
+            <div class="Header">
+                <div class="Botoes">
+                    <button v-for="item in typeOperation" :key="item.id" :class="TipoButton.operation_caixa_type_id == item.id ? 'style' : ''" @click="TipoOperacao(item)">{{item.operation_translate[0].translate}}</button>
+                </div>
+                <div class="Input">
+                    <input type="text" id="inputRef" ref="inputRef" v-model="TipoButton.amount" :placeholder="$t('words.amount')">
+                </div>
             </div>
-            <div class="Input">
-                <input type="text" id="inputRef" ref="inputRef" v-model="TipoButton.amount" :placeholder="$t('words.amount')">
+            <div class="Container">
+                <textarea v-model="TipoButton.subject" cols="30" rows="10"></textarea>
             </div>
-        </div>
-        <div class="Container">
-            <textarea v-model="TipoButton.subject" cols="30" rows="10"></textarea>
-        </div>
-        <div class="Footer">
-            <button @click="$emit('fechar')" class="Fechar">{{$t('words.close')}}</button>
-            <button @click="Save" class="Guardar">{{$t('words.save')}}</button>
+            <div class="Footer">
+                <button @click="$emit('fechar')" class="Fechar">{{$t('words.close')}}</button>
+                <button @click="Save" class="Guardar">{{$t('words.save')}}</button>
+            </div>
         </div>
     </div>
+
 </div>
 </Transition>
 </template>

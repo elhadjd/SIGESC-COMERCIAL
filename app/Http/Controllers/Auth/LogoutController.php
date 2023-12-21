@@ -12,7 +12,7 @@ class LogoutController extends Controller
 {
     public function logout()
     {
-        Auth::logout();
+        Auth::logoutCurrentDevice();
         return Redirect::route('login');
     }
 }

@@ -12,7 +12,7 @@
                         <input @click="methodPayment.state = !methodPayment.state" type="text" v-model="methodPayment.title"/>
                         <div v-if="methodPayment.state" class="drop">
                             <span @click="Methods(method)" v-for="method in methods" :key="method.id">
-                            {{method.name}}
+                            {{method.method_translate[0].translate}}
                             </span>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                         @input="onInput"
                         @blur="onBlur"
                         @focus="onFocus">
-                        
+
                     </div>
                     <div class="ValorPagamento-container">
                         <label>{{$t('words.date')}}:</label>
@@ -54,14 +54,15 @@ import { onMounted, reactive, ref } from 'vue'
 import {useStore, mapState} from 'vuex'
 import moment from 'moment'
 import axios from 'axios';
-
+import { useI18n } from "vue-i18n";
+const {t} = useI18n()
 const props = defineProps({
     order: Object,
     general: Object
 })
 
 const methodPayment = reactive({
-    title: 'metodos de pagamentos',
+    title: ` ${t('words.method')} ${t('words.payment')}`,
     state: false
 })
 
@@ -152,7 +153,7 @@ axios.post(`sendPayment/${props.order.id}`, {...form})
 
 const Methods = (event) => {
     methodPayment.state = false
-    methodPayment.title = event.name
+    methodPayment.title = event.method_translate[0].translate
     form.payment_method_id = event.id
 }
 </script>

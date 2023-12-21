@@ -69,7 +69,8 @@ import {
     faCircleInfo,
     faBagShopping,
     faTruckArrowRight,
-    faCircleCheck
+    faCircleCheck,
+    faArrowLeft
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import general from "./mixins/general.js";
@@ -80,6 +81,7 @@ library.add(
     faXmark,
     faLeftLong,
     faArrowRight,
+    faArrowLeft,
     faCloudArrowUp,
     faForward,
     faCheck,

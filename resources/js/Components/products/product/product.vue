@@ -16,15 +16,17 @@
       <form class="FormNewProd">
         <div class="guard_descart">
           <div  v-if="user.nivel == 'admin'" class="p-1 border-bottom">
-            <div class="bannerButtons justify-around" v-if="product.data.estado != 1">
+            <div class="bannerButtons justify-between" v-if="product.data.estado != 1">
                 <MessagesToast v-if="news.state" @closeMessage="news.state = false" :message="news"/>
                 <div>
                     <ButtonVue v-for="item in movementsStockProduct.TypesMovements" :className="''" :type="'button'" :key="item.id" @click="moveProductStock(item)">
                         {{item.movement_translate[0].translate + ' ' + $t('words.of') + ' stock'}}
                     </ButtonVue>
                 </div>
-                <descriptionVue/>
-                <publishProductVue/>
+                <div class="flex flex-row space-x-2">
+                    <descriptionVue/>
+                    <publishProductVue/>
+                </div>
             </div>
           </div>
         </div>

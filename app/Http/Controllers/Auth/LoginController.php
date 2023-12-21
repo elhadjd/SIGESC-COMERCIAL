@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Crypt;
+use PhpParser\Node\Expr\Cast\Array_;
 
 class LoginController extends Controller
 {
@@ -23,18 +24,19 @@ class LoginController extends Controller
     public function login(Request $request,$locale = null)
     {
         // return Crypt::encrypt('2024-12-14');
+
         $request->validate([
             'email' => ['required','email'],
             'password' => ['required']
         ]);
         $credentials = [
             'email' => $request->email,
-            "password" => $request->password,
+            'password'=> $request->password,
         ];
 
         // return Hash::make($request->password);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt(array('email'=>$request->email,'password'=>$request->password))) {
 
             $user = User::find(Auth::user()->id);
 

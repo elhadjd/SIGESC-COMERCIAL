@@ -13,7 +13,10 @@ class MethodsPaymentController extends Controller
 {
     public function getMethods()
     {
-        return paymentMethod::all();
+        return paymentMethod::with(['methodTranslate'=>function($translate){
+            $translate->where('local',app()->getLocale());
+        }])->get();
+
     }
 
     public function getPayments(Invoice $invoice)
