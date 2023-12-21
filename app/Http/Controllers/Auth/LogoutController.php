@@ -10,9 +10,13 @@ use Inertia\Inertia;
 
 class LogoutController extends Controller
 {
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::logoutCurrentDevice();
+        Auth::logout();
+        
+        $request->session()->invalidate();
+ 
+        $request->session()->regenerateToken();
         return Redirect::route('login');
     }
 }

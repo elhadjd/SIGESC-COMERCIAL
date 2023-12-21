@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Crypt;
-use PhpParser\Node\Expr\Cast\Array_;
 
 class LoginController extends Controller
 {
@@ -36,7 +35,7 @@ class LoginController extends Controller
 
         // return Hash::make($request->password);
 
-        if (Auth::attempt(array('email'=>$request->email,'password'=>$request->password))) {
+        if (Auth::attempt(['email'=>$request->email,'password'=>$request->password])) {
 
             $user = User::find(Auth::user()->id);
 

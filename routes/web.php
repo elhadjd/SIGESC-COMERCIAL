@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Auth\forgetPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Compra\chartPurchase;
@@ -64,6 +66,9 @@ Route::middleware('locale')->group(function(){
         Route::post('/setLocal',function(Request $request){
             Cookie::queue('locale', $request->locale);
         });
+
+        Route::post('/resetPassword/{locale}',[forgetPasswordController::class,'RequestData']);
+        Route::post('/resetPassword/{locale}/{check}',[forgetPasswordController::class,'resetPassword']);
     });
 
     Route::get('/databases', function () {
