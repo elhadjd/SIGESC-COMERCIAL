@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
                 'surname' => 'Administrador do sistema',
                 'email' => 'admin@gmail.com',
                 'armagen_id' => 1,
+                'role_id'=>1,
                 'company_id' => '1',
                 'image'=> '4ezVrI5czQlWv0Pg.jpeg',
                 'name' => 'Administrador do sistema',

@@ -51,10 +51,10 @@ class productsController extends Controller
         // }
     }
 
-    public function create(produtos $produtos,$name=null)
+    public function create(Request $request, produtos $produtos,$name=null)
     {
 
-        if (Auth::user()->hasRole('Admin')) {
+        if ($request->user()->hasRole('Admin')) {
             $product = $produtos::create([
                 'nome'=> $name,
                 'company_id' => Auth::user()->company_id
@@ -123,13 +123,13 @@ class productsController extends Controller
     {
         $image = new uploadImage();
         $request->validate([
-            'data.preçocust'=> "required",
-            'data.preçovenda'=> "required",
+            'data.preçocust'=> ['regex:/^[0-9]+(\.[0-9][0-9]?)?$/'],
+            'data.preçovenda'=> ['regex:/^[0-9]+(\.[0-9][0-9]?)?$/'],
             'data.nome'=> "required|string",
         ]);
         $data = $request->data;
         unset($data['id'], $data['category'], $data['movement_stock'], $data['fornecedor'], $data['updated_at'], $data['created_at']);
-        if (Auth::user()->hasRole('Admin')) {
+        if ($request->user()->hasRole('Admin')) {
 
             if ($data['imagem'] != null) {
                 $data['image'] = $image->Upload("/produtos/image/", $data['imagem'], $product);

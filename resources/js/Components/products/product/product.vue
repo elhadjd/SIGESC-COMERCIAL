@@ -15,8 +15,13 @@
     <div class="Formulario">
       <form class="FormNewProd">
         <div class="guard_descart">
+<<<<<<< HEAD
           <div  v-if="user.roles[0]?.name == 'Admin'" class="p-1 border-bottom">
             <div class="bannerButtons" v-if="product.data.estado != 1">
+=======
+          <div v-if="user.roles?.name == 'Admin'" class="p-1 border-bottom">
+            <div class="bannerButtons justify-between" v-if="product.data.estado != 1">
+>>>>>>> b922e7c81b9688067447e0372b23030ab48247b1
                 <MessagesToast v-if="news.state" @closeMessage="news.state = false" :message="news"/>
                 <div>
                     <ButtonVue v-for="item in movementsStockProduct.TypesMovements" :className="''" :type="'button'" :key="item.id" @click="moveProductStock(item)">
@@ -38,7 +43,7 @@
         <div class="form-container">
             <div class="Headers">
                 <div class="drop dropdown-toggle" @click="stateDrop = stateDrop == 'mov' ? '' : 'mov'"><i class="fa fa-bars"></i></div>
-                <div v-if="user.roles[0]?.name == 'Admin'" class="movements" :class="stateDrop == 'mov' ? 'active' : ''">
+                <div v-if="user.roles?.name == 'Admin'" class="movements" :class="stateDrop == 'mov' ? 'active' : ''">
                     <div v-for="item in product.movementsProduct.data"
                         :key="item.id" class="BotaoMuvementos">
                         <div @click="ShowMovements(item)" class="view_muvementos">
@@ -81,7 +86,7 @@
                 <bannerProductVue :listCategories="categories.listCategories" :itemTypeProps="itemType"/>
             </div>
             <div class="ContainerFooter">
-                <InfoProd v-if="user.roles[0]?.name == 'Admin'"/>
+                <InfoProd v-if="user.roles?.name == 'Admin'"/>
             </div>
         </div>
       </form>
@@ -138,7 +143,8 @@ const {
 watch(element,(prod,novo)=>{
     product.value.data.imagem = element.img
 })
-const user = ref([])
+const user = computed(()=>store.getters['publico/public'].user)
+
 const {showMessage} = serviceMessage()
 const {createImg,onFileChange} = useUploadImage(product.value.data, element);
 const {getImage,RemoveImage} = getImages(element);
@@ -148,7 +154,6 @@ const OnMounted = onMounted(async () => {
   await axios
     .get(`/products/${product.value.data.id}`)
     .then((Response) => {
-        user.value = Response.data.user
         loadProduct(Response.data.product)
         itemType.value = Response.data.product_type;
         calcMovementProduct(Response.data.type_movements);

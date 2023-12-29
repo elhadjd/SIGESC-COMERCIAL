@@ -23,6 +23,7 @@ class User extends Authenticatable
         'company_id',
         'image',
         'state',
+        'role_id',
         'surname',
     ];
 
@@ -67,7 +68,6 @@ class User extends Authenticatable
     }
 
     /* Role  */
-
     public function hasRole($role)
     {
         return $this->roles()->where('name', $role)->exists();
@@ -75,7 +75,7 @@ class User extends Authenticatable
 
     public function roles()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsTo(Role::class,'role_id');
     }
 
     /*  Permission */

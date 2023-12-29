@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use App\Models\EmailVerify;
-
+use App\Models\Role;
 
 class configController extends Controller
 {
@@ -22,6 +22,10 @@ class configController extends Controller
     {
         $this->registerActivity('Entrou no module configuração');
         return Inertia::render('Config/index');
+    }
+
+    function getRoles() {
+       return Role::get();
     }
 
     public function users(Request $request)
@@ -60,6 +64,7 @@ class configController extends Controller
     {
         $this->registerActivity('Criou um novo usuario');
         $user = $users->create([
+            'role_id'=>2,
             'company_id'=>Auth::user()->company_id,
             'image'=>'user-286.png'
         ]);
@@ -74,14 +79,13 @@ class configController extends Controller
 
     public function SaveUser(User $user = null,Request $request)
     {
-        // $request->validate([
-        //     'manager.id'=>['required'],
-        //     'email'=>['required','email'],
-        //     'phone'=>['required'],
-        //     'nif'=>['required'],
-        //     'city'=>['required'],
-        //     'currency_company.code'=>['required'],
-        // ]);
+        $request->validate([
+            'email'=>['required','email'],
+            'name'=>['required'],
+            'surname'=>['required'],
+            'roles'=>['required'],
+            'armagen_id'=>['required'],
+        ]);
         $image = new uploadImage();
         $data = $request->all();
         unset($data['updated_at'], $data['id'],$data['config']['id'],
@@ -90,10 +94,12 @@ class configController extends Controller
         if ($request->imagem && $request->imagem != $user->image) {
             $data['image'] = $image->Upload('/login/image/',$data['imagem'],$user);
         }
-        $password = Hash::make($data['senha1']);
-
-        $user->password = $password;
+        if($data['senha1'] != null){
+            $password = Hash::make($data['senha1']);
+            $user->password = $password;
+        }
         if ($request->armagen) $data['armagen_id'] = $data['armagen']['id'];
+        $data['role_id'] = $data['roles']['id'];
         $user->update($data);
         $user->perfil()->update($data['perfil']);
         $user->config()->update($data['config']);

@@ -3,7 +3,7 @@
     <ConfirmVue @descartou="SmsConfirm.state = false" :SmsConfirm="SmsConfirm.sms" @Confirme="deleteCash" v-if="SmsConfirm.state"/>
     <div class="Header">
         <div class="Header-left">
-            <h2>{{`${$t('words.save')} ${$t('words.box')}`}} caixa</h2>
+            <h2 class="normal-case">{{`${$t('words.added')} ${$t('words.box')}`}}</h2>
             <span>
                 <button @click="savePoint">{{$t('words.save')}}</button>
                 <button class="botao_descartar" @click="$emit('close')">{{$t('words.close')}}</button>
@@ -125,7 +125,7 @@ async function savePoint() {
         }else{
             emits('message','warning','Server Error')
         }
-        
+
     }).finally(()=>{
         store.state.pos.StateProgress = false;
     });

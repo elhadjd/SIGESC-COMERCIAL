@@ -22,7 +22,7 @@ class LoginController extends Controller
     }
     public function login(Request $request,$locale = null)
     {
-        // return Crypt::encrypt('2024-12-14');
+         return Crypt::encrypt('2025-01-01');
 
         $request->validate([
             'email' => ['required','email'],
@@ -33,13 +33,20 @@ class LoginController extends Controller
             'password'=> $request->password,
         ];
 
+
         // return Hash::make($request->password);
 
-        if (Auth::attempt(['email'=>$request->email,'password'=>$request->password])) {
+        if (Auth::attempt($credentials)) {
 
             $user = User::find(Auth::user()->id);
 
             $agent = new Agent();
+
+
+            if($request->session == 1){
+                $request->session()->put('session_lifetime', 10080);
+                $request->session()->regenerate();
+            }
 
             $browser = $agent->browser();
 

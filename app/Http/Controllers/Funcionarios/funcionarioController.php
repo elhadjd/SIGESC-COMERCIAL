@@ -89,7 +89,7 @@ class funcionarioController extends Controller
             'phone' => $request->phone,
             'user_id' => $request->user['id'],
             'celular' => $request->celular,
-            'workers_department_id' => $request->workers_department_id['id'],
+            'workers_department_id' => $request->workers_department_id,
             'manager' => $request->manager['id'],
             'trainer' => $request->trainer['id'],
             'hourWork' => $request->hourWork,

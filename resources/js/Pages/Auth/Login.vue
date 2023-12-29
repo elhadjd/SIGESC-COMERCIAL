@@ -35,7 +35,7 @@
                 </div>
 
                 <div class='checkbox'>
-                    <input type="checkbox" name="checkbox" id="checkbox" />
+                    <input type="checkbox" v-model="form.session" name="checkbox" id="checkbox" />
                     <label htmlFor="checkbox">Permanece connectado por uma semana</label>
                 </div>
                 <div class='buttons'>
@@ -73,7 +73,8 @@ const form = useForm({
     email: null,
     password: null,
     path: window.location.pathname,
-    locale: []
+    locale: [],
+    session: false
 });
 const toast = useToast();
 const connection = ref({

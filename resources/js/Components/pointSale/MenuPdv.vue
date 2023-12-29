@@ -8,7 +8,7 @@
     <div class="Header">
       <div class="Header-left">
         <div><h2>{{$t('apps.pdvName')}}</h2></div>
-        <div v-if="user.roles[0]?.name == 'Admin'">
+        <div v-if="user.roles?.name == 'Admin'">
           <button @click="$emit('CriarCaixa')">{{$t('words.new')+" PDV"}}</button>
         </div>
       </div>
@@ -33,7 +33,7 @@
                             <div @click="$emit('sessao', item.id)">{{$t('words.sessions')}}</div>
                             <div
                                 @click="
-                                user.roles[0]?.name == 'Admin'
+                                user.roles?.name == 'Admin'
                                 ? $emit('definicaoCaixa', item)
                                 : $emit('message', 'info', 'Usuario sem acesso')">{{$t('words.definition')}}</div>
                         </div>
@@ -51,7 +51,7 @@
                     </div>
                     <div v-if="item.state == 'Aberto'">
                         <button
-                            @click="user.roles[0]?.name == 'Admin' ? showCash(item.session[0].id)
+                            @click="user.roles?.name == 'Admin' ? showCash(item.session[0].id)
                                 : $emit('message', 'info', 'Usuario sem acesso')" class="showCash" type="button">
                             {{$t('words.see')}}
                             <FontAwesomeIcon icon="fa fa-eye" />

@@ -170,7 +170,7 @@ const selectManager = ((manager)=>{
 
 const filterUsersAdmin = ((users)=>{
     const filterUser = users.filter((user)=>{
-        return user.user.roles[0].name == 'Admin'
+        return user.roles.name == 'Admin'
     })
 
     managers.value = filterUser
