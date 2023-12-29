@@ -18,7 +18,7 @@
         </div>
 
         <div class="list_items">
-            <span class="rows" @click=" user.roles[0]?.name != 'Admin' ? message() : $emit('AbrirCaixa', item.id)"
+            <span class="rows" @click=" user.roles?.name != 'Admin' ? message() : $emit('AbrirCaixa', item.id)"
                 v-for="item in sessoes" :key="item.id">
                 <div>
                     <strong>{{ "Sessões00" + item.id }}</strong>

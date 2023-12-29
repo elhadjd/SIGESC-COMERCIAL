@@ -101,6 +101,7 @@ Route::middleware('locale')->group(function(){
             Route::prefix('config')->group(function () {
                 Route::controller(configController::class)->group(function () {
                     Route::get('Home', 'Index')->name('configuracoes');
+                    Route::get('user/roles','getRoles');
                     Route::get('getConfig/{locale}', 'getConfig');
                     Route::post('newUser', 'newUser');
                     Route::get('users', 'users');

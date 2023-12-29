@@ -30,7 +30,7 @@
                   <span>{{user.email}}</span>
                   <span>{{user.name}}</span>
                   <span>{{user.surname}}</span>
-                  <span>{{user.roles[0]?.name}}</span>
+                  <span>{{user.roles?.name}}</span>
                   <span>{{user.state}}</span>
                </div>
             </div>

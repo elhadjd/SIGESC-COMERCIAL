@@ -48,12 +48,13 @@
                                 <input :disabled="!EstadoForm" type="text" v-model="user.surname" id="apelido"/>
                             </div>
                             <div class="form-Control">
+
                                 <label for="level">{{$t('words.level')}}</label>
-                                <select :disabled="!EstadoForm" id="level" v-model="user.nivel">
-                                    <option v-if="!user.roles.length" value="">Seleciona o nivel de acesso</option>
-                                    <!-- <option v-for="role in roles" :key="role.id" :selected="role.id" :value="role.id">{{ role.name }}</option> -->
-                                    <option :selected="user.roles[0].name == 'Admin'" value="admin">{{$t('words.admin')}}</option>
-                                    <option :selected="user.roles[0].name == 'User'" value="user">{{$t('words.user')}}</option>
+                                <select :disabled="!EstadoForm" id="level"  v-model="user.roles">
+                                    <option v-if="user.roles == null" value="">Seleciona o nivel de acesso</option>
+                                    <option v-for="role in roles" :key="role.id" :selected="role.id == user.roles.id" :value="role">{{ role.name }}</option>
+                                    <!-- <option :selected="user.roles.name == 'Admin'" value="admin">{{$t('words.admin')}}</option>
+                                    <option :selected="user.roles.name == 'User'" value="user">{{$t('words.user')}}</option> -->
                                 </select>
                             </div>
                         </div>
@@ -200,7 +201,7 @@ const InsertUser = ((route,User)=>{
         }
         emits('message',response.data.message,response.data.type)
     }).catch((erro) => {
-        emits('message','Aconteceu um no sistema por favor verifique as informações e tenta novament','error')
+        emits('message',erro.response.data.message,'error')
         console.log(erro);
     });
 })

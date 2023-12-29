@@ -89,6 +89,7 @@ class StartController extends Controller
             ]);
 
             $user = $company->users()->create([
+                'role_id'=>1,
                 'name' => $request->user['name'],
                 'surname' => $request->user['name'],
                 'email' => $request->user['email'],
@@ -97,8 +98,6 @@ class StartController extends Controller
                 'image' =>  $user_img,
                 'armagen_id' => $armagem->id
             ]);
-
-            $user->roles()->attach(Role::where('name', 'Admin')->first());
 
             $user->config()->create();
             $user->perfil()->create();

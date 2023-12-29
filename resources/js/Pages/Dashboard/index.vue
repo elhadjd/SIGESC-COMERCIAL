@@ -52,13 +52,10 @@ const props = defineProps({
   user: Object,
 });
 
-<<<<<<< HEAD
 const hasRole = computed(()=>{
-    return props.user.roles[0]?.name
+    return props.user.roles?.name
 });
-=======
 
->>>>>>> aa28a96f3c221233541d3a7b256a4b2b4382ad26
 
 const canvas = ref(null);
 const ctx = ref(null);
@@ -103,7 +100,7 @@ onMounted(() => {
     // canvas.value.addEventListener('mousemove', handleMouseMove);
     // window.addEventListener('resize', handleWindowResize);
     store.commit("publico/saveCompany", props);
-    // animate();te 
+    // animate();te
 });
 
 

@@ -41,7 +41,7 @@
                <div class="form-content">
                   <div class="form-Control">
                      <label for="department">{{$t('words.department')}}: </label>
-                     <input @click="DropShow('department')" type="text" name="department" id="department" :value="form.workers_department_id?.name" >
+                     <input @click="DropShow('department')" type="text" name="department" id="department" :value="form.department?.name" >
                      <div v-if="drop == 'department'" class="drop">
                         <span @click="selectDepartment(department)" v-for="department in departments" :key="department.id">
                         {{department.name}}
@@ -53,7 +53,7 @@
                      <input @click="DropShow('manager')" type="text" name="manager" id="manager" :value="form.manager?.surname" >
                      <div v-if="drop == 'manager'" class="drop">
                         <span @click="selectManager(manager)" v-for="manager in users" :key="manager.id">
-                        {{manager.nivel != 'admin' ? '' : manager.surname}}
+                        {{manager.roles.name != 'Admin' ? '' : manager.surname}}
                         </span>
                      </div>
                   </div>
@@ -173,7 +173,7 @@ const filterDepartments = (()=>{
         return department.id == form.value.workers_department_id
     })
     if (filter.length>0) {
-        return form.value.workers_department_id = filter[0]
+        return form.value.workers_department_id = filter[0].id
     }
 })
 
@@ -185,7 +185,8 @@ const DropShow = ((type)=>{
 })
 
 const selectDepartment = ((department)=>{
-    form.value.workers_department_id = department
+    form.value.department = department
+    form.value.workers_department_id = department.id
     return drop.value = ""
 })
 

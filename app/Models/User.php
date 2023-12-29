@@ -23,6 +23,7 @@ class User extends Authenticatable
         'company_id',
         'image',
         'state',
+        'role_id',
         'surname',
     ];
 
@@ -66,8 +67,7 @@ class User extends Authenticatable
         return $this->hasOne(userLanguage::class,'user_id');
     }
 
-<<<<<<< HEAD
-    /* Role  */
+// Role  */
 
     public function hasRole($role)
     {
@@ -76,7 +76,7 @@ class User extends Authenticatable
 
     public function roles()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsTo(Role::class,'role_id');
     }
 
     /*  Permission */
@@ -100,11 +100,8 @@ class User extends Authenticatable
         return $this->permissions()->where('name', $permission)->exists();
     }
 
-}
-=======
     function PointOfSale() :HasOne {
         return $this->hasOne(caixa::class,'user_id');
     }
 
 }
->>>>>>> aa28a96f3c221233541d3a7b256a4b2b4382ad26
