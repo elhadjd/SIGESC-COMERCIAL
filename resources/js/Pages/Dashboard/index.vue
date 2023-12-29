@@ -55,10 +55,6 @@ const props = defineProps({
 const hasRole = computed(()=>{
     return props.user.roles?.name
 });
-<<<<<<< HEAD
-=======
-
->>>>>>> b922e7c81b9688067447e0372b23030ab48247b1
 
 const canvas = ref(null);
 const ctx = ref(null);

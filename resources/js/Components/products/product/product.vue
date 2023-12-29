@@ -15,13 +15,8 @@
     <div class="Formulario">
       <form class="FormNewProd">
         <div class="guard_descart">
-<<<<<<< HEAD
           <div  v-if="user.roles[0]?.name == 'Admin'" class="p-1 border-bottom">
             <div class="bannerButtons" v-if="product.data.estado != 1">
-=======
-          <div v-if="user.roles?.name == 'Admin'" class="p-1 border-bottom">
-            <div class="bannerButtons justify-between" v-if="product.data.estado != 1">
->>>>>>> b922e7c81b9688067447e0372b23030ab48247b1
                 <MessagesToast v-if="news.state" @closeMessage="news.state = false" :message="news"/>
                 <div>
                     <ButtonVue v-for="item in movementsStockProduct.TypesMovements" :className="''" :type="'button'" :key="item.id" @click="moveProductStock(item)">
