@@ -21,6 +21,8 @@ class LoginController extends Controller
     }
     public function login(Request $request,$locale = null)
     {
+        // return encrypt('2043-12-26');
+
         $request->validate([
             'email' => 'required|email',
             'password' => 'required'

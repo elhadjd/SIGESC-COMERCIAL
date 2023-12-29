@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('email')->nullable()->unique();
             $table->string('image')->nullable();
-            $table->enum('nivel',['user','admin'])->default('admin');
+            // $table->enum('nivel',['user','admin'])->default('admin');
             $table->string('password')->nullable();
             $table->string('password_invoice_cancel')->nullable();
             $table->enum('state',['active','inactive'])->default('active');

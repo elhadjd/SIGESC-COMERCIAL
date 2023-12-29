@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\classes\uploadImage;
 use App\Models\app;
 use App\Models\company;
+use App\Models\Role;
 use App\Models\type_license;
 use App\Models\User;
 use Carbon\Carbon;
@@ -90,6 +91,9 @@ class StartController extends Controller
                 'image' =>  $user_img,
                 'armagen_id' => $armagem->id
             ]);
+
+            $user->roles()->attach(Role::where('name', 'Admin')->first());
+
             $user->config()->create();
             $user->perfil()->create();
 

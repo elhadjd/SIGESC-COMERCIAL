@@ -54,7 +54,7 @@ class productsController extends Controller
     public function create(produtos $produtos,$name=null)
     {
 
-        if (Auth::user()->nivel == 'admin') {
+        if (Auth::user()->hasRole('Admin')) {
             $product = $produtos::create([
                 'nome'=> $name,
                 'company_id' => Auth::user()->company_id
@@ -63,7 +63,7 @@ class productsController extends Controller
             return $this->show(produtos::find($product->id));
         }
 
-        return $this->RespondWarn('Usuario sem acesso !!!');
+        return $this->RespondWarn('Apenas o Administrador pode criar produto');
     }
 
     public function registerActivity($body)
@@ -129,7 +129,7 @@ class productsController extends Controller
         ]);
         $data = $request->data;
         unset($data['id'], $data['category'], $data['movement_stock'], $data['fornecedor'], $data['updated_at'], $data['created_at']);
-        if (Auth::user()->nivel == 'admin') {
+        if (Auth::user()->hasRole('Admin')) {
 
             if ($data['imagem'] != null) {
                 $data['image'] = $image->Upload("/produtos/image/", $data['imagem'], $product);
@@ -180,7 +180,7 @@ class productsController extends Controller
         $request->validate([
             'image' => 'required',
         ]);
-        if (Auth::user()->nivel != 'admin') {
+        if (!Auth::user()->hasRole('Admin')) {
             return $this->RespondInfo('Usuário sem acesso');
         }
 

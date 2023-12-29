@@ -264,7 +264,7 @@ class OrdersController extends Controller
 
     public function getOrders($locale,$order=null, $column=null)
     {
-        if (Auth::user()->nivel != 'admin') {
+        if (Auth::user()->hasRole('Admin')) {
             return false;
         } else {
             if ($column == 'TotalMaior') {

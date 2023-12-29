@@ -50,9 +50,10 @@
                             <div class="form-Control">
                                 <label for="level">{{$t('words.level')}}</label>
                                 <select :disabled="!EstadoForm" id="level" v-model="user.nivel">
-                                    <option v-if="user.nivel == '' || user.nivel == null" value="">Seleciona o nivel de acesso</option>
-                                    <option :selected="user.nivel == 'admin'" value="admin">{{$t('words.admin')}}</option>
-                                    <option :selected="user.nivel == 'user'" value="user">{{$t('words.user')}}</option>
+                                    <option v-if="!user.roles.length" value="">Seleciona o nivel de acesso</option>
+                                    <!-- <option v-for="role in roles" :key="role.id" :selected="role.id" :value="role.id">{{ role.name }}</option> -->
+                                    <option :selected="user.roles[0].name == 'Admin'" value="admin">{{$t('words.admin')}}</option>
+                                    <option :selected="user.roles[0].name == 'User'" value="user">{{$t('words.user')}}</option>
                                 </select>
                             </div>
                         </div>
@@ -109,9 +110,11 @@ import {ref,reactive, onMounted} from 'vue';
 import { getImages } from '@/composable/public/getImages';
 import {useUploadImage} from '@/composable/public/UploadImage'
 import { serviceMessage } from '@/composable/public/messages';
+
 const props = defineProps({
     SingleUser: Object
 })
+
 const {showMessage} = serviceMessage()
 const user = ref(props.SingleUser);
 const emits = defineEmits(['message','ListUsers']);
@@ -120,6 +123,7 @@ const StateUpdatePwd = ref(false)
 const element = ref({
     img:'/login/image/'+user.value.image
 })
+
 const {onFileChange,createImg} = useUploadImage(user.value,element.value)
 const {getImage,RemoveImage} = getImages(element.value);
 const senha = reactive({
@@ -134,11 +138,22 @@ const EmitirMessagem = ((message,tipo)=>{
 const EstadoForm = ref(true)
 
 onMounted(async ()=>{
+    await getRoles()
     await getImage()
     step.value = 'password'
     if (user.value?.perfil == null) user.value.perfil = []
     if (user.value?.config == null) user.value.config = []
 })
+
+const roles = ref([]);
+
+async function getRoles() {
+    axios.get('user/roles').then((response)=>{
+        roles.value = response.data
+    }).catch((err)=>{
+        console.log(err)
+    })
+}
 
 function handleInputs(e) {
     user.value.perfil[e.target.id] = e.target.value

@@ -8,7 +8,7 @@
     <div class="Header">
       <div class="Header-left">
         <div><h2>{{$t('apps.pdvName')}}</h2></div>
-        <div v-if="user.nivel == 'admin'">
+        <div v-if="user.roles[0]?.name == 'Admin'">
           <button @click="$emit('CriarCaixa')">{{$t('words.new')+" PDV"}}</button>
         </div>
       </div>
@@ -26,16 +26,16 @@
                             <i @click="OptionCaixas(item.id)" class="fa fa-bars"></i>
                         </div>
                         <div v-if="OptionCaixa == item.id" class="options">
-                            <div @click="user.nivel == 'admin'
+                            <div @click="roles[0]?.name== 'Admin'
                                     ? showOrders(item.session[0].id) : $emit('message', 'info', 'Usuario sem acesso')">
                                 {{$t('words.order')+'s'}}
                             </div>
                             <div @click="$emit('sessao', item.id)">{{$t('words.sessions')}}</div>
                             <div
                                 @click="
-                                user.nivel == 'admin'
-                                    ? $emit('definicaoCaixa', item)
-                                    : $emit('message', 'info', 'Usuario sem acesso')">{{$t('words.definition')}}</div>
+                                user.roles[0]?.name == 'Admin'
+                                ? $emit('definicaoCaixa', item)
+                                : $emit('message', 'info', 'Usuario sem acesso')">{{$t('words.definition')}}</div>
                         </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                     </div>
                     <div v-if="item.state == 'Aberto'">
                         <button
-                            @click=" user.nivel == 'admin' ? showCash(item.session[0].id)
+                            @click="user.roles[0]?.name == 'Admin' ? showCash(item.session[0].id)
                                 : $emit('message', 'info', 'Usuario sem acesso')" class="showCash" type="button">
                             {{$t('words.see')}}
                             <FontAwesomeIcon icon="fa fa-eye" />

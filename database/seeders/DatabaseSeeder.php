@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        (new \Database\Seeders\RoleSeeder())->run();
         (new \Database\Seeders\MovementTypeSeeder())->run();
         (new \Database\Seeders\companySeeder())->run();
         (new \Database\Seeders\AppSeeder())->run();

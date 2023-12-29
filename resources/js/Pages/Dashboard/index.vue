@@ -17,10 +17,11 @@
     <div class="Container">
       <div class="body">
         <Link
-        class="box"
+          class="box"
           v-for="app,i in props.data.license.app_license"
           :key="i"
           :href="route(app.apps.href)"
+
         >
           <span :style="`--i:${i};`">
             <img :src="'/app/image/' + app.apps.image" alt="" />
@@ -41,7 +42,7 @@ import Index from '../../Layouts/index.vue'
 import { Link } from "@inertiajs/vue3";
 import { Inertia } from "@inertiajs/inertia";
 import {getImages} from '@/composable/public/getImages'
-import { ref, onMounted ,reactive} from 'vue';
+import { ref, onMounted ,reactive, computed} from 'vue';
 import newsMessagesVue from "@/Layouts/news/newsMessages.vue";
 const store = useStore();
 const MostrarDrop = ref(false);
@@ -51,8 +52,9 @@ const props = defineProps({
   user: Object,
 });
 
-
-console.log(props);
+const hasRole = computed(()=>{
+    return props.user.roles[0]?.name
+});
 
 const canvas = ref(null);
 const ctx = ref(null);
@@ -90,7 +92,7 @@ onMounted(() => {
     // canvas.value.addEventListener('mousemove', handleMouseMove);
     // window.addEventListener('resize', handleWindowResize);
     store.commit("publico/saveCompany", props);
-    // animate();
+    // animate();te 
 });
 
 

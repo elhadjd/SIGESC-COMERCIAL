@@ -46,7 +46,7 @@ class AnalisOrderController extends Controller
 
     public function analisDay($day)
     {
-        if (Auth::user()->nivel =='admin') {
+        if (Auth::user()->hasRole('Admin')) {
             $dias = $day;
             $resul = [];
             $orders = [];

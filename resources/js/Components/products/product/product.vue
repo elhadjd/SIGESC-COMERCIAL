@@ -15,7 +15,7 @@
     <div class="Formulario">
       <form class="FormNewProd">
         <div class="guard_descart">
-          <div  v-if="user.nivel == 'admin'" class="p-1 border-bottom">
+          <div  v-if="user.roles[0]?.name == 'Admin'" class="p-1 border-bottom">
             <div class="bannerButtons" v-if="product.data.estado != 1">
                 <MessagesToast v-if="news.state" @closeMessage="news.state = false" :message="news"/>
                 <div>
@@ -35,7 +35,7 @@
         <div class="form-container">
             <div class="Headers">
                 <div class="drop dropdown-toggle" @click="stateDrop = stateDrop == 'mov' ? '' : 'mov'"><i class="fa fa-bars"></i></div>
-                <div v-if="user.nivel == 'admin'" class="movements" :class="stateDrop == 'mov' ? 'active' : ''">
+                <div v-if="user.roles[0]?.name == 'Admin'" class="movements" :class="stateDrop == 'mov' ? 'active' : ''">
                     <div v-for="item in product.movementsProduct.data"
                         :key="item.id" class="BotaoMuvementos">
                         <div @click="ShowMovements(item)" class="view_muvementos">
@@ -78,7 +78,7 @@
                 <bannerProductVue :listCategories="categories.listCategories" :itemTypeProps="itemType"/>
             </div>
             <div class="ContainerFooter">
-                <InfoProd v-if="user.nivel == 'admin'"/>
+                <InfoProd v-if="user.roles[0]?.name == 'Admin'"/>
             </div>
         </div>
       </form>
