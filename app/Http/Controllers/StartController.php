@@ -27,31 +27,36 @@ class StartController extends Controller
         return Inertia::render('Start/Start');
     }
 
-    public function saveCompany(Request $request)
+    public function saveCompany(Request $request,$locale)
     {
+        app()->setLocale($locale);
         $request->validate([
             'company.name' => 'required|string',
             'company.nif' => 'required|unique:companies,nif',
             'company.phone' => 'required|numeric',
+            'company.activity.name'=>'required',
             'user.name' => 'required|string',
             'user.email' =>  'required|unique:users,email',
             'user.phone' => 'required',
             'user.password' => 'required|min:6|max:50',
             'totals.month' => 'required||numeric',
-            'license' => 'required'
+            'license' => 'required',
+            'company.currency_company.currency' => 'required',
+            'company.currency_company.code' => 'required',
+            'user.user_language.code'=>'required'
         ]);
 
-        $response = Http::withHeaders([
-            'Authorization' => 'oEn34JE6gDfVuZlR6QRWX8Q2byn9repjspVFWoz2SZdncBYePGc7XoKZ8Noo',
-        ])->post('https://bosgc.sisgesc.net/api/SaveCompany',$request);
+        // $response = Http::withHeaders([
+        //     'Authorization' => 'oEn34JE6gDfVuZlR6QRWX8Q2byn9repjspVFWoz2SZdncBYePGc7XoKZ8Noo',
+        // ])->post('https://bosgc.sisgesc.net/api/SaveCompany',$request);
 
-       if ($response->successful()) {
+        // if ($response->successful()) {
             $company = $this->saveData($request,new uploadImage());
             return $this->ValidateLicense($request->license,$company,$request->user);
-        } else {
-            $errorMessage = $response->body();
-            return $this->RespondError($errorMessage);
-        }
+        // } else {
+        //     $errorMessage = $response->body();
+        //     return $this->RespondError($errorMessage);
+        // }
     }
 
     public function saveData($request,$uploadImage)
@@ -61,23 +66,24 @@ class StartController extends Controller
             if ($request->company['imagem'] != null) {
                 $company_img = $uploadImage->Upload('/company/image/',$request->company['imagem']);
             } else {
-                $company_img = 'produto-sem-imagem.png';
+                $company_img = 'company.png';
             }
             if ($request->user['imagem'] != null) {
                 $user_img = $uploadImage->Upload('/login/image/',$request->user['imagem']);
             } else {
-                $user_img = 'produto-sem-imagem.png';
+                $user_img = 'user-286.png';
             }
 
             $company = company::create([
                 'nif' => $request->company['nif'],
                 'phone' => $request->company['phone'],
+                'email'=>$request->user['email'],
                 'name' => $request->company['name'],
                 'activity_type_id' => $request->company['activity']['id'],
                 'country' => $request->company['country']['name'],
                 'image' => $company_img
             ]);
-
+            $company->currencyCompany()->create($request->company['currency_company']);
             $armagem = $company->armagens()->create([
                 'name' => $request->company['name']
             ]);
@@ -96,7 +102,7 @@ class StartController extends Controller
 
             $user->config()->create();
             $user->perfil()->create();
-
+            $user->userLanguage()->create($request->user['user_language']);
             $data = $company;
         });
         return $data;
@@ -117,7 +123,7 @@ class StartController extends Controller
             'state'=>'active'
        ]);
         foreach($license as $app) {
-            $select = app::where('name',str_replace(' ','',$app['label']))->first();
+            $select = app::where('href',str_replace(' ','',$app['label']))->first();
             $crateLicense->app_license()->create([
                 'company_id' => $company->id,
                 'app_id' => $select->id
@@ -143,7 +149,7 @@ class StartController extends Controller
             'browser' => $browser,
         ]);
 
-        return $this->RespondSuccess('Dados registrados com sucesso',$company);
+        return $this->RespondSuccess(__('Operation completed successfully'),$company);
     }
 
     public function ValidateLicenseFree($license,$company,$user)
@@ -181,7 +187,7 @@ class StartController extends Controller
             'ip_address' => request()->ip(),
             'browser' => $browser,
         ]);
-        return $this->RespondSuccess('Dados registrados com sucesso',$company);
+        return $this->RespondSuccess(__('Operation completed successfully'),$company);
     }
 
     public function welcome(company $company)
@@ -199,20 +205,20 @@ class StartController extends Controller
        $data = json_decode($response);
 
         if (!$data->data) {
-            return $this->RespondError('Cliente não encontrado');
+            return $this->RespondError(__('Customer not found'));
         }
 
         $company = $companies->where('nif',$data->data->nif)->first();
 
-        if (!$company) return $this->RespondError('Aconteceu um erro no sistema por favor tenta novamente');
-        if ($company->license->state == 'active') return $this->RespondError('Esta empresa esta com uma licença ativa');
+        if (!$company) return $this->RespondError(__('A server error occurred'));
+        if ($company->license->state == 'active') return $this->RespondError(__('This company has an active license'));
 
         $company->license->state = 'active';
         $company->license->to = $data->data->license->to;
         $company->license->from = $data->data->license->from;
         $company->license->hash = Crypt::encrypt($data->data->license->to);
 
-        if (!$company->license->save()) return $this->RespondError('Erro ao ativar a licença');
-        return $this->RespondSuccess('Licença ativada com sucesso');
+        if (!$company->license->save()) return $this->RespondError(__('Error activating license, contact administrator'));
+        return $this->RespondSuccess(__('Congratulations, your license has been successfully activated'));
     }
 }

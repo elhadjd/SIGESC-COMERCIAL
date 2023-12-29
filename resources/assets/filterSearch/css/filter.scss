@@ -102,8 +102,9 @@
 }
 /* p-multiselect p-component p-inputwrapper p-multiselect-chip p-inputwrapper-filled p-inputwrapper-focus p-overlay-open */
 .TipoFiltro{
-    width: 25%;
-    border: 1px solid #017e84;
+    min-width: 20%;
+    width: auto !important;
+    border: 1px solid var(--bgButtons);
     border-bottom: none;
     padding: 1px;
 }

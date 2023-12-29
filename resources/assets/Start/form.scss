@@ -31,6 +31,13 @@
 	@include form-control;
     align-items: unset;
     @include dopDown;
+    .drop{
+        width: 100% !important;
+        margin-left: 0px !important;
+        input{
+            width: 100%;
+        }
+    }
     .form-image{
         height: 100px !important;
         img{

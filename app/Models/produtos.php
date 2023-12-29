@@ -21,6 +21,7 @@ class produtos extends Model
         'company_id',
         'nome',
         'image',
+        'description',
         'codego',
         'category_product_id',
         'product_type_id',

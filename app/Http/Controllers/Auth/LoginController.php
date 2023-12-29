@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Crypt;
 
 class LoginController extends Controller
 {
@@ -21,20 +22,20 @@ class LoginController extends Controller
     }
     public function login(Request $request,$locale = null)
     {
-        // return encrypt('2043-12-26');
+        // return Crypt::encrypt('2024-12-14');
 
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
+            'email' => ['required','email'],
+            'password' => ['required']
         ]);
-        $credential = [
+        $credentials = [
             'email' => $request->email,
-            "password" => $request->password,
+            'password'=> $request->password,
         ];
 
         // return Hash::make($request->password);
 
-        if (Auth::attempt($credential)) {
+        if (Auth::attempt(['email'=>$request->email,'password'=>$request->password])) {
 
             $user = User::find(Auth::user()->id);
 
@@ -47,12 +48,12 @@ class LoginController extends Controller
                 'ip_address' => $request->ip(),
                 'browser' => $browser,
             ]);
-
+            $request->session()->regenerate();
             return $this->UrlGuard($request,$locale);
 
         } else {
             return Inertia::render('Auth/Login', [
-                'erro' => "dados do usuario incorrecto"
+                'erro' => __('data incorrect.'),
             ]);
         }
     }
@@ -60,7 +61,8 @@ class LoginController extends Controller
     public function UrlGuard(Request $request)
     {
         $rota = str_replace('/','',$request->path);
-        if ($request->locale) {
+        $userLanguage = $request->user()->userLanguage;
+        if ($request->locale && $userLanguage == null) {
             $insertLang = new configController;
             $locale = [
                 'code'=>$request->locale['local'],
@@ -72,7 +74,7 @@ class LoginController extends Controller
         if ($rota != "" && $rota != "authlogin") {
             return Redirect::route($rota);
         } else {
-            return to_route('dashboard');
+            return redirect()->intended('/');
         }
     }
 

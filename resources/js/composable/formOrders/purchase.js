@@ -2,35 +2,37 @@ import useEventsBus from "@/Eventbus";
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
 import { reactive } from "vue";
+import { useI18n } from "vue-i18n";
 export const form = ((emits,print,Invoice,statePayment,loading,modalConfirm)=>{
     const toast = useToast()
+    const {t} = useI18n()
     const {emit} = useEventsBus()
     const general = reactive({
         buttons: [
             {
-                name: "Confirmar",
+                name: t('words.confirm'),
                 state: true,
                 function: submitOrder
             },
             {
-                name: "Adicionar pagamento",
+                name:`${t('words.added')} ${t('words.payment')}`,
                 function: addPayment,
                 state: true
             },
             {
-                name: "Imprimir",
+                name: t('words.print'),
                 class: 'discartar',
                 function: printOrder,
                 state: true
             },
             {
-                name: "Anular",
+                name: t('words.annul'),
                 class: 'discartar',
                 state: true,
                 function: CancelPurchase,
             },
             {
-                name: "Fechar",
+                name: t('words.close'),
                 function: Close,
                 class: 'discartar',
                 state: true
@@ -75,70 +77,70 @@ export const form = ((emits,print,Invoice,statePayment,loading,modalConfirm)=>{
             },
         },
         form:{
-            title: 'Orden de compra',
+            title:  t('words.order'),
             relationType: 'Fornecedor',
             inputs:[
                 {
                   product: true,
                   name: 'name',
                   type: 'text',
-                  label:'Produto',
+                  label: t('words.article'),
                   class: 'nameItem',
                   disabled: true
                 },
                 {
                     name: 'armagen',
                     type: 'select',
-                    label:'Armagen',
+                    label: t('words.store'),
                     class: 'nameItem',
                     disabled: false,
                   },
                 {
                     name: 'quantity',
                     type: 'number',
-                    label:'quantidade',
+                    label: t('words.quantity'),
                     class: 'quantity',
                     disabled: false
                 },
                 {
                   name: 'priceCost',
                   type: 'number',
-                  label:'Preço de compra',
+                  label: t('words.price'),
                   class: 'priceCost',
                   disabled: false
                 },
                 {
-                    name: 'Discount',
+                    name: 'discount',
                     type: 'number',
-                    label:'Disconto',
+                    label: t('words.discount'),
                     class: 'discount',
                     disabled: false
                 },
                 {
                     name: 'spent',
                     type: 'number',
-                    label:'Gasto',
+                    label: t('words.expenses'),
                     class: 'spent',
                     disabled: false
                 },
                 {
                     name: 'tax',
                     type: 'number',
-                    label:'Iva',
+                    label: t('words.tax'),
                     class: 'tax',
                     disabled: false
                 },
                 {
                     name: 'finalPrice',
                     type: 'number',
-                    label:'Preço final',
+                    label:`${t('words.price')} ${t('words.final')}`,
                     class: 'finalPrice',
                     disabled: true
                 },
                 {
                   name: 'totalItem',
                   type: 'number',
-                  label:'Total',
+                  label: t('words.total'),
                   class: 'totalItem',
                   disabled: true
                 }
@@ -148,24 +150,24 @@ export const form = ((emits,print,Invoice,statePayment,loading,modalConfirm)=>{
 
                 totals: [
                     {
-                        title: 'Total da mercadoria',
+                        title: `${t('words.total')} ${t('words.of')} ${t('words.merchandise')}`,
                         amount: 'totalMerchandise',
                     },
                     {
-                        title: 'Total de disconto',
+                        title: `${t('words.total')} ${t('words.of')} ${t('words.discount')}`,
                         amount: 'totalDiscount',
                     },
                     {
-                        title: 'Total de Gasto',
+                        title: `${t('words.total')} ${t('words.of')} ${t('words.expenses')}`,
                         amount: 'TotalSpending',
                     },
                     {
-                        title: 'Total de Iva',
+                        title: `${t('words.total')} ${t('words.of')} ${t('words.tax')}`,
                         amount: 'totalTax',
                     }
                 ],
                 total: {
-                    title: 'Total da Compra',
+                    title: `${t('words.total')} ${t('words.of')} ${t('words.order')}`,
                     amount: 'total',
                 },
                 restPayable: 'restPayable'

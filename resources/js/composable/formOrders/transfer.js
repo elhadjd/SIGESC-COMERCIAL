@@ -1,30 +1,32 @@
 import useEventsBus from "@/Eventbus";
 import axios from "axios";
 import { reactive } from "vue";
+import { useI18n } from "vue-i18n";
 
 export const form = ((emits,store,print,order,loading)=>{
     const {emit} = useEventsBus()
+    const {t} = useI18n()
     const general = reactive({
         buttons: [
             {
-                name: "Confirmar",
+                name: t('words.confirm'),
                 state: true,
                 function: submitOrder
             },
             {
-                name: "Anular",
+                name: t('words.annul'),
                 class: 'discartar',
                 state: true,
                 function: CancelTransfer,
             },
             {
-                name: "Imprimir",
+                name: t('words.print'),
                 class: 'discartar',
                 function: printOrder,
                 state: true
             },
             {
-                name: "Fechar",
+                name: t('words.close'),
                 function: Close,
                 class: 'discartar',
                 state: true
@@ -68,49 +70,49 @@ export const form = ((emits,store,print,order,loading)=>{
                   product: true,
                   name: 'name',
                   type: 'text',
-                  label:'Nome do produto',
+                  label:t('words.article'),
                   class: 'nameItem',
                   disabled: true
                 },
                 {
                   name: 'armagen',
                   type: 'select',
-                  label:'Armagen',
+                  label:t('words.store'),
                   class: 'nameItem',
                   disabled: false,
                 },
                 {
                     name: 'quantity',
                     type: 'number',
-                    label:'Quantidade',
+                    label:t('words.quantity'),
                     class: 'quantity',
                     disabled: false
                   },
                 {
                   name: 'priceSold',
                   type: 'number',
-                  label:'Preço',
+                  label:t('words.price'),
                   class: 'priceSold',
                   disabled: false
                 },
                 {
                   name: 'spent',
                   type: 'number',
-                  label:'Gasto',
+                  label:t('words.expenses'),
                   class: 'spent',
                   disabled: false
                 },
                 {
                     name: 'final_price',
                     type: 'number',
-                    label:'Preço final',
+                    label:`${t('words.price')} ${t('words.final')}`,
                     class: 'final_price',
                     disabled: true
                 },
                 {
                   name: 'total',
                   type: 'number',
-                  label:'Total',
+                  label:t('words.total'),
                   class: 'total',
                   disabled: true
                 }
@@ -119,16 +121,16 @@ export const form = ((emits,store,print,order,loading)=>{
             totalOrder:{
                 totals: [
                     {
-                        title: 'Total da mercadoria',
+                        title: `${t('words.total')} ${t('words.of')} ${t('words.merchandise')}`,
                         amount: 'totalMerchandise',
                     },
                     {
-                        title: 'Total de gastos',
+                        title: `${t('words.total')} ${t('words.of')} ${t('words.expenses')}`,
                         amount: 'total_spent',
                     }
                 ],
                 total: {
-                    title: 'Total da transferencia',
+                    title:  `${t('words.total')} ${t('words.of')} ${t('words.transfer')}`,
                     amount: 'total',
                 }
             }
@@ -165,7 +167,7 @@ export const form = ((emits,store,print,order,loading)=>{
         });
     }
     function Close() {
-        emits('modulo','Transferencias')
+        emits('modulo',t('words.transfer'))
     }
 
     return {general,CancelTransfer,Close,printOrder}

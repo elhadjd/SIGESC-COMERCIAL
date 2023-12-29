@@ -12,16 +12,16 @@
             style="height: 6.5%" />
         <div class="TabelaBaixo">
             <analis-orders
-                v-if="form_faturacao === 'Paineis'"
+                v-if="form_faturacao === $t('words.panel')"
                 :prefix="'analis'"/>
             <Pagamento
                 @message="message"
-                v-if="form_faturacao === 'Pagamentos'"/>
+                v-if="form_faturacao === $t('words.payment')"/>
             <Produtos
                 @message="message"
-                v-if="form_faturacao === 'Produtos'" />
+                v-if="form_faturacao === $t('words.article')" />
             <credits
-                v-if="form_faturacao === 'Notas de credito'"
+                v-if="form_faturacao === $t('words.credit')"
                 @fatura="ShowInvoice"/>
             <NewOrder
                 :order="Invoice"
@@ -32,19 +32,19 @@
             <ListInvoices
                 @message="message"
                 @fatura="ShowInvoice"
-                v-if="form_faturacao === 'Ordens'" />
+                v-if="form_faturacao === $t('words.order')" />
             <clients
                 @message="message"
                 @newClient="newClient"
-                v-if="form_faturacao === 'Clientes'"/>
+                v-if="form_faturacao === $t('words.client')"/>
             <NewClient
                 @message="message"
-                @close="form_faturacao = 'Clientes'"
+                @close="form_faturacao = $t('words.client')"
                 :dataClient="dataClient"
                 v-if="form_faturacao === 'newClient'"/>
             <suppliers
                 @message="message"
-                v-if="form_faturacao === 'Fornecedores'"/>
+                v-if="form_faturacao === $t('words.provider')"/>
             <invoice
                 v-if="print" @CloseModal="print = false"
                 :general="general" :order="Invoice"/>
@@ -72,7 +72,8 @@ import { useToast } from 'primevue/usetoast';
 import {form} from '@/composable/formOrders/facturation'
 import analisOrders from '@/Components/charts/index.vue'
 import invoice from '@/Layouts/OrdersForm/invoice/index.vue'
-
+import { useI18n } from 'vue-i18n';
+const {t} = useI18n()
 const toast = useToast()
 const emits = defineEmits(['message','stateFormOrder']);
 const props = defineProps({ dados: Object });
@@ -83,7 +84,7 @@ const modalConfirm = ref({
     state: null,
     message: null,
 })
-const form_faturacao = ref("Paineis");
+const form_faturacao = ref(t('words.panel'));
 const statePayment = ref(false)
 const Invoice = ref([])
 const relations = ref({

@@ -113,9 +113,9 @@ class stockController extends Controller
                 return $this->createMovement($request, $product, $quantityAfter);
             }
 
-            return $this->RespondError('Atencão a quantidade para retirar não pode ser maior do que a quantidade real !!!');
+            return $this->RespondError(__('Please note that the quantity to withdraw cannot be greater than the actual quantity'));
         }
-        return $this->RespondError('Este produto não tem stock nesta armagen selectionado !!!');
+        return $this->RespondError(__('This product is not in stock in this selected warehouse'));
     }
 
     public function createMovement($request, $product, $quantityAfter)
@@ -217,7 +217,7 @@ class stockController extends Controller
             ],
         );
 
-        return $this->RespondSuccess('Dados atualizado com sucesso');
+        return $this->RespondSuccess(__('Operation completed successfully'));
     }
 
 }

@@ -3,24 +3,24 @@
         <div class="Header">
             <div class="Header-left">
                 <span>
-                    <h2>Cliente com dividas</h2>
+                    <h2>{{$t('words.credit')}}</h2>
                 </span>
             </div>
             <div class="Header-right">
                 <span class="p-input-icon-right w-100">
                     <i class="fa fa-search"></i>
-                    <input @keyup="SearchInvoice" type="text" placeholder="Pesquisar...">
+                    <input @keyup="SearchInvoice" type="text" :placeholder="$t('words.search')">
                 </span>
             </div>
         </div>
         <div class="Container">
             <div class="Title">
-                <div>Cliente</div>
-                <div>Telefone</div>
-                <div>Morada</div>
+                <div>{{$t('words.client')}}</div>
+                <div>{{$t('words.phone')}}</div>
+                <div>{{$t('words.city')}}</div>
                 <div>Email</div>
-                <div class="TotalOrden">Total</div>
-                <div class="TotalOrden">Resto a pagar</div>
+                <div class="TotalOrden">{{$t('words.total')}}</div>
+                <div class="TotalOrden">{{$t('phrases.restToPay')}}</div>
             </div>
             <div class="list_items">
                 <div v-for="client in clients.list" :key="client.id" class="items">

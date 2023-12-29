@@ -3,7 +3,7 @@
     <div class="Header">
         <div class="Header-left">
             <span>
-                <h2>Pagamentos</h2>
+                <h2>{{$t('words.payment')}}s</h2>
             </span>
         </div>
         <div class="Header-right">
@@ -12,18 +12,18 @@
     </div>
     <div class="Container">
         <div class="Title">
-            <div>Numero da fatura</div>
-            <div>Usuario</div>
-            <div>Cliente</div>
-            <div>Data</div>
-            <div class="TotalOrden">Valor Pago</div>
-            <div class="TotalOrden">Total apos pagamento</div>
+            <div>{{$t('words.order')}}</div>
+            <div>{{$t('words.user')}}</div>
+            <div>{{$t('words.client')}}</div>
+            <div>{{$t('words.date')}}</div>
+            <div class="TotalOrden">{{$t('words.pay')}}</div>
+            <div class="TotalOrden">{{$t('words.missing')}}</div>
         </div>
         <div class="list_items">
             <div v-for="method in methods.list" :key="method.id" class="items">
 
                 <span @click="ShowOrder(method)">
-                    <div>{{method.name}}</div>
+                    <div>{{method.method_translate[0].translate}}</div>
                     <div>{{method.payments_purchases.length + ` Pagamento${method.payments_purchases.length >1 ? "s" : ""}`}}</div>
                 </span>
 

@@ -2,10 +2,10 @@
   <div>
     <Modal :SmsConfirm="SmsConfirm" @Confirme="Arquivado" @descartou="StateModal = false" v-if="StateModal"/>
     <section class="agrupar">
-        <span @click="state = !state" class="dropdown-toggle w-20">Ação</span>
+        <span @click="state = !state" class="dropdown-toggle w-20">{{$t('words.action')}}</span>
         <div>
             <div v-if="state" class="listGroup">
-                <span @click="deleteProduct">Apagar</span>
+                <span @click="deleteProduct">{{$t('words.delete')}}</span>
             </div>
         </div>
     </section>
@@ -30,7 +30,7 @@ const emits = defineEmits(['Voltar'])
 const state = ref(false)
 const {showMessage} = serviceMessage()
 const deleteProduct = (()=>{
-    if (product.value.data.qtd>0) {
+    if (product.value.data.stock_sum_quantity>0) {
         showMessage('Este produto não pode ser deletado','info');
     } else {
         StateModal.value = true

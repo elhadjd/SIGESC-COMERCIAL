@@ -2,7 +2,7 @@
     <div class="Contents">
         <i v-if="data.current_page>1"  @click="getPages(data.current_page-1)" class="fa fa-chevron-circle-left" aria-hidden="true"></i>
         <div v-for="item in data.links" :key="item.label" @click="data.current_page != item.label ? getPages(item.label):''" v-show="item.label != 'pagination.next' && item.label != 'pagination.previous'
-        && item.label != '&laquo; Previous' && item.label != 'Next &raquo;'">
+        && item.label != '' && item.label != ''">
             <span >{{item.label}}</span>
             <i v-if="loading == 'page'+item.label" class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
         </div>

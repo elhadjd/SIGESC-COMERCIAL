@@ -44,6 +44,7 @@
 </template>
 
 <script setup>
+import { serviceMessage } from "@/composable/public/messages";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import axios from "axios";
 import { computed, onMounted, reactive, ref } from "vue";
@@ -53,7 +54,7 @@ const company = computed(()=> store.state.publico.company);
 const user = computed(()=> store.state.publico.user);
 const product = computed(()=> store.getters['Product/product'])
 const list_price = ref([])
-
+const {showMessage} = serviceMessage()
 const form = ref({
   id: null,
   quantity: null,
@@ -73,19 +74,21 @@ function getProduct() {
     });
 }
 
-function AddListPrice() {
-  axios
+async function AddListPrice() {
+    await axios
     .post("/AddListPrice", { ...form.value })
     .then((response) => {
-      list_price.value = response.data.data.list_price
+        showMessage(response.data.message,response.data.type)
+        list_price.value = response.data.data.list_price
     })
     .catch((err) => {
-      console.log(err);
+        showMessage(err.response.data.message,'error')
+        console.log(err);
     });
 }
 
-function updateListPrice() {
-    axios.post(`/updateListPrice/${form.value.id}/${product.value.data.id}`,{...form.value})
+async function updateListPrice() {
+    await axios.post(`/updateListPrice/${form.value.id}/${product.value.data.id}`,{...form.value})
     .then((response) => {
         list_price.value = response.data.list_price
     }).catch((err) => {
@@ -97,7 +100,8 @@ async function deleteListPrice(id) {
  await axios
     .put(`/DeleteListPrice/${id}/${product.value.data.id}`)
     .then((response) => {
-      list_price.value = response.data.data.list_price
+        showMessage(response.data.message,response.data.type)
+        list_price.value = response.data.data.list_price
     })
     .catch((err) => {
       console.log(err);

@@ -2,35 +2,37 @@ import useEventsBus from "@/Eventbus";
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
 import { reactive } from "vue";
+import { useI18n } from "vue-i18n";
 export const form = ((print,Invoice,statePayment,loading,form_faturacao,modalConfirm)=>{
     const toast = useToast()
+    const {t} = useI18n()
     const {emit} = useEventsBus()
     const general = reactive({
         buttons: [
             {
-                name: "Confirmar",
+                name: t('words.confirm'),
                 state: true,
                 function: submitOrder
             },
             {
-                name: "Adicionar pagamento",
+                name: `${t('words.added')} ${t('words.payment')}`,
                 function: addPayment,
                 state: true
             },
             {
-                name: "Imprimir",
+                name: t('words.print'),
                 class: 'discartar',
                 function: printOrder,
                 state: true
             },
             {
-                name: "Anular",
+                name: t('words.annul'),
                 class: 'discartar',
                 state: true,
                 function: CancelTransfer,
             },
             {
-                name: "Fechar",
+                name: t('words.close'),
                 function: Close,
                 class: 'discartar',
                 state: true
@@ -75,63 +77,63 @@ export const form = ((print,Invoice,statePayment,loading,form_faturacao,modalCon
             },
         },
         form:{
-            title: 'Fatura',
+            title: t('apps.invoicing'),
             relationType: 'Cliente',
             inputs:[
                 {
                   product: true,
                   name: 'name',
                   type: 'text',
-                  label:'Produto',
+                  label:t('words.article'),
                   class: 'nameItem',
                   disabled: true
                 },
                 {
                   name: 'armagen',
                   type: 'select',
-                  label:'Armagen',
+                  label:t('words.store'),
                   class: 'nameItem',
                   disabled: false,
                 },
                 {
                     name: 'quantity',
                     type: 'number',
-                    label:'quantidade',
+                    label:t('words.quantity'),
                     class: 'quantity',
                     disabled: false
                 },
                 {
                   name: 'PriceSold',
                   type: 'number',
-                  label:'Preço de venda',
+                  label:t('words.price'),
                   class: 'PriceSold',
                   disabled: false
                 },
                 {
                     name: 'Discount',
                     type: 'number',
-                    label:'Disconto',
+                    label:t('words.discount'),
                     class: 'Discount',
                     disabled: false
                 },
                 {
                     name: 'tax',
                     type: 'number',
-                    label:'Iva',
+                    label:t('words.tax'),
                     class: 'tax',
                     disabled: false
                 },
                 {
                     name: 'final_price',
                     type: 'number',
-                    label:'Preço final',
+                    label: `${t('words.price')} ${t('words.final')}`,
                     class: 'final_price',
                     disabled: true
                 },
                 {
                   name: 'TotalSold',
                   type: 'number',
-                  label:'Total',
+                  label:t('words.total'),
                   class: 'TotalSold',
                   disabled: true
                 }
@@ -140,20 +142,20 @@ export const form = ((print,Invoice,statePayment,loading,form_faturacao,modalCon
             totalOrder:{
                 totals: [
                     {
-                        title: 'Total da mercadoria',
+                        title: `${t('words.total')} ${t('words.of')} ${t('words.merchandise')}`,
                         amount: 'TotalMerchandise',
                     },
                     {
-                        title: 'Total de disconto',
+                        title: `${t('words.total')} ${t('words.of')} ${t('words.discount')}`,
                         amount: 'discount',
                     },
                     {
-                        title: 'Total de Iva',
+                        title: `${t('words.total')} ${t('words.of')} ${t('words.tax')}`,
                         amount: 'tax',
                     }
                 ],
                 total: {
-                    title: 'Total da Fatura',
+                    title: `${t('words.total')} ${t('words.of')} ${t('words.order')}`,
                     amount: 'TotalInvoice',
                 },
                 restPayable: 'RestPayable'
@@ -207,7 +209,7 @@ export const form = ((print,Invoice,statePayment,loading,form_faturacao,modalCon
     }
 
     function Close() {
-        form_faturacao.value = 'Ordens'
+        form_faturacao.value = t('words.order')
     }
 
     function message(message,tipo){

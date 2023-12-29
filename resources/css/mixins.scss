@@ -130,7 +130,7 @@
             color: var(--textColor);
             input[type=password]{
                 width: 100%;
-                padding: 0px !important;
+                padding: 2px !important;
                 box-shadow: 0 0 0 0 !important;
                 border: none !important;
                 padding: 0px 10px 0px 10px !important;
@@ -141,31 +141,16 @@
             input[type=number]::-webkit-inner-spin-button {
                 -webkit-appearance: none;
             }
+            input,
             select{
                 width: 50%;
                 box-shadow: 0 0 0 0 !important;
                 border: none !important;
-                padding: 10px !important;
+                padding: 5px !important;
                 border-bottom: 1px solid var(--borderColor) !important;
                 border-radius: 3px;
             }
-            input[type=text]{
-                width: 45%;
-                padding: 0px !important;
-                box-shadow: 0 0 0 0 !important;
-                border: none !important;
-                padding: 0px 5px 0px 5px !important;
-                border-bottom: 1px solid var(--borderColor) !important;
-            }
-
-            input[type=number]{
-                width: 45%;
-                padding: 0px !important;
-                box-shadow: 0 0 0 0 !important;
-                border: none !important;
-                padding: 0px 5px 0px 5px !important;
-                border-bottom: 1px solid var(--borderColor)  !important;
-            }
+            
         }
         .Footer{
             display: flex;

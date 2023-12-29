@@ -1,5 +1,6 @@
 <template>
 <Toast />
+<forget-password v-if="resetPassword" @closeModal="resetPassword = false"/>
 <div class='principal'>
     <header class="flex">
         <h1><span>S</span>IGESC</h1>
@@ -7,7 +8,7 @@
     <div class='container'>
         <div class="info">
             <div class='content'>
-                <div v-for="(infoItem, index) in $tm('login.info')" :key="index">
+                <div class="text-sm font-sm" v-for="(infoItem, index) in $tm('login.info')" :key="index">
                     <div><font-awesome-icon icon="fa-solid fa-circle-check" /></div>
                     <div>
                         <span>{{infoItem.title}}</span>
@@ -40,7 +41,10 @@
                 <div class='buttons'>
                     <button type='submit'>{{$t('words.enter')}}</button>
                 </div>
-                <Link :href="route('startCompany')">{{$t('words.start')}} {{$t('words.one')}} {{$t('words.company')}}</Link>
+                <div class="flex flex-row justify-between space-x-2">
+                    <Link :href="route('startCompany')">{{$t('words.start')}} {{$t('words.one')}} {{$t('words.company')}}</Link>
+                    <button @click="resetPassword = true" class="text-base font-base truncate text-[--bgButtons]" type="button">Forget password</button>
+                </div>
                 <div class="relative w-full mt-3 flex justify-center selectLocale">
                     <button type="button" @click="languages.state = !languages.state">{{form.locale.name || 'Languages'}}</button>
                     <div v-if="languages.state" class="drop w-full">
@@ -55,6 +59,7 @@
 
 <script setup>
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import forgetPassword from './forgetPassword.vue'
 import { useForm,Link } from "@inertiajs/vue3";
 import { onMounted, ref } from "@vue/runtime-core";
 import axios from 'axios';
@@ -62,6 +67,7 @@ import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 import { useI18n } from 'vue-i18n';
 const { t,te,tm,locale } = useI18n();
+const resetPassword = ref(false)
 
 const form = useForm({
     email: null,
@@ -93,6 +99,7 @@ const languages = ref({
     ]
 })
 
+
 const selectLanguage = ((language)=>{
     locale.value = language.local
     form.locale = language
@@ -106,7 +113,7 @@ const submit = () => {
   } else if (form.password == null || form.password == '') {
     document.querySelector("#password").style.borderBottom = "1px solid red";
   } else {
-    form.post(`/auth/logar`, {
+    form.post(`/auth/logar/${form.locale.local || 'en'}`, {
         onSuccess: (Response) => {
             toast.add({
                 severity: "error",

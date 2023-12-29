@@ -2,9 +2,9 @@
   <div class="principal">
     <div class="Header">
         <div class="Header-left">
-            <h2>Clientes</h2>
+            <h2>{{$t('words.client')}}s</h2>
             <span>
-            <button @click="newClient">Criar Cliente</button>
+            <button @click="newClient">{{$t('words.create')}}</button>
             </span>
         </div>
 
@@ -14,7 +14,7 @@
                 <input
                     type="text"
                     @keyup="searchClient"
-                    placeholder="pesquisa aqui..."
+                    :placeholder="$t('words.search')"
                 />
             </span>
         </div>

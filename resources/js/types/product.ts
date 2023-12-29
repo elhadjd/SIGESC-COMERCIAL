@@ -2,6 +2,7 @@ import { ProviderProduct } from "./provider"
 
 export interface Product{
     category:category,
+    description: string,
     category_product_id:number,
     codego:string,
     company_id:number,

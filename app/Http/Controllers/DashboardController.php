@@ -11,7 +11,7 @@ class DashboardController extends Controller
 {
     public function Dashboard(Request $request)
     {
-        $locale = $request->user()->userLanguage->code ? $request->user()->userLanguage->code : 'en';
+        $locale = app()->getLocale();
         return Inertia::render('Dashboard/index',[
             'data' => $request->user()->company()
             ->with(['license'=>function($license) use ($locale){

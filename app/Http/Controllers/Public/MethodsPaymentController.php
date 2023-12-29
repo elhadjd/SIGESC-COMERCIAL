@@ -13,7 +13,10 @@ class MethodsPaymentController extends Controller
 {
     public function getMethods()
     {
-        return paymentMethod::all();
+        return paymentMethod::with(['methodTranslate'=>function($translate){
+            $translate->where('local',app()->getLocale());
+        }])->get();
+
     }
 
     public function getPayments(Invoice $invoice)
@@ -21,13 +24,16 @@ class MethodsPaymentController extends Controller
         return $invoice->where('company_id',Auth::user()->company_id)->payments()->with('method')->get();
     }
 
-    public function getPaymentOrders(paymentMethod $paymentMethod)
+    public function getPaymentOrders(Request $request,paymentMethod $paymentMethod)
     {
+        $locale = $request->user()->userLanguage->code ? $request->user()->userLanguage->code : 'en';
         return $paymentMethod->with(['payments'=>function($payments)
         {
             $payments->with(['invoice'=>function($invoice){
                 $invoice->where('company_id',$this->companyUser()->id);
             }]);
+        }])->with(['methodTranslate'=>function($translate) use ($locale){
+            $translate->where('local',$locale);
         }])->get();
     }
 }

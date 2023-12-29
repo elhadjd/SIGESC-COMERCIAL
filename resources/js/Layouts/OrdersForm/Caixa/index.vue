@@ -7,7 +7,7 @@
          <form @submit.prevent.stop="FormSubmit">
          <div class="Container">
             <div class="Preco">
-               <input type="text" ref="inputRef" v-model="box.price" placeholder="Preço da caixa" />
+               <input type="text" ref="inputRef" class="p-2" v-model="box.price" :placeholder="`${$t('words.price')} ${$t('words.of')} ${$t('words.box')}`" />
                <input
                   v-if="item.product.spent"
                   type="text"
@@ -15,14 +15,14 @@
                   v-model="box.spent"
                   />
             </div>
-            <div class="Quantidades">
-               <input type="number" v-model="box.total" placeholder="Quantidade" />
+            <div class="w-full flex space-x-2">
+               <input type="number" v-model="box.total" :placeholder="$t('words.quantity')" />
                <input type="number" v-model="box.quantity" placeholder="Quantidade da caixa" />
             </div>
          </div>
          <div class="Footer">
-            <button class="Descartar" @click="$emit('close')">Fechar</button>
-            <button type="submit">Confirmar</button>
+            <button class="Descartar" @click="$emit('close')">{{$t('words.close')}}</button>
+            <button type="submit">{{$t('words.confirm')}}</button>
          </div>
          </form>
       </div>
@@ -71,12 +71,16 @@ const FormSubmit = () => {
 <style lang="scss" scoped>
 .Principal {
 	@include modal;
+    .Modal{
+        height: 180px !important;
+    }
 	align-items: center;
 	.Header {
 		h1 {
 			font-size: 20px !important;
 		}
 	}
+
 	.Container {
 		flex-direction: column;
         gap: 1rem;
@@ -86,12 +90,9 @@ const FormSubmit = () => {
 			justify-content: center;
 			gap: 1rem;
 			input {
-				width: 92% !important;
+                @include input_normal;
+                padding: 5px !important;
 			}
-		}
-		.Quantidades {
-			display: flex;
-			justify-content: space-between;
 		}
 	}
 }

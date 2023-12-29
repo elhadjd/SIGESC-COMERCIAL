@@ -10,11 +10,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable,HasRoles;
+    use HasApiTokens, HasFactory, Notifiable;
     protected $table = 'users';
     protected $fillable = [
         'name',
@@ -67,6 +66,7 @@ class User extends Authenticatable
         return $this->hasOne(userLanguage::class,'user_id');
     }
 
+<<<<<<< HEAD
     /* Role  */
 
     public function hasRole($role)
@@ -101,3 +101,10 @@ class User extends Authenticatable
     }
 
 }
+=======
+    function PointOfSale() :HasOne {
+        return $this->hasOne(caixa::class,'user_id');
+    }
+
+}
+>>>>>>> aa28a96f3c221233541d3a7b256a4b2b4382ad26

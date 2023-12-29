@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'surname' => 'Administrador do sistema',
-                'email' => 'elhadjd73@gmail.com',
+                'email' => 'admin@gmail.com',
                 'armagen_id' => 1,
                 'company_id' => '1',
                 'image'=> '4ezVrI5czQlWv0Pg.jpeg',

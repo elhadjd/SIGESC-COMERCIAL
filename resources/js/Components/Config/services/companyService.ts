@@ -14,12 +14,12 @@ export const useCompanyService = ((props: any,emits:any)=>{
     })
     const SearchCurrency = ((text:string)=>{
         const filter = allCurrencies.filter((currency)=>{
-            return currency.currency.toLocaleLowerCase().includes(text.toLocaleLowerCase())
+            return currency.currency.toLocaleLowerCase().includes(text.toLocaleLowerCase())||
+            currency.code.toLocaleLowerCase().includes(text.toLocaleLowerCase())
         })
         currencyAll.value = filter
     })
 
-    
     const saveCompany = (()=>{
         if(progress.value) return
         progress.value = true
@@ -40,6 +40,7 @@ export const useCompanyService = ((props: any,emits:any)=>{
         showDrop,
         SearchCurrency,
         progress,
-        saveCompany
+        saveCompany,
+        allCurrencies
     }
 })

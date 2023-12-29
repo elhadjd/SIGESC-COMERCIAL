@@ -60,7 +60,8 @@ class configController extends Controller
     {
         $this->registerActivity('Criou um novo usuario');
         $user = $users->create([
-            'company_id'=>Auth::user()->company_id
+            'company_id'=>Auth::user()->company_id,
+            'image'=>'user-286.png'
         ]);
         $user->config()->create();
         $user->perfil()->create();
@@ -73,6 +74,14 @@ class configController extends Controller
 
     public function SaveUser(User $user = null,Request $request)
     {
+        // $request->validate([
+        //     'manager.id'=>['required'],
+        //     'email'=>['required','email'],
+        //     'phone'=>['required'],
+        //     'nif'=>['required'],
+        //     'city'=>['required'],
+        //     'currency_company.code'=>['required'],
+        // ]);
         $image = new uploadImage();
         $data = $request->all();
         unset($data['updated_at'], $data['id'],$data['config']['id'],
@@ -91,7 +100,8 @@ class configController extends Controller
         $user->fresh();
         $this->insertLangUser($user,$data['user_language']);
         $this->registerActivity("Atualizou dados do usuario $user->name");
-        return $this->RespondSuccess('Usuario atualizado com success !!!',$user->fresh());
+
+        return $this->RespondSuccess(__('Data updated successfully'),$user->fresh());
     }
 
     function insertLangUser($user,$data)  {
@@ -101,19 +111,28 @@ class configController extends Controller
     public function UpdatePassword(Request $request,User $user)
     {
         if (!Hash::check($request->SenhaAtual,$user->password)) {
-            return $this->RespondError('info','A senha atual esta incorreta');
+            return $this->RespondError(__('The provided password does not match your current password.'));
         }
         elseif (Hash::check($request->NovaSenha,$user->password)) {
-            return $this->RespondError('info','A nova senha não pode ser igual com a senha atual');
+            return $this->RespondError(__('The new password cannot be the same as the current password'));
         }
         $user->password = Hash::make($request->NovaSenha);
         if ($user->save()) {
             $this->registerActivity("Atualizou a senha do usuario $user->name");
-            return $this->RespondSuccess('success','Senha atualizada com sucesso');
+            return $this->RespondSuccess(__('Data updated successfully'));
         }
     }
     public function saveCompany(Request $request)
     {
+
+        $request->validate([
+            'manager.id'=>['required'],
+            'email'=>['required','email'],
+            'phone'=>['required'],
+            'nif'=>['required'],
+            'city'=>['required'],
+            'currency_company.code'=>['required'],
+        ]);
         $image = new uploadImage();
         if($request->imagem) {
         $image = $image->Upload('/company/image/',$request->imagem);
@@ -152,7 +171,7 @@ class configController extends Controller
         ]);
 
         $this->registerActivity("Atualizou dados da empresa");
-        return $this->respondSuccess('Dados atualizado com Sucesso');
+        return $this->respondSuccess(__('Data updated successfully'));
     }
 
     public function getActivity()

@@ -1,7 +1,7 @@
 <template>
 <div class="addItem">
     <button @click="getProducts" type="button" >
-        Selecionar produtos
+        {{$t('words.article')}}s
         <i :class="stateSubmit ? 'fa fa-spinner fa-pulse fa-3x fa-fw' : products.state ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
     </button>
     <div v-show="products.state" class="list-items">
@@ -19,8 +19,8 @@
             <slot></slot>
         </div>
         <section class="newItem">
-            <button @click="$emit('newProduct',textSearch,'create')">Criar {{textSearch}}</button>
-            <button @click="$emit('newProduct',textSearch,'createUpdate')">Criar e editar {{textSearch}}</button>
+            <button @click="$emit('newProduct',textSearch,'create')">{{$t('words.create')}} {{textSearch}}</button>
+            <button @click="$emit('newProduct',textSearch,'createUpdate')">{{$t('words.create')}} e edit {{textSearch}}</button>
         </section>
     </div>
 </div>

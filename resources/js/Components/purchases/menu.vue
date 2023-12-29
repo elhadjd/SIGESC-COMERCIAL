@@ -3,10 +3,10 @@
         <div class="Header">
             <div class="Header-left">
                 <div>
-                    <h2>Lista das compras</h2>
+                    <h2>{{$t('words.purchase')}}s</h2>
                 </div>
                 <div>
-                <button @click="NewPurchase">Criar Compra
+                <button @click="NewPurchase">{{$t('words.create')}}
                     <i v-if="loading=='new'" class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
                 </button>
                 </div>
@@ -14,7 +14,7 @@
             <div class="Header-right">
                 <span class="p-input-icon-right w-100">
                     <i class="pi pi-search" />
-                    <input type="text" @keyup="SearchInvoice" placeholder="Pesquisar...">
+                    <input type="text" @keyup="SearchInvoice" :placeholder="$t('words.search')">
                 </span>
                 <pagination v-if="loading != 'start'" @page="getPage" :object="Orders.list"/>
             </div>
@@ -23,15 +23,15 @@
             <div class="list">
                 <div v-if="loading == 'start'" class="progress"><i class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i></div>
                 <div class="Title">
-                    <div>Orden</div>
-                    <div>fornecedor</div>
-                    <div>Responsavel</div>
-                    <div class=" truncate">Data da encomenda</div>
-                    <div class=" truncate">Data de vencimento</div>
-                    <div class="text-right truncate">Total de mercadoria</div>
-                    <div class="text-right">Total da fatura</div>
-                    <div>Resto a pagar</div>
-                    <div>Estado da fatura</div>
+                    <div>{{$t('words.order')}}</div>
+                    <div>{{$t('words.provider')}}</div>
+                    <div>{{$t('words.user')}}</div>
+                    <div class=" truncate">{{$t('phrases.orderDate')}}</div>
+                    <div class=" truncate">{{$t('phrases.dueDate')}}</div>
+                    <div class="text-right truncate">{{$t('words.subTotal')}}</div>
+                    <div class="text-right">{{$t('words.total')}}</div>
+                    <div>{{$t('words.missing')}}</div>
+                    <div>{{$t('words.state')}}</div>
                 </div>
                 <div class="list_items">
                     <div @click="showOrder(order)" class="rows" v-for="order in Orders?.list.data"
@@ -55,11 +55,11 @@
             <div class="RodaPe">
                 <div class="Totals">
                     <div>
-                        <label for="">Total de faturas</label>
+                        <label for="">{{`${$t('words.total')} ${$t('words.of')} ${$t('words.order')}s `}}</label>
                         <span>{{formatMoney(Totals.totalOrders)}}</span>
                     </div>
                     <div>
-                        <label for="">Resto a pagar</label>
+                        <label for="">{{$t('words.missing')}}</label>
                         <span>{{formatMoney(Totals.restPayable)}}</span>
                     </div>
                 </div>

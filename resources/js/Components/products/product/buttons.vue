@@ -15,7 +15,6 @@ import {ButtonsServices} from '../services/product/buttons'
 import { onMounted, ref, watch } from 'vue'
 const emits = defineEmits(['closeForm','saved'])
     const {t,locale} = useI18n()
-    console.log(locale.value);
 const {
     product,
     StateEditProd,

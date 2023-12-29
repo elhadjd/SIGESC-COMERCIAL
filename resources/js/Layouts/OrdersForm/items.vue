@@ -89,7 +89,7 @@
                <div class="Totals">{{formatMoney(orderItems[general.form.totalOrder.total.amount])}}</div>
             </div>
             <div class="total-items">
-               <strong>Total de item na encomenda :</strong>
+               <strong>{{`${$t('words.total')} ${$t('words.of')} ${$t('words.article')}s`}}:</strong>
                <span>{{orderItems.items?.length+" Items"}}</span>
             </div>
          </div>

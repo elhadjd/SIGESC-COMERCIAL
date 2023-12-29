@@ -53,11 +53,13 @@ import { onMounted, ref } from '@vue/runtime-core';
 import axios from 'axios';
 const formatDinheiro = Intl.NumberFormat('PT-AO',{style: 'currency',currency: 'AOA'});
 import moment from 'moment'
+import { useI18n } from 'vue-i18n';
 const emits = defineEmits(['handleModule','message'])
 const transfers = ref({
     list: [],
     storeList: [],
 })
+const {t} = useI18n()
 const loading = ref(null)
 onMounted(async()=>{
     await getTransfers()
@@ -80,7 +82,7 @@ const getTransfers = (async()=>{
 })
 
 const showTransfer = ((transfer)=>{
-    emits('handleModule','transfer',transfer)
+    emits('handleModule','newTransfer',transfer)
 })
 
 const FormatDate = ((data) =>{
@@ -121,8 +123,15 @@ const newTransfer = (()=>{
     }
 }
 .Container{
-    min-width: 900px;
+    min-width: 100%;
     overflow-x: auto;
+    .list{
+        @include form_lists;
+        width: 100%;
+        height: 90%;
+        min-width: 950px;
+        @include state;
+    }
 }
 .list{
     @include form_lists;

@@ -118,7 +118,14 @@ async function savePoint() {
         emits('close')
     }).catch((err) => {
         console.log(err);
-        emits('message','warning','Aconteceu um erro ao salvar os dados')
+        if(err.response.data.errors){
+            for (let propriety in err.response.data.errors) {
+                emits('message','error',err.response.data.errors[propriety][0])
+            }
+        }else{
+            emits('message','warning','Server Error')
+        }
+        
     }).finally(()=>{
         store.state.pos.StateProgress = false;
     });

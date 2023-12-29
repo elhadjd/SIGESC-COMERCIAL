@@ -72,19 +72,19 @@ class TransferController extends Controller
         $store = stock::where('armagen_id',$item['armagen_id'])->where('produtos_id',$item['produtos_id']);
         if ($transfer->store_destination_id == null) {
             $message['state'] = true;
-            $message['message'] = 'Por favor selecione um armagen de destino da transferencia';
+            $message['message'] = __('Please select a transfer destination warehouse');
         }else
         if ($transfer->store_destination_id == $item['armagen_id']){
             $message['state'] = true;
-            $message['message'] = 'O armagen selecionado não pode ser igual ao armagem de destino da transferencia';
+            $message['message'] = __('The selected warehouse cannot be the same as the transfer destination warehouse');
         }else
         if ($store->count()<=0) {
             $message['state'] = true;
-            $message['message'] = 'Este produto não tem quantidade neste armagen selecionado';
+            $message['message'] = __('This product is not in stock in this selected warehouse');
 
         }else if ($store->first()->quantity < $item['quantity']) {
             $message['state'] = true;
-            $message['message'] = 'Este produto não tem quantidade suficiente neste armagen selecionado';
+            $message['message'] = __('This product is not in stock in this selected warehouse');
         };
         return $message;
     }
@@ -142,9 +142,9 @@ class TransferController extends Controller
     public function saveTransfer(Request $request,transfer $order,$type,stock $stock)
     {
         $order->load('items');
-        if ($type == 'cancel' && $order->state == 'Anulado') return $this->RespondError('Esta Transferencia ja esta anulada',$order);
-        if ($type == 'cancel' && $order->state == 'Cotação') return $this->RespondInfo('Não é posivel anular uma ordem não confirmado',$order);
-        if ($order->items->count() <= 0) return $this->RespondInfo('É preciso adicionar no minimo um produto na transferencia',$order);
+        if ($type == 'cancel' && $order->state == 'Anulado') return $this->RespondError(__('This purchase has already been canceled.'),$order);
+        if ($type == 'cancel' && $order->state == 'Cotação') return $this->RespondInfo(__('It is not possible to cancel an unconfirmed order'),$order);
+        if ($order->items->count() <= 0) return $this->RespondInfo(__('You must add at least one product to the order'),$order);
         $message = [
             'state'=> 0,
             'message'=> null,

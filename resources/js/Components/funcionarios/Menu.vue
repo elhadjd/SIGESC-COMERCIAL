@@ -10,11 +10,11 @@
                 <button @click="NewWorker">{{`${$t('words.new')} ${$t('words.employee')}`}}</button>
             </span>
             <span v-else>
-
                 <button @click="SaveWorker">
                     <FontAwesomeIcon icon="fa-solid fa-floppy-disk" />
                     {{$t('words.save')}}
                 </button>
+                <button @click="FormNewWorker.state = false">{{$t('words.close')}}</button>
             </span>
         </div>
 
@@ -55,7 +55,6 @@
                     </div>
                 </div>
                 <!-- <div v-if="workers.workers.length > 0">
-
                 </div> -->
             </div>
         </div>
@@ -72,7 +71,6 @@ import useEventsBus from '@/Eventbus';
 import axios from 'axios';
 import { useStore } from 'vuex';
 const store = useStore()
-
 const emits = defineEmits(['message'])
 
 const {emit,bus} = useEventsBus();

@@ -3,13 +3,13 @@
     <Toast/>
     <Headers @modulos="showModule" :menus="menus"/>
     <div class="Containere">
-        <products @message="message" v-if="modulo == 'Artigos'" />
-        <new-order @fechar="modulo = 'Compras'" @message="message"
+        <products @message="message" v-if="modulo == $t('words.article')" />
+        <new-order @fechar="modulo = $t('words.purchase')" @message="message"
          v-if="modulo == 'compra'" :Purchase="Purchase"/>
-        <home @message="message" @modulos="showModule" v-if="modulo == 'Compras'"/>
-        <suppliers v-if="modulo == 'Fornecedores'"/>
-        <analis-orders v-if="modulo == 'Paineis'" :prefix="'analis'"/>
-        <payments v-if="modulo == 'Pagamentos'"/>
+        <home @message="message" @modulos="showModule" v-if="modulo == $t('words.purchase')"/>
+        <suppliers v-if="modulo == $t('words.provider')"/>
+        <analis-orders v-if="modulo == $t('words.panel')" :prefix="'analis'"/>
+        <payments v-if="modulo == t('words.payment')"/>
     </div>
 </div>
 
@@ -29,22 +29,23 @@ import suppliers from '@/Components/suppliers/index.vue'
 import Headers from '../../layouts/header.vue'
 import payments from '@/components/purchases/Payments.vue'
 import analisOrders from '@/Components/charts/index.vue'
-
+import { useI18n } from 'vue-i18n';
+const { t,te,tm } = useI18n();
 const menus = ref([
-    {"menu": "Compras"},
-    {"menu": "Fornecedores",
+    {"menu": t('words.purchase')},
+    {"menu": t('words.provider'),
         "subMenu": [
-            {"name":"Fornecedores"},
-            {"name":"Pagamentos"}
+            {"name":t('words.provider')},
+            {"name":t('words.payment')}
         ]
     },
-    {'menu':'Paineis'},
-    {"menu": "Artigos"},
+    {'menu':t('words.panel')},
+    {"menu": t('words.article')},
 ])
 const toast = useToast()
 const {bus} = useEventsBus();
 const store = useStore()
-const modulo = ref('Compras');
+const modulo = ref(t('words.purchase'));
 const MostrarDrop = ref(null)
 const Mostrar = ref(null)
 const Purchase = ref([])

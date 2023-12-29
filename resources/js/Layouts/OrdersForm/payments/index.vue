@@ -2,17 +2,17 @@
    <div class="Principal">
       <div class="Modal">
          <div class="Header">
-            <h2>Pagamento</h2>
+            <h2>{{$t('words.payment')}}</h2>
          </div>
          <form @submit.prevent="ConfirmPayment">
             <div class="Container">
                 <div>
                     <div>
-                        <label>Metódos:</label>
+                        <label>{{$t('words.method')}}:</label>
                         <input @click="methodPayment.state = !methodPayment.state" type="text" v-model="methodPayment.title"/>
                         <div v-if="methodPayment.state" class="drop">
                             <span @click="Methods(method)" v-for="method in methods" :key="method.id">
-                            {{method.name}}
+                            {{method.method_translate[0].translate}}
                             </span>
                         </div>
                     </div>
@@ -23,7 +23,7 @@
                 </div>
                 <div>
                     <div>
-                        <label ref="amount">Montante:</label>
+                        <label ref="amount">{{$t('words.amount')}}:</label>
                         <input placeholder="digita o metódo"
                         id="amount"
                         :type="type"
@@ -31,17 +31,17 @@
                         @input="onInput"
                         @blur="onBlur"
                         @focus="onFocus">
-                        
+
                     </div>
                     <div class="ValorPagamento-container">
-                        <label>Data de Pagamento:</label>
+                        <label>{{$t('words.date')}}:</label>
                         <input type="text" :value="FormatDate()">
                     </div>
                 </div>
             </div>
             <div class="Footer">
-               <button @click="$emit('close')" type="button" class="cancelar">Fechar</button>
-               <button type="submit">Salvar</button>
+               <button @click="$emit('close')" type="button" class="cancelar">{{$t('words.close')}}</button>
+               <button type="submit">{{$t('words.save')}}</button>
             </div>
          </form>
       </div>
@@ -54,14 +54,15 @@ import { onMounted, reactive, ref } from 'vue'
 import {useStore, mapState} from 'vuex'
 import moment from 'moment'
 import axios from 'axios';
-
+import { useI18n } from "vue-i18n";
+const {t} = useI18n()
 const props = defineProps({
     order: Object,
     general: Object
 })
 
 const methodPayment = reactive({
-    title: 'metodos de pagamentos',
+    title: ` ${t('words.method')} ${t('words.payment')}`,
     state: false
 })
 
@@ -152,7 +153,7 @@ axios.post(`sendPayment/${props.order.id}`, {...form})
 
 const Methods = (event) => {
     methodPayment.state = false
-    methodPayment.title = event.name
+    methodPayment.title = event.method_translate[0].translate
     form.payment_method_id = event.id
 }
 </script>

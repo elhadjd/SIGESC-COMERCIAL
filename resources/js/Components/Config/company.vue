@@ -88,7 +88,7 @@
                 </div>
                 <div class="form-content w-1/2">
                   <div class="form-Control">
-                    <label for="manager">{{$t('words.currency')}}: </label>
+                    <label for="currency">{{$t('words.currency')}}: </label>
                     <button type="button" @click="showDrop = 'currency'" id="currency">{{company.currency_company?.code|| $t('words.currency')}}</button>
                     <div class="drop"  v-if="showDrop == 'currency'">
                         <input type="text" @keyup="(e)=>SearchCurrency(e.target.value)" :placeholder="$t('words.search')">

@@ -10,7 +10,7 @@
       </div>
    </div>
    <div class="box">
-      <label for="name">Empresa:</label>
+      <label for="name">{{$t('words.company')}}:</label>
       <input type="text" required v-model="company.name" id="name" />
    </div>
    <div class="box">
@@ -18,30 +18,38 @@
       <input type="text" required v-model="company.nif" id="nif" />
    </div>
    <div class="box">
-      <label htmlFor="phone">Telefone:</label>
+      <label htmlFor="phone">{{$t('words.phone')}}:</label>
       <input type="text" required v-model="company.phone" id="phone" />
    </div>
    <div class="box">
-      <label htmlFor="activity">Tipo de atividade:</label>
+      <label htmlFor="activity">{{$t('words.activityType')}}:</label>
       <button type="button" id="activity" @click="activities.state = !activities.state">{{company.activity?.name?company.activity.name:'Seleciona o tipo de atividade'}}</button>
       <div class="drop" v-if="activities.state">
          <span v-for="item in activities.data" :key="item.id" @click="chooseActivity(item)">{{item.name}}</span>
       </div>
    </div>
    <div class="box">
-      <label for="country">Pais:</label>
+      <label for="country">{{$t('words.country')}}:</label>
       <button @click="country.state = ! country.state" id="country" type="button">
-      <span>{{company.country?.name ? company.country?.name : 'Escolhe seu pais'}}</span>
+      <span>{{company.country?.name ? company.country?.name : $t('words.country')}}</span>
       </button>
       <div class="drop" v-if="country.state" >
-         <input type="text" @keyup="searchCountry" placeholder="Nome do pais" />
+         <input type="text" @keyup="searchCountry" :placeholder="$t('words.country')" />
          <span v-for="country,idx in country.data" @click="chooseCountry(country)" :key="idx">{{country.name}}</span>
       </div>
    </div>
    <div class="box">
-      <label htmlFor="city">Cidade:</label>
-      <input type="text" required v-model="company.city" id="city" />
+      <label htmlFor="city">{{$t('words.city')}}:</label>
+      <input type="text" required :placeholder="$t('words.city')" v-model="company.city" id="city" />
    </div>
+   <div class="box">
+        <label for="currency">{{$t('words.currency')}}: </label>
+        <button type="button" @click="showCurrency = !showCurrency" id="currency">{{company.currency_company?.code || $t('words.currency')}}</button>
+        <div class="drop"  v-if="showCurrency">
+            <input type="text" @keyup="(e)=>SearchCurrency(e.target.value)" :placeholder="$t('words.search')">
+            <span v-for="currency in allCurrencies" :key="currency.code" @click="changeCurrency(currency)">{{currency.currency}}</span>
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -50,16 +58,16 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import {useUploadImage} from '@/composable/public/UploadImage'
 import { useStore } from "vuex";
-
+import currencyCodes from 'currency-codes'
 const store = useStore();
-
+const allCurrencies = ref(currencyCodes.data);
 const country = ref({
 	state: false,
 	data: [],
 	store: [],
     choose: null
 });
-
+const showCurrency = ref(false)
 const activities = reactive({
     state: false,
     data: []
@@ -77,7 +85,18 @@ onMounted(async()=>{
     await getCountry();
     await getActivities()
 })
+const SearchCurrency = ((text)=>{
+    const filter = currencyCodes.data.filter((currency)=>{
+        return currency.currency.toLocaleLowerCase().includes(text.toLocaleLowerCase()) ||
+        currency.code.toLocaleLowerCase().includes(text.toLocaleLowerCase())
+    })
+    allCurrencies.value = filter
+})
 
+const changeCurrency = ((currency)=>{
+    company.value.currency_company = currency
+    showCurrency.value = false
+})
 watch(company.value,(newValue)=>{
   if(VerifyObjectValues(newValue)){
     store.commit('Start/StartSaveCompany',newValue)
@@ -85,17 +104,21 @@ watch(company.value,(newValue)=>{
 })
 
 function VerifyObjectValues(object) {
-  if (!object.activity.name || !object.country.name) {
-    return false
-  } else {
-    for (let propriety in object) {
-    if (object[propriety] === null) {
-        console.log(object[propriety]);
-      return false;
+    if (!object.activity.id == 0 || !object.country.name == "") {
+        return false
+    } else {
+        if (!object.currency_company.digits == 0){
+            return false
+        }else{
+            for (let propriety in object) {
+                if (object[propriety] === null) {
+                    console.log(object[propriety]);
+                    return false;
+                }
+            }
+        }
+        return true;
     }
-  }
-  return true;
-  }
 }
 async function getCountry() {
   axios.get('/data/country.json').then((response) => {

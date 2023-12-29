@@ -3,14 +3,14 @@
       <div class="Header">
          <div class="Header-left">
             <h2>{{ $store.state.titulo }}</h2>
-            <button class="BotaoCrear" @click="newInvoice">Criar Fatura
+            <button class="BotaoCrear normal-case" @click="newInvoice">{{`${$t('words.create')} ${$t('words.order')}`}}
                 <i v-if="loading == 'new'" class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
             </button>
          </div>
          <div class="Header-right">
             <span class="p-input-icon-right w-100">
                 <i class="fa fa-search"></i>
-                <input @keyup="SearchInvoice" type="text" placeholder="Pesquisar...">
+                <input @keyup="SearchInvoice" type="text" :placeholder="$t('words.search')">
             </span>
             <div>
                 <div>
@@ -25,17 +25,16 @@
         <invoices-th v-if="listType == 'large'" @showInvoice="onRowSelect" :Invoices="Invoices"/>
         <div v-if="listType == 'list'" class="list">
             <div class="Title text-secondary">
-                <div>Orden</div>
-                <div>Usuario</div>
-                <div>Cliente</div>
-                <div>Data da Encomenda</div>
-                <div>Data de Vencimento</div>
-                <div class="text-right">Total sem desconto</div>
-                <div class="text-right">Total da fatura</div>
-                <div>Resto a pagar</div>
-                <div>Estado da fatura</div>
+                <div>{{$t('words.order')}}</div>
+                <div>{{$t('words.user')}}</div>
+                <div>{{$t('words.client')}}</div>
+                <div class="truncate">{{$t('phrases.orderDate')}}</div>
+                <div class="truncate">{{$t('phrases.dueDate')}}</div>
+                <div class="text-right truncate">{{`${$t('words.total')} ${$t('words.of')} ${$t('words.merchandise')}`}}</div>
+                <div class="text-right">{{$t('words.total')}}</div>
+                <div>{{$t('phrases.restToPay')}}</div>
+                <div>{{$t('words.state')}}</div>
             </div>
-
             <div class="list_items">
                 <div class="rows"
                     @click="onRowSelect(item)"

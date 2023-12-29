@@ -2,7 +2,7 @@
     @include modal;
     .Modal {
         width: 750px !important;
-        height: 220px !important;
+        height: 240px !important;
 
         .Header {
             height: 20% !important;
@@ -13,7 +13,7 @@
 
         .Container {
             width: 100% !important;
-            height: 60%;
+            height: 60% !important;
             display: flex;
             flex-direction: row;
             gap: 1rem;
@@ -27,13 +27,12 @@
                     @include form-control;
                     .drop{
                         position: absolute !important;
-                        left: 55% !important;
                         display: flex;
                         flex-direction: column;
                         height: auto;
                         background-color: white;
                         top: 30px;
-                        width: 45%;
+                        width: 100%;
                         border: 1px solid var(--borderColor);
                         border-top: 0px;
                         border-bottom-left-radius: 3px;

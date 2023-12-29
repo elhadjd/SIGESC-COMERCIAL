@@ -4,7 +4,7 @@
     <Toast />
     <Cabacalho @modulos="modulos" :menus="menus" />
     <div class="Container">
-      <Caixa v-if="modul == $t('words.box')" :caixaId="session" @message="message" />
+      <Caixa v-if="modul == $t('words.box')" @pointOfSale="modulos" :caixaId="session" @message="message" />
       <Relatorio v-if="modul == $t('words.report')" />
       <Operation @message="message" v-if="modul == $t('words.operation')" />
       <analisProducts v-if="modul == 'Stock '+ $t('words.evaluation')" />
@@ -146,7 +146,7 @@ const EmitsMenu = (event, OutroEvento) => {
 
 const CriarCaixa = () => {
     DadosCaixa.value = ''
-  modul.value = "NovaCaixa";
+    modul.value = t('words.new')+t('words.box');
 };
 
 const AbrirSessao = (payload) => {

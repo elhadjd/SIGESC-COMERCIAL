@@ -71,6 +71,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'license' => \App\Http\Middleware\License::class,
         'currencyCompany'=> \App\Http\Middleware\currencyCompanyMiddleware::class,
+        'locale'=> \App\Http\Middleware\localMiddleware::class,
         'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
     ];
 }

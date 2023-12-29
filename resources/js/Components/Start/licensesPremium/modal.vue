@@ -15,15 +15,15 @@
         <div class="amount">
             <div>
                 <div>
-                    <label>Total</label>
+                    <label>{{$t('words.total')}}</label>
                     <strong>{{dineiro.format(totals.total + totals.discount)}}</strong>
                 </div>
                 <div>
-                    <label>Disconto</label>
+                    <label>{{$t('words.discount')}}</label>
                     <strong>{{dineiro.format(totals.discount)}}</strong>
                 </div>
                 <div>
-                    <label>A pagar</label>
+                    <label>{{$t('words.toPay')}}</label>
                     <strong>{{dineiro.format(totals.total)}}</strong>
                 </div>
             </div>

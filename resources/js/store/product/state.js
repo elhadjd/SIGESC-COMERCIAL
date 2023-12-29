@@ -6,6 +6,7 @@ export default {
             name: '',
             updated_at: ''
         },
+        description: '',
         category_product_id: 0,
         codego: '',
         company_id: 0,
@@ -74,6 +75,6 @@ export default {
     productComponentKey: 0,
     StateFormShow:false,
     stateDisableButtons: false,
-    
+
 
 };

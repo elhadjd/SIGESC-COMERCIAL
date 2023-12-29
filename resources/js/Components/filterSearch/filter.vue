@@ -8,19 +8,19 @@
         </div>
         <div v-if="EstadoForm" class="Form1 shadow-lg">
             <div>
-                <div class="Opcoes" @click="$emit('filtro','Numero da Fatura'),EstadoForm = false">Numero da Fatura</div>
+                <div class="Opcoes" @click="$emit('filtro',$t('words.order')),EstadoForm = false">{{$t('words.order')}}</div>
             </div>
             <div>
-                <div class="Opcoes" @click="$emit('filtro','Total da Fatura'),EstadoForm = false">Total da fatura</div>
+                <div class="Opcoes" @click="$emit('filtro',$t('words.total')),EstadoForm = false">{{$t('words.total')}}</div>
             </div>
             <div>
-                <div class="Opcoes" @click="$emit('filtro','Total maior Igual'),EstadoForm = false">Total maior igual</div>
+                <div class="Opcoes" @click="$emit('filtro',`${$t('words.total')} ${$t('words.greaterEqual')}`),EstadoForm = false">{{`${$t('words.total')} ${$t('words.greaterEqual')}`}}</div>
             </div>
             <div>
-                <div class="Opcoes" @click="$emit('filtro','Total menor Igual'),EstadoForm = false">Total menor igual</div>
+                <div class="Opcoes" @click="$emit('filtro',`${$t('words.total')} ${$t('words.lessEqual')}`),EstadoForm = false">{{`${$t('words.total')} ${$t('words.lessEqual')}`}}</div>
             </div>
             <div>
-                <div class="Opcoes" @click="$emit('filtro','Cliente'),EstadoForm = false">Cliente</div>
+                <div class="Opcoes" @click="$emit('filtro',$t('words.client')),EstadoForm = false">{{$t('words.client')}}</div>
             </div>
         </div>
     </div>

@@ -6,41 +6,47 @@
       @CloseInfo="OpenInfo = false"
     />
   </Transition>
-  <div class="Artigos">
-    <div
-      :class="idProd == product.id ? { shake: disabled } : ''"
-      v-for="product in produtos.slice(0,100)"
-      :key="product.id"
-      class="formArtigo"
-    >
-      <div>
-        <div class="PrecoProd">
-            <div class="iconesBloco">
-              <i
-                class="fa fa-exclamation-circle"
-                style="color: red; margin-right: 5px"
-                v-if="product.stock_sum_quantity <= 0"
-                aria-hidden="true"
-              ></i>
-              <i class="fa fa-info-circle" @click="ShwInfo(product)"></i>
-            </div>
-            <div id="ProdutoPreco">
-              {{ formatMoney(product.preçovenda) }}
-            </div>
-          </div>
-        <div>
-
-          <div @click="AddProd(product)" class="ProdutoImagem">
-            <img
-              :src="'/produtos/image/' + product.image"
-              :alt="product.image"
-            />
-          </div>
-          <div class="ProdutoNome">{{ product.nome }}</div>
+  <div class="flex flex-col">
+    <div class="w-full overflow-x-auto flex flex-row space-x-2 h-[40px] mt-2 px-2">
+        <div @click="()=>byCategory(category.id)" class="flex w-24 h-full items-center rounded-sm justify-start p-2 bg-[#00a6cf17] cursor-pointer text-[#00a5cf]" v-for="category in categories" :key="category.id">
+            <span class="truncate">{{category.name}}</span>
         </div>
-      </div>
+    </div>
+    <div class="Artigos">
+        <div
+            :class="idProd == product.id ? { shake: disabled } : ''"
+            v-for="product in produtos.slice(0,100)"
+            :key="product.id"
+            class="formArtigo">
+            <div>
+                <div class="PrecoProd">
+                    <div class="iconesBloco">
+                        <i
+                            class="fa fa-exclamation-circle"
+                            style="color: red; margin-right: 5px"
+                            v-if="product.stock_sum_quantity <= 0"
+                            aria-hidden="true"
+                        ></i>
+                        <i class="fa fa-info-circle" @click="ShwInfo(product)"></i>
+                    </div>
+                    <div id="ProdutoPreco">
+                        {{ formatMoney(product.preçovenda) }}
+                    </div>
+                </div>
+                <div>
+                    <div @click="AddProd(product)" class="ProdutoImagem">
+                        <img
+                        :src="'/produtos/image/' + product.image"
+                        :alt="product.image"
+                        />
+                    </div>
+                    <div class="ProdutoNome">{{ product.nome }}</div>
+                </div>
+            </div>
+        </div>
     </div>
   </div>
+  
 </template>
 
 <script setup>
@@ -58,7 +64,9 @@ const idProd = ref();
 const OpenInfo = ref();
 const store = useStore();
 const emits = defineEmits(["AddProds", "message"]);
-
+const props = defineProps({
+    categories: Object
+})
 const PesquisarProduto = computed(() => {
   return store.state.PesquisarProduto;
 });
@@ -135,6 +143,14 @@ const sumQuantity = ((product)=>{
         product.qtd += item.quantity
     });
     return product.qtd
+})
+
+const byCategory = ((categoryId)=>{
+    ProdutosPesquisa.value = JSON.parse(localStorage.getItem("produtos"));
+    const prods = ProdutosPesquisa.value.filter((product) => {
+        return  String(product.category_product_id).includes(categoryId)
+    });
+    produtos.value = prods;
 })
 </script>
 

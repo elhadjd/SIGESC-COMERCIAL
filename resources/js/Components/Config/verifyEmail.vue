@@ -40,7 +40,9 @@ import ButtonVue from '@/ui/button.vue'
 import { onMounted, ref } from 'vue'
 import axios from "axios";
 import { serviceMessage } from "@/composable/public/messages";
+import { useI18n } from "vue-i18n";
 const emits = defineEmits(['selectCompany'])
+const {t} = useI18n()
 const props = defineProps({
     company: Object
 })
@@ -77,7 +79,7 @@ async function validateCode(code: string) {
         }
         stateProgress.value = 5
     }).catch((err) => {
-        showMessage('Erro de servidor '+err.response.data.message,'error')
+        showMessage(t('message.serverError')+err.response.data.message,'error')
     });
 }
 </script>

@@ -1,19 +1,21 @@
 <template>
     <div class="principal">
         <div class="Header">
-
             <div class="Header-left">
-                <h2>Fornecedores</h2>
+                <h2>{{$t('words.provider')}}s</h2>
                 <div class="buttons" v-if="suppliers.state">
-                    <button @click="GuardarFornecedor">Guardar</button>
-                    <button @click="Descartar">Descartar</button>
+                    <button @click="GuardarFornecedor">
+                        {{$t('words.save')}}
+                        <LoadingVue v-if="loading" />
+                    </button>
+                    <button @click="Descartar">{{$t('words.close')}}</button>
                 </div>
-                <button @click="NewSupplier" v-else>Adicionar fornecedore</button>
+                <button @click="NewSupplier" v-else>{{`${$t('words.new')} ${$t('words.provider')}`}}</button>
             </div>
 
             <div v-if="!suppliers.state" class="Header-right">
                 <span>
-                    <input type="text" @keyup="PesquisarFornecedor" placeholder="pesquisa aqui..." />
+                    <input type="text" @keyup="PesquisarFornecedor" :placeholder="$t('words.search')" />
                 </span>
             </div>
         </div>
@@ -49,9 +51,11 @@ import axios from "axios";
 import { onMounted, ref, reactive, watch, computed } from "vue";
 import newSupplier from './newSupplier.vue'
 import { useStore } from "vuex";
-
+import LoadingVue from '@/components/confirmation/loading.vue';
+import { serviceMessage } from "@/composable/public/messages";
+const {showMessage} = serviceMessage()
 const store = useStore()
-
+const loading = ref(false)
 const supplier = ref([])
 const suppliers = ref({
     list:[],
@@ -66,12 +70,16 @@ const Descartar = (()=>{
     getSuppliers()
 })
 
-const NewSupplier = (()=>{
-    axios.post('/NewSupplier')
+const NewSupplier = (async()=>{
+    loading.value = true
+    await axios.post('/NewSupplier')
     .then((response) => {
         showSupplier(response.data)
     }).catch((err) => {
+        showMessage('Erro ao criar fornecedor','warn')
         console.log(err);
+    }).finally(()=>{
+        loading.value = false
     });
 })
 
@@ -130,7 +138,7 @@ const GuardarFornecedor = (()=>{
 watch(Guardar, (novo)=>{
     if (novo == false) {
         getSuppliers()
-        suppliers.value.state = false
+        store.state.GuardarCliente = false
     }
 })
 </script>

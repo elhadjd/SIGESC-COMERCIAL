@@ -29,7 +29,7 @@
                 <input type="checkbox" @change="(e)=>$emit('changeInput',e)" :value="data?.config?.infoCompany" id="print">
             </div>
              <div class="Form-control">
-                <label for="language">{{$t('words.userConfig.languase')}}:</label>
+                <label for="language">{{$t('words.userConfig.language')}}:</label>
                 <button id="language" @click="languages.state = !languages.state">{{data.user_language ? data?.user_language.language : 'selecionar Idioma'}}</button>
                 <div class="drop" v-if="languages.state">
                     <span v-for="language in languages.data" :key="language.code" @click="chooseLanguage(language)">{{language.language}}</span>
@@ -60,6 +60,10 @@ const languages = ref({
         {
             language: 'Portugais',
             code: 'pt'
+        },
+        {
+            language: 'Ingles',
+            code: 'en'
         }
     ]
 })

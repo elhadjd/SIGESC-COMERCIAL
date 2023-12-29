@@ -49,7 +49,7 @@ class pontoVendaController extends Controller
                 'amount' => $request->amount,
                 'subject' => $request->subject,
             ]);
-            return $this->RespondSuccess('Atualizado com Sucesso', $this->getOperation($operationCaixaType));
+            return $this->RespondSuccess(__('Data updated successfully'), $this->getOperation($operationCaixaType));
         }
         operation_caixa_type_session::create([
             'amount' => $request->amount,
@@ -59,6 +59,6 @@ class pontoVendaController extends Controller
             'user_id' => Auth()->user()->id,
         ]);
 
-        return $this->RespondSuccess('Gasto Adicionado com Sucesso', $this->getOperation($operationCaixaType));
+        return $this->RespondSuccess(__('Operation completed successfully'), $this->getOperation($operationCaixaType));
     }
 }

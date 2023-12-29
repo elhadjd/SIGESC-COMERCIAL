@@ -102,11 +102,11 @@ class compraController extends Controller
 
     public function AddItemPuchase(produtos $product, $order)
     {
-        if (!$this->checkOrder($order)) return $this->RespondInfo('Esta encomenda ja foi confirmada');
+        if (!$this->checkOrder($order)) return $this->RespondInfo(__('This order has already been confirmed.'));
 
         $result = PuchaseItem::where('puchase_id', $order)->where('produtos_id', $product->id)->exists();
         if ($result)
-            return $this->RespondError('Este produto já foi Adicionada nessa encomenda', []);
+            return $this->RespondError(__('This product has already been added to this order.'), []);
 
         $puchase = PuchaseItem::create([
             'quantity' => 1,
@@ -125,7 +125,7 @@ class compraController extends Controller
     {
         $update = $request;
 
-        if (!$this->checkOrder($update['puchase_id'])) return $this->RespondInfo('Esta encomenda ja foi confirmada');
+        if (!$this->checkOrder($update['puchase_id'])) return $this->RespondInfo(__('This order has already been confirmed.'));
         $totalIva = ceil($request->priceCost / 100 * $request->tax * $request->quantity);
         $totalDiscount = ceil($request->priceCost / 100 * $request->discount * $request->quantity);
         $item->totalTax = $totalIva;
@@ -145,19 +145,19 @@ class compraController extends Controller
 
     public function deleteItem($order, PuchaseItem $item)
     {
-        if (!$this->checkOrder($order)) return $this->RespondInfo('Esta encomenda ja foi confirmada');
+        if (!$this->checkOrder($order)) return $this->RespondInfo(__('This order has already been confirmed.'));
         $item->delete();
         return $this->SumPuchase($order);
     }
 
     public function confirmOrder(Request $request, Puchase $order, $type)
     {
-        if (!$this->checkOrder($order->id) && $type != 'cancel') return $this->RespondError('Atenção esta encomenda ja foi confirmada ', $order);
+        if (!$this->checkOrder($order->id) && $type != 'cancel') return $this->RespondError(__('This order has already been confirmed.'), $order);
         $order->load('items');
 
-        if ($order->state == 'Anulado' && $type == 'cancel') return $this->RespondInfo('Esta compra ja se encontra anulada ', $order);
+        if ($order->state == 'Anulado' && $type == 'cancel') return $this->RespondInfo(__('This purchase has already been canceled.'), $order);
 
-        if (empty($order->fornecedor_id)) return $this->RespondError('Seleciona um fornecedor para validar a compra', $order);
+        if (empty($order->fornecedor_id)) return $this->RespondError(__('Select a supplier to validate the purchase.'), $order);
 
         DB::transaction(function () use ($order, &$request, &$type) {
             foreach ($order->items as $item) {
@@ -230,13 +230,16 @@ class compraController extends Controller
             ]);
         });
 
-        return $this->RespondSuccess('Pagamento efectuado com sucesso', $this->Order($order));
+        return $this->RespondSuccess(__('Payment Successful'), $this->Order($order));
     }
 
-    public function getPayments(paymentMethod $paymentMethod)
+    public function getPayments(Request $request,paymentMethod $paymentMethod)
     {
+        $locale = $request->user()->userLanguage->code ? $request->user()->userLanguage->code : 'en';
         return $paymentMethod->with(['paymentsPurchases' => function ($payments) {
             $payments->with('purchase');
+        }])->with(['methodTranslate'=>function($translate) use ($locale){
+            $translate->where('local',$locale);
         }])->get();
     }
 

@@ -2,11 +2,11 @@
     <div class="principal">
         <form @submit="handleSubmitForm">
             <div class="Form-control">
-                <label for="DataEncomenda">Data de Encomenda : </label>
+                <label for="DataEncomenda">{{$t('phrases.orderDate')}} : </label>
                 <input type="date" id="DataEncomenda" :disabled="stateFormOrder != 'Cotação'" @change="changeDate('DateOrder')" v-model="order.DateOrder">
             </div>
             <div class="Form-control">
-                <label for="vencimento"> Data de Vencimento: </label>
+                <label for="vencimento"> {{$t('phrases.dueDate')}}: </label>
                 <input @change="changeDate('DateDue')" :disabled="stateFormOrder != 'Cotação'" v-model="order.DateDue" id="vencimento" type="date">
             </div>
         </form>

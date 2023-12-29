@@ -38,17 +38,17 @@ class clientsController extends Controller
 
         if($data['images']!= null) $data['image'] = $Image->Upload('/clientes/image/',$request->images);
 
-        if ($client->update($data)) return $this->RespondSuccess('Sucesso',$client->fresh());
+        if ($client->update($data)) return $this->RespondSuccess(__('Operation completed successfully'),$client->fresh());
 
-        return $this->RespondError('Erro ao salvar fornecedore');
+        return $this->RespondError(__('A server error occurred'));
     }
 
     public function delete(cliente $client)
     {
         $order = $client->load('invoices');
 
-        if ($order->invoices->count() >0 ) return $this->RespondError('Não é posivel apagar este Cliente');
-        if ($order->delete()) return $this->RespondSuccess('Cliente eliminado com sucesso');
+        if ($order->invoices->count() >0 ) return $this->RespondError(__('It is not possible to delete this client'));
+        if ($order->delete()) return $this->RespondSuccess(__('Item deleted successfully'));
     }
 
     public function show($id)

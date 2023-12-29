@@ -2,9 +2,8 @@
   <div class="FilterOrder">
         <div>
             <div class="InputPesquisar">
-
                 <span class="p-input-icon-right d-flex w-100">
-                    <strong class="TipoFiltro">{{ searchType.type }}</strong>
+                    <strong class="TipoFiltro truncate">{{ searchType.type }}</strong>
                     <i class="pi pi-search" />
                     <input @keyup.enter="PesquisarOrden" v-model="NumeroOrden" type="search" class="Pesquisar" :placeholder="searchType.placeholder"/>
                 </span>
@@ -24,12 +23,13 @@ import { onMounted , ref , reactive, watch} from '@vue/runtime-core';
 import groupBy from './groupBy.vue'
 import filterSearch from './filter.vue'
 import { useStore } from 'vuex';
-
+import { useI18n } from 'vue-i18n';
+const {t} = useI18n()
 const emits = defineEmits(['ListDefault'])
 const searchType = ref({
     column: 'number',
-    type: 'Numero de Fatura',
-    placeholder: 'Resultado por numero de fatura'
+    type: t('words.order'),
+    placeholder: `${t('words.number')} ${t('words.of')} ${t('words.order')}`
 });
 const ListaDefault = ref([])
 const NumeroOrden = ref();
@@ -53,22 +53,22 @@ const PassarLista = ((list)=>{
 })
 
 const filtro = ((event)=>{
-    if (event == 'Numero da Fatura') {
+    if (event == t('words.order')) {
         searchType.value.column = 'number',
-        searchType.value.placeholder = 'Resultado por numero de fatura'
-    } else if(event == 'Total da Fatura') {
+        searchType.value.placeholder = `${t('words.number')} ${t('words.of')} ${t('words.order')}`
+    } else if(event == t('words.total')) {
         searchType.value.column = 'total'
-        searchType.value.placeholder = 'Resultado por total da fatura'
-    }else if(event == 'Total maior Igual') {
+        searchType.value.placeholder = `${t('words.total')} ${t('words.of')} ${t('words.order')}`
+    }else if(event == `${t('words.total')} ${t('words.greaterEqual')}`) {
         searchType.value.column = 'TotalMaior'
-        searchType.value.placeholder = 'Resultado por orden total maior'
-    }else if(event == 'Total menor Igual') {
+        searchType.value.placeholder = `${t('words.total')} ${t('words.greaterEqual')}`
+    }else if(event == `${t('words.total')} ${t('words.lessEqual')}`) {
         searchType.value.column = 'TotalMenor'
-        searchType.value.placeholder = 'Resultado por orden total menor'
+        searchType.value.placeholder = `${t('words.total')} ${t('words.lessEqual')}`
     }
-    else if(event == 'Cliente') {
+    else if(event == t('words.client')) {
         searchType.value.column = 'cliente'
-        searchType.value.placeholder = 'Resultado por Cliente'
+        searchType.value.placeholder = t('words.client')
     }
     searchType.value.type = event
 })

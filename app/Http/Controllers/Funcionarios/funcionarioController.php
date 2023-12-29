@@ -97,9 +97,9 @@ class funcionarioController extends Controller
             'dailyExpense' => $request->dailyExpense
         ];
 
-        if ($worker->update($update)) return $this->RespondSuccess('Dados atualizado com sucesso');
+        if ($worker->update($update)) return $this->RespondSuccess(__('Data updated successfully'));
 
-        return $this->RespondError('Erro ao atualizar os dados , por favor tenta novamente');
+        return $this->RespondError(__('Error updating data, please try again'));
     }
 
     public function AnalisWorker(Request $request,$month)
@@ -126,8 +126,8 @@ class funcionarioController extends Controller
             'value'=> $request->value,
             'numberInvoice'=> $request->numberInvoice,
         ];
-        if (!expense::create($insert)) return $this->RespondError('Aconteceu um erro ao inserir');
-        return $this->RespondSuccess('Operação feita com sucesso');
+        if (!expense::create($insert)) return $this->RespondError(__('An error occurred while entering the data'));
+        return $this->RespondSuccess(__('Operation completed successfully'));
     }
 
 }
