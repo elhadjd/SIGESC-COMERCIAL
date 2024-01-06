@@ -9,8 +9,8 @@
             <div>
                <button v-if="EstadoForm" @click="SaveUser">{{$t('words.save')}}</button>
                <button @click="EstadoForm = false" v-if="EstadoForm" class="Descartar">{{$t('words.close')}}</button>
-               <button v-if="!EstadoForm" @click="EstadoForm = true">{{$t('words.edit')}}</button>
-               <button @click="StateUpdatePwd = true" class="AtualizarSenha">{{$t('phrases.securityUpdate') }}</button>
+               <button v-if="!EstadoForm" class="text-capitalize" @click="EstadoForm = true">{{$t('words.edit')}}</button>
+               <button @click="StateUpdatePwd = true" class="truncate text-ellipsis">{{$t('phrases.securityUpdate') }}</button>
             </div>
          </div>
          <div class="Header-right">
@@ -52,22 +52,22 @@
                                 <label for="level">{{$t('words.level')}}</label>
                                 <select :disabled="!EstadoForm" id="level"  v-model="user.roles">
                                     <option v-if="user.roles == null" value="">Seleciona o nivel de acesso</option>
-                                    <option v-for="role in roles" :key="role.id" :selected="role.id == user.roles.id" :value="role">{{ role.name }}</option>
-                                    <!-- <option :selected="user.roles.name == 'Admin'" value="admin">{{$t('words.admin')}}</option>
-                                    <option :selected="user.roles.name == 'User'" value="user">{{$t('words.user')}}</option> -->
+                                    <option v-for="role in roles" :key="role.id" :selected="role.id == user.roles.id" :value="role">{{ role.translate[0].translate }}</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="ContainerFooter">
+                <div class="ContainerFooter w-full h-full">
                     <div class="TituloFooter">
-                        <span :class="step === 'password'?'active':''"
+                        <span class="truncate" :class="step === 'password'?'active':''"
                         @click="step = 'password'">{{$t('words.security')}}</span>
-                        <span :class="step === 'info'?'active':''"
+                        <span class="truncate" :class="step === 'info'?'active':''"
                         @click="step = 'info'">{{$t('phrases.userInfo')}}</span>
-                        <span :class="step === 'config'?'active':''"
+                        <span class="truncate" :class="step === 'config'?'active':''"
                         @click="step = 'config'">{{$t('words.definition')}}</span>
+                        <span class="truncate" :class="step === 'permissions'&&'active'"
+                        @click="step = 'permission'">{{$t('words.permission')}}</span>
                     </div>
                     <div v-if="step == 'password'" class="DivSenha">
                         <div class="regras-senha">
@@ -95,6 +95,7 @@
                     <KeepAlive>
                         <config v-if="step === 'config'" @changeInput="handleInputConfig" @translate="user.user_language = $event" :data="user"/>
                     </KeepAlive>
+                    <permissionVue v-if="step === 'permission'"/>
                 </div>
             </div>
          </div>
@@ -111,7 +112,9 @@ import {ref,reactive, onMounted} from 'vue';
 import { getImages } from '@/composable/public/getImages';
 import {useUploadImage} from '@/composable/public/UploadImage'
 import { serviceMessage } from '@/composable/public/messages';
-
+import permissionVue from './permission.vue'
+import { useI18n } from "vue-i18n";
+const {locale} = useI18n()
 const props = defineProps({
     SingleUser: Object
 })
@@ -196,6 +199,7 @@ const InsertUser = ((route,User)=>{
     axios.post(route,{...User,...senha})
     .then((response) => {
         if (response.data.type == "success") {
+            if(locale.value !== response.data.data.user_language.code) window.location.reload()
             user.value = response.data.data
             EstadoForm.value = false
         }

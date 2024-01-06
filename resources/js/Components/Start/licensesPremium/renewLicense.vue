@@ -20,7 +20,7 @@
     </div>
     <div>
         <button @submit.prevent.stop="handlerSubmitForm">
-            {{$t('words.valid')}}
+            {{$t('words.validate')}}
             <i v-if="isSubmit == 0" class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
             <font-awesome-icon
             :icon="`fa-solid ${isSubmit == 1 ? 'fa-check' : isSubmit == 2 ? 'fa-xmark': ''}`" />

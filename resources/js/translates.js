@@ -89,6 +89,7 @@ const messages = {
             credit: 'Crédito',
             discount: 'Desconto',
             tax: 'Imposto',
+            permission: "Permissão\(s)",
             due: 'Vencimento',
             final: 'Final',
             annul: 'Anular',
@@ -197,6 +198,7 @@ const messages = {
             formedMoney: 'Valor enformado'
         },
         phrases: {
+            closeControl: "Fechar controle",
             typeProductName: 'Digite o nome do artigo',
             priceProduct: 'O preço do artigo',
             costPrice: 'Preço de compra',
@@ -360,6 +362,7 @@ const messages = {
             road: 'Rue',
             delete: 'Supprimer',
             archive: 'Archiver',
+            permission: "Autorisation\(s)",
             purchase: 'Achat',
             merchandise: 'Marchandise',
             department: 'Département',
@@ -416,6 +419,7 @@ const messages = {
                 user: 'Utilisateur associé'
             },
             stockObj: {
+                closeControl: "Fermer le contrôle",
                 qtdRequested: 'Quantité totale demandée',
                 qtdCanseled: 'Quantité totale annulée',
                 qtdConq: 'Quantité totale achetée',
@@ -613,11 +617,12 @@ const messages = {
             sessions: 'Sessions',
             definition: 'Definitions',
             reported: 'Reported',
+            permission: "Permission\(s)",
             message: 'message',
             of: 'of',
             tape: 'Tape',
             type: 'type',
-            the: 'The',
+            the: 'the',
             theArticle: 'Article',
             or: 'or',
             a: 'A',
@@ -694,6 +699,7 @@ const messages = {
             formedMoney: 'formed cash'
         },
         phrases: {
+            closeControl: "Close controle",
             typeProductName: 'Enter the name of the article',
             priceProduct: 'The price of the article',
             costPrice: 'Purchase price',

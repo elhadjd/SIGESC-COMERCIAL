@@ -46,17 +46,17 @@ class StartController extends Controller
             'user.user_language.code'=>'required'
         ]);
 
-        // $response = Http::withHeaders([
-        //     'Authorization' => 'oEn34JE6gDfVuZlR6QRWX8Q2byn9repjspVFWoz2SZdncBYePGc7XoKZ8Noo',
-        // ])->post('https://bosgc.sisgesc.net/api/SaveCompany',$request);
+        $response = Http::withHeaders([
+            'Authorization' => 'oEn34JE6gDfVuZlR6QRWX8Q2byn9repjspVFWoz2SZdncBYePGc7XoKZ8Noo',
+        ])->post('https://bosgc.sisgesc.net/api/SaveCompany',$request);
 
-        // if ($response->successful()) {
+        if ($response->successful()) {
             $company = $this->saveData($request,new uploadImage());
             return $this->ValidateLicense($request->license,$company,$request->user);
-        // } else {
-        //     $errorMessage = $response->body();
-        //     return $this->RespondError($errorMessage);
-        // }
+        } else {
+            $errorMessage = $response->body();
+            return $this->RespondError($errorMessage);
+        }
     }
 
     public function saveData($request,$uploadImage)

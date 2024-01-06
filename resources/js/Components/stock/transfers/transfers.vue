@@ -102,7 +102,7 @@ const searchTransfer = ((e)=>{
 const newTransfer = (()=>{
     axios.post('newTransfer')
     .then((response) => {
-        emits('handleModule','transfer',response.data)
+        emits('handleModule','newTransfer',response.data)
     }).catch((err) => {
         console.log(err);
     });

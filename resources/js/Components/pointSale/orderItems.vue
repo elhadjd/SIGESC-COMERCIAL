@@ -116,7 +116,7 @@ const DevolverFatura = () => {
       .put(`CancelInvoice/${props.order.id}`)
       .then((response) => {
         emits('message',response.data.type ,response.data.message)
-        order.value = response.data.data
+        if (response.data.type == 'success') order.value = response.data.data
       })
       .catch((err) => {
         console.log(err);

@@ -5,6 +5,11 @@
         <div class="Modal mt-0">
             <div class="Header">
                 <div class="Botoes">
+                    <span v-if="progress == 1">
+                        Please wait
+                        <FontAwesomeIcon icon="fa-solid fa-spinner" class="text-2xl text" style="color: #00a5cf" shake />
+                    </span>
+                    
                     <button v-for="item in typeOperation" :key="item.id" :class="TipoButton.operation_caixa_type_id == item.id ? 'style' : ''" @click="TipoOperacao(item)">{{item.operation_translate[0].translate}}</button>
                 </div>
                 <div class="Input">
@@ -16,7 +21,9 @@
             </div>
             <div class="Footer">
                 <button @click="$emit('fechar')" class="Fechar">{{$t('words.close')}}</button>
-                <button @click="Save" class="Guardar">{{$t('words.save')}}</button>
+                <button @click="Save" class="Guardar">{{$t('words.save') }}
+                    <FontAwesomeIcon v-if="progress == 2" icon="fa-solid fa-spinner" class="text-2xl text" style="color: #00a5cf" shake />
+                </button>
             </div>
         </div>
     </div>
@@ -26,6 +33,7 @@
 </template>
 
 <script setup>
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { onMounted,ref } from '@vue/runtime-core'
 import axios from 'axios'
 import { useCurrencyInput } from 'vue-currency-input'
@@ -41,6 +49,7 @@ const TipoButton = ref({
     amount: null,
     subject: null
 })
+const progress = ref(0)
 
 const TipoOperacao = ((event)=>{
     TipoButton.value.operation_caixa_type_id = event.id
@@ -48,15 +57,19 @@ const TipoOperacao = ((event)=>{
 })
 
 onMounted(()=>{
+    progress.value = 1
     axios.get(`/PDV/getTypeOperation/${localStorage.getItem('locale') || 'en'}`)
     .then((response) => {
         typeOperation.value = response.data
     }).catch((err) => {
         console.log(err);
+    }).finally(()=>{
+        progress.value = 0
     });
 })
 
 const Save = (()=>{
+    progress.value = 2
     if ((TipoButton.value.operation_caixa_type_id == null)||(TipoButton.value.amount == null)||(TipoButton.value.subject == null)||(TipoButton.value.amount == '')||(TipoButton.value.subject == '')) {
         emits('message','info','Atenção os campos não podem ficar vazios')
     } else{
@@ -66,6 +79,8 @@ const Save = (()=>{
             emits('fechar')
         }).catch((err) => {
             console.log(err);
+        }).finally(()=>{
+            progress.value = 0
         });
     }
 })

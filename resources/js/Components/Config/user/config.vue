@@ -42,7 +42,9 @@
 <script setup>
 import axios, { all } from "axios";
 import { onMounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
 const emits = defineEmits(['chooseArmagen','changeInput','language'])
+const {locale} = useI18n()
 const armagens = ref({
     armagens:[],
     state: false,

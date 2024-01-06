@@ -24,6 +24,8 @@ import groupBy from './groupBy.vue'
 import filterSearch from './filter.vue'
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
+import { serviceMessage } from '@/composable/public/messages';
+const {showMessage} = serviceMessage()
 const {t} = useI18n()
 const emits = defineEmits(['ListDefault'])
 const searchType = ref({
@@ -39,6 +41,7 @@ onMounted(()=>{
     store.state.pos.StateProgress = true
     axios.get(`/PDV/getOrders/${localStorage.getItem('locale') || 'en'}`)
     .then((Response) => {
+        if(Response.data.message) return showMessage(Response.data.message,Response.data.type);
         ListaDefault.value = Response.data
         PassarLista(ListaDefault.value)
     }).catch((err) => {

@@ -1,8 +1,5 @@
 <?php
 namespace App\classes;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\File;
-use Intervention\Image\Facades\Image;
 class DeleteFile
 {
 
@@ -13,6 +10,6 @@ class DeleteFile
             unlink($path);
         }
     }
-    
+
 }
 ?>

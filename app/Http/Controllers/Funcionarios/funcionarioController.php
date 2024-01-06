@@ -72,6 +72,19 @@ class funcionarioController extends Controller
 
     public function saverWorker(Request $request , Workers $worker)
     {
+        $request->validate([
+            'name'=>"required",
+            'cargo'=>'required',
+            'department'=>'required',
+            'email'=>'required',
+            'salary'=>['regex:/^[0-9]+(\.[0-9][0-9]?)?$/'],
+            'dailyExpense'=>['regex:/^[0-9]+(\.[0-9][0-9]?)?$/'],
+            'hourWork'=>'required',
+            'manager'=>"required",
+            'phone'=>"required",
+            'trainer'=>"required",
+            'user'=>"required"
+        ]);
         $data = $request->all();
         $image = new uploadImage();
         if($request->imagem) {

@@ -29,9 +29,9 @@
 
                 <div v-if="OrdersMethod == method.id" class="operations">
                     <span v-for="item in method.payments" :key="item.id" class="items">
-                        <div>{{item.invoice.orderNumber+item.id}}</div>
-                        <div>{{item.invoice.user.surname}}</div>
-                        <div>{{item.invoice.client?.surname}}</div>
+                        <div>{{item.invoice?.orderNumber+item.id}}</div>
+                        <div>{{item.invoice?.user.surname}}</div>
+                        <div>{{item.invoice?.client?.surname}}</div>
                         <div>{{formatDate(item.created_at)}}</div>
                         <div class="TotalOrden">{{formatMoney(item.Amount)}}</div>
                         <div class="TotalOrden">{{formatMoney(item.TotalPayments)}}</div>

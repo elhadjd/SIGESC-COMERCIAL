@@ -248,9 +248,13 @@ const BUSCAR_RESTO = () =>{
     isSubmitting.value = true
     Lista.value.methods = methodos.value
     let number = Lista.value.number
+    Lista.value.number = 0
+    Lista.value.number = `${Lista.value.session}-${number}`
     if (RestoPagar.value <= 0) {
     axios.post("/PDV/ValidatePayment",Lista.value)
         .then((Response) => {
+            Lista.value.session = 0
+            Lista.value.number = 0
             if (!Response.data.message) {
                 return print(Response,number)
             } else {

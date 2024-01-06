@@ -99,7 +99,7 @@
           :session="session.id"
           v-if="ListePedidos == true"
         />
-          <div v-if="!fatura" class="direitaBaixo">
+          <div v-if="!fatura && !ListePedidos" class="direitaBaixo">
             <Produtos @AddProds="AddProds" :categories="categories" @message="messages" />
           </div>
       </div>

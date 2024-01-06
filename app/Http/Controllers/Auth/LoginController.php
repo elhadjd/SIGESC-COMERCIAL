@@ -22,7 +22,7 @@ class LoginController extends Controller
     }
     public function login(Request $request,$locale = null)
     {
-         return Crypt::encrypt('2025-01-01');
+        //  return Crypt::encrypt('2025-01-01');
 
         $request->validate([
             'email' => ['required','email'],

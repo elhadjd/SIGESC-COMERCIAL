@@ -220,7 +220,7 @@ const SaveWorker = (()=>{
         emit('closeFormWorker',+1)
         emits('message',response.data.message,response.data.type)
     }).catch((err) => {
-        emits('message','Aconteceu um erro no sistema por favor tenta novamente','error')
+        emits('message',err.response.data.message,'error')
         console.log(err);
     });
 })

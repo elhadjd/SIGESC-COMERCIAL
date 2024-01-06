@@ -1,5 +1,6 @@
 <template>
   <div class="DivOrdensVendas">
+  <Progress v-if="showProgress"/>
     <div class="Container">
       <div class="OrdenCima">
         <div class="GastosCimaEsquerda">
@@ -87,10 +88,11 @@
 </template>
 
 <script setup>
+import Progress from "../confirmation/progress.vue";
 import { onMounted, reactive, ref } from "@vue/runtime-core";
 import axios from "axios";
 import NewOperation from "@/Components/pointSale/newOperation.vue";
-
+const showProgress = ref(false)
 const emit = defineEmits(["message"]);
 const Resposta = reactive({
   user: [],
@@ -123,6 +125,7 @@ const FormatDinheiro = new Intl.NumberFormat("pt-AO", {
 });
 
 onMounted(() => {
+    showProgress.value = true
   axios
     .get("/PDV/getOperation")
     .then((Response) => {
@@ -131,6 +134,8 @@ onMounted(() => {
     })
     .catch((err) => {
       console.log(err);
+    }).finally(()=>{
+        showProgress.value = false
     });
 });
 

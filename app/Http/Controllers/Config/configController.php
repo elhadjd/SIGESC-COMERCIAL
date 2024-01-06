@@ -24,8 +24,11 @@ class configController extends Controller
         return Inertia::render('Config/index');
     }
 
-    function getRoles() {
-       return Role::get();
+    function getRoles(Role $role) {
+        $local = app()->getLocale();
+        return $role->with(['translate'=>function($translate) use ($local){
+            $translate->where('local',$local);
+        }])->get();
     }
 
     public function users(Request $request)
@@ -84,7 +87,7 @@ class configController extends Controller
             'name'=>['required'],
             'surname'=>['required'],
             'roles'=>['required'],
-            'armagen_id'=>['required'],
+            'armagen'=>['required'],
         ]);
         $image = new uploadImage();
         $data = $request->all();

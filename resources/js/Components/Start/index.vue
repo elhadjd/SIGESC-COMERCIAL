@@ -28,7 +28,7 @@
             </div>
             <div>
                 <button type="submit">
-                    {{$t('words.valid')}}
+                    {{$t('words.validate')}}
                     <i v-if="license.state == 0" class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
                     <font-awesome-icon
                     :icon="`fa-solid ${license.state == 1 ? 'fa-check' : license.state == 2 ? 'fa-xmark': ''}`" />
@@ -49,7 +49,7 @@
             </div>
             <div>
                 <button @click="RequestAmount">
-                    {{$t('words.valid')}}
+                    {{$t('words.validate')}}
                     <i v-if="accountClient.state" class="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
                 </button>
             </div>

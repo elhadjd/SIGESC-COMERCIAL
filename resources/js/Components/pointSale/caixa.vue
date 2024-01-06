@@ -1,6 +1,6 @@
 <template>
   <Toasts />
-  <Progress v-if="ShowModal" />
+  <Progress v-if="showProgress" />
   <div class="principal">
     <div class="Header">
         <div class="Header-left">
@@ -18,7 +18,8 @@
         <button @click="AbrirControlo"
           v-if="DadosCaixa.orders.state == 'A abrir'"
           class="botoesCaixa">
-          {{$t('words.open')}} control
+          {{`${$t('words.open')} ${$t('words.the')}`}} controle
+          <FontAwesomeIcon v-if="showProgress" icon="fa-solid fa-spinner" class="text-2xl text" style="color: white" shake />
         </button>
         <button @click="ContinuarVenda"
           v-if="DadosCaixa.orders.state == 'Aberto'"
@@ -28,7 +29,8 @@
         <button @click="CloseCash"
           v-if="DadosCaixa.orders.state == 'Aberto'"
           class="mx-1 botoesCaixa">
-          {{$t('words.close')}}
+          {{$t('phrases.closeControl')}}
+          <FontAwesomeIcon v-if="showProgress" icon="fa-solid fa-spinner" class="text-2xl text" style="color: white" shake />
         </button>
         <button
           @click="updateSession"
@@ -36,6 +38,7 @@
           class="mx-1 botoesCaixa capitalize"
         >
           {{$t('words.edit')}}
+          <FontAwesomeIcon v-if="showProgress" icon="fa-solid fa-spinner" class="text-2xl text" style="color: white" shake />
         </button>
       </div>
       <div class="FormCaixaCompleta">
@@ -43,42 +46,47 @@
           <div id="FormSession">
             <div class="FormSessionCima">
               <div class="d-flex" v-for="item in DadosCaixa.operations" :key="item.id">
-                <cash class="mt-2" :size="25" />
+                <FontAwesomeIcon v-if="progressAmount" icon="fa-solid fa-spinner" class="text-2xl text" style="color: #00a5cf" shake />
+                <cash v-else class="mt-2" :size="25" />
                 <div class="TotalPorCima">
                   <div class="text-center">
-                    {{ formatMoney(item.operations_sum_amount) }}
+                    {{ formatMoney(progressAmount ? 0 : item.operations_sum_amount) }}
                   </div>
                   <div class="truncate">{{item.operation_translate[0].translate}}</div>
                 </div>
               </div>
               <div class="d-flex">
-                <cash class="mt-2" :size="25" />
+                <FontAwesomeIcon v-if="progressAmount" icon="fa-solid fa-spinner" class="text-2xl text" style="color: #00a5cf" shake />
+                <cash v-else class="mt-2" :size="25" />
                 <div class="TotalPorCima">
                   <div class="text-center">
-                    {{ formatMoney(DadosCaixa.orders.cash)}}
+                    {{ formatMoney(progressAmount ? 0 : DadosCaixa.orders.cash)}}
                   </div>
                   <div class="truncate">Total {{$t('words.reported')}}</div>
                 </div>
               </div>
-              <div class="d-flex">
-                <cash class="mt-2" :size="25" />
+              <div class="d-flex items-center">
+                <FontAwesomeIcon v-if="progressAmount" icon="fa-solid fa-spinner" class="text-2xl text" style="color: #00a5cf" shake />
+                <cash class="mt-2" v-else :size="25" />
                 <div class="TotalPorCima">
-                  <div>{{ formatMoney(DadosCaixa.orders.cash - Number(DadosCaixa.orders.orders_values)) }}</div>
+                  <div>{{ formatMoney(progressAmount ? 0 : DadosCaixa.orders.cash - Number(DadosCaixa.orders.orders_values)) }}</div>
                   <div class="truncate">{{$t('words.difference')}}</div>
                 </div>
               </div>
-              <div class="d-flex">
-                <shopping class="mt-2" :size="25" />
+              <div class="d-flex items-center">
+                <FontAwesomeIcon v-if="progressAmount" icon="fa-solid fa-spinner" class="text-2xl text" style="color: #00a5cf" shake />
+                <shopping v-else class="mt-2" :size="25" />
                 <div class="TotalPorCima">
-                  <div>{{ DadosCaixa.length }}</div>
+                  <div>{{progressAmount ? 0 :  DadosCaixa.length }}</div>
                   <div class="truncate">{{$t('words.order') + 's'}}</div>
                 </div>
               </div>
-              <div class="d-flex">
-                <Coin class="mt-2" :size="25" />
+              <div class="d-flex items-center">
+                <FontAwesomeIcon v-if="progressAmount" icon="fa-solid fa-spinner" class="text-2xl text" style="color: #00a5cf" shake />
+                <Coin v-else class="mt-2" :size="25" />
                 <div class="TotalPorCima">
                   <div class="text-center">
-                    {{ formatMoney(Number(DadosCaixa.orders.orders_sum_total) + operations.entrada + Number(DadosCaixa.orders.opening) - operations.saida - operations.gasto) }}
+                    {{formatMoney(progressAmount ? 0 : Number(DadosCaixa.orders.orders_sum_total) + operations.entrada + Number(DadosCaixa.orders.opening) - operations.saida - operations.gasto) }}
                   </div>
                   <div class="truncate">{{$t('words.payment') + 's'}}</div>
                 </div>
@@ -118,10 +126,10 @@
                   </div>
 
                   <div>
-                    <span>{{ DadosCaixa.user.surname }}</span>
-                    <span>{{ DadosCaixa['caixa']['name'] }}</span>
-                    <span>{{ formatDate(DadosCaixa.orders.created_at) }}</span>
-                    <span v-if="DadosCaixa.orders.state == 'Fechado'">
+                    <span class="truncate">{{ DadosCaixa.user.surname }}</span>
+                    <span class="truncate">{{ DadosCaixa['caixa']['name'] }}</span>
+                    <span class="truncate">{{ formatDate(DadosCaixa.orders.created_at) }}</span>
+                    <span class="truncate" v-if="DadosCaixa.orders.state == 'Fechado'">
                       {{ formatDate(DadosCaixa.orders.updated_at) }}
                     </span>
                   </div>
@@ -171,9 +179,12 @@ import Message from "primevue/message";
 import moment from 'moment'
 import { useCurrencyInput } from "vue-currency-input";
 import { router } from "@inertiajs/vue3";
+import { serviceMessage } from "@/composable/public/messages";
 const emits = defineEmits(["message",'pointOfSale']);
-const ShowModal = ref(false);
+const showProgress = ref(false);
+const progressAmount = ref(false)
 const props = defineProps(["caixaId"]);
+const {showMessage} = serviceMessage()
 const operations = ref({
     entrada: 0,
     saida: 0,
@@ -183,10 +194,7 @@ const Toast = useToast();
 const { inputRef } = useCurrencyInput({currency: 'AOA' })
 const Input = ref();
 const placeholder = ref("digita o valor de abertura");
-const FormatrDinheiro = new Intl.NumberFormat("PT-AO", {
-  style: "currency",
-  currency: "AOA",
-});
+
 const DadosCaixa = ref({
     operations: [],
     orders: [],
@@ -209,14 +217,9 @@ const ContinuarVenda = () => {
 
 const AbrirControlo = () => {
   if (Input.value == null || Input.value == "") {
-    Toast.add({
-      severity: "info",
-      summary: "Menssage",
-      detail: "Por favor informe o valor para Abrir a caixa",
-      life: 5000,
-    });
+    showMessage("Por favor informe o valor para Abrir a caixa","info")
   } else {
-    ShowModal.value = true;
+    showProgress.value = true;
     DadosCaixa.value.opening = Input.value;
     axios
       .post("/AbrirControloCaixa", DadosCaixa.value)
@@ -226,7 +229,7 @@ const AbrirControlo = () => {
         }
         DadosCaixa.value = response.data;
         DadosCaixa.value = response.data.session;
-        ShowModal.value = false;
+        showProgress.value = false;
         localStorage.clear();
       })
       .catch((erro) => {
@@ -236,16 +239,16 @@ const AbrirControlo = () => {
 };
 
 const updateSession = () => {
-  ShowModal.value = true;
+  showProgress.value = true;
   axios.post(`caixa/updateSession/${locale.value}/${DadosCaixa.value.orders.id}`)
     .then((response) => {
         DadosCaixa.value = response.data;
         DadosCaixa.value.caixa = response.data.orders.caixa
         DadosCaixa.value.user = response.data.orders.user
         CalcularValorCaixa();
-        ShowModal.value = false;
+        showProgress.value = false;
     }).catch((erro) => {
-        ShowModal.value = false;
+        showProgress.value = false;
         console.log(erro);
     });
 };
@@ -259,7 +262,7 @@ const CloseCash = () => {
       life: 5000,
     });
   } else {
-    ShowModal.value = true;
+    showProgress.value = true;
     let totals = Number(DadosCaixa.value.orders.orders_sum_total) + Number(operations.value.entrada) + Number(DadosCaixa.value.orders.opening)
     let discont = Number(operations.value.saida) + Number(operations.value.gasto)
     const totalValue = totals - discont
@@ -268,18 +271,19 @@ const CloseCash = () => {
         DadosCaixa.value = response.data;
         DadosCaixa.value.caixa = response.data.orders.caixa
         DadosCaixa.value.user = response.data.orders.user
-        ShowModal.value = false;
+        showProgress.value = false;
         CalcularValorCaixa();
       })
       .catch((erro) => {
-        ShowModal.value = false;
+        showProgress.value = false;
         console.log(erro);
       });
   }
 };
 
-onMounted(() => {
-   axios.get(`caixa/getCaixa/${locale.value}/${props.caixaId}`)
+onMounted(async() => {
+    progressAmount.value = true
+    await axios.get(`caixa/getCaixa/${locale.value}/${props.caixaId}`)
     .then((Response) => {
       DadosCaixa.value = Response.data;
       DadosCaixa.value.caixa = Response.data.orders.caixa
@@ -288,6 +292,8 @@ onMounted(() => {
     })
     .catch((err) => {
       console.log(err);
+    }).finally(()=>{
+        progressAmount.value = false
     });
 });
 

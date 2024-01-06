@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Public;
 
 use App\classes\ActivityRegister;
-use App\classes\DeleteFile;
+use App\classes\deleteFile;
 use App\classes\uploadImage;
 use App\classes\UploadImageCatalog;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\public\verifyInfoModelsController;
+use App\Http\Controllers\Public\verifyInfoModelsController;
 use App\Models\category_product;
 use App\Models\company;
 use App\Models\fornecedore;

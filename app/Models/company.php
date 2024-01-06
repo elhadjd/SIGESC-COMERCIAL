@@ -97,7 +97,7 @@ class company extends Model
     }
 
     function emailVerify() {
-        return $this->hasOne(emailVerify::class,'company_id');
+        return $this->hasOne(EmailVerify::class,'company_id');
     }
 
     function currencyCompany() {

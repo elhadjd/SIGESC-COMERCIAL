@@ -15,128 +15,130 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class OrdersController extends Controller
 {
     public function ValidatePayment(Request $request)
     {
-        $listItems = $request->items;
-        $methods = $request->methods;
-        $session = session::find($request->session);
+        $validator = Validator::make($request->all(), [
+            'number' => [
+                'required',
+                Rule::unique('order_pos')
+            ],
+        ]);
 
-        if ($session->state != "Aberto") return $this->RespondSuccess(__('Error, the session for this point of sale is closing'));
-        if ($listItems != null) {
+        if($validator->fails()){
+            $order = orderPos::where('number',$request->number)->first();
+            return $this->returnInvoice($order);
+        }else{
+            $listItems = $request->items;
+            $methods = $request->methods;
+            $session = session::find($request->session);
 
-            $VerificarPagamento = $this->VerificarValorPago($methods, $listItems);
+            if ($session->state != "Aberto") return $this->RespondSuccess(__('Error, the session for this point of sale is closing'));
+            if ($listItems != null) {
 
-            if ($VerificarPagamento['total'] <= $VerificarPagamento['ValorPago']) {
+                $VerificarPagamento = $this->VerificarValorPago($methods, $listItems);
 
-                // $order = $this->VerificarEncomenda($request);
+                if ($VerificarPagamento['total'] <= $VerificarPagamento['ValorPago']) {
 
-                // if ($order) return $this->Invoice($order->id);
-                $message = [
-                    'state'=> false,
-                    'message'=>null
-                ];
-                // $stock_insuficiente = false;
-                // $price_authorized = false;
-                $idOrder = 0;
-                DB::transaction(function () use ($request, &$methods, &$idOrder, &$VerificarPagamento, &$message) {
-                    foreach ($request->items as $item) {
-                        $stock = $request->user()->armagen()->first()
-                            ->stock()->where('produtos_id', $item['id']);
-                        if ($stock->count() <= 0) {
-                            $message['state'] = true;
-                            $message['message'] = 'O produto '.$item['nome'].'não existe no armagen relacionado';
-                        }elseif($stock->first()->quantity < $item['quantidade']){
-                            $message['state'] = true;
-                            $message['message'] = 'O produto '.$item['nome'].' não tem quantidade suficiente em stock';
-                        }
-                    }
-
-                    if (!$message['state']) {
-                        $order = orderPos::create([
-                            'company_id' => Auth()->user()->company_id,
-                            'session_id' => $request->session,
-                            'user_id' => Auth()->user()->id,
-                            'total' => $request->total,
-                            'cliente' => $request->cliente,
-                            'state' => 'Pago',
-                            'number' => "$request->session-$request->number",
-                            'total_costs' => $VerificarPagamento['total_costs']
-                        ]);
-
+                    $message = [
+                        'state'=> false,
+                        'message'=>null
+                    ];
+                    $idOrder = 0;
+                    DB::transaction(function () use ($request, &$methods, &$idOrder, &$VerificarPagamento, &$message) {
                         foreach ($request->items as $item) {
                             $stock = $request->user()->armagen()->first()
-                                ->stock()->where('produtos_id', $item['id'])->first();
-                            $product = produtos::find($item['id']);
-                            // if ($product->preçovenda != $item['preco_pedido']) {
-
-                            // if ($request->user()->config->price || count($product->list_price) > 0) {
-                            $totals = $item['preco_pedido'] * $item['quantidade'];
-                            $preco = $item['preco_pedido'];
-                            $totalCusto = $product->preçocust * $item['quantidade'];
-                            ItemOrder::create([
-                                'order_id' => $order->id,
-                                'produtos_id' => $product->id,
-                                'price_sold' => $preco,
-                                'price_cost' => $product->preçocust,
-                                'TotalCost' => $totalCusto,
-                                'quantity' => $item['quantidade'],
-                                'total' => $totals,
-                            ]);
-
-                            $quantityAfter = $stock->quantity;
-
-                            $quantity = $stock->quantity - $item['quantidade'];
-                            $stock->quantity = $quantity;
-                            $stock->save();
-
-                            $movementTypes = movement_type::all()->where('name', 'Vendido por PDV')->first();
-
-                            movement_type_produtos::create([
-                                'company_id' => Auth::user()->company_id,
-                                'user_id' => Auth::user()->id,
-                                'produtos_id' => $product->id,
-                                'order_pos_id' => $order->id,
-                                'movement_type_id' => $movementTypes->id,
-                                'armagen_id' => $stock->armagen_id,
-                                'quantity' => $item['quantidade'],
-                                'price_cost' => $product->preçocust,
-                                'price_sold' => $preco,
-                                'motive' => "Venda",
-                                'quantityAfter' => $quantityAfter,
-                            ]);
-
-                            //     } else {
-                            //         return $price_authorized = true;
-                            //     }
-                            // }
-                        }
-                        foreach ($methods as $method) {
-                            if ($method['valor'] > 0) {
-                                paymentPDV::create([
-                                    'session_id' => $request->session,
-                                    'order_pos_id' => $order->id,
-                                    'payment_method_id' => $method['id'],
-                                    'amountPaid' => $method['valor'],
-                                    'change' => $method['name'] == 'Numerario' ? $VerificarPagamento['ValorPago'] - $request->total : 0,
-                                ]);
+                                ->stock()->where('produtos_id', $item['id']);
+                            if ($stock->count() <= 0) {
+                                $message['state'] = true;
+                                $message['message'] = 'O produto '.$item['nome'].'não existe no armagen relacionado';
+                            }elseif($stock->first()->quantity < $item['quantidade']){
+                                $message['state'] = true;
+                                $message['message'] = 'O produto '.$item['nome'].' não tem quantidade suficiente em stock';
                             }
                         }
 
-                        $idOrder = $order->id;
-                    }
-                });
+                        if (!$message['state']) {
+                            $order = orderPos::create([
+                                'company_id' => Auth()->user()->company_id,
+                                'session_id' => $request->session,
+                                'user_id' => Auth()->user()->id,
+                                'total' => $request->total,
+                                'cliente' => $request->cliente,
+                                'state' => 'Pago',
+                                'number' => $request->number,
+                                'total_costs' => $VerificarPagamento['total_costs']
+                            ]);
 
-                if ($message['state']) return $this->RespondError($message['message'], []);
+                            foreach ($request->items as $item) {
+                                $stock = $request->user()->armagen()->first()
+                                    ->stock()->where('produtos_id', $item['id'])->first();
+                                $product = produtos::find($item['id']);
 
-                if ($idOrder > 0)  return $this->Invoice($idOrder);
+                                $totals = $item['preco_pedido'] * $item['quantidade'];
+                                $preco = $item['preco_pedido'];
+                                $totalCusto = $product->preçocust * $item['quantidade'];
+                                ItemOrder::create([
+                                    'order_id' => $order->id,
+                                    'produtos_id' => $product->id,
+                                    'price_sold' => $preco,
+                                    'price_cost' => $product->preçocust,
+                                    'TotalCost' => $totalCusto,
+                                    'quantity' => $item['quantidade'],
+                                    'total' => $totals,
+                                ]);
+
+                                $quantityAfter = $stock->quantity;
+
+                                $quantity = $stock->quantity - $item['quantidade'];
+                                $stock->quantity = $quantity;
+                                $stock->save();
+
+                                $movementTypes = movement_type::all()->where('name', 'Vendido por PDV')->first();
+
+                                movement_type_produtos::create([
+                                    'company_id' => Auth::user()->company_id,
+                                    'user_id' => Auth::user()->id,
+                                    'produtos_id' => $product->id,
+                                    'order_pos_id' => $order->id,
+                                    'movement_type_id' => $movementTypes->id,
+                                    'armagen_id' => $stock->armagen_id,
+                                    'quantity' => $item['quantidade'],
+                                    'price_cost' => $product->preçocust,
+                                    'price_sold' => $preco,
+                                    'motive' => "Venda",
+                                    'quantityAfter' => $quantityAfter,
+                                ]);
+                            }
+                            foreach ($methods as $method) {
+                                if ($method['valor'] > 0) {
+                                    paymentPDV::create([
+                                        'session_id' => $request->session,
+                                        'order_pos_id' => $order->id,
+                                        'payment_method_id' => $method['id'],
+                                        'amountPaid' => $method['valor'],
+                                        'change' => $method['name'] == 'Numerario' ? $VerificarPagamento['ValorPago'] - $request->total : 0,
+                                    ]);
+                                }
+                            }
+
+                            $idOrder = $order->id;
+                        }
+                    });
+
+                    if ($message['state']) return $this->RespondError($message['message'], []);
+
+                    if ($idOrder > 0)  return $this->Invoice($idOrder);
+                } else {
+                    return $this->RespondError(__('Insufficient value'));
+                }
             } else {
-                return $this->RespondError(__('Insufficient value'));
+                return $this->RespondError(__('Error occurs when updating data'));
             }
-        } else {
-            return $this->RespondError(__('Error occurs when updating data'));
         }
     }
 
@@ -236,6 +238,7 @@ class OrdersController extends Controller
 
     public function CancelInvoice(orderPos $order)
     {
+        if(!request()->user()->hasRole('Admin')) return $this->RespondError(__('User without access'));
         $user = User::find($order->user_id);
         DB::transaction(function () use ($order, &$user) {
 
@@ -243,7 +246,6 @@ class OrdersController extends Controller
                 $stock = $user->armagen()->first()->stock()
                     ->where('produtos_id', $item['produtos_id'])
                     ->first();
-
                 $stock_real = stock::find($stock->id);
 
                 $stock_real->quantity += $item['quantity'];
@@ -254,17 +256,24 @@ class OrdersController extends Controller
                 'state' => 'Anulado'
             ]);
         });
+        $locale = app()->getLocale();
 
         return $this->RespondSuccess(
             __('Order canceled successfully'),
-            $order->load('session')
+            orderPos::with(['payments'=>function($payments) use ($locale){
+                $payments->with(['method'=>function($method) use ($locale){
+                    $method->with(['methodTranslate'=>function($methodTranslate) use ($locale){
+                        $methodTranslate->where('local',$locale);
+                    }]);
+                }]);
+            }])->with('session')->where('id',$order->id)->first()
         );
     }
 
     public function getOrders($locale,$order=null, $column=null)
     {
-        if (Auth::user()->hasRole('Admin')) {
-            return false;
+        if (!request()->user()->hasRole('Admin')) {
+            return $this->RespondError(__("User without access"));
         } else {
             if ($column == 'TotalMaior') {
                 $orders = orderPos::where('total', '>=', $order)

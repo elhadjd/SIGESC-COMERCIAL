@@ -9,19 +9,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Role extends Model
 {
     use HasFactory;
-}
-
-class RoleUser extends Model
-{
-    use HasFactory;
-
     protected $with = ['translate'];
 
     function translate():HasMany {
         return $this->hasMany(roles_translate::class,'role_id');
     }
-
-    function get() {
-        return $this->all();
-    }
 }
+

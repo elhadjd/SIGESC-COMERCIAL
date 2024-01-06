@@ -23,7 +23,7 @@
                 <div class="px-3">{{$t('words.state')}}</div>
             </div>
             <div class="list_items">
-                <div v-for="order in ListOrders.slice(0, 100)"
+                <div v-for="order in ListOrders"
                     :key="order.id" @click="Encomendas(order)" class="rows" >
                     <div> <strong>{{ "Orden " + order.number }}</strong></div>
                     <div>{{ order.session.caixa.name }}</div>

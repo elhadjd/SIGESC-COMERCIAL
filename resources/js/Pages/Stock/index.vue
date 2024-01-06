@@ -14,6 +14,7 @@
                 @message="message"
                 v-if="modul == 'newTransfer'"
             />
+
         </div>
     </div>
 </template>
