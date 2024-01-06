@@ -67,8 +67,7 @@ class User extends Authenticatable
         return $this->hasOne(userLanguage::class,'user_id');
     }
 
-// Role  */
-
+    /* Role  */
     public function hasRole($role)
     {
         return $this->roles()->where('name', $role)->exists();
@@ -98,10 +97,6 @@ class User extends Authenticatable
     public function hasPermission(string $permission): bool
     {
         return $this->permissions()->where('name', $permission)->exists();
-    }
-
-    function PointOfSale() :HasOne {
-        return $this->hasOne(caixa::class,'user_id');
     }
 
 }

@@ -56,7 +56,6 @@ const hasRole = computed(()=>{
     return props.user.roles?.name
 });
 
-
 const canvas = ref(null);
 const ctx = ref(null);
 const mouse = { x: 0, y: 0 };

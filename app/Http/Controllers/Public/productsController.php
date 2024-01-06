@@ -63,7 +63,7 @@ class productsController extends Controller
             return $this->show(produtos::find($product->id));
         }
 
-        return $this->RespondWarn(__('User without access'));
+        return $this->RespondWarn('Apenas o Administrador pode criar produto');
     }
 
     public function registerActivity($body)
@@ -181,8 +181,8 @@ class productsController extends Controller
         $request->validate([
             'image' => 'required',
         ]);
-        if (!$request->user()->hasRole('Admin')) {
-            return $this->RespondInfo(__('User without access'));
+        if (!Auth::user()->hasRole('Admin')) {
+            return $this->RespondInfo('Usuário sem acesso');
         }
 
         $countImage = $product->catalogProduct->count();
