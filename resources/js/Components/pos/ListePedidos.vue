@@ -23,7 +23,8 @@
             <div>{{$t('words.action')}}</div>
         </div>
         <div class="List">
-            <div v-for="item in ListaOrdens.slice(0,100)" :key="item.id" @mouseover="ViewPedido(item.number)" class="Items" @click="viewOrder(item)" >
+            <ProgressVue v-if="!ListaOrdens.length"/>
+            <div v-else v-for="item in ListaOrdens.slice(0,100)" :key="item.id" @mouseover="ViewPedido(item.number)" class="Items" @click="viewOrder(item)" >
                 <div>{{formatDate(item.created_at)}}</div>
                 <div>{{item.number}}</div>
                 <div>{{item.cliente}}</div>
@@ -50,14 +51,17 @@
 </template>
 
 <script setup>
+import ProgressVue from '@/Components/confirmation/progress.vue'
 import { onMounted, ref } from "@vue/runtime-core";
 import ShowOrder from '@/Components/pos/MostrarPedido.vue';
 import moment from 'moment'
 import InvoiceCancel from './invoiceCancel.vue';
 import axios from "axios";
+import { OrdersServices } from "./services/ordersServices";
 const FormatarDineiro = Intl.NumberFormat('PT-AO',{style: 'currency',currency: 'AOA'})
 const props = defineProps({session: Number})
 const emits = defineEmits(['AlterarPedido','close']);
+const {getOrders} = OrdersServices()
 const Encomendas = ref()
 const ListaOrdens = ref([])
 const MostrarLista = ref({
@@ -114,7 +118,7 @@ const edit = ((item)=>{
 })
 
 const OnMounted = onMounted(async() => {
-    await axios.get(`/PDV/getOrderSingleUser/${localStorage.getItem('locale') || 'en'}/${props.session}`)
+    await getOrders(props.session)
     .then((response) => {
         ListaOrdens.value = response.data.data
         ordersStore.value = response.data.data

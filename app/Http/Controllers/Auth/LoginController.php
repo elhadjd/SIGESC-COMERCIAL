@@ -18,6 +18,7 @@ class LoginController extends Controller
 {
     public function index()
     {
+        if(Auth::check()) return to_route('dashboard');
         return Inertia::render('Auth/Login');
     }
     public function login(Request $request,$locale = null)

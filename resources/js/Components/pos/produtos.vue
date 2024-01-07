@@ -13,6 +13,7 @@
         </div>
     </div>
     <div class="Artigos">
+        <ProgressVue v-if="!produtos.length"/>
         <div
             :class="idProd == product.id ? { shake: disabled } : ''"
             v-for="product in produtos.slice(0,100)"
@@ -46,10 +47,11 @@
         </div>
     </div>
   </div>
-  
+
 </template>
 
 <script setup>
+import ProgressVue from '@/Components/confirmation/progress.vue'
 import { computed, onMounted, ref, watch } from "@vue/runtime-core";
 import { useToast } from "primevue/usetoast";
 import { mapMutations, mapState, useStore } from "vuex";

@@ -26,7 +26,7 @@
                             <i @click="OptionCaixas(item.id)" class="fa fa-bars"></i>
                         </div>
                         <div v-if="OptionCaixa == item.id" class="options">
-                            <div @click="roles[0]?.name== 'Admin'
+                            <div @click="roles?.name== 'Admin'
                                     ? showOrders(item.session[0].id) : $emit('message', 'info', 'Usuario sem acesso')">
                                 {{$t('words.order')+'s'}}
                             </div>

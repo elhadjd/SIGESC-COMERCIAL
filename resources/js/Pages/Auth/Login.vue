@@ -39,7 +39,10 @@
                     <label htmlFor="checkbox">Permanece connectado por uma semana</label>
                 </div>
                 <div class='buttons'>
-                    <button type='submit'>{{$t('words.enter')}}</button>
+                    <button type='submit flex items-center justify-between'>
+                        {{$t('words.enter')}}
+                        <i v-if="form.processing" class="fa fa-spinner fa-pulse fa-3x  fa-fw" aria-hidden="true"></i>
+                    </button>
                 </div>
                 <div class="flex flex-row justify-between space-x-2">
                     <Link :href="route('startCompany')">{{$t('words.start')}} {{$t('words.one')}} {{$t('words.company')}}</Link>
@@ -74,7 +77,7 @@ const form = useForm({
     password: null,
     path: window.location.pathname,
     locale: [],
-    session: false
+    session: false,
 });
 const toast = useToast();
 const connection = ref({
@@ -108,23 +111,26 @@ const selectLanguage = ((language)=>{
     languages.value.state = false
 })
 
-const submit = () => {
-  if (form.email == null || form.email == '') {
-    document.querySelector("#email").style.borderBottom = "1px solid red";
-  } else if (form.password == null || form.password == '') {
-    document.querySelector("#password").style.borderBottom = "1px solid red";
-  } else {
-    form.post(`/auth/logar/${form.locale.local || 'en'}`, {
-        onSuccess: (Response) => {
-            toast.add({
-                severity: "error",
-                summary: "menssagem de erro",
-                detail: Response.props.erro || 'Erro ao fazer login, por favor contacta o administrador',
-                life: 5000,
+const submit = async() => {
+    if(!form.processing){
+        if (form.email == null || form.email == '') {
+            document.querySelector("#email").style.borderBottom = "1px solid red";
+        } else if (form.password == null || form.password == '') {
+            document.querySelector("#password").style.borderBottom = "1px solid red";
+        } else {
+            form.post(`/auth/logar/${form.locale.local || 'en'}`, {
+                onSuccess: (Response) => {
+                    toast.add({
+                        severity: "error",
+                        summary: "menssagem de erro",
+                        detail: Response.props.erro || 'Erro ao fazer login, por favor contacta o administrador',
+                        life: 5000,
+                    });
+                },
             });
-        },
-    });
-  }
+        }
+    }
+       
 };
 </script>
 

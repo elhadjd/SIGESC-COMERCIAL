@@ -3,7 +3,7 @@
     v-if="!$store.state.pos.Controlo.state"
     :session="props.session"
     @message="messages"
-    @login="teste"
+    @login="showLogin"
 />
 <Toast />
 <Transition>
@@ -17,6 +17,7 @@
     <Fatura :dadosFatura="dadosFatura" @closePrint="closePrint"/>
 </div>
   <div v-else class="ManuPosGeral">
+    <ProgressVue v-if="progress"/>
     <section id="headerPos">
         <button type="button" class="header-One">
             <li>
@@ -115,6 +116,7 @@
   </div>
 </template>
 <script setup>
+import ProgressVue from '@/Components/confirmation/progress.vue'
 import Index from "./LogIn/index.vue";
 import cash from "vue-material-design-icons/CashMultiple.vue";
 import shopping from "vue-material-design-icons/Shopping.vue";
@@ -132,6 +134,11 @@ import { onMounted, reactive, ref } from "@vue/runtime-core";
 import { useToast } from "primevue/usetoast";
 import Pesquisar from "./pesquisar.vue";
 import { getImages } from "@/composable/public/getImages";
+import {OrdersServices} from "@/Components/pos/services/ordersServices"
+const {
+    checkOrders,
+    progress
+} = OrdersServices()
 
 const store = useStore();
 const ListePedidos = ref(false);
@@ -142,7 +149,6 @@ const FormatarDineiro = Intl.NumberFormat("PT-AO", {
 const image = reactive({
     img:'/login/image/'+store.state.publico.user.surname
 })
-
 const showProducts = ref(false)
 const {getImage} = getImages(image);
 const toast = useToast();
@@ -181,7 +187,7 @@ const method = ref();
 
 const IdEncomenda = ref();
 
-const teste = (event) => {
+const showLogin = (event) => {
   store.commit("pos/CloseCash", event);
 };
 
@@ -262,6 +268,9 @@ const OnMounted = onMounted(async () => {
     Pedido.value.session = props.session.id;
     getStore();
     InputFocus();
+    if(Encomendas.value.length == 1){
+        await checkOrders(props.session.id)
+    }
 });
 
 const getStore = (edit) => {
@@ -450,10 +459,8 @@ const updateOrder = (numero) => {
         const total = preco * existProduct.quantidade;
         existProduct.total = total;
         existProduct.preco_pedido = preco;
-        console.log(existProduct);
         SetStore();
       } else {
-        console.log(existProduct);
         return messages(
           "error",
           "Este produto ja nao ten quantidade suficiente em stock"
