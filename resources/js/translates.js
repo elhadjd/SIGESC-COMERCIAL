@@ -11,6 +11,22 @@ const messages = {
             stock: 'Gestão de Estoque',
             invoicing: 'Faturamento'
         },
+
+        month: {
+            January: "Janeiro",
+            February: "Fevereiro",
+            March: "Março",
+            April: "Abril",
+            May: "Maio",
+            June: "Junho",
+            July: "Julho",
+            August: "Agosto",
+            September: "Setembro",
+            October: "Outubro",
+            November: "Novembro",
+            December: "Dezembro"
+        },
+
         words: {
             department: 'Departamento',
             connected: 'conectado',
@@ -260,6 +276,22 @@ const messages = {
             stock: 'Gestion de stock',
             invoicing: 'Facturation'
         },
+
+        month: {
+            January: "Janvier",
+            February: "Février",
+            March: "Mars",
+            April: "Avril",
+            May: "Mai",
+            June: "Juin",
+            July: "Juillet",
+            August: "Août",
+            September: "Septembre",
+            October: "Octobre",
+            November: "Novembre",
+            December: "Décembre"
+        },
+
         words: {
             method: 'Méthode',
             department: 'Département',
@@ -506,6 +538,20 @@ const messages = {
             purchase: 'Purchase',
             stock: 'Stock Management',
             invoicing: 'Invoicing',
+        },
+        month: {
+            January: "January",
+            February: "February",
+            March: "March",
+            April: "April",
+            May: "May",
+            June: "June",
+            July: "July",
+            August: "August",
+            September: "September",
+            October: "October",
+            November: "November",
+            December: "December"
         },
         words: {
             subTotal: 'Sub total',

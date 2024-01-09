@@ -27,6 +27,7 @@
                     @click="getMonth(month.month)"
                     v-for="month in Month"
                     :key="month.month"
+                    class="text-center"
                     :class="month.month == Data.month ? 'MonthActive' : ''"
                     >{{ month.name }}</span
                 >
@@ -54,12 +55,15 @@
 <script setup>
 import { onMounted, reactive, ref } from "@vue/runtime-core";
 import axios from "axios";
+import { useI18n } from "vue-i18n";
 import { useStore } from "vuex";
-
+const {t} = useI18n()
 const emits = defineEmits(["RelatorByMonth", "progres"]);
 const props = defineProps({
 	Orders: Object,
 });
+
+const dates = ref([])
 
 const Data = reactive({
 	days: [{}],
@@ -77,23 +81,47 @@ const Data = reactive({
 });
 
 const Month = ref([
-	{ name: "Janeiro", month: 1, money: 0 },
-	{ name: "Fevereiro", month: 2, money: 0 },
-	{ name: "Março", month: 3, money: 0 },
-	{ name: "Abril", month: 4, money: 0 },
-	{ name: "Maio", month: 5, money: 0 },
-	{ name: "Junho", month: 6, money: 0 },
-	{ name: "Julho", month: 7, money: 0 },
-	{ name: "Agosto", month: 8, money: 0 },
-	{ name: "Setembro", month: 9, money: 0 },
-	{ name: "Outubro", month: 10, money: 0 },
-	{ name: "Novembro", month: 11, money: 0 },
-	{ name: "Dezembro", month: 12, money: 0 },
+	{ name: t('month.January'), month: 1, money: 0 },
+	{ name: t('month.February'), month: 2, money: 0 },
+	{ name: t('month.March'), month: 3, money: 0 },
+	{ name: t('month.April'), month: 4, money: 0 },
+	{ name: t('month.May'), month: 5, money: 0 },
+	{ name: t('month.June'), month: 6, money: 0 },
+	{ name: t('month.July'), month: 7, money: 0 },
+	{ name: t('month.August'), month: 8, money: 0 },
+	{ name: t('month.September'), month: 9, money: 0 },
+	{ name: t('month.October'), month: 10, money: 0 },
+	{ name: t('month.November'), month: 11, money: 0 },
+	{ name: t('month.December'), month: 12, money: 0 },
 ]);
 
 onMounted(() => {
+    checkDate(new Date().getMonth() + 1)
 	DaysInMonthPrincipal();
 });
+
+const checkDate = ((mes)=>{
+    dates.value = []
+    if(mes == 0){
+        var objData = new Date(),
+		ano = objData.getFullYear()-1,
+		mes = 12,
+		dias = new Date(ano, mes, 0).getDate();
+        dates.value = [mes,ano,dias]
+    }else if(mes >= 12){
+        var objData = new Date(),
+		ano = objData.getFullYear()+1,
+		mes = 1,
+		dias = new Date(ano, mes, 0).getDate();
+        dates.value = [mes,ano,dias]
+    }else{
+        var objData = new Date(),
+		ano = objData.getFullYear(),
+		mese = mes,
+		dias = new Date(ano, mes, 0).getDate();
+        dates.value = [mese,ano,dias]
+    }
+})
 
 const DaysInMonthPrincipal = () => {
 	var objData = new Date(),
@@ -109,16 +137,21 @@ const DaysInMonthPrincipal = () => {
 };
 
 const getMonth = async (mes) => {
-	var objData = new Date(),
-		ano = objData.getFullYear(),
-		mes = mes,
-		dias = new Date(ano, mes, 0).getDate();
-	if (mes > 0 && mes <= 12) {
-		Data.days = dias;
-		Data.year = ano;
-		Data.month = mes;
-		Data.day = String(objData.getDate()).padStart("0");
-		switch (mes) {
+	if(mes == 0){
+        dates.value[1] = dates.value[1] -1
+        dates.value[0] = 12
+    }else if(mes > 12){
+        dates.value[1] = dates.value[1] +1
+        dates.value[0] = 1
+    }else{
+        dates.value[0] = mes
+    }
+	if (dates.value[0] > 0 && dates.value[0] <= 12) {
+		Data.days = dates.value[2];
+		Data.year = dates.value[1];
+		Data.month = dates.value[0];
+		Data.day = String(new Date().getDate()).padStart("0");
+		switch (dates.value[0]) {
 			case 1:
 				Data.Active.month = "01";
 				break;
