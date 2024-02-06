@@ -64,13 +64,16 @@ const form = ref({
   produtos_id: product.value.data.id
 });
 
-onMounted(()=>{
-  getProduct()
+onMounted(async()=>{
+    if(product.value.data.id) await getProduct()
 })
 
-function getProduct() {
-    axios.get(`/products/${product.value.data.id}`).then((response)=>{
+
+async function getProduct() {
+    await axios.get(`/products/${product.value.data.id}`).then((response)=>{
         list_price.value = response.data.product.list_price
+    }).catch((err)=>{
+        if(err.response.data.message) showMessage(err.response.data.message,'error')
     });
 }
 

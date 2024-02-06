@@ -301,6 +301,8 @@ Route::middleware('locale')->group(function(){
                     Route::post('/uploadImageCatalog/{product}','uploadImageCatalog');
                     Route::delete('/deleteImageInCatalogProduct/{image}','deleteImageInCatalog');
                     Route::post('/publishProduct/{product}','publishProduct');
+                    Route::post('/addDiscountProduct/{product}','addDiscountProduct');
+                    Route::delete('/deleteDiscount/{product}','deleteDiscount');
                 });
 
                 Route::controller(clientsController::class)->group(function () {

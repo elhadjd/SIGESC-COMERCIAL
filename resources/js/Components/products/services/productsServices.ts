@@ -26,6 +26,11 @@ export const ProductsServices = (()=>{
         estado: 'active'
     })
 
+    const makeDiscount = ((price:any,discount:number)=>{
+        const priceReturn = price/100*discount
+        return price - priceReturn
+    })
+
     const SearchProduct = (async ()=>{
         if (form.nome === null || form.nome === "") {
             Products.list.data = JSON.parse(localStorage.getItem('listStorePaginate')).data
@@ -89,5 +94,6 @@ export const ProductsServices = (()=>{
         showMessage,
         createProduct,
         showProduct,
+        makeDiscount
     }
 })

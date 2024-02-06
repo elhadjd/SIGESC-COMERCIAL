@@ -31,7 +31,10 @@
                         <div class="nameProduct"><strong>{{product.nome}}</strong></div>
                         <div class="d-flex">
                             <div class="preco_qtd">
-                                <div><strong>Preço :</strong> {{formatMoney(product.preçovenda)}} </div>
+                                <div class="flex flex-row space-x-2"><strong>Preço:</strong>
+                                    <span :class="product.discount != null && 'line-through text-xs text-gray-300'">{{formatMoney(product.preçovenda)}}</span>
+                                    <span v-if="product.discount != null">{{formatMoney(makeDiscount(product.preçovenda,product.discount.discount))}}</span>
+                                </div>
                                 <div><strong>Stock :</strong> {{product.stock_sum_quantity != null ?product.stock_sum_quantity  +',00Un(s)':0 +',00Un(s)'}}</div>
                             </div>
                         </div>
@@ -71,6 +74,7 @@ const {
     createProduct,
     productComponentKey,
     showProduct,
+    makeDiscount
 } = ProductsServices()
 const product = computed(()=> store.getters['Product/product'])
 const toast = useToast()

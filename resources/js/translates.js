@@ -28,6 +28,8 @@ const messages = {
         },
 
         words: {
+            startDate: 'Data de inicio',
+            endDate: 'Data de fin',
             department: 'Departamento',
             connected: 'conectado',
             installed: 'instalados',
@@ -205,6 +207,7 @@ const messages = {
             },
         },
         message: {
+            notData: "Nenhum {colum} encontrado com este {value} .",
             serverError: "Erro do servidor",
         },
         pdv: {
@@ -293,6 +296,8 @@ const messages = {
         },
 
         words: {
+            startDate: 'Date de debut ',
+            endDate: 'Date de fin',
             method: 'Méthode',
             department: 'Département',
             connected: 'connecté',
@@ -472,6 +477,7 @@ const messages = {
 
         },
         message: {
+            notData: "Aucun {colum} trouvé avec ce {value} .",
             serverError: "Une erreur du serveur s'est produite",
         },
         pdv: {
@@ -554,6 +560,8 @@ const messages = {
             December: "December"
         },
         words: {
+            startDate: 'Start date ',
+            endDate: 'End date',
             subTotal: 'Sub total',
             department: 'Departmente',
             connected: 'connected',
@@ -736,6 +744,7 @@ const messages = {
             }
         },
         message: {
+            notData: "No {colum} found with this {value} .",
             serverError: "Une erreur du serveur s'est produite",
         },
         pdv: {

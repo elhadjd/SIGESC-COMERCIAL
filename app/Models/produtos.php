@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class produtos extends Model
 {
@@ -14,7 +16,8 @@ class produtos extends Model
         'fornecedor',
         'product_type',
         'list_price',
-        'stock'
+        'stock',
+        'discount'
     ];
 
     protected $fillable = [
@@ -66,6 +69,15 @@ class produtos extends Model
     public function list_price()
     {
         return $this->hasMany(price_list::class);
+    }
+
+    public function hasDiscount()
+    {
+        return $this->discount()->exists();
+    }
+
+    function discount():HasOne {
+        return $this->hasOne(ProductDiscount::class,'product_id');
     }
 
     public function catalogProduct(){

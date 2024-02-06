@@ -124,12 +124,16 @@ import { useStore } from "vuex";
 import ProductForm from "../products/product/product.vue";
 import Progress from "../confirmation/progress.vue";
 import pagination from '@/Layouts/paginations/paginate.vue'
+import { serviceMessage } from "@/composable/public/messages";
+import { useI18n } from "vue-i18n";
 const product = computed(()=> store.getters['Product/product'])
-
+const {showMessage} = serviceMessage()
+const {t} = useI18n()
 const inputSearch = ref("");
 const store = useStore();
 const listItems = ref();
 const valores = ref([]);
+const firstListProducts = ref({data: []})
 const StoreProduct = ref([]);
 const ShowPrecess = ref(true);
 const loading = ref(null)
@@ -181,6 +185,7 @@ const getProducts = async() => {
             listItems.value = Response.data;
             SumProducts(listItems.value.data)
             StoreProduct.value = Response.data.data;
+            firstListProducts.value = Response.data
             ShowPrecess.value = false;
             if (inputSearch.value != "") SearchProd(inputSearch.value);
     }).catch((err) => {
@@ -226,14 +231,19 @@ const showAgroup = (event) => {
    agroup.value.type = event
 }
 
-const SearchProd = (event) => {
+const SearchProd = async (event) => {
+    if(event.target.value == null || event.target.value == ''){
+        listItems.value = firstListProducts.value
+        StoreProduct.value = firstListProducts.value.data
+        return false
+    }
   if (inputSearch.value === "false") {
     const Filtrar = StoreProduct.value.filter((object) => {
       return object.stock_sum_quantity <= 0;
     });
     return (lista.value = Filtrar);
   }
-  const Filtrar = StoreProduct.value.filter((object) => {
+  const Filtrar = StoreProduct.value.slice(0,200).filter((object) => {
     return (
       String(object.nome)
         .toLowerCase()
@@ -243,8 +253,27 @@ const SearchProd = (event) => {
         .includes(inputSearch.value.toLowerCase())
     );
   });
+  if(!Filtrar.length){
+    return await searchDataToApi(event)
+  }
   return SumProducts(Filtrar);
 };
+
+const searchDataToApi = (async(event)=>{
+    if(event.target.value == '  ' || event.target.value == null) return
+    ShowPrecess.value = true
+    await axios.get(`/search/produtos/nome/${event.target.value}`)
+    .then((response) => {
+        if(!response.data.length) return showMessage(t('message.notData',{colum: t('words.article'),value: t('words.name')}),'info')
+        listItems.value = 
+        StoreProduct.value = response.data
+    }).catch((err) => {
+        if(err.response.data.message) showMessage(err.response.data.message,'error')
+        console.error(err);
+    }).finally(()=>{
+        ShowPrecess.value = false
+    });
+})
 
 const SumProducts = (products) => {
   valores.value.totalCusto_geral = 0;

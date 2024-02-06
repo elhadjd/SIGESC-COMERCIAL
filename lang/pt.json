@@ -1,4 +1,6 @@
 {
+    "The start date cannot be grater than the end date":"A data de início não pode ser superiore ao data de fin",
+    "The start date cannot be less than the current date":"A data de início não pode ser inferior à data atual",
     "User not found": "Usuário não encontrado",
     "30 Days": "30 dias",
     "60 Days": "60 dias",
@@ -314,9 +316,9 @@
     "Isle of Man": "Isle of Man",
     "Israel": "Israel",
     "It looks like you do not have an active subscription. You may choose one of the subscription plans below to get started. Subscription plans may be changed or cancelled at your convenience.": "It looks like you do not have an active subscription. You may choose one of the subscription plans below to get started. Subscription plans may be changed or cancelled at your convenience.",
-    
-    
-    
+
+
+
     "Italy": "Italia",
     "Jamaica": "Jamaica",
     "Jane Doe": "Jane Doe",

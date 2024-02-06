@@ -16,6 +16,7 @@
 <script setup>
 import { ChevronDownIcon } from "@heroicons/vue/20/solid";
 import Toast from "primevue/toast";
+import Progress from '@/components/confirmation/progress.vue'
 import axios from "axios";
 import Modal from '../confirmation/index.vue'
 import { computed, ref } from "@vue/runtime-core";
@@ -25,6 +26,7 @@ import { serviceMessage } from "@/composable/public/messages";
 const store = useStore()
 const SmsConfirm = ref()
 const StateModal = ref(false)
+const progress = ref(false);
 const product = computed(()=>store.getters['Product/product'])
 const emits = defineEmits(['Voltar'])
 const state = ref(false)
@@ -61,13 +63,19 @@ const Arquivado = (()=>{
             console.log(erro);
         });
     } else {
+        if(progress.value) return
+        store.state.pos.StateProgress = true
+        progress.value = true;
         axios.delete(`/deleteProduct/${product.value.data.id}`)
         .then((Response) => {
             showMessage('Deletado com successo','success')
             StateModal.value = false;
             emits('Voltar')
         })
-        .catch((err) => {console.log(err);});
+        .catch((err) => {console.log(err);}).finally(()=>{
+            store.state.pos.StateProgress = false
+            progress.value = false
+        });
     }
 })
 </script>

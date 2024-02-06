@@ -1,4 +1,6 @@
 {
+    "The start date cannot be grater than the end date":"The start date cannot be grater than the end date",
+    "The start date cannot be less than the current date":"The start date cannot be less than the current date",
     "User not found": "User not found",
     "This product has already been added to this order.": "This product has already been added to this order.",
     "data incorrect.": "Data incorrect.",

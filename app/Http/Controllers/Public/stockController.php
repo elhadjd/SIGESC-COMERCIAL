@@ -188,7 +188,7 @@ class stockController extends Controller
 
         return [
             'spent' => $spent,
-            'products' => produtos::withSum('stock', 'quantity')->where('estado', 'active')->get(),
+            'products' => produtos::withSum('stock', 'quantity')->where('company_id',$this->companyUser()->id)->where('estado', 'active')->get(),
             'list' => $select,
         ];
     }

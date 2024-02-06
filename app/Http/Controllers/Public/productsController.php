@@ -11,13 +11,17 @@ use App\Http\Controllers\Public\verifyInfoModelsController;
 use App\Models\category_product;
 use App\Models\company;
 use App\Models\fornecedore;
+use App\Models\ItemOrder;
 use App\Models\movement_type;
+use App\Models\orderPos;
+use App\Models\paymentPDV;
 use App\Models\product_picture;
 use App\Models\productType;
 use App\Models\produtos;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 
 class productsController extends Controller
 {
@@ -173,15 +177,34 @@ class productsController extends Controller
 
     public function deleteProduct(produtos $product)
     {
-        $product->estado = 'inactive';
-        $product->save();
+        DB::transaction(function () use ($product){
+            $ordersItems = DB::table('item_orders')->where('produtos_id', $product->id)->get();
+            foreach ($ordersItems as $items) {
+                $orderId = $items->order_id;
+                ItemOrder::find($items->id)->delete();
+                $order = orderPos::find($orderId);
+                $totalCost = $order->items()->sum('TotalCost');
+                $totalSale = $order->items()->sum('total');
+                $order->total_costs = $totalCost;
+                $order->total = $totalSale;
+                $order->save();
+            }
+
+            $product->type_movement()->detach();
+            $product->stock()->delete();
+            $product->type_movement()->delete();
+            $product->list_price()->delete();
+            $product->discount()->delete();
+            $product->catalogProduct()->delete();
+            $product->delete();
+        });
     }
 
     public function uploadImageCatalog(Request $request,produtos $product){
         $request->validate([
             'image' => 'required',
         ]);
-        if (!Auth::user()->hasRole('Admin')) {
+        if (!$request->user()->hasRole('Admin')) {
             return $this->RespondInfo('Usuário sem acesso');
         }
 
@@ -236,5 +259,41 @@ class productsController extends Controller
         }else{
             return $this->RespondError(__('It appears that you do not have active internet, please check and try again'));
         }
+    }
+
+    function addDiscountProduct (Request $request,produtos $product) {
+        $request->validate([
+            "startDate"=>"required|date",
+            "endDate"=>"required|date",
+            "discount"=>"required|numeric"
+        ]);
+
+        if($request->discount <= 0) return $this->RespondError('Server error');
+        if(Carbon::parse($request->startDate) < Carbon::now()) return $this->RespondInfo(_('The start date cannot be less than the current date'));
+        if(Carbon::parse($request->startDate) > Carbon::parse($request->endDate))  return $this->RespondInfo(_('The start date cannot be grater than the end date'));
+
+        if($product->hasDiscount()){
+            $product->discount()->update($request->all());
+        }else{
+            $product->discount()->create($request->all());
+        }
+        return $product
+        ->with('catalogProduct')
+        ->withSum(['stock' => function($stock){
+            $stock->where('armagen_id',Auth::user()->armagen_id);
+        }],'quantity')->whereId($product->id)->first();
+    }
+
+    function deleteDiscount(produtos $product) {
+        if($product->hasDiscount()){
+            $product->discount()->delete();
+            return $product
+            ->with('catalogProduct')
+            ->withSum(['stock' => function($stock){
+                $stock->where('armagen_id',Auth::user()->armagen_id);
+            }],'quantity')->whereId($product->id)->first();
+        }
+
+        return;
     }
 }

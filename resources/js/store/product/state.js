@@ -15,6 +15,11 @@ export default {
         datafab: '',
         imagem: null,
         estado: '',
+        discount:{
+            discount: 0,
+            endDate:"",
+            startDate:''
+        },
         fabricante: '',
         fornecedor: {
             city: '',

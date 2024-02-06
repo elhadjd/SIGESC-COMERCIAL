@@ -1,4 +1,6 @@
 {
+    "The start date cannot be grater than the end date":"La date du début ne peut pas être supérieure a la date du fin",
+    "The start date cannot be less than the current date":"La date du début ne peut pas être inférieure a la date du jour",
     "User not found": "Utilisateur non trouvé",
     "data incorrect.": "Données incorrectes.",
     "This product has already been added to this order.": "Ce produit a déjà été ajouté à cette commande.",

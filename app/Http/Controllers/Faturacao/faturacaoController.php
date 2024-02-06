@@ -230,7 +230,6 @@ class faturacaoController extends Controller
         $invoice->save();
         $data['TotalPayments'] = $RestPayable;
         $invoice->payments()->create($data);
-
         return $this->RespondSuccess(__('Payment Successful'),$this->getInvoices($invoice->id));
     }
 

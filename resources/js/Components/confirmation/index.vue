@@ -1,13 +1,13 @@
 <template>
   <div class="Principal">
-    <div class="Modal">
+    <div class="Modal h-96">
         <div class="Header">
             <strong>Confirmation</strong>
         </div>
         <div class="Container">
             {{'Deseja realmente '+message+' ?'}}
         </div>
-        <div class="Footer">
+        <div class="Footer flex flex-row">
             <button @click.prevent.stop="$emit('Confirme',message,'confirmou')" type="button">{{$t('words.confirm')}}</button>
             <button type="button" class="Descartar" @click="$emit('descartou')">{{$t('words.close')}}</button>
         </div>

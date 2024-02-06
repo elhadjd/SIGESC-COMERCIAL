@@ -12,6 +12,7 @@ class searchController extends Controller
 {
     public function filter($table,$column,$tex)
     {
+
         if ($table == 'produtos') {
            return produtos::where($column,'LIKE','%'.$tex.'%')
            ->where('company_id',Auth::user()->company_id)
@@ -20,6 +21,6 @@ class searchController extends Controller
         if ($table == 'invoices') {
             return Invoice::where($column,'LIKE','%'.$tex.'%')->get();
         }
-        return DB::table($table)->where($column,'LIKE','%'.$tex.'%')->get();
+        return DB::table($table)->where($column,'LIKE','%'.$tex.'%')->limit(100)->get();
     }
 }
