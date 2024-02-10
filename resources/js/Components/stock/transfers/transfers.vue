@@ -47,6 +47,7 @@
 </template>
 
 <script setup>
+import { serviceMessage } from '@/composable/public/messages';
 import pagination from '@/Layouts/paginations/paginate.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { onMounted, ref } from '@vue/runtime-core';
@@ -59,6 +60,7 @@ const transfers = ref({
     list: [],
     storeList: [],
 })
+const {showMessage} = serviceMessage()
 const {t} = useI18n()
 const loading = ref(null)
 onMounted(async()=>{
@@ -102,6 +104,7 @@ const searchTransfer = ((e)=>{
 const newTransfer = (()=>{
     axios.post('newTransfer')
     .then((response) => {
+        if(response.data.message) return showMessage(response.data.message,response.data.type)
         emits('handleModule','newTransfer',response.data)
     }).catch((err) => {
         console.log(err);

@@ -25,6 +25,7 @@ export const useCompanyService = ((props: any,emits:any)=>{
         progress.value = true
         axios.post('saveCompany',{...company.value})
         .then((response) => {
+            if(response.data.type == "error") return emits('message',response.data.message,response.data.type)
             emits('message',response.data.message,response.data.type)
             emits('close')
         }).catch((err) => {

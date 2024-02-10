@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\PDV;
 
+use App\classes\CheckData;
 use App\Http\Controllers\Controller;
 use App\Models\price_list;
 use App\Models\produtos;
@@ -17,7 +18,8 @@ class ListPriceController extends Controller
 
     public function create(Request $request)
     {
-
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Discounts','Create')) return $this->RespondError(__('User without access'));
         $request->validate([
             'quantity' => 'required|integer',
             'price_discount' => 'required|integer',
@@ -37,6 +39,8 @@ class ListPriceController extends Controller
 
     public function update(Request $request, price_list $listPrice,produtos $product)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Discounts','Edit')) return $this->RespondError(__('User without access'));
         $listPrice->update([
             'quantity' => $request->quantity,
             'price_discount' => $request->price_discount
@@ -46,8 +50,9 @@ class ListPriceController extends Controller
 
     public function destroy($id, produtos $product)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Discounts','Delete')) return $this->RespondError(__('User without access'));
        price_list::find($id)->delete();
-
         return $this->RespondSuccess(
             __('Item deleted successfully'),
             $product->refresh()

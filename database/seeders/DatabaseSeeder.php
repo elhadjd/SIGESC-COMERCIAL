@@ -29,5 +29,8 @@ class DatabaseSeeder extends Seeder
         (new \Database\Seeders\mthodsPaymentTranslateSeeder)->run();
         (new \Database\Seeders\operationTypeCaixaTranslateSeeder)->run();
         (new \Database\Seeders\typeMovementTranslateSeeder)->run();
+        (new \Database\Seeders\servicesSeeder)->run();
+        (new \Database\Seeders\servicesTranslateSeeder)->run();
+        (new \Database\Seeders\permissionsSeeder)->run();
     }
 }

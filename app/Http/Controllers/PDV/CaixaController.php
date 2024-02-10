@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\PDV;
 
+use App\classes\CheckData;
 use App\Http\Controllers\Controller;
 use App\Models\caixa;
 use App\Models\operation_caixa_type_session;
@@ -35,7 +36,7 @@ class CaixaController extends Controller
 
     public function sessions(caixa $caixa)
     {
-    return $caixa->session()->orderBy('id','desc')->limit(100)->get();
+        return $caixa->session()->orderBy('id','desc')->limit(100)->get();
     }
 
     public function sumData($session,$local)
@@ -49,11 +50,9 @@ class CaixaController extends Controller
             $translate->where('local',$local);
         }])
         ->get();
-
         $orders = session::withSum(['orders' => function($session){
             $session->where('state','Pago');
         }], 'total')->whereId($session->id)->first();
-
         $operations = operationCaixaType::withSum(['operations'=>function($operations)use ($session){
             $operations->where('session_id',$session->id);
         }],'amount')
@@ -72,6 +71,8 @@ class CaixaController extends Controller
 
     public function opiningControl(Request $request, $session = null)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('POS','Open session')) return $this->RespondError(__('User without access'));
         if ($session) {
             $session = session::find($session);
             $session->opening = $request->amount;
@@ -107,6 +108,8 @@ class CaixaController extends Controller
 
     public function clossSession(Request $request ,$local,session $session)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('POS','Close session')) return $this->RespondError(__('User without access'));
         $session->cash = $request->informado;
         $session->orders_values = $request->total;
         $session->state = 'Fechado';
@@ -121,6 +124,8 @@ class CaixaController extends Controller
 
     public function updateSession($local,session $session)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('POS','Edit session')) return $this->RespondError(__('User without access'));
         $session->state = "Aberto";
         $session->cash = 0;
         $session->save();
@@ -133,6 +138,7 @@ class CaixaController extends Controller
 
     public function savePoint(Request $request, $caixa = null)
     {
+        if(request()->user()->hasRole('User')) return $this->RespondError(__('User without access'));
         $request->validate([
             'name'=>'required',
             'user'=>'required',
@@ -158,7 +164,8 @@ class CaixaController extends Controller
         return $this->RespondSuccess(__('Data updated successfully'));
     }
 
-    public function deleteCash(Request $request,caixa $caixa){
+    public function deleteCash(caixa $caixa){
+        if(request()->user()->hasRole('User')) return $this->RespondError(__('User without access'));
         $session = $caixa->session->count();
         if ($session > 0) return $this->RespondError(__('It is not possible to delete this point of sale, as it has one or more sections'));
         $caixa->delete();

@@ -3,12 +3,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Software sigesc">
+        <meta name="description" content="Experimente a excelência operacional em um só lugar! Nosso software de gestão integra funcionalidades avançadas, desde o eficiente PDV e controle financeiro simplificado até a gestão otimizada de compras e o completo módulo de gerenciamento de stock e inventário. Inovação, segurança e eficiência em cada aspecto do seu negócio, reunidos em uma solução única para impulsionar o sucesso da sua empresa. SIGESC-SOFT">
 
-        <title inertia>{{ config('app.name', 'SIGESC-SOFT') }}</title>
+        <title inertia>{{ 'SIGESC-SOFT Software de Gestão Integrado comercial' }}</title>
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
         <!-- Fonts -->
+
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +25,5 @@
     </head>
     <body class="font-sans antialiased" style="box-sizing: border-box">
         @inertia
-        <div id = "fb-root"></div>
     </body>
 </html>

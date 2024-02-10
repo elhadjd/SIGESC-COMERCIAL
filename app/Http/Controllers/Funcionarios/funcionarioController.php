@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Funcionarios;
 
 use App\classes\ActivityRegister;
+use App\classes\CheckData;
 use App\classes\uploadImage;
 use App\Http\Controllers\Controller;
 use App\Models\expense;
@@ -41,6 +42,8 @@ class funcionarioController extends Controller
 
     public function newWorker()
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Employees','Create')) return $this->RespondError(__('User without access'));
         $register = new ActivityRegister;
         $register->Activity("Criou um funcionario");
         $create = Workers::create([
@@ -57,12 +60,17 @@ class funcionarioController extends Controller
 
     public function saveDepartment(Request $request)
     {
+        
         if ($request->id == null) {
+            $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Departments','Create')) return $this->RespondError(__('User without access'));
             $create = WorkersDepartment::create([
                 'company_id'=>$this->companyUser()->id,
                 'name'=> $request->name
             ]);
         } else{
+            $checkPermission = new CheckData;
+            if(!$checkPermission->checkPermission('Departments','Edit')) return $this->RespondError(__('User without access'));
             $create = WorkersDepartment::find($request->id)->update([
                 'name'=> $request->name
             ]);
@@ -72,6 +80,8 @@ class funcionarioController extends Controller
 
     public function saverWorker(Request $request , Workers $worker)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Employees','Edit')) return $this->RespondError(__('User without access'));
         $request->validate([
             'name'=>"required",
             'cargo'=>'required',
@@ -133,6 +143,7 @@ class funcionarioController extends Controller
 
     public function saveExpense(Request $request)
     {
+        if(request()->user()->hasRole('User')) return $this->RespondError(__('User without access'));
         $insert = [
             'worker_id'=> $request->worker['id'],
             'type'=> $request->type,

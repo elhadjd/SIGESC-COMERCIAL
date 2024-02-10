@@ -144,6 +144,7 @@ export const form = ((emits,store,print,order,loading)=>{
     function submitOrder() {
         loading.value = 'Confirmar'
         axios.post(`${general.routes.saveOrder.name}/${order.id}/save`).then((response) => {
+            if (response.data.message && response.data.type == "error") message(response.data.message,response.data.type)
             if (response.data.message) emits('message',response.data.message,response.data.type)
             if (response.data.data) return emit('stateFormOrder',response.data.data.state)
             emit('stateFormOrder',response.data.state)
@@ -157,6 +158,7 @@ export const form = ((emits,store,print,order,loading)=>{
     function CancelTransfer() {
         loading.value = 'Anular'
         axios.post(`${general.routes.cancelOrder.name}/${order.id}/cancel`).then((response) => {
+            if (response.data.message && response.data.type == "error") message(response.data.message,response.data.type)
             if (response.data.message) emits('message',response.data.message,response.data.type)
             if (response.data.data) return emit('stateFormOrder',response.data.data.state)
             emit('stateFormOrder',response.data.state)

@@ -85,7 +85,10 @@ import { mapState ,useStore } from "vuex"
 import moment from 'moment'
 import { Search } from '@/composable/public/search';
 import invoicesTh from './invoicesTh.vue'
-
+import { serviceMessage } from '@/composable/public/messages';
+import { useI18n } from 'vue-i18n';
+const {showMessage} = serviceMessage()
+const {t} = useI18n()
 const Invoices = ref({
    search: [],
    TotalFaturas: 0,
@@ -133,13 +136,15 @@ const onRowSelect = (event) => {
 
 const newInvoice = () => {
     loading.value = 'new'
-   axios.post('NewOrder').then((response) => {
-      emits('fatura', response.data);
-   }).catch((err) => {
-      console.log(err);
-   }).finally(()=>{
-    loading.value = null
-   });
+    axios.post('NewOrder').then((response) => {
+        if(response.data.message) return showMessage(response.data.message,response.data.type)
+        emits('fatura', response.data);
+    }).catch((err) => {
+        showMessage(t('message.serverError'),'error')
+        console.log(err);
+    }).finally(()=>{
+        loading.value = null
+    });
 }
 
 const SearchInvoice = (async(event) => {

@@ -86,9 +86,15 @@ onMounted(() => {
     }
     if(props.user.user_language.code) {
         const locale = localStorage.getItem('locale');
-        if(locale && locale != props.user.user_language.code){
-           localStorage.setItem('locale',props.user.user_language.code)
-           location.reload()
+        if(locale){
+            if(locale != props.user.user_language.code){
+                localStorage.setItem('locale',props.user.user_language.code)
+                location.reload()
+            }
+        }
+        else{
+            localStorage.setItem('locale',props.user.user_language.code)
+            location.reload()
         }
     }
     // canvas.value = canvas.value;
@@ -98,7 +104,8 @@ onMounted(() => {
 
     // canvas.value.addEventListener('mousemove', handleMouseMove);
     // window.addEventListener('resize', handleWindowResize);
-    store.commit("publico/saveCompany", props);
+    store.commit("publico/saveCompany", props.data);
+    store.commit("publico/saveUser", props.user);
     // animate();te
 });
 

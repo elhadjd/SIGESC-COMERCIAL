@@ -1,6 +1,10 @@
 export default {
-    saveCompany(state, payload) {
-        state.user = payload.user
-        state.company = payload.data
+    saveCompany(state, company) {
+        state.company = company
     },
+
+    saveUser(state,user){
+        state.user = user
+    }
 }
+

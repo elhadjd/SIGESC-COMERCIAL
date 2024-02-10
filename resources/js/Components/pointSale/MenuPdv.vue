@@ -129,7 +129,11 @@ const openControl = ((caixa)=>{
 
     if (savedState) {
         localStorage.setItem('vuex',savedState)
-        router.post(`caixa/opiningControl`,{id:caixa})
+        router.post(`caixa/opiningControl`,{id:caixa},{
+            onSuccess: ((response)=>{
+                console.log(response);
+            })
+        })
     }
 
 })

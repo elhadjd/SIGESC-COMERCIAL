@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\PDV;
 
+use App\classes\CheckData;
 use App\Http\Controllers\Controller;
 use App\Models\caixa;
 use App\Models\category_product;
@@ -47,9 +48,12 @@ class PointSaleController extends Controller
 
     public function addOperation(Request $request)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('POS','Can move money')) return $this->RespondError(__('User without access'));
         $data = $request->data;
         $data['user_id'] = Auth::user()->id;
         $data['company_id'] = Auth::user()->company_id;
+
         if (operation_caixa_type_session::create($data)) {
             return $this->RespondSuccess(__('Operation completed successfully'));
         }
@@ -84,10 +88,11 @@ class PointSaleController extends Controller
 
     public function CancelInvoice(Request $request, $user, orderPos $invoice, OrdersController $ordersController)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('POS','Cancel invoice')) return $this->RespondError(__('User without access'));
         $request->validate([
             'password' => "required"
         ]);
-
 
         if ($user == null || !is_numeric($user))
             return $this->RespondError("Seleciona um usuario valido");

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Faturacao;
 
 use App\classes\ActivityRegister;
+use App\classes\CheckData;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Public\TransferController;
 use App\Models\Invoice;
@@ -39,8 +40,9 @@ class faturacaoController extends Controller
 
     public function NewOrder(Invoice $invoice)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Invoices','Create')) return $this->RespondError(__('User without access'));
         $orderNumber = "FT".date('d-m-Y')."/";
-
         $create = $this->companyUser()->invoice()->create([
             'orderNumber'=> $orderNumber,
             'DateOrder'=>now(),
@@ -54,6 +56,8 @@ class faturacaoController extends Controller
 
     public function addClient(Invoice $order,$client)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Invoices','Edit')) return $this->RespondError(__('User without access'));
         $order->cliente_id = $client;
         $order->save();
         return $order->fresh()->client;
@@ -69,6 +73,8 @@ class faturacaoController extends Controller
 
     public function AddItem(produtos $product, $invoice)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Invoices','Edit')) return $this->RespondError(__('User without access'));
         if (!$this->checkQuantity($product)) return $this->RespondError(__('This product does not have sufficient quantity in stock'));
         $result  = InvoiceItem::where('invoice_id', $invoice)
             ->where('produtos_id', $product->id)->exists();
@@ -93,6 +99,8 @@ class faturacaoController extends Controller
 
     public function UpdateRows(Request $request, $item,TransferController $TransferController)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Invoices','Edit')) return $this->RespondError(__('User without access'));
         $dados = $request->all();
         if ($TransferController->checkQuantityCancel($dados)['state']) return $this->RespondError($TransferController->checkQuantityCancel($dados)['message'],$this->getInvoices($dados['invoice_id']));
         $totalIva = $request->PriceCost/100 * $request->tax * $request->quantity;
@@ -116,6 +124,8 @@ class faturacaoController extends Controller
 
     public function deleteItem($invoice, InvoiceItem $item)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Invoices','Edit')) return $this->RespondError(__('User without access'));
         $item->delete();
         return $this->sumOrder($invoice);
     }
@@ -147,12 +157,16 @@ class faturacaoController extends Controller
 
     public function ChangeDateInvoice(Request $request,$type, Invoice $invoice)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Invoices','Edit')) return $this->RespondError(__('User without access'));
         $invoice[$type] = $request[$type];
         $invoice->save();
     }
 
     public function ConfirmOrder(Request $request, Invoice $invoice,$type,TransferController $TransferController)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Invoices','Edit')) return $this->RespondError(__('User without access'));
         $info = [
             'state'=> false,
             'message'=>null,
@@ -214,6 +228,8 @@ class faturacaoController extends Controller
 
     public function InvoicePayment(Request $request, Invoice $invoice)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Payments','Create')) return $this->RespondError(__('User without access'));
         $request->validate([
             'payment_method_id' => 'required|integer',
             'Amount' => 'required|integer',

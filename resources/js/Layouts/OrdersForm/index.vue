@@ -18,7 +18,7 @@
         </div>
         <div class="Main">
             <div class="drop-up">
-                <button @click="stateDrop = !stateDrop" type="button" class="dropdown-toggle">Açao</button>
+                <button @click="stateDrop = !stateDrop" type="button" class="dropdown-toggle">{{$t('words.action')}}</button>
             </div>
 
             <div :class="stateDrop ? '' : 'hidden'" class="Botoes" >
@@ -53,7 +53,7 @@
                                     autofocus
                                     @keyup="SearchRelation"
                                     class="form-control"
-                                    placeholder="pesquisa..."
+                                    :placeholder="$t('words.search')"
                                     />
                                 <div @click="SelectText(item)" v-for="item in relations.list"
                                     :key="item.id">
@@ -97,27 +97,24 @@ import { useToast } from "primevue/usetoast";
 import { onMounted, ref, watch } from "vue";
 import useEventsBus from "@/Eventbus";
 import deliveryVue from './delivery.vue';
+import { serviceMessage } from '@/composable/public/messages';
 const stateDrop = ref(false)
 const toast = useToast()
 const {bus} = useEventsBus()
 const Select = ref({
     state:false
 });
+const {showMessage} = serviceMessage()
 const stateFormDelivery = ref(false)
 const relations = ref({
     store:[],
     list: []
 })
-
 const stateSubmit = ref(null)
-
 const props = defineProps({
     general:Object,
     order: Object,
     loading:String
-})
-
-onMounted(()=>{
 })
 
 const stateFormOrder = ref(props.order.state)
@@ -136,8 +133,10 @@ const SelectText = ((item)=>{
     stateSubmit.value = 'addRelation'+item.id
     axios.post(`${props.general.routes.AddRelation.name}/${props.order.id}/${item.id}`)
     .then((response) => {
+        if(response.data.message) return showMessage(response.data.message,response.data.type)
         props.order.relations.relation = response.data
     }).catch((err) => {
+        showMessage(t('message.serverError'))
         console.log(err);
     }).finally(()=>{
         Select.value.state = null
@@ -152,12 +151,7 @@ const SearchRelation = ((event)=>{
 })
 
 const message = ((message,type)=>{
-    toast.add({
-        severity: type,
-        summary: 'Informação do sistema',
-        detail: message,
-        life: 5000,
-    })
+    showMessage(message,type)
 })
 </script>
 <style scoped lang="scss">

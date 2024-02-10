@@ -209,6 +209,28 @@ const messages = {
         message: {
             notData: "Nenhum {colum} encontrado com este {value} .",
             serverError: "Erro do servidor",
+            emptyInput: "O campo {name} não pode ser vazio."
+        },
+        permissions:{
+            Edit: 'Editar',
+            Create: 'Criar',
+            Archive: 'Arquivar',
+            Delete: 'Apagar',
+            Active: 'Ativar',
+            Editcostprice: 'Edita preço de compra',
+            Stockentry: 'Faz entrada de stock',
+            Outofstock: 'Faz saida de stock',
+            Editcostsale: 'Edita preço de venda',
+            Editsession: 'Edita sessoes de caixa',
+            Canmovemoney: 'Pode fazer muvemento de dinheiro',
+            ReprintPointofSalereceipt: 'Pode reimprimir fatura',
+            Printcompleteinformationcompany: 'Pode imprimir as informações completa da empresa',
+            Caneditpriceofproduct: 'Pode editar preço no pdv',
+            Closesession: 'Fecher sessoes',
+            Cancelinvoice: 'Pode anular fatura',
+            Opensession: 'Pode abrir sessão',
+            Print: "Imprimir",
+            Cancel: "Anular",
         },
         pdv: {
             openingDate: 'Data de Abertura',
@@ -240,31 +262,33 @@ const messages = {
             confirmPassword: 'Confirme sua senha',
             orderDate: 'Data do pedido',
             dueDate: 'Data de vencimento',
-            restToPay: 'Resto a pagar'
+            restToPay: 'Resto a pagar',
+            visitSite: 'Visita nosso site',
+            contactUs: 'Contactar-nos',
         },
         login: {
             title: 'Identifique-se',
             password: 'Senha',
             info: [
                 {
-                    title: 'Sistema de PDV Avançado',
-                    description: 'Melhore a eficiência das suas vendas com o nosso Módulo de PDV de última geração.'
+                    title: 'Potencialize Suas Vendas com Nosso Software de Gestão de PDV Avançado.',
+                    description: 'Eleve a eficiência das suas vendas com o Módulo de PDV de última geração, integrado ao nosso completo software de gestão.'
                 },
                 {
-                    title: 'Emissão de Faturas e Controle Financeiro',
-                    description: 'Simplifique a emissão de faturas e controle as finanças da sua empresa com o nosso Módulo de Faturamento.'
+                    title: 'Controle Financeiro Simplificado com Nosso Software de Gestão de Faturas.',
+                    description: 'Simplifique a emissão de faturas e mantenha suas finanças em ordem com o Módulo de Faturamento do nosso abrangente software de gestão.'
                 },
                 {
-                    title: 'Gestão de Compras Simplificada',
-                    description: 'Otimize o seu processo de compra com o nosso Módulo de Compras.'
+                    title: 'Otimize Suas Compras com Nosso Software de Gestão de Processos de Compra.',
+                    description: 'Aprimore seu processo de compra com eficiência utilizando o Módulo de Compras do nosso software de gestão, integrando todas as etapas de maneira simplificada.'
                 },
                 {
-                    title: 'Nova Funcionalidade',
-                    description: 'Explore nossa última funcionalidade que aprimora a experiência do usuário.'
+                    title: 'Explore Novas Possibilidades com a Última Funcionalidade do Nosso Software de Gestão.',
+                    description: 'Maximize a experiência do usuário com nossa mais recente funcionalidade, integrada ao nosso avançado software de gestão, proporcionando inovação e eficiência.'
                 },
                 {
-                    title: 'Atualização de Segurança',
-                    description: 'Garanta a segurança de seus dados com nossa última atualização de sistema.'
+                    title: 'Otimize o Controle Total do Seu Estoque com o Nosso Módulo de Gerenciamento Integrado.',
+                    description: 'Mantenha seus produtos sob controle e reduza riscos de falta ou excesso com o Módulo de Gerenciamento de Stock e Inventário do nosso avançado software de gestão. Tenha visibilidade completa, atualizações em tempo real e ferramentas intuitivas para aprimorar a eficiência operacional da sua empresa.'
                 }
             ]
         }
@@ -479,6 +503,28 @@ const messages = {
         message: {
             notData: "Aucun {colum} trouvé avec ce {value} .",
             serverError: "Une erreur du serveur s'est produite",
+            emptyInput: "Le champ {name} ne peut pas être vide."
+        },
+        permissions:{
+            Edit : 'Modifier',
+            Create: 'Créer',
+            Archive: 'Archives',
+            Print: "Imprimé",
+            Cancel: "Anulé",
+            Delete: 'Supprimer',
+            Active : 'Activer',
+            Editcostprice: "Modifier le prix d'achat",
+            Stockentry: 'Effectuer une entrée de stock',
+            Outofstock: 'En rupture de stock',
+            Editcostsale: 'Modifier le prix de vente',
+            Editsession: 'Modifier les sessions cash',
+            Canmovemoney:"Peut movementé de l'argent",
+            ReprintPointofSalereceipt:'Peut réimprimer la facture',
+            Printcompleteinformationcompany: "Vous pouvez imprimer les informations complètes de l'entreprise",
+            Caneditpriceofproduct: 'Vous pouvez modifier le prix au point de vente',
+            Closesession: 'Fermer les sessions',
+            Cancelinvoice: 'Vous pouvez annuler la facture',
+            Opensession: 'Vous pouvez ouvrir une session',
         },
         pdv: {
             openingDate: 'Date d\'ouverture',
@@ -509,27 +555,33 @@ const messages = {
             confirmPassword: 'Confirmer votre mot de passe',
             orderDate: 'Date de commande',
             dueDate: "Date d'échéance",
-            restToPay: 'Reste à payer'
+            restToPay: 'Reste à payer',
+            visitSite: 'Visitez notre site Web',
+            contactUs: 'Contactez-nous'
         },
         login: {
             title: 'Identifiez-vous',
             password: 'Mot de passe',
             info: [
                 {
-                    title: 'Système de PDV Avancé',
-                    description: 'Améliorez l\'efficacité de vos ventes avec notre module de PDV de pointe.'
+                    title:"Boostez vos ventes avec notre logiciel avancé de gestion de point de vente.",
+                    description: "Augmentez l'efficacité de vos ventes avec le module POS de dernière génération, intégré à notre logiciel de gestion complet."
                 },
                 {
-                    title: 'Émission de Factures et Contrôle Financier',
-                    description: 'Simplifiez l\'émission de factures et contrôlez les finances de votre entreprise avec notre module de facturation.'
+                    title: 'Contrôle financier simplifié grâce à notre logiciel de gestion des factures.',
+                    description: 'Simplifiez la facturation et gardez vos finances en ordre grâce au module de facturation de notre logiciel de gestion complet.'
                 },
                 {
-                    title: 'Gestion Simplifiée des Achats',
-                    description: 'Optimisez votre processus d\'achat avec notre module d\'achats.'
+                    title: "Optimisez vos achats avec notre logiciel de gestion des processus d'achat.",
+                    description: "Améliorez efficacement votre processus d'achats grâce au Module Achats de notre logiciel de gestion, intégrant toutes les étapes de manière simplifiée."
                 },
                 {
-                    title: 'Mise à Jour de Sécurité',
-                    description: 'Assurez la sécurité de vos données avec notre dernière mise à jour système.'
+                    title: 'Explorez de nouvelles possibilités avec la dernière fonctionnalité de notre logiciel de gestion.',
+                    description : "Maximisez l'expérience utilisateur avec nos dernières fonctionnalités, intégrées à notre logiciel de gestion avancé, offrant innovation et efficacité."
+                },
+                {
+                    title: 'Optimisez le contrôle total de votre inventaire grâce à notre module de gestion intégré.',
+                    description : "Gardez vos produits sous contrôle et réduisez les risques de pénurie ou d'excédent avec le module de gestion des stocks et des stocks de notre logiciel de gestion avancé. Bénéficiez d'une visibilité complète, de mises à jour en temps réel et d'outils intuitifs pour améliorer l'efficacité opérationnelle de votre entreprise"
                 }
             ]
         }
@@ -746,6 +798,28 @@ const messages = {
         message: {
             notData: "No {colum} found with this {value} .",
             serverError: "Une erreur du serveur s'est produite",
+            emptyInput: "The {name} field cannot be empty."
+        },
+        permissions:{
+            Edit: 'Edit',
+            Create: 'Create',
+            Archive: 'Archive',
+            Delete: 'Delete',
+            Active: 'Activate',
+            Editcostprice: 'Edit purchase price',
+            Stockentry: 'Make stock entry',
+            Outofstock: 'Out of stock',
+            Editcostsale: 'Edit sale price',
+            Editsession: 'Edit cash sessions',
+            Canmovemoney: 'Can move money',
+            ReprintPointofSalereceipt: 'Can reprint invoice',
+            Printcompleteinformationcompany: 'You can print the complete company information',
+            Caneditpriceofproduct: 'You can edit price at POS',
+            Closesession: 'Close sessions',
+            Cancelinvoice: 'You can cancel invoice',
+            Opensession: 'You can open session',
+            Print: "Print",
+            Cancel: "Cancel",
         },
         pdv: {
             openingDate: 'Opening date',
@@ -777,32 +851,33 @@ const messages = {
             confirmPassword: 'Confirm your password',
             orderDate: 'Order date',
             dueDate: 'Due date',
-            restToPay: 'Rest to pay'
-
+            restToPay: 'Rest to pay',
+            visitSite: 'Visit our website',
+            contactUs: 'Contact us'
         },
         login: {
             title: 'Identify Yourself',
             password: 'Password',
             info: [
                 {
-                    title: 'Advanced POS System',
-                    description: 'Enhance the efficiency of your sales with our state-of-the-art POS Module.'
+                    title: 'Boost Your Sales with Our Advanced POS Management Software.',
+                    description: 'Increase the efficiency of your sales with the latest generation POS Module, integrated with our complete management software.'
                 },
                 {
-                    title: 'Invoice Issuance and Financial Control',
-                    description: 'Simplify invoice issuance and control your company\'s finances with our Billing Module.'
+                    title: 'Financial Control Simplified with Our Invoice Management Software.',
+                    description: 'Simplify invoicing and keep your finances in order with the Invoicing Module of our comprehensive management software.'
                 },
                 {
-                    title: 'Simplified Purchase Management',
-                    description: 'Optimize your purchasing process with our Purchasing Module.'
+                    title: 'Optimize Your Purchasing with Our Purchasing Process Management Software.',
+                    description: 'Improve your purchasing process efficiently using the Purchasing Module of our management software, integrating all steps in a simplified way.'
                 },
                 {
-                    title: 'New Feature',
-                    description: 'Explore our latest feature that enhances user experience.'
+                    title: 'Explore New Possibilities with the Latest Feature of Our Management Software.',
+                    description: 'Maximize user experience with our latest functionality, integrated with our advanced management software, delivering innovation and efficiency.'
                 },
                 {
-                    title: 'Security Update',
-                    description: 'Ensure the security of your data with our latest system update.'
+                    title: 'Optimize Total Control of Your Inventory with Our Integrated Management Module.',
+                    description: "Keep your products under control and reduce the risk of shortages or excess with the Stock and Inventory Management Module of our advanced management software. Get complete visibility, real-time updates and intuitive tools to improve your company's operational efficiency."
                 }
             ]
         }

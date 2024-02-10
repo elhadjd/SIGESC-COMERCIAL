@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\PDV;
 
+use App\classes\CheckData;
 use App\Http\Controllers\Controller;
 use App\Models\caixa;
 use App\Models\operation_caixa_type_session;
@@ -44,6 +45,8 @@ class pontoVendaController extends Controller
 
     public function SaveOperation(Request $request, operationCaixaType $operationCaixaType)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('POS','Can move money')) return $this->RespondError(__('User without access'));
         if ($request->id) {
             operation_caixa_type_session::find($request->id)->update([
                 'amount' => $request->amount,

@@ -15,9 +15,11 @@ use App\Models\ItemOrder;
 use App\Models\movement_type;
 use App\Models\orderPos;
 use App\Models\paymentPDV;
+use App\Models\Permission;
 use App\Models\product_picture;
 use App\Models\productType;
 use App\Models\produtos;
+use App\Models\service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,19 +57,22 @@ class productsController extends Controller
         // }
     }
 
+    public function checkPermission(string $permissionName){
+        $service = service::where('name','Products')->with(['permissions'=>function($permission) use ($permissionName){
+            $permission->where('name',$permissionName);
+        }])->first();
+        return request()->user()->hasPermission($service->permissions[0]['id']);
+    }
+
     public function create(Request $request, produtos $produtos,$name=null)
     {
-
-        if ($request->user()->hasRole('Admin')) {
-            $product = $produtos::create([
-                'nome'=> $name,
-                'company_id' => Auth::user()->company_id
-            ]);
-            $this->registerActivity('Criou um produto');
-            return $this->show(produtos::find($product->id));
-        }
-
-        return $this->RespondWarn('Apenas o Administrador pode criar produto');
+        if(!$this->checkPermission('Create')) return $this->RespondError(__('User without access'));
+        $product = $produtos::create([
+            'nome'=> $name,
+            'company_id' => Auth::user()->company_id
+        ]);
+        $this->registerActivity('Criou um produto');
+        return $this->show(produtos::find($product->id));
     }
 
     public function registerActivity($body)
@@ -133,11 +138,12 @@ class productsController extends Controller
         ]);
         $data = $request->data;
         unset($data['id'], $data['category'], $data['movement_stock'], $data['fornecedor'], $data['updated_at'], $data['created_at']);
-        if ($request->user()->hasRole('Admin')) {
-
+        if ($request->user()->hasRole('Manager') || $request->user()->hasRole('Admin')) {
             if ($data['imagem'] != null) {
                 $data['image'] = $image->Upload("/produtos/image/", $data['imagem'], $product);
             }
+            if($product->preçocust != $data['preçovenda'] && !$this->checkPermission('Edit cost sale')) return $this->RespondError(__('User without access'));
+            if($product->preçocust != $data['preçocust'] && !$this->checkPermission('Edit cost price')) return $this->RespondError(__('User without access'));
             if ($product->update($data)) {
                 $this->registerActivity("Atualizou os dados do produto $product->nome");
                 return $this->RespondSuccess(__('Data updated successfully'),$product->fresh());
@@ -177,6 +183,7 @@ class productsController extends Controller
 
     public function deleteProduct(produtos $product)
     {
+        if(!$this->checkPermission('Delete')) return $this->RespondError(__('User without access'));
         DB::transaction(function () use ($product){
             $ordersItems = DB::table('item_orders')->where('produtos_id', $product->id)->get();
             foreach ($ordersItems as $items) {
@@ -293,7 +300,6 @@ class productsController extends Controller
                 $stock->where('armagen_id',Auth::user()->armagen_id);
             }],'quantity')->whereId($product->id)->first();
         }
-
         return;
     }
 }

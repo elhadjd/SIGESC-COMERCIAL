@@ -9,7 +9,7 @@
         </div>
       </div>
       <div class="Header-right">
-        <Confirm @Voltar="showProduct(false)"/>
+        <Confirm @close="$emit('closeForm'),showProduct(false)"/>
       </div>
     </div>
     <div class="Formulario">
@@ -86,9 +86,7 @@
         </div>
       </form>
     </div>
-    <!-- <Progress v-if="store.state.pos.StateProgress"/> -->
   </div>
-  <Toast/>
 </template>
 <script setup>
 import descriptionVue from './description.vue'
@@ -102,8 +100,6 @@ import InfoProd from "./InfoProduct.vue";
 import Progress from "@/components/confirmation/progress.vue";
 import Confirm from "../../confirmation/confirm.vue";
 import {getImages} from '@/composable/public/getImages'
-import Toast from "primevue/toast";
-import { useToast } from "primevue/usetoast";
 import {useUploadImage} from '@/composable/public/UploadImage'
 import {serviceMessage} from '../../../composable/public/messages'
 import {ProductServices} from '../services/product/productServices';
@@ -116,7 +112,6 @@ import MessagesToast from '@/Layouts/news/messagesToast.vue';
 import publishProductVue from './publishProduct.vue';
 const {createProduct,showProduct} = ProductsServices()
 const store = useStore();
-const toast = useToast()
 const emits = defineEmits([ "saved",'closeForm']);
 const product = computed(()=> store.getters['Product/product'])
 const {
@@ -134,6 +129,10 @@ const {
 const {
     categories
 } = BannerProductServices()
+
+const testP = (()=>{
+    console.log(0);
+})
 
 watch(element,(prod,novo)=>{
     product.value.data.imagem = element.img

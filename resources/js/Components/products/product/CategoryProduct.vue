@@ -22,8 +22,6 @@
 <script setup>
 import { computed, reactive } from "@vue/runtime-core";
 import axios from "axios";
-import { useToast } from "primevue/usetoast";
-import Toast from 'primevue/toast';
 import { serviceMessage } from "@/composable/public/messages";
 import { useStore } from "vuex";
 const store = useStore()
@@ -33,8 +31,6 @@ const emit = defineEmits(['closeModal']);
 const props = defineProps({
     category:Object
 });
-
-const toast = useToast();
 
 const data = reactive({
     name: null,

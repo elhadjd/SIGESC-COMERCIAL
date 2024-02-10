@@ -23,10 +23,10 @@ const props = defineProps({
 })
 
 onMounted(()=>{
-    store.commit('publico/saveCompany',props)
+    store.commit('publico/saveCompany',props.data)
+    store.commit('publico/saveUser',props.user)
 })
 const session = ref(props.session)
-
 const openControl = ((session_open)=>{
     session.value = session_open
 })

@@ -52,7 +52,7 @@
                                 <label for="level">{{$t('words.level')}}</label>
                                 <select :disabled="!EstadoForm" id="level"  v-model="user.roles">
                                     <option v-if="user.roles == null" value="">Seleciona o nivel de acesso</option>
-                                    <option v-for="role in roles" :key="role.id" :selected="role.id == user.roles.id" :value="role">{{ role.translate[0].translate }}</option>
+                                    <option v-for="role in roles" :key="role.id" :selected="role.id == user.roles.id && true" :value="role">{{ role.translate[0].translate }}</option>
                                 </select>
                             </div>
                         </div>
@@ -60,13 +60,13 @@
                 </div>
                 <div class="ContainerFooter w-full h-full">
                     <div class="TituloFooter">
-                        <span class="truncate" :class="step === 'password'?'active':''"
+                        <span class="truncate" :class="step === 'password'&&'active'"
                         @click="step = 'password'">{{$t('words.security')}}</span>
-                        <span class="truncate" :class="step === 'info'?'active':''"
+                        <span class="truncate" :class="step === 'info'&&'active'"
                         @click="step = 'info'">{{$t('phrases.userInfo')}}</span>
-                        <span class="truncate" :class="step === 'config'?'active':''"
+                        <span class="truncate" :class="step === 'config'&&'active'"
                         @click="step = 'config'">{{$t('words.definition')}}</span>
-                        <span class="truncate" :class="step === 'permissions'&&'active'"
+                        <span class="truncate" :class="step === 'permission'&&'active'"
                         @click="step = 'permission'">{{$t('words.permission')}}</span>
                     </div>
                     <div v-if="step == 'password'" class="DivSenha">
@@ -95,7 +95,7 @@
                     <KeepAlive>
                         <config v-if="step === 'config'" @changeInput="handleInputConfig" @translate="user.user_language = $event" :data="user"/>
                     </KeepAlive>
-                    <permissionVue v-if="step === 'permission'"/>
+                    <permissionVue :user="user" v-if="step === 'permission'"/>
                 </div>
             </div>
          </div>
@@ -112,7 +112,7 @@ import {ref,reactive, onMounted} from 'vue';
 import { getImages } from '@/composable/public/getImages';
 import {useUploadImage} from '@/composable/public/UploadImage'
 import { serviceMessage } from '@/composable/public/messages';
-import permissionVue from './permission.vue'
+import permissionVue from './permissions/index.vue'
 import { useI18n } from "vue-i18n";
 const {locale} = useI18n()
 const props = defineProps({

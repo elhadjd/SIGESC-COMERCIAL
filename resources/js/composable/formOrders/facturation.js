@@ -177,6 +177,7 @@ export const form = ((print,Invoice,statePayment,loading,form_faturacao,modalCon
     function submitOrder() {
         loading.value = 'Confirmar'
         axios.post(`${general.routes.saveOrder.name}/${Invoice.value.id}/save`).then((response) => {
+            if (response.data.message && response.data.type == "error") message(response.data.message,response.data.type)
             if (response.data.message) message(response.data.message,response.data.type)
             if (response.data.data) return emit('stateFormOrder',response.data.data.state)
             emit('stateFormOrder',response.data.state)
@@ -191,6 +192,7 @@ export const form = ((print,Invoice,statePayment,loading,form_faturacao,modalCon
         loading.value = 'Anular'
         modalConfirm.value.state = null
         axios.post(`${general.routes.cancelOrder.name}/${Invoice.value.id}/cancel`).then((response) => {
+            if (response.data.message && response.data.type == "error") message(response.data.message,response.data.type)
             if (response.data.message) message(response.data.message,response.data.type)
             if (response.data.data) return emit('stateFormOrder',response.data.data.state)
             emit('stateFormOrder',response.data.state)

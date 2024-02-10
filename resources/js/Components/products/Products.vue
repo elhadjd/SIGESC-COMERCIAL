@@ -2,7 +2,7 @@
   <div class="MenuProdutos">
 
     <div v-if="product.StateFormShow" class="novo_prod w-100 h-100">
-        <Produto @closeForm="OnMounted" :key="productComponentKey"/>
+        <productVue @closeForm="OnMounted" :key="productComponentKey"/>
     </div>
 
     <div v-else class="principal">
@@ -45,7 +45,6 @@
         </div>
     </div>
 </div>
-<Toast/>
 </template>
 
 <script setup>
@@ -53,13 +52,10 @@
 import { onMounted, ref,onUpdated, reactive, computed } from '@vue/runtime-core';
 import axios from 'axios';
 import { useForm } from '@inertiajs/inertia'
-import Produto from './product/product.vue';
+import productVue from './product/product.vue';
 import pagination from '@/Layouts/paginations/paginate.vue'
 import { useStore } from 'vuex';
 import Progress from '@/components/confirmation/progress.vue'
-import Toast from 'primevue/toast';
-import { useToast } from 'primevue/usetoast';
-
 import {ProductsServices} from './services/productsServices';
 
 const store = useStore()
@@ -77,7 +73,6 @@ const {
     makeDiscount
 } = ProductsServices()
 const product = computed(()=> store.getters['Product/product'])
-const toast = useToast()
 const OnMounted = onMounted(async() => {
     loading.value = 'start'
     await axios.get('/products/100/1')

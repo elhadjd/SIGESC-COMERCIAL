@@ -46,23 +46,22 @@ class AnalisOrderController extends Controller
 
     public function analisDay($day)
     {
-        if (Auth::user()->hasRole('Admin')) {
-            $dias = $day;
-            $resul = [];
-            $orders = [];
-            for ($i=1; $i <= $dias; $i++) {
-                $resul = $i;
-                if ($i<=9) {
-                    $resul = '0'.$i;
-                }
-            $order = orderPos::whereDay('created_at',$resul)
-            ->where('company_id',Auth::user()->company_id)
-            ->whereYear('created_at',date('Y'))
-            ->whereMonth('created_at',date('m'))->sum('total');
-            $orders[] = $order;
+        if (request()->user()->hasRole('User')) return $this->RespondError(__('User without access'));
+        $dias = $day;
+        $resul = [];
+        $orders = [];
+        for ($i=1; $i <= $dias; $i++) {
+            $resul = $i;
+            if ($i<=9) {
+                $resul = '0'.$i;
             }
-            return $orders;
+        $order = orderPos::whereDay('created_at',$resul)
+        ->where('company_id',Auth::user()->company_id)
+        ->whereYear('created_at',date('Y'))
+        ->whereMonth('created_at',date('m'))->sum('total');
+        $orders[] = $order;
         }
+        return $orders;
     }
 
     public function IntervalDateRelator($month=null,$year=null,$inicio,$fin)

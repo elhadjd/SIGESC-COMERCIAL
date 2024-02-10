@@ -61,6 +61,7 @@
                 <div class="TotalPorCima">
                   <div class="text-center">
                     {{ formatMoney(progressAmount ? 0 : DadosCaixa.orders.cash)}}
+                    
                   </div>
                   <div class="truncate">Total {{$t('words.reported')}}</div>
                 </div>
@@ -210,14 +211,14 @@ const formatDate = (date) => {
 const ContinuarVenda = () => {
   router.get(`Pos/${DadosCaixa.value.caixa.id}`, {
     onSuccess: (Response) => {
-        emits("message", "info", Response.props.message);
+        showMessage(Response.data.message,'info')
     },
   });
 };
 
 const AbrirControlo = () => {
   if (Input.value == null || Input.value == "") {
-    showMessage("Por favor informe o valor para Abrir a caixa","info")
+    showMessage(t(`message.emptyInput`,{name: t('words.amount')}),'info')
   } else {
     showProgress.value = true;
     DadosCaixa.value.opening = Input.value;
@@ -255,12 +256,7 @@ const updateSession = () => {
 
 const CloseCash = () => {
   if (Input.value == null || Input.value == "") {
-    Toast.add({
-      severity: "info",
-      summary: "Menssage",
-      detail: "Por favor informe o valor para fechar a caixa",
-      life: 5000,
-    });
+    showMessage(t(`message.emptyInput`,{name: t('words.amount')}),'info')
   } else {
     showProgress.value = true;
     let totals = Number(DadosCaixa.value.orders.orders_sum_total) + Number(operations.value.entrada) + Number(DadosCaixa.value.orders.opening)
@@ -268,16 +264,19 @@ const CloseCash = () => {
     const totalValue = totals - discont
     axios.post(`caixa/clossSession/${locale.value}/${DadosCaixa.value.orders.id}`, {informado:Input.value,total:totalValue})
       .then((response) => {
+        if(response.data.message) return showMessage(response.data.message,response.data.type)
         DadosCaixa.value = response.data;
         DadosCaixa.value.caixa = response.data.orders.caixa
         DadosCaixa.value.user = response.data.orders.user
         showProgress.value = false;
         CalcularValorCaixa();
       })
-      .catch((erro) => {
+      .catch((err) => {
+        showMessage(t('message.serverError'))
+        console.log(err);
+      }).finally(()=>{
         showProgress.value = false;
-        console.log(erro);
-      });
+      } );
   }
 };
 

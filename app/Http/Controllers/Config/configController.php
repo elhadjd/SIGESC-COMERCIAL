@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Config;
 
 use App\classes\ActivityRegister;
+use App\classes\CheckData;
 use App\classes\uploadImage;
 use App\Http\Controllers\Controller;
 use App\Models\activity_type;
@@ -42,7 +43,6 @@ class configController extends Controller
         return $company->HistoricLogin()->get();
     }
 
-
     public function getConfig(Request $request,$locale)
     {
         return $request->user()->company()
@@ -65,6 +65,8 @@ class configController extends Controller
 
     public function newUser(User $users)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Users','Create')) return $this->RespondError(__('User without access'));
         $this->registerActivity('Criou um novo usuario');
         $user = $users->create([
             'role_id'=>2,
@@ -82,6 +84,8 @@ class configController extends Controller
 
     public function SaveUser(User $user = null,Request $request)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Users','Edit')) return $this->RespondError(__('User without access'));
         $request->validate([
             'email'=>['required','email'],
             'name'=>['required'],
@@ -114,11 +118,15 @@ class configController extends Controller
     }
 
     function insertLangUser($user,$data)  {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Users','Edit')) return $this->RespondError(__('User without access'));
         $user->userLanguage()->updateOrCreate(['user_id'=>$user->id],$data);
     }
 
     public function UpdatePassword(Request $request,User $user)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Users','Edit')) return $this->RespondError(__('User without access'));
         if (!Hash::check($request->SenhaAtual,$user->password)) {
             return $this->RespondError(__('The provided password does not match your current password.'));
         }
@@ -133,7 +141,8 @@ class configController extends Controller
     }
     public function saveCompany(Request $request)
     {
-
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Companies','Edit')) return $this->RespondError(__('User without access'));
         $request->validate([
             'manager.id'=>['required'],
             'email'=>['required','email'],

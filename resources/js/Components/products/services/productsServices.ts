@@ -37,7 +37,7 @@ export const ProductsServices = (()=>{
             Products.search = JSON.parse(localStorage.getItem('listStorePaginate')).data
             return false
         }
-        if (search().length == 0) {
+        if (search().length < 4) {
             await getFilter(`/search/produtos/nome/${form.nome}`)
             Products.list.data = search()
         } else {
@@ -61,7 +61,6 @@ export const ProductsServices = (()=>{
         if (form.nome != null) return SearchProduct()
         localStorage.setItem('listStorePaginate',JSON.stringify(data))
     })
-
 
     const showProduct = ((state:boolean,product?: Product)=>{
         productStore.value.productComponentKey += 1

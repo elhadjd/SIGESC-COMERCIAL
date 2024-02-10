@@ -75,9 +75,12 @@ import { onMounted, ref,watch } from "@vue/runtime-core";
 import axios from "axios";
 import useEventsBus from '@/Eventbus';
 import {Search} from '@/composable/public/search'
+import { serviceMessage } from '@/composable/public/messages';
+import { useI18n } from 'vue-i18n';
 const {emit,bus} = useEventsBus();
-
+const {showMessage} = serviceMessage()
 const emits = defineEmits(['modulos','message'])
+const {t} = useI18n()
 const Orders = ref({
     list: [],
     store: [],
@@ -96,9 +99,11 @@ const NewPurchase = (()=>{
     if (loading.value == 'new') return
     loading.value = 'new'
     axios.post('NewPurchase')
-    .then((Response) => {
-        emits('modulos','compra', Response.data)
+    .then((response) => {
+        if(response.data.message) return showMessage(response.data.message,response.data.type)
+        emits('modulos','compra', response.data)
     }).catch((err) => {
+        showMessage(t('message.serverError'))
         console.log(err);
     }).finally(()=>{
         loading.value = null
@@ -126,10 +131,6 @@ async function getOrder() {
         loading.value = null
     });
 }
-
-const message = ((message,tipo)=>{
-    emits('message',message,tipo)
-})
 
 const SearchInvoice = ((e)=>{
     const FilterSearch = Orders.value.store.filter(object=>{

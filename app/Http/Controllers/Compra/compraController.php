@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Compra;
 
 use App\classes\ActivityRegister;
+use App\classes\CheckData;
 use App\Http\Controllers\Controller;
 use App\Models\movement_type;
 use App\Models\movement_type_produtos;
@@ -47,6 +48,8 @@ class compraController extends Controller
 
     public function ChangeDatePurchase(Request $request, $type, Puchase $order)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Purchase','Edit')) return $this->RespondError(__('User without access'));
         $order[$type] = $request[$type];
         $order->save();
     }
@@ -80,6 +83,8 @@ class compraController extends Controller
 
     public function NewPurchase(Puchase $puchase)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Purchase','Create')) return $this->RespondError(__('User without access'));
         $data = $this->companyUser()->purchase()->create([
             'DateOrder'=>now(),
             'user_id' => Auth()->user()->id
@@ -94,7 +99,8 @@ class compraController extends Controller
 
     public function addSupplier(Puchase $order, $supplier)
     {
-
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Purchase','Edit')) return $this->RespondError(__('User without access'));
         $order->fornecedor_id = $supplier;
         $order->save();
         return $order->fresh()->supplier;
@@ -102,13 +108,15 @@ class compraController extends Controller
 
     public function AddItemPuchase(produtos $product, $order)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Purchase','Edit')) return $this->RespondError(__('User without access'));
         if (!$this->checkOrder($order)) return $this->RespondInfo(__('This order has already been confirmed.'));
 
         $result = PuchaseItem::where('puchase_id', $order)->where('produtos_id', $product->id)->exists();
         if ($result)
             return $this->RespondError(__('This product has already been added to this order.'), []);
 
-        $puchase = PuchaseItem::create([
+        PuchaseItem::create([
             'quantity' => 1,
             'puchase_id' => $order,
             'produtos_id' => $product->id,
@@ -123,6 +131,9 @@ class compraController extends Controller
 
     public function UpdateItems(Request $request, PuchaseItem $item)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Purchase','Edit')) return $this->RespondError(__('User without access'));
+        
         $update = $request;
 
         if (!$this->checkOrder($update['puchase_id'])) return $this->RespondInfo(__('This order has already been confirmed.'));
@@ -145,6 +156,8 @@ class compraController extends Controller
 
     public function deleteItem($order, PuchaseItem $item)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Purchase','Delete')) return $this->RespondError(__('User without access'));
         if (!$this->checkOrder($order)) return $this->RespondInfo(__('This order has already been confirmed.'));
         $item->delete();
         return $this->SumPuchase($order);
@@ -152,6 +165,8 @@ class compraController extends Controller
 
     public function confirmOrder(Request $request, Puchase $order, $type)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Purchase','Edit')) return $this->RespondError(__('User without access'));
         if (!$this->checkOrder($order->id) && $type != 'cancel') return $this->RespondError(__('This order has already been confirmed.'), $order);
         $order->load('items');
 
@@ -208,6 +223,8 @@ class compraController extends Controller
 
     public function savePayment(Request $request, Puchase $order)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Payments','Create')) return $this->RespondError(__('User without access'));
         $request->validate([
             'Amount' => 'required|integer',
         ]);

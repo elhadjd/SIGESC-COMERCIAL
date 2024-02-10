@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\classes\CheckData;
 use App\Http\Controllers\Controller;
 use App\Models\armagen;
 use App\Models\movement_type;
@@ -30,6 +31,8 @@ class TransferController extends Controller
 
     public function create(Request $request,transfer $transfer)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Products transfers','Create')) return $this->RespondError(__('User without access'));
         $number = 'TF'.date('d').'-'.date('m').'-'.date('Y').'/';
         $create = $this->companyUser()->transfer()->create([
             'orderNumber'=> $number,
@@ -46,6 +49,8 @@ class TransferController extends Controller
 
     public function addItem(Request $request,produtos $product, transfer $order)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Products transfers','Edit')) return $this->RespondError(__('User without access'));
         $order->items()->create([
             'produtos_id' => $product->id,
             'priceSold' => $product->preçocust,
@@ -91,6 +96,8 @@ class TransferController extends Controller
 
     public function update(Request $request, transferItem $item)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Products transfers','Edit')) return $this->RespondError(__('User without access'));
         $request->validate([
             'store'=> 'required',
         ]);
@@ -108,12 +115,16 @@ class TransferController extends Controller
 
     public function DeleteItem($order,transferItem $item)
     {
-       $item->delete();
-       return $this->sumItems($order);
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Products transfers','Edit')) return $this->RespondError(__('User without access'));
+        $item->delete();
+        return $this->sumItems($order);
     }
 
     public function addLocalDestine(transfer $order,$store)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Products transfers','Edit')) return $this->RespondError(__('User without access'));
         $order->store_destination_id = $store;
         $order->save();
         return $order->fresh()->store_to;
@@ -121,6 +132,8 @@ class TransferController extends Controller
 
     public function addDateOrder(Request $request,$type,transfer $order)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Products transfers','Edit')) return $this->RespondError(__('User without access'));
         $order[$type] = $request[$type];
         $order->save();
     }
@@ -141,6 +154,8 @@ class TransferController extends Controller
 
     public function saveTransfer(Request $request,transfer $order,$type,stock $stock)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Products transfers','Edit')) return $this->RespondError(__('User without access'));
         $order->load('items');
         if ($type == 'cancel' && $order->state == 'Anulado') return $this->RespondError(__('This purchase has already been canceled.'),$order);
         if ($type == 'cancel' && $order->state == 'Cotação') return $this->RespondInfo(__('It is not possible to cancel an unconfirmed order'),$order);

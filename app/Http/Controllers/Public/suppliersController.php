@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\classes\CheckData;
 use App\classes\uploadImage;
 use App\Http\Controllers\Controller;
 use App\Models\fornecedore;
@@ -21,6 +22,8 @@ class suppliersController extends Controller
 
     public function create()
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Providers','Create')) return $this->RespondError(__('User without access'));
         $new = fornecedore::create([
             'company_id' => Auth::user()->company_id,
             'image'=> 'produto-sem-imagem.png'
@@ -36,6 +39,8 @@ class suppliersController extends Controller
 
     public function update(fornecedore $supplier , Request $request)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Providers','Edit')) return $this->RespondError(__('User without access'));
         $image = new uploadImage();
         $request->validate([
             'name'=> 'required||string'
@@ -54,6 +59,8 @@ class suppliersController extends Controller
 
     public function deleteSupplier(fornecedore $supplier)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Providers','Delete')) return $this->RespondError(__('User without access'));
         $relation = $this->relations($supplier);
 
         if ($relation->products->count() >0 || $relation->orders->count() >0) return $this->RespondError(__('It is not possible to delete this supplier'));
@@ -67,6 +74,8 @@ class suppliersController extends Controller
 
     public function AddProductSupplier(produtos $product, fornecedore $supplier)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Products','Create')) return $this->RespondError(__('User without access'));
         $validate = DB::table('fornecedore_produtos')->where('produtos_id',$product->id)
         ->where('fornecedore_id',$supplier->id)->get();
         if ($validate->count() > 0) return $this->RespondError(__('This supplier has already been added to this article'));
@@ -74,7 +83,6 @@ class suppliersController extends Controller
             'produtos_id' => $product->id,
             'fornecedore_id' => $supplier->id
         ]);
-
         return $product->fresh();
     }
 

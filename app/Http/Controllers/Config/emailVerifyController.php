@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Config;
 
+use App\classes\CheckData;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 class emailVerifyController extends Controller
 {
     function sendCodeVerifyEmail(company $model) {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Company','Edit')) return $this->RespondError(__('User without access'));
         if($model->email != null || $model->email != ''){
             $code = 'SG';
             for ($i = 0; $i < 3; $i++) {

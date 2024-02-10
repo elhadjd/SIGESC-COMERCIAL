@@ -27,7 +27,7 @@ class User extends Authenticatable
         'surname',
     ];
 
-    protected $with = ['config','armagen','perfil','userLanguage','roles'];
+    protected $with = ['config','armagen','perfil','userLanguage','roles','permissions'];
 
     protected $hidden = [
         'password',
@@ -85,18 +85,20 @@ class User extends Authenticatable
         return $this->belongsToMany(Permission::class);
     }
 
-    public function assignPermission(string $permission): void
+    public function assignPermission(Permission $permission): void
     {
-        $permission = $this->permissions()->firstOrCreate([
-            'name' => $permission,
-        ]);
+        if(!$this->hasPermission($permission->id)){
+            $this->permissions()->attach($permission);
+        }
+    }
 
-        $this->permissions()->attach($permission);
+    public function unSignPermission(Permission $permission){
+        $this->permissions()->detach($permission);
     }
 
     public function hasPermission(string $permission): bool
     {
-        return $this->permissions()->where('name', $permission)->exists();
+        return $this->permissions()->where('permission_id', $permission)->exists();
     }
 
 }

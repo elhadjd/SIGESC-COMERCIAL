@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\classes\ActivityRegister;
+use App\classes\CheckData;
 use App\Http\Controllers\Controller;
 use App\Models\armagen;
 use App\Models\category_product;
@@ -13,6 +14,7 @@ use App\Models\movement_type_produtos;
 use App\Models\operationCaixaType;
 use App\Models\productType;
 use App\Models\produtos;
+use App\Models\service;
 use App\Models\stock;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -21,7 +23,6 @@ use Inertia\Inertia;
 
 class stockController extends Controller
 {
-
     public function Index()
     {
         $register = new ActivityRegister;
@@ -77,6 +78,8 @@ class stockController extends Controller
 
     public function entryProduct($request, $product, stock $stock, $consult)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Products','Stock entry')) return $this->RespondError(__('User without access'));
         if ($consult->count() > 0) {
             $quantityAfter = $consult->first()->quantity;
             $consult->update([
@@ -103,6 +106,8 @@ class stockController extends Controller
 
     public function outputProduct($request, $product, stock $stock, $consult)
     {
+        $checkPermission = new CheckData;
+        if(! $checkPermission->checkPermission('Products','Out of stock')) return $this->RespondError(__('User without access'));
         if ($consult->count() > 0) {
             $quantityAfter = $consult->first()->quantity;
             if ($consult->first()->quantity >= $request->quantity) {
@@ -202,6 +207,8 @@ class stockController extends Controller
 
     public function saveStore(Request $request)
     {
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Stores','Create')) return $this->RespondError(__('User without access'));
         $request->validate([
             'city' =>  'required|string',
             'name' => 'required|string'

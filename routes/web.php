@@ -7,6 +7,7 @@ use App\Http\Controllers\Compra\chartPurchase;
 use App\Http\Controllers\Compra\compraController;
 use App\Http\Controllers\Config\configController;
 use App\Http\Controllers\Config\emailVerifyController;
+use App\Http\Controllers\Config\permissionsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Faturacao\chartInvoice;
 use App\Http\Controllers\Faturacao\faturacaoController;
@@ -108,7 +109,14 @@ Route::middleware('locale')->group(function(){
                     Route::post('SaveUser/{user?}', 'SaveUser');
                     Route::post('saveCompany', 'saveCompany');
                     Route::get('getLoginRegister','getLoginRegister');
+
                 });
+
+                Route::controller(permissionsController::class)->group(function(){
+                    Route::get('getPermissions/{user}','show');
+                    Route::post('/savePermission/{user}','savePermission');
+                });
+
             });
 
             Route::middleware('currencyCompany')->group(function(){

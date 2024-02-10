@@ -5,8 +5,6 @@ export const OrdersServices = (()=>{
 
     const progress = ref<boolean>(false)
 
-
-
     const checkOrders = (async(session: number)=>{
         const ordersStore = localStorage.getItem('Encomendas'+session)
         const orders = JSON.parse(ordersStore)

@@ -1,7 +1,8 @@
 <template>
 <Toast />
 <forget-password v-if="resetPassword" @closeModal="resetPassword = false"/>
-<div class='principal'>
+<div class='principal relative'>
+    <!-- <span class="absolute h-10 w-10 bg-white rounded-full">s</span> -->
     <header class="flex">
         <h1><span>S</span>IGESC</h1>
     </header>
@@ -11,14 +12,14 @@
                 <div class="text-sm font-sm" v-for="(infoItem, index) in $tm('login.info')" :key="index">
                     <div><font-awesome-icon icon="fa-solid fa-circle-check" /></div>
                     <div>
-                        <span>{{infoItem.title}}</span>
+                        <span class="truncate">{{infoItem.title}}</span>
                         <span>{{infoItem.description}}</span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="form">
-            <form @submit.prevent="submit">
+            <form class="" @submit.prevent="submit">
 
                 <header>
                     <span>{{$t('login.title')}}</span>
@@ -53,6 +54,10 @@
                     <div v-if="languages.state" class="drop w-full">
                         <span v-for="language,index in languages.data" @click="()=>selectLanguage(language)" :key="index">{{language.name}}</span>
                     </div>
+                </div>
+                <div class="flex justify-between w-full h-auto mt-2 md:mt-14 items-center">
+                    <a class="text-gray-500" href="https://sisgesc.net">{{$t('phrases.visitSite')}}</a>
+                    <a class="text-gray-500" href="https://sisgesc.net/contact">{{$t('phrases.contactUs')}}</a>
                 </div>
             </form>
         </div>
@@ -130,7 +135,7 @@ const submit = async() => {
             });
         }
     }
-       
+
 };
 </script>
 

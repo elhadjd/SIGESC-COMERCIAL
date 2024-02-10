@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\PDV;
 
+use App\classes\CheckData;
 use App\Http\Controllers\Controller;
 use App\Models\ItemOrder;
 use App\Models\movement_type;
@@ -238,7 +239,8 @@ class OrdersController extends Controller
 
     public function CancelInvoice(orderPos $order)
     {
-        if(!request()->user()->hasRole('Admin')) return $this->RespondError(__('User without access'));
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('POS','Cancel invoice')) return $this->RespondError(__('User without access'));
         $user = User::find($order->user_id);
         DB::transaction(function () use ($order, &$user) {
 
