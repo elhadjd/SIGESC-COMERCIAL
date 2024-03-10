@@ -15,7 +15,7 @@
                             {{ menu.menu }}
                         </li>
                         <div v-show="Mostrar == menu.menu">
-                            <div v-if="user.roles.name != 'User'" class="ListRelatorios">
+                            <div v-if="user?.nivel == 'admin'" class="ListRelatorios">
                                 <div
                                     v-for="subMenu, index in menu.subMenu"
                                     :key="index"

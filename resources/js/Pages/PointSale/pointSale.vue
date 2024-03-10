@@ -2,7 +2,7 @@
 
   <div class="mt-0" style="height: 100vh; width: 100vw">
     <Toast />
-    <Cabacalho @modulos="modulos" :menus="menus" />
+    <Headers @modulos="modulos" :menus="menus" />
     <div class="Container">
       <Caixa v-if="modul == $t('words.box')" @pointOfSale="modulos" :caixaId="session" @message="message" />
       <Relatorio v-if="modul == $t('words.report')" />
@@ -12,7 +12,7 @@
 
         <Progress v-if="store.state.pos.StateProgress"/>
       <MenuPdv
-        @definicaoCaixa="definicaoCaixa"
+        @definicaoCaixa="definicaaoCaixa"
         @Caixa="EmitsMenu"
         @sessao="AbrirSessao"
         @CriarCaixa="CriarCaixa"
@@ -38,8 +38,9 @@
 </template>
 
 <script setup>
+import headerVue from '@/Layouts/headerTop/index.vue'
 import Products from "@/Components/products/Products.vue";
-import Cabacalho from "../../Layouts/header.vue";
+import Headers from '../../layouts/header.vue'
 import Sections from "@/Components/pointSale/sessions.vue";
 import { onMounted, reactive, ref } from "@vue/runtime-core";
 import MenuPdv from "@/Components/pointSale/MenuPdv.vue";

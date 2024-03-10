@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use App\Models\EmailVerify;
 use App\Models\Role;
+use App\Models\userLanguage;
 
 class configController extends Controller
 {
@@ -55,6 +56,19 @@ class configController extends Controller
                     }]);
                 }]);
         }])->first();
+    }
+
+    public function changeLanguage(Request $request,User $user){
+        $request->validate([
+            'name'=>'required|string',
+            'local'=>'required|string'
+        ]);
+        $user->userLanguage()->update([
+            'language'=>$request->name,
+            'code'=>$request->local
+        ]);
+        $user->fresh();
+        return $this->RespondSuccess(__('Data updated successfully'),$user->userLanguage()->first());
     }
 
     public function registerActivity($body)

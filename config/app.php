@@ -17,7 +17,7 @@ return [
     */
     // 'log' => 'errorlog',
 
-    'name' => env('APP_NAME', 'SIGESC'),
+    'name' => env('APP_NAME', 'SIGESC-SOFT Software de Gestão Integrado comercial'),
 
     /*
     |--------------------------------------------------------------------------

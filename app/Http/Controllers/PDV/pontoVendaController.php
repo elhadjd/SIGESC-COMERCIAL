@@ -13,10 +13,11 @@ use Inertia\Inertia;
 
 class pontoVendaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+
         return Inertia::render('PointSale/pointSale', [
-            'user' => Auth::user(),
+            'user' => $request->user(),
             'data' => caixa::all()->where('company_id',Auth::user()->company_id)
         ]);
     }

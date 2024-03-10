@@ -5,4 +5,10 @@ export default {
     CloseCash(state, payload) {
         state.Controlo.state = payload;
     },
+    setOrder(state,order){
+        state.order = order
+    },
+    setPaymentMethods(state,methods){
+        state.methods = methods
+    }
 }

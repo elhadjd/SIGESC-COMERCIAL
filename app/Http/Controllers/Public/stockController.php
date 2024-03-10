@@ -174,7 +174,7 @@ class stockController extends Controller
         ];
     }
 
-    public function IntervalDateInventory($month = null, $year = null, $from, $to)
+    public function IntervalDateInventory($from, $to,$month = null, $year = null)
     {
         $startDate = Carbon::parse("$year-$month-$from");
         $endDate = Carbon::parse("$year-$month-$to");

@@ -32,7 +32,6 @@
                 <div class="text-right">{{formatMoney(item.total)}}</div>
                 <div>{{item.state}}</div>
                 <div class="ViewPedido">
-
                     <span v-if="item.state == 'Pago'" @click="edit(item)" class="edit">{{$t('words.edit')}}</span>
                     <Transition>
                         <span  @click="ShowList(item)" v-if="Mostra == item.number && item.state == 'Pago'">{{$t('words.show')}}</span>
@@ -62,7 +61,7 @@ const FormatarDineiro = Intl.NumberFormat('PT-AO',{style: 'currency',currency: '
 const props = defineProps({session: Number})
 const emits = defineEmits(['AlterarPedido','close']);
 const {getOrders} = OrdersServices()
-const Encomendas = ref()
+const orders = ref()
 const ListaOrdens = ref([])
 const MostrarLista = ref({
     estado: false,
@@ -80,7 +79,7 @@ const invoice = ref({
 
 const viewOrder = ((order,edit)=>{
     if (order.state != 'Pago' || edit) {
-        emits('AlterarPedido',order.number,'edit')
+        emits('AlterarPedido',order,'edit')
         invoice.value.state = false
     }else{
         console.log();
@@ -130,8 +129,8 @@ const OnMounted = onMounted(async() => {
 
 const filterOrder = (()=>{
     session.value = localStorage.getItem('session')
-    Encomendas.value = JSON.parse(localStorage.getItem('Encomendas'+session.value));
-    Encomendas.value.forEach(item => {
+    orders.value = JSON.parse(localStorage.getItem('orders'+session.value));
+    orders.value.forEach(item => {
         if (item.state != 'Pago') {
             ListaOrdens.value.push(item)
         }

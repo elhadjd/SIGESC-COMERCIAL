@@ -111,7 +111,6 @@ const changes = (()=>{
     return Number(amountPaid) - Number(invoice.value.total)
 })
 
-
 onMounted(async ()=>{
     window.print()
     window.addEventListener('afterprint', emits('closePrint'))

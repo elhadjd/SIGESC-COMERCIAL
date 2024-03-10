@@ -18,8 +18,8 @@
 </div>
   <div v-else class="ManuPosGeral">
     <ProgressVue v-if="progress"/>
-    <section id="headerPos">
-        <button type="button" class="header-One">
+    <section id="headerPos" class="z-10">
+        <button type="button" class="header-One z-20">
             <li>
                 <strong> SIGESC </strong>
                 <i class="fa fa-chevron-down openMenu" aria-hidden="true"></i>
@@ -29,9 +29,9 @@
                     <cash />
                     <span>{{`${$t('words.entry')}&${$t('words.output')}&${$t('words.expenses')}`}}</span>
                 </div>
-                <div @click="ListePedidos = true,showProducts = !showProducts" id="pos">
+                <div @click="listOrdersState = true,showProducts = !showProducts" id="pos">
                     <i class="fa fa-ticket" aria-hidden="true"></i>
-                    <strong>{{ Pedido.number }}</strong>
+                    <strong>{{ orderStore.order.number }}</strong>
                     <span>{{$t('words.order')}}</span>
                 </div>
             </div>
@@ -41,7 +41,7 @@
         <button class="user">
             <img :src="image.img"/>
             <div class="closePos">
-                <span class="truncate w-40">{{ $store.state.publico.user.surname }}</span>
+                <span class="truncate w-40">{{ userStor.surname }}</span>
                 <div @click="close">{{$t('words.goOut')}} <i class="fa fa-sign-out"></i></div>
             </div>
         </button>
@@ -55,24 +55,25 @@
       <div class="Posesquerda">
           <div class="esquerdaCima">
             <div class="Carrinho">
+
                 <li
-                  :class="`${IdAlterar == Pedido.id && 'last-element'} listaPedido`"
-                  v-for="(Pedido, index) in Pedido.items"
+                  :class="`${orderShow.lastItem == item.id && 'last-element'} listaPedido`"
+                  v-for="(item, index) in orderShow.items"
                   :key="index"
-                  @click="ClicarLinha(Pedido.id, 'linha')"
+                  @click="ClickOnRowItem(item.id, 'linha')"
                 >
-                  <div class="w-50">{{ Pedido.nome }}</div>
+                  <div class="w-50">{{ item.nome }}</div>
                   <div class="mr-3 w-auto">
-                    {{ Pedido.quantidade + "Un(s)" }}
+                    {{ item.quantidade + "Un(s)" }}
                   </div>
-                  <div>{{ formatMoney(Pedido.preco_pedido) }}</div>
+                  <div>{{ formatMoney(item.preco_pedido) }}</div>
                   <div class="totalEncomeda">
-                    {{ formatMoney(Pedido.total) }}
+                    {{ formatMoney(item.total) }}
                   </div>
                 </li>
-                <div v-if="Pedido.items.length > 0">
+                <div v-if="orderShow.items.length > 0">
                     <strong class="mr-2">Total:</strong>
-                    <span>{{ formatMoney(Pedido.total) }}</span>
+                    <span>{{ formatMoney(orderShow.total) }}</span>
                 </div>
             </div>
           </div>
@@ -81,37 +82,29 @@
             <Eventos
                 :idSession="session.id"
                 :user="props.user"
-                @message="messages"
-                @invoice="print"
-                @payment="makePayment"
-                @cliente="client"
-                @Alterar="updateOrder"
-                @tipo="tipo"
+                @invoice="printRecipt"
                 @showProds="showProducts = !showProducts"
-                @Remover="Remover"
             />
           </div>
       </div>
       <div class="Posdireita" :class="showProducts ? 'showProducts' : ''">
         <ListePedido
-          @close="ListePedidos = false"
-          @AlterarPedido="AlterarPedido"
-          @NovoPedido="NovoPedido"
+          @close="listOrdersState = false"
+          @AlterarPedido="AlterOrder($event),listOrdersState = false"
+          @NovoPedido="setNewOrder"
           :session="session.id"
-          v-if="ListePedidos == true"
+          v-if="listOrdersState == true"
         />
-          <div v-if="!fatura && !ListePedidos" class="direitaBaixo">
-            <Produtos @AddProds="AddProds" :categories="categories" @message="messages" />
+          <div v-if="!fatura && !listOrdersState" class="direitaBaixo">
+            <Produtos @AddProds="($event)=>AddProd($event, session.id)" :categories="categories" @message="messages" />
           </div>
       </div>
       <Pagamento
-        :method="method"
-        v-if="Form_Pagamento == true"
-        @message="messages"
-        @closePaymentForm="Form_Pagamento = false"
-        @fatura="print"
-        :dados="Pedido"
+        v-if="orderStore.order.formPayment"
+        @closePaymentForm="orderStore.order.formPayment = false"
+        @sendInvoice="printRecipt"
       />
+
     </section>
   </div>
 </template>
@@ -130,78 +123,80 @@ import { Link,router } from "@inertiajs/vue3";
 import EntradaSaida from "./SaidaEntrada.vue";
 import Eventos from "./eventos.vue";
 import "./inatividade";
-import { onMounted, reactive, ref } from "@vue/runtime-core";
+import { onMounted, reactive,computed, ref, watch } from "@vue/runtime-core";
 import { useToast } from "primevue/usetoast";
 import Pesquisar from "./pesquisar.vue";
 import { getImages } from "@/composable/public/getImages";
+import {AlterItemsInTheOrder} from '@/Components/pos/services/alterItemsInTheOrder'
+import { serviceMessage } from "@/composable/public/messages"
 import {OrdersServices} from "@/Components/pos/services/ordersServices"
-const {
-    checkOrders,
-    progress
-} = OrdersServices()
-
-const store = useStore();
-const ListePedidos = ref(false);
-const FormatarDineiro = Intl.NumberFormat("PT-AO", {
-  style: "currency",
-  currency: "AOA",
-});
-const image = reactive({
-    img:'/login/image/'+store.state.publico.user.surname
-})
-const showProducts = ref(false)
-const {getImage} = getImages(image);
-const toast = useToast();
-const pos = ref("Pos");
-const entradaSaida = ref(false);
-const cliente = ref("");
-const IdAlterar = ref();
-const dadosFatura = ref();
-const fatura = ref(false);
-const numeros = ref("");
-const TipoAlteration = ref("quantidade");
-const linha = ref(null);
-const Form_Pagamento = ref(false)
-
+import {storeOrderServices} from "@/Components/pos/services/storeOrderServices"
+import {AddProductAtCart} from '@/Components/pos/services/addProductService'
 const props = defineProps({
   session: Object,
   user:Object
 });
+const {showMessage} = serviceMessage()
+const {
+    checkOrders,
+    progress,
+    positionAlter,
+    userStor,
+    orders,
+    showProducts,
+    listOrdersState,
+    setNewOrder,
+    sumOrder,
+    ClickOnRowItem
+} = OrdersServices()
+const {AddProd} = AddProductAtCart()
+const {
+    AlterOrder,
+    getOrderAtStore,
+    setStoreOrder
+} = storeOrderServices()
 
-const user = ref(props.user);
-const Pedido = ref({
-  items: [],
-  total: 0,
-  state: "Cotação",
-  user: [],
-  cliente: null,
-  number: null,
-  session: null,
-});
+const {
+        alterItems
+    } = AlterItemsInTheOrder()
+const store = useStore();
+const orderShow = computed(()=>store.getters['pos/public'].order)
+let orderStore = store.state.pos
+const image = reactive({
+    img:'/login/image/'+userStor.image
+})
+const {getImage} = getImages(image);
+const toast = useToast();
+const entradaSaida = ref(false);
+const cliente = ref("");
+const dadosFatura = ref();
+const fatura = ref(false);
+const linha = ref(null);
+
 const close = ()=>{
     router.get('/PDV/Home')
 }
-const Encomendas = ref([]);
 const categories = ref([])
-const method = ref();
-
-const IdEncomenda = ref();
 
 const showLogin = (event) => {
   store.commit("pos/CloseCash", event);
 };
 
-const print = (event) => {
+const printRecipt = (event) => {
     dadosFatura.value = event;
-    fatura.value = true;
-    Form_Pagamento.value = false;
-    Pedido.value.number = null;
-    Pedido.value.items = [];
-    Pedido.value.total = null;
-    store.state.pos.ClientePos = null;
+        fatura.value = true;
+    if(!fatura.value){
+        
+    }
+    
 };
 
 const closePrint = (()=>{
+    orderStore.order.formPayment = false;
+    orderStore.order.number = '0';
+    orderStore.order.items = [];
+    orderStore.order.state = 'Cotação'
+    orderStore.order.total = 0;
     fatura.value = false;
     return OnMounted();
 })
@@ -210,94 +205,25 @@ const InputFocus = () => {
   store.state.pos.PesquisarProduto = "";
 };
 
-const AlterarPedido = (event,edit) => {
-    localStorage.setItem("NumeroPedidos" + Pedido.value.session, event);
-    ListePedidos.value = false;
-    InputFocus();
-    getStore(edit);
-};
-
-const NovoPedido = () => {
-  //A verificar se o carrinho interior tem alguns items
-  if (Pedido.value.items.length <= 0) {
-    return messages(
-      "info",
-      "Atenção não e possivel crear duas pedidos vazios"
-    );
-  } else {
-    Pedido.value.number = Encomendas.value.length;
-    Pedido.value.items = [];
-    store.state.pos.ClientePos = null;
-    Pedido.value.total = 0;
-    Pedido.value.cliente = null;
-    localStorage.setItem(
-      "NumeroPedidos" + Pedido.value.session,
-      Pedido.value.number
-    );
-    Encomendas.value.push(Pedido.value);
-    localStorage.setItem(
-      "Encomendas" + Pedido.value.session,
-      JSON.stringify(Encomendas.value)
-    );
-    ListePedidos.value = false;
-  }
-};
-
-const client = (event) => {
-  Pedido.value.cliente = event;
-  Encomendas.value[Pedido.value.number] = Pedido.value;
-  localStorage.setItem(
-    "Encomendas" + Pedido.value.session,
-    JSON.stringify(Encomendas.value)
-  );
-};
-
-const tipo = (event) => {
-  numeros.value = "";
-  TipoAlteration.value = event;
-};
-
 const OnMounted = onMounted(async () => {
     await getImage();
-    await axios.get(`/PDV/menuPos/${localStorage.getItem('locale') || 'en'}`).then((Response) => {
-        method.value = Response.data.methods;
+    await axios.get(`/PDV/menuPos/${localStorage.getItem('locale') || 'en'}`)
+    .then((Response) => {
+        store.commit('pos/setPaymentMethods',Response.data.methods)
         categories.value = Response.data.categories
-        Pedido.value.user = store.state.publico.user;
+        orderStore.order.user = userStor.value;
+        orderStore.order.session = props.session.id;
+        getOrderAtStore(orderStore.order);
+    }).finally(()=>{
+
     });
     localStorage.setItem("session", props.session.id);
-    Pedido.value.session = props.session.id;
-    getStore();
+    orders.value = JSON.parse(localStorage.getItem('orders'+props.session.id))
     InputFocus();
-    if(Encomendas.value.length == 1){
-        await checkOrders(props.session.id)
+    if(orders.value.length == 1){
+        await checkOrders(orders.value,props.session.id)
     }
 });
-
-const getStore = (edit) => {
-  if (JSON.parse(localStorage.getItem("Encomendas" + Pedido.value.session))) {
-    Encomendas.value = JSON.parse(
-      localStorage.getItem("Encomendas" + Pedido.value.session)
-    );
-    Pedido.value.number = localStorage.getItem(
-      "NumeroPedidos" + Pedido.value.session
-    );
-    //A verificar se esta encomenda esta paga
-    return VerificarCarrinho(Encomendas.value[Pedido.value.number],edit);
-  } else {
-    Pedido.value.cliente = null;
-    Pedido.value.number = 0;
-    Encomendas.value.push(Pedido.value);
-    Pedido.value.number = Encomendas.value.length - 1;
-    localStorage.setItem(
-      "NumeroPedidos" + Pedido.value.session,
-      Pedido.value.number
-    );
-    localStorage.setItem(
-      "Encomendas" + Pedido.value.session,
-      JSON.stringify(Encomendas.value)
-    );
-  }
-};
 
 const data = () => {
   var objData = new Date(),
@@ -308,218 +234,8 @@ const data = () => {
   return dia + "-" + mes + "-" + ano;
 };
 
-const SetStore = () => {
-  Pedido.value.total = CalcularTotal();
-  Encomendas.value[Pedido.value.number] = Pedido.value;
-  localStorage.setItem(
-    "Encomendas" + Pedido.value.session,
-    JSON.stringify(Encomendas.value)
-  );
-  getStore();
-};
-
-const VerificarCarrinho = (event,edit) => {
-  if (event.state != "Pago"||edit) {
-
-    if (event.items != []) {
-      store.state.pos.ClientePos = event.cliente;
-      if (edit) {
-        Pedido.value.items = []
-        event.items.forEach(item => {
-            if (item.product) {
-                item.product.preco_pedido = item.price_sold
-                item.product.quantidade = item.quantity
-                item.product.total = item.total
-                Pedido.value.items.push(item.product)
-            }else{
-                item.preco_pedido = item.preco_pedido
-                item.quantidade = item.quantidade
-                item.total = item.total
-                Pedido.value.items.push(item)
-            }
-        });
-      }else{
-        Pedido.value.items = event.items;
-      }
-      CalcularTotal();
-    }
-  } else {
-    const testar = Encomendas.value.find((o) => o.state === "Cotação");
-    if (testar) {
-      localStorage.setItem(
-        "NumeroPedidos" + Pedido.value.session,
-        testar.number
-      );
-      Pedido.value.number = testar.number;
-      Pedido.value.items = Encomendas.value[testar.number].items;
-      store.state.pos.ClientePos = Encomendas.value[testar.number].cliente;
-      CalcularTotal();
-    } else {
-      Pedido.value.number = Encomendas.value.length;
-      localStorage.setItem(
-        "NumeroPedidos" + Pedido.value.session,
-        JSON.stringify(Pedido.value.number)
-      );
-      Pedido.value.number = localStorage.getItem(
-        "NumeroPedidos" + Pedido.value.session
-      );
-      Pedido.value.cliente = store.state.pos.ClientePos;
-      Encomendas.value.push(Pedido.value);
-      localStorage.setItem(
-        "Encomendas" + Pedido.value.session,
-        JSON.stringify(Encomendas.value)
-      );
-      CalcularTotal();
-    }
-  }
-};
-
-const ClicarLinha = (event, prod) => {
-  IdAlterar.value = event;
-  numeros.value = "";
-  linha.value = prod;
-};
-
-const messages = (tipo, message) => {
-  toast.add({
-    severity: tipo,
-    summary: "Menssagem",
-    detail: message,
-    life: 5000,
-  });
-};
-
-const AddProds = (produto) => {
-  const existProduct = Pedido.value.items.find(
-    (object) => object.id === produto.id
-  );
-  if (existProduct) {
-    let listPrice = produto.list_price.filter((item)=>{
-        return item.quantity <= existProduct.quantidade + 1
-    })
-    var preco = 0;
-    if (listPrice.length>0) {
-        listPrice = listPrice[listPrice.length -1];
-        if (existProduct.quantidade + 1 >= listPrice.quantity) {
-            preco = listPrice.price_discount;
-        } else {
-            preco = existProduct.preçovenda;
-        }
-    } else {
-      preco = existProduct.preçovenda;
-    }
-    var quantidad = existProduct.quantidade + 1;
-    if (existProduct.stock_sum_quantity >= quantidad) {
-
-      existProduct.quantidade += 1;
-      const total = preco * existProduct.quantidade;
-      existProduct.total = total;
-      existProduct.preco_pedido = preco;
-    } else {
-      return messages(
-        "error",
-        "Este produto ja nao ten quantidade suficiente em stock"
-      );
-    }
-  } else {
-    produto.total = produto.preçovenda;
-    produto.quantidade = 1;
-    produto.preco_pedido = produto.preçovenda;
-    Pedido.value.items.push(produto);
-    IdAlterar.value = produto.id;
-  }
-  showProducts.value = false
-  CalcularTotal();
-  SetStore();
-}
-
-const updateOrder = (numero) => {
-  numeros.value = numeros.value + String(numero);
-  const existProduct = Pedido.value.items.find((o) => o.id === IdAlterar.value);
-  if (existProduct) {
-    let listPrice = existProduct.list_price.filter((item)=>{
-        return item.quantity <= numeros.value
-    })
-    var preco = 0;
-    if (listPrice.length>0) {
-      listPrice = listPrice[listPrice.length -1];
-      if (numeros.value >= listPrice.quantity) {
-        preco = listPrice.price_discount;
-      } else {
-        preco = existProduct.preçovenda;
-      }
-    } else {
-      preco = existProduct.preçovenda;
-    }
-    if (TipoAlteration.value === "quantidade") {
-      // A verificar se tem stock suficiente
-      var quantidad = Number(numeros.value);
-      if (existProduct.stock_sum_quantity >= quantidad) {
-        existProduct.quantidade = quantidad;
-        const total = preco * existProduct.quantidade;
-        existProduct.total = total;
-        existProduct.preco_pedido = preco;
-        SetStore();
-      } else {
-        return messages(
-          "error",
-          "Este produto ja nao ten quantidade suficiente em stock"
-        );
-      }
-    } else {
-      if (user.value.config.length <= 0 || user.value.config.listPrice === "0") {
-        return messages("info", "Usuario sem aceso");
-      } else {
-        const total = numeros.value * existProduct.quantidade;
-        existProduct.total = total;
-        existProduct.preco_pedido = numeros.value;
-      }
-    }
-    SetStore();
-    CalcularTotal();
-  }
-};
-
-const Remover = () => {
-  if (Pedido.value.items != null) {
-    let newList = Pedido.value.items.filter(
-      (item) => item.id !== IdAlterar.value
-    );
-    Pedido.value.items = newList;
-  } else {
-    Pedido.value.items.pop();
-  }
-  CalcularTotal();
-  SetStore();
-  let ultimo = Pedido.value.items[Pedido.value.items.length - 1];
-
-  if (ultimo) {
-    IdAlterar.value = ultimo.id;
-  }
-};
-
-const CalcularTotal = () => {
-  // aqui vai a lógica do total
-  Pedido.value.total = 0;
-  var items = Pedido.value.items.filter((novo) => novo.total);
-  items.forEach((novo) => {
-    Pedido.value.total += Number(novo.total);
-  });
-  return Pedido.value.total;
-};
-
-const makePayment = (event) => {
-  // A verificar se existe alguns total para pagar
-  if (Pedido.value.items.length <= 0) {
-    Form_Pagamento.value = false;
-    return messages(
-      "info",
-      "Não tem nehum item no carrinho por favor adicione"
-    );
-  } else {
-    IdEncomenda.value = Pedido.value.number;
-    Form_Pagamento.value = true;
-  }
+const messages = (type, message) => {
+  showMessage(message,type)
 };
 </script>
 <style lang="sass" scoped>

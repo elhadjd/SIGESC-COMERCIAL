@@ -12,7 +12,7 @@
                 <div class="text-sm font-sm" v-for="(infoItem, index) in $tm('login.info')" :key="index">
                     <div><font-awesome-icon icon="fa-solid fa-circle-check" /></div>
                     <div>
-                        <span class="truncate">{{infoItem.title}}</span>
+                        <h2 class="truncate">{{infoItem.title}}</h2>
                         <span>{{infoItem.description}}</span>
                     </div>
                 </div>

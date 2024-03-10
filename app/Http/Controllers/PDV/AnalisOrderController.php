@@ -64,7 +64,7 @@ class AnalisOrderController extends Controller
         return $orders;
     }
 
-    public function IntervalDateRelator($month=null,$year=null,$inicio,$fin)
+    public function IntervalDateRelator($inicio,$fin,$month=null,$year=null)
     {
         $startDate = Carbon::parse("$year-$month-$inicio");
         $endDate = Carbon::parse("$year-$month-$fin");

@@ -2,6 +2,7 @@ import { ProviderProduct } from "./provider"
 
 export interface Product{
     category:category,
+    discount: ProductDiscountTs,
     description: string,
     category_product_id:number,
     codego:string,
@@ -37,6 +38,15 @@ export interface category{
     id:number
     name:string
     updated_at:string
+}
+
+export interface ProductDiscountTs{
+    product_id: number,
+    startDate: string,
+    endDate: string,
+    discount: number,
+    created_at: string,
+    updated_at: string
 }
 
 export interface ListPrices{

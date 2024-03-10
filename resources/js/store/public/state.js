@@ -1,8 +1,6 @@
 export default {
-    public: {
-        company:[],
-        user: [],
-        stateFormOrder: 12500111,
-        listStorePaginate: []
-    },
+    company:[],
+    user: [],
+    stateFormOrder: 12500111,
+    listStorePaginate: []
 }

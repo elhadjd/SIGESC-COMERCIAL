@@ -67,7 +67,6 @@ Route::middleware('locale')->group(function(){
         Route::post('/setLocal',function(Request $request){
             Cookie::queue('locale', $request->locale);
         });
-
         Route::post('/resetPassword/{locale}',[forgetPasswordController::class,'RequestData']);
         Route::post('/resetPassword/{locale}/{check}',[forgetPasswordController::class,'resetPassword']);
     });
@@ -109,6 +108,7 @@ Route::middleware('locale')->group(function(){
                     Route::post('SaveUser/{user?}', 'SaveUser');
                     Route::post('saveCompany', 'saveCompany');
                     Route::get('getLoginRegister','getLoginRegister');
+                    Route::post('changeLanguage/{user}','changeLanguage');
 
                 });
 
@@ -260,6 +260,7 @@ Route::middleware('locale')->group(function(){
                         Route::get('getCatalog', 'getCatalog');
                         Route::post('saveStore', 'saveStore');
                     });
+
 
                     Route::controller(TransferController::class)->group(function () {
                         Route::get('getTransfers', 'get');

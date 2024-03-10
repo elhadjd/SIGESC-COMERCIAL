@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\classes\ActivityRegister;
+use App\classes\CheckData;
 use App\classes\deleteFile;
 use App\classes\uploadImage;
 use App\classes\UploadImageCatalog;
@@ -34,15 +35,29 @@ class productsController extends Controller
 
     public function get($page)
     {
+
         $product = produtos::withSum(['stock' => function($stock){
             $stock->where('armagen_id',Auth::user()->armagen_id);
         }],'quantity')->where('company_id',Auth::user()->company_id)
         ->where('estado','active')->orderBy('nome','asc')->paginate($page);
+
+
+
+        // vai colocar este codigo no controller public/productController depois entre no modulo ponto de venda e clica em artigos apenas uma vez e depoi comenta o codigo
         // foreach ($product as $value) {
         //    $select = DB::table('stocks')->where('armagen_id',Auth::user()->armagen_id)
         //     ->where('produtos_id',$value->id);
-        //     if ($select->count() >1) {
+        //     if ($select->count() >= 1) {
         //        $product = $select->orderBy('id','DESC');
+        //     }else{
+        //         if ($value->qtd != null && $value->qtd != 0) {
+        //             DB::table('stocks')->insert([
+        //                 'armagen_id' =>Auth::user()->armagen_id,
+        //                 'produtos_id'=>$value->id,
+        //                 'quantity'=>$value->qtd
+        //             ]);
+        //         }
+
         //     }
         // }
         return $product;
@@ -57,16 +72,11 @@ class productsController extends Controller
         // }
     }
 
-    public function checkPermission(string $permissionName){
-        $service = service::where('name','Products')->with(['permissions'=>function($permission) use ($permissionName){
-            $permission->where('name',$permissionName);
-        }])->first();
-        return request()->user()->hasPermission($service->permissions[0]['id']);
-    }
 
     public function create(Request $request, produtos $produtos,$name=null)
     {
-        if(!$this->checkPermission('Create')) return $this->RespondError(__('User without access'));
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Products','Create')) return $this->RespondError(__('User without access'));
         $product = $produtos::create([
             'nome'=> $name,
             'company_id' => Auth::user()->company_id
@@ -142,8 +152,10 @@ class productsController extends Controller
             if ($data['imagem'] != null) {
                 $data['image'] = $image->Upload("/produtos/image/", $data['imagem'], $product);
             }
-            if($product->preçocust != $data['preçovenda'] && !$this->checkPermission('Edit cost sale')) return $this->RespondError(__('User without access'));
-            if($product->preçocust != $data['preçocust'] && !$this->checkPermission('Edit cost price')) return $this->RespondError(__('User without access'));
+
+            $checkPermission = new CheckData;
+            if($product->preçocust != $data['preçovenda'] && !$checkPermission->checkPermission('Products','Edit cost sale')) return $this->RespondError(__('User without access'));
+            if($product->preçocust != $data['preçocust'] && !$checkPermission->checkPermission('Products','Edit cost price')) return $this->RespondError(__('User without access'));
             if ($product->update($data)) {
                 $this->registerActivity("Atualizou os dados do produto $product->nome");
                 return $this->RespondSuccess(__('Data updated successfully'),$product->fresh());
@@ -183,7 +195,8 @@ class productsController extends Controller
 
     public function deleteProduct(produtos $product)
     {
-        if(!$this->checkPermission('Delete')) return $this->RespondError(__('User without access'));
+        $checkPermission = new CheckData;
+        if(!$checkPermission->checkPermission('Products','Delete')) return $this->RespondError(__('User without access'));
         DB::transaction(function () use ($product){
             $ordersItems = DB::table('item_orders')->where('produtos_id', $product->id)->get();
             foreach ($ordersItems as $items) {

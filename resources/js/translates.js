@@ -1,7 +1,6 @@
 import { createI18n,useI18n } from 'vue-i18n';
 
 const messages = {
-
     pt: {
         apps: {
             pdvName: 'Ponto de Venda',
@@ -37,11 +36,15 @@ const messages = {
             by: 'por',
             create: 'Criar',
             company: 'Empresa',
+            day: "dia's",
+            month: "mêse's",
+            hour: "hora's",
             start: 'Iniciar',
             close: 'Fechar',
             goBack: 'Voltar',
             next: 'Avançar',
             conclude: 'Concluir',
+            active: 'ativo',
             end: 'Terminar',
             enter: 'Entrar',
             one: 'Uma',
@@ -77,8 +80,9 @@ const messages = {
             completed: 'Concluída',
             search: 'Pesquisar...',
             name: 'Nome',
+            formulary: 'Formulário (s)',
             panel: 'Painel',
-            movement: 'Movimento',
+            movement: 'Movimento (s)',
             subject: 'Assunto',
             date: 'Data',
             added: 'Adicionado',
@@ -153,6 +157,7 @@ const messages = {
             or: 'ou',
             type: 'tipo',
             sessions: 'Sesão',
+            time: 'Cronômetro',
             activate: 'ativar',
             message: 'mensagem',
             manager: 'Gerente',
@@ -209,7 +214,9 @@ const messages = {
         message: {
             notData: "Nenhum {colum} encontrado com este {value} .",
             serverError: "Erro do servidor",
-            emptyInput: "O campo {name} não pode ser vazio."
+            emptyInput: "O campo {name} não pode ser vazio.",
+            outStock: 'Este produto não tem stock suficiente',
+            userWithOutAccess: 'Usuario sem acesso.'
         },
         permissions:{
             Edit: 'Editar',
@@ -329,6 +336,7 @@ const messages = {
             module: 'module',
             by: 'par',
             create: 'Créer',
+            formulary: 'Formulair',
             company: 'Entreprise',
             start: 'Démarrer',
             close: 'Fermer',
@@ -407,8 +415,13 @@ const messages = {
             discount: 'Remise',
             tax: 'Taxe',
             due: 'Échéance',
+            time: 'Minuteur',
+            active: 'actif',
             final: 'Final',
             annul: 'Annuler',
+            day : "jour's",
+            month : "mois",
+            hour : "heure",
             user: 'Utilisateur',
             after: 'Après',
             before: 'Avant',
@@ -503,7 +516,9 @@ const messages = {
         message: {
             notData: "Aucun {colum} trouvé avec ce {value} .",
             serverError: "Une erreur du serveur s'est produite",
-            emptyInput: "Le champ {name} ne peut pas être vide."
+            emptyInput: "Le champ {name} ne peut pas être vide.",
+            outStock : "Ce produit n'a pas assez de stock",
+            userWithOutAccess: 'Utilisateur sans accès'
         },
         permissions:{
             Edit : 'Modifier',
@@ -632,6 +647,7 @@ const messages = {
             see: 'See',
             order: 'Order',
             sale: 'Sale',
+            formulary: 'Formulary',
             new: 'New',
             report: 'Report',
             article: 'Article',
@@ -673,6 +689,7 @@ const messages = {
             goBack: 'Go back',
             next: 'Next',
             conclude: 'Conclude',
+            time: 'Time',
             added: 'Added',
             expenses: 'Expenses',
             print: 'Print',
@@ -681,6 +698,7 @@ const messages = {
             select: 'Select',
             category: 'Category',
             provider: 'Provider',
+            active: 'active',
             notice: 'Notice',
             code: 'Code',
             barre: 'Bar',
@@ -725,6 +743,9 @@ const messages = {
             reported: 'Reported',
             permission: "Permission\(s)",
             message: 'message',
+            day: "day's",
+            month: "month's",
+            hour: "hour's",
             of: 'of',
             tape: 'Tape',
             type: 'type',
@@ -798,7 +819,9 @@ const messages = {
         message: {
             notData: "No {colum} found with this {value} .",
             serverError: "Une erreur du serveur s'est produite",
-            emptyInput: "The {name} field cannot be empty."
+            emptyInput: "The {name} field cannot be empty.",
+            outStock: 'This product does not have enough stock',
+            userWithOutAccess: 'User without access.'
         },
         permissions:{
             Edit: 'Edit',

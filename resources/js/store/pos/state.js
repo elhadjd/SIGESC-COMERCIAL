@@ -1,4 +1,22 @@
 export default {
+
+    order: {
+        total: 0,
+        cliente: '',
+        id: 0,
+        state: 'Cotação',
+        client: '',
+        number: '0',
+        session: 0,
+        items: [],
+        methods: [],
+        total: 0,
+        lastItem: 0,
+        numbers: '',
+        positionAlter: 'quantity',
+        formPayment: false
+    },
+
     Controlo: {
         state: false,
     },

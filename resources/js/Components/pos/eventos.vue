@@ -1,15 +1,15 @@
 <template>
     <div class="FormPagamentoCima">
         <div>
-            <Cliente @cliente="client"/>
+            <ClientVue/>
             <span @click="$emit('showProds')">Add Prod <i class="fa fa-plus"></i></span>
         </div>
 
         <div class="QtdPrcImpr">
             <div @click="print">{{$t('words.print')}}</div>
-            <div @click="$emit('tipo','preco')">{{$t('words.price')}}</div>
-            <div >{{$t('words.discount')}}</div>
-            <div @click="$emit('tipo','quantidade')">{{$t('words.quantity')}}</div>
+            <div @click="()=>updateType('price')">{{$t('words.price')}}</div>
+            <div @click="()=>updateType('discount')">{{$t('words.discount')}}</div>
+            <div @click="()=>updateType('quantity')">{{$t('words.quantity')}}</div>
         </div>
         <div v-if="printOrder" class="print">
             <div class="Modal">
@@ -29,19 +29,18 @@
         </div>
     </div>
     <div class="FormPagamentoBaixo">
-        <div class="PagamentoEsquerda" @click="$emit('payment',true)">
+        <div class="PagamentoEsquerda" @click="makePayment">
             <i class="fa fa-credit-card-alt"></i>
             <div>{{$t('words.payment')}}</div>
         </div>
         <div class="PagamentoDireita">
             <div v-for="(i, index) in 9"
-                class="nomeros" id="numero" :key="index" @click="numero(i)">
+                class="nomeros" id="numero" :key="index" @click="alterItems(i)">
                 {{ i }}
             </div>
-
-            <div class="nomeros" @click="numero(0)" id="numero">{{ 0 }}</div>
-            <div class="nomeros" @click="numero('.')" id="numero">.</div>
-            <div id="numeros" @click="$emit('remover')">
+            <div class="nomeros" @click="alterItems(0)" id="numero">{{ 0 }}</div>
+            <div class="nomeros" @click="alterItems('.')" id="numero">.</div>
+            <div id="numeros" @click="removeItem">
                 <i class="fa fa-ban" aria-hidden="true"></i>
             </div>
         </div>
@@ -51,22 +50,30 @@
 <script setup>
 import { reactive, ref } from '@vue/runtime-core'
 import axios from 'axios'
-import Cliente from './cliente.vue'
+import ClientVue from './client.vue'
+import {AlterItemsInTheOrder} from '@/Components/pos/services/alterItemsInTheOrder'
+import {serviceMessage} from '@/composable/public/messages'
+import {storeOrderServices} from "@/Components/pos/services/storeOrderServices"
+import {OrdersServices} from '@/Components/pos/services/ordersServices'
+import { useI18n } from "vue-i18n"
+const {t} = useI18n()
+const {
+        makePayment
+    } = OrdersServices()
+const {showMessage} = serviceMessage()
+const {removeItem} = storeOrderServices()
 
-const emits = defineEmits(['Alterar','cliente','remover','payment','tipo','showProds','message','invoice'])
+const {
+    alterItems,
+    updateType
+} = AlterItemsInTheOrder()
+const emits = defineEmits(['showProds','invoice'])
 const props = defineProps({
     idSession: Number,
     user:Object
 })
-const client = ((event)=>{
-    emits('cliente',event)
-})
 
 const printOrder = ref(false)
-
-const numero = ((event)=>{
-    emits('Alterar',event)
-})
 
 const invoice = reactive({
     number: null
@@ -75,7 +82,7 @@ const invoice = reactive({
 async function printInvoice(type = null) {
     await axios.get(`/PDV/printInvoice/${props.idSession}/${type != null ? type:invoice.number}`)
     .then((response) => {
-        if(response.data.message) return emits('message',response.data.type,response.data.message)
+        if(response.data.message) return showMessage(response.data.message,response.data.type)
         emits("invoice",response.data);
         printOrder.value = false
     }).catch((err) => {
@@ -86,7 +93,7 @@ async function printInvoice(type = null) {
 }
 
 const print = (()=>{
-    if(props.user.config.length <= 0 || props.user.config.print === "0") return emits('message','warn','Acesso negado')
+    if(props.user.config.length <= 0 || props.user.config.print === "0") return showMessage(t('message.userWithoutAccess'),'warn')
     printOrder.value = true
 })
 </script>
